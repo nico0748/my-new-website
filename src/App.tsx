@@ -106,12 +106,42 @@ function Hero() {
 }
 
 // Profile Component
-function Profile({ data }) {
+
+// =================================================================
+// 1. 型定義
+// =================================================================
+
+// まず、ネストされている `link` オブジェクトの型を定義します
+interface SocialLink {
+  name: string;
+  url: string;
+  icon: React.ReactNode; // SVGやJSX要素など、Reactが描画できるものすべてを表す型
+}
+
+// 次に、`SocialLink` の配列を含む `data` オブジェクト全体の型を定義します
+interface ProfileData {
+  imageUrl: string;
+  name: string;
+  title: string;
+  bio: string;
+  socialLinks: SocialLink[]; // SocialLink型のオブジェクトが複数入る配列
+}
+
+// 最後に、Profileコンポーネントが受け取るPropsの型を定義します
+interface ProfileProps {
+  data: ProfileData;
+}
+
+
+// =================================================================
+// 2. コンポーネント
+// =================================================================
+
+const Profile: React.FC<ProfileProps> = ({ data }) => {
   return (
     <section id="profile" className="py-20 md:py-32 min-h-screen flex items-center">
       <div className="max-w-4xl mx-auto w-full">
         <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center">Profile</h2>
-        {/* スマートフォンでは縦積み(flex-col)、mdサイズ以上で横並び(md:flex-row)になるように設定 */}
         <div className="flex flex-col md:flex-row gap-8 items-stretch">
           {/* 左のボックス */}
           <div className="md:w-1/3 w-full bg-[#e8dbc6] p-6 rounded-lg shadow-md flex flex-col">
@@ -119,6 +149,10 @@ function Profile({ data }) {
             <h3 className="text-2xl font-bold mb-2 text-center">{data.name}</h3>
             <p className="text-base text-gray-700 text-center">{data.title}</p>
             <div className="flex justify-center space-x-4 mt-auto pt-4">
+              {/* `data.socialLinks`が`SocialLink[]`型なので、
+                TypeScriptは自動的に`link`変数が`SocialLink`型であると推論します。
+                これにより、`link.url`や`link.icon`などのプロパティを安全に呼び出せます。
+              */}
               {data.socialLinks.map(link => (
                 <a key={link.name} href={link.url} aria-label={link.name} className="text-gray-600 hover:text-blue-500 transition-colors">
                   {link.icon}
@@ -134,7 +168,7 @@ function Profile({ data }) {
       </div>
     </section>
   );
-}
+};
 
 // Works Component
 function Works({ works, handleWorkClick }) {
