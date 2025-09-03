@@ -379,11 +379,35 @@ const Recs: React.FC<RecsProps> = ({ recs, handleRecsClick }) => {
 };
 
 // Events Component
-function Events({ events }) {
+// =================================================================
+// 1. 型定義
+// =================================================================
+
+// まず、`events`配列の中の一つ一つのオブジェクトの型を定義します
+interface EventItem {
+  id: number;
+  imageUrl: string;
+  date: string;
+  text: string;
+}
+
+// 次に、Eventsコンポーネント自体が受け取るPropsの型を定義します
+interface EventsProps {
+  events: EventItem[]; // EventItem型のオブジェクトが複数入る配列
+}
+
+
+// =================================================================
+// 2. コンポーネント
+// =================================================================
+
+const Events: React.FC<EventsProps> = ({ events }) => {
   const [currentEventIndex, setCurrentEventIndex] = useState(0);
 
-  const nextEvent = () => setCurrentEventIndex((prev) => (prev + 1) % events.length);
-  const prevEvent = () => setCurrentEventIndex((prev) => (prev - 1 + events.length) % events.length);
+  // events配列が空の場合に`% 0`のエラーが発生するのを防ぎます
+  const safeEventsLength = events.length || 1;
+  const nextEvent = () => setCurrentEventIndex((prev) => (prev + 1) % safeEventsLength);
+  const prevEvent = () => setCurrentEventIndex((prev) => (prev - 1 + safeEventsLength) % safeEventsLength);
 
   return (
     <section id="events" className="py-20 md:py-32 min-h-screen flex items-center">
@@ -392,6 +416,9 @@ function Events({ events }) {
         <div className="relative">
           <div className="overflow-hidden rounded-lg shadow-lg">
             <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentEventIndex * 100}%)` }}>
+              {/* `events`が`EventItem[]`型なので、
+                TypeScriptは自動的に`event`変数が`EventItem`型であると推論します。
+              */}
               {events.map((event) => (
                 <div key={event.id} className="w-full flex-shrink-0 relative">
                   <img src={event.imageUrl} alt={`Event ${event.id}`} className="w-full h-auto aspect-video object-cover" />
@@ -409,7 +436,7 @@ function Events({ events }) {
       </div>
     </section>
   );
-}
+};
 
 // Contact Component
 function Contact({ handleContactSubmit }) {
