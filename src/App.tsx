@@ -223,12 +223,42 @@ function Works({ works, handleWorkClick }) {
 }
 
 // Generic Grid Section Component
-function GridSection({ id, title, items, onItemClick }) {
+// =================================================================
+// 1. 型定義
+// =================================================================
+
+// まず、`items`配列の中の一つ一つのオブジェクトの型を定義します
+// このコンポーネントが表示するカードの「設計図」です
+interface GridItem {
+  id: string;
+  name: string;
+  desc: string;
+  imageUrl: string;
+}
+
+// 次に、GridSectionコンポーネント自体が受け取るPropsの型を定義します
+interface GridSectionProps {
+  id: string;
+  title: string;
+  items: GridItem[]; // GridItem型のオブジェクトが複数入る配列
+  onItemClick: (id: string) => void; // string型のidを引数に取り、何も返さない関数
+}
+
+
+// =================================================================
+// 2. コンポーネント
+// =================================================================
+
+const GridSection: React.FC<GridSectionProps> = ({ id, title, items, onItemClick }) => {
     return (
         <section id={id} className="py-20 md:py-32 min-h-screen flex items-center">
             <div className="max-w-4xl mx-auto w-full">
                 <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center">{title}</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+                    {/* `items`が`GridItem[]`型なので、
+                      TypeScriptは自動的に`item`変数が`GridItem`型であると推論します。
+                      これにより、`item.name`などのプロパティを安全に利用できます。
+                    */}
                     {items.map((item) => (
                         <div key={item.id} className="relative rounded-lg shadow-md overflow-hidden cursor-pointer group h-64" onClick={() => onItemClick(item.id)}>
                             <img src={item.imageUrl} alt={item.name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
@@ -242,7 +272,7 @@ function GridSection({ id, title, items, onItemClick }) {
             </div>
         </section>
     );
-}
+};
 
 // Records Component
 function Records({ records, handleRecordsClick }) {
