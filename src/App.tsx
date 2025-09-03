@@ -302,14 +302,81 @@ const GridSection: React.FC<GridSectionProps> = ({ id, title, items, onItemClick
 };
 
 // Records Component
-function Records({ records, handleRecordsClick }) {
-    return <GridSection id="records" title="Records" items={records} onItemClick={handleRecordsClick} />;
+// =================================================================
+// 1. 型定義
+// =================================================================
+
+// Recordsコンポーネントが表示するアイテム（カード）のデータの型
+// これはGridSectionコンポーネントが要求する`items`の型と一致させる必要があります
+interface GridItem {
+  id: string;
+  name: string;
+  desc: string;
+  imageUrl: string;
 }
 
-// Recs Component
-function Recs({ recs, handleRecsClick }) {
-    return <GridSection id="recs" title="Recs" items={recs} onItemClick={handleRecsClick} />;
+// Recordsコンポーネント自体が受け取るPropsの型
+interface RecordsProps {
+  records: GridItem[]; // GridItem型のオブジェクトが複数入る配列
+  handleRecordsClick: (id: string) => void; // string型のidを引数に取る関数
 }
+
+// （参考）GridSectionコンポーネントのPropsの型定義
+interface GridSectionProps {
+  id: string;
+  title: string;
+  items: GridItem[];
+  onItemClick: (id: string) => void;
+}
+
+// =================================================================
+// 2. コンポーネント
+// =================================================================
+
+const Records: React.FC<RecordsProps> = ({ records, handleRecordsClick }) => {
+    // Recordsコンポーネントは、受け取ったpropsを
+    // GridSectionコンポーネントの`items`と`onItemClick`にそのまま渡します。
+    return <GridSection id="records" title="Records" items={records} onItemClick={handleRecordsClick} />;
+};
+
+// Recs Component
+// =================================================================
+// 1. 型定義
+// =================================================================
+
+// Recsコンポーネントが表示するアイテム（カード）のデータの型
+// これは`Records`コンポーネントや、実際に描画を担当する`GridSection`コンポーネントと
+// 共通の型定義を再利用します。
+interface GridItem {
+  id: string;
+  name: string;
+  desc: string;
+  imageUrl: string;
+}
+
+// Recsコンポーネント自体が受け取るPropsの型
+interface RecsProps {
+  recs: GridItem[]; // GridItem型のオブジェクトが複数入る配列
+  handleRecsClick: (id: string) => void; // string型のidを引数に取る関数
+}
+
+// （参考）GridSectionコンポーネントのPropsの型定義
+interface GridSectionProps {
+  id: string;
+  title: string;
+  items: GridItem[];
+  onItemClick: (id: string) => void;
+}
+
+// =================================================================
+// 2. コンポーネント
+// =================================================================
+
+const Recs: React.FC<RecsProps> = ({ recs, handleRecsClick }) => {
+    // Recsコンポーネントは、受け取ったpropsを
+    // GridSectionコンポーネントの`items`と`onItemClick`にそのまま渡します。
+    return <GridSection id="recs" title="Recs" items={recs} onItemClick={handleRecsClick} />;
+};
 
 // Events Component
 function Events({ events }) {
