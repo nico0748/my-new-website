@@ -68,9 +68,16 @@ const events = [
 // --- Component Section (from components.jsx) ---
 // 各セクションのコンポーネントをここに定義します。
 
-// Header Component
-function Header({ activeSection, scrollToSection }) {
+// 1. コンポーネントが受け取るPropsの型を定義するinterfaceを作成します
+interface HeaderProps {
+  activeSection: string;
+  scrollToSection: (id: string) => void;
+}
+
+// 2. 作成したinterfaceをコンポーネントに適用します
+const Header: React.FC<HeaderProps> = ({ activeSection, scrollToSection }) => {
   const navItems = ['profile', 'works', 'records', 'recs', 'events', 'contact'];
+  
   return (
     <header className="sticky top-0 z-50 bg-[#f1e6d1]/80 backdrop-blur-sm shadow-md py-4 px-4 sm:px-8 md:px-16 flex justify-center">
       <nav className="flex flex-wrap justify-center space-x-4 md:space-x-8">
@@ -86,7 +93,7 @@ function Header({ activeSection, scrollToSection }) {
       </nav>
     </header>
   );
-}
+};
 
 // Hero Component
 function Hero() {
