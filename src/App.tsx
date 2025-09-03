@@ -20,7 +20,7 @@ const profileData = {
   bio: 'ここに詳細な自己紹介やこれまでの経歴、スキルなどを記述します。どのような人物なのか、より具体的に伝えるためのスペースです。<br/><br/>趣味や興味のあること、将来の目標などを書くことで、見る人に親近感を持ってもらうことができます。',
   imageUrl: 'https://placehold.co/300x300/e8dbc6/333?text=Profile+Image',
   socialLinks: [
-    { name: 'X (Twitter)', url: 1, icon: SvgIcons.xTwitter },
+    { name: 'X (Twitter)', url: '#', icon: SvgIcons.xTwitter },
     { name: 'GitHub', url: '#', icon: SvgIcons.github },
     { name: 'Note', url: '#', icon: <span className="text-xl font-bold">Note</span> },
     { name: 'Qiita', url: '#', icon: <span className="text-xl font-bold">Qiita</span> }
@@ -501,10 +501,51 @@ function Footer() {
 
 
 // --- Main App Component ---
-export default function App() {
-  const [activeSection, setActiveSection] = useState('profile');
 
-  const scrollToSection = (id) => {
+// =================================================================
+// 1. 型定義 (本来は types/index.ts などに定義)
+// =================================================================
+
+// 各子コンポーネントが受け取るデータの型をここで定義します
+interface Work {
+  id: number;
+  title: string;
+  imageUrl: string;
+}
+
+interface GridItem {
+  id: string;
+  name: string;
+  desc: string;
+  imageUrl: string;
+}
+
+interface EventItem {
+  id: number;
+  text: string;
+  imageUrl: string;
+  date: string;
+}
+
+// （参考）子コンポーネントのProps型。Appコンポーネントが渡すデータと一致している必要があります
+interface HeaderProps { activeSection: string; scrollToSection: (id: string) => void; }
+interface ProfileProps { data: ProfileData; } // dataの具体的な型を定義することが望ましい
+interface WorksProps { works: Work[]; handleWorkClick: (work: Work) => void; }
+interface RecordsProps { records: GridItem[]; handleRecordsClick: (id: string) => void; }
+interface RecsProps { recs: GridItem[]; handleRecsClick: (id: string) => void; }
+interface EventsProps { events: EventItem[]; }
+interface ContactProps { handleContactSubmit: (e: React.FormEvent<HTMLFormElement>) => void; }
+
+// =================================================================
+// 2. Appコンポーネント
+// =================================================================
+
+export default function App() {
+  // useStateに型を明示的に指定します
+  const [activeSection, setActiveSection] = useState<string>('profile');
+
+  // 関数の引数に型を指定します
+  const scrollToSection = (id: string): void => {
     const element = document.getElementById(id);
     if (element) {
       window.scrollTo({
@@ -538,7 +579,7 @@ export default function App() {
     };
   }, []);
 
-  const showMessage = (msg) => {
+  const showMessage = (msg: string): void => {
     const existingBox = document.getElementById('custom-message-box');
     if (existingBox) {
       existingBox.remove();
@@ -552,15 +593,21 @@ export default function App() {
       <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400">OK</button>
     `;
     document.body.appendChild(messageBox);
-    messageBox.querySelector('button').onclick = () => {
-      document.body.removeChild(messageBox);
-    };
+    
+    const button = messageBox.querySelector('button');
+    if (button) {
+      button.onclick = () => {
+        document.body.removeChild(messageBox);
+      };
+    }
   };
   
-  const handleWorkClick = (work) => showMessage(`${work.title}の詳細ページへ遷移します。`);
+  // 各イベントハンドラの引数に、事前に定義した型を適用します
+  const handleWorkClick = (work: Work): void => showMessage(`${work.title}の詳細ページへ遷移します。`);
   
-  const handleRecordsClick = (serviceId) => {
-    const serviceMap = {
+  const handleRecordsClick = (serviceId: string): void => {
+    // serviceMapのキーの型を明示的に指定します
+    const serviceMap: { [key: string]: string } = {
       'anime': 'Annictなどのアニメ視聴記録ページへ遷移します。',
       'music': 'Spotifyなどの音楽再生履歴ページへ遷移します。',
       'article': '関連する記事ページへ遷移します。',
@@ -571,8 +618,8 @@ export default function App() {
     showMessage(serviceMap[serviceId] || '詳細ページへ遷移します。');
   };
 
-  const handleRecsClick = (serviceId) => {
-    const serviceMap = {
+  const handleRecsClick = (serviceId: string): void => {
+    const serviceMap: { [key: string]: string } = {
       'recs-anime': 'おすすめアニメの詳細ページへ遷移します。',
       'recs-music': 'おすすめ音楽の詳細ページへ遷移します。',
       'recs-book': 'おすすめ書籍の詳細ページへ遷移します。',
@@ -583,14 +630,18 @@ export default function App() {
     showMessage(serviceMap[serviceId] || 'おすすめコンテンツ一覧ページへ遷移します。');
   };
 
-  const handleContactSubmit = (e) => {
+  // フォームイベントの型 `React.FormEvent<HTMLFormElement>` を指定します
+  const handleContactSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     showMessage('お問い合わせありがとうございます。内容を確認の上、返信いたします。');
-    e.target.reset();
+    // `e.target` が `HTMLFormElement` であることを型アサーションで伝えます
+    (e.target as HTMLFormElement).reset();
   };
 
   return (
     <div className="bg-[#f1e6d1] text-[#333] font-sans antialiased">
+      {/* 子コンポーネントに渡すpropsが、それぞれの型定義と一致しているか
+        TypeScriptがチェックしてくれます */}
       <Header activeSection={activeSection} scrollToSection={scrollToSection} />
       
       <main className="container mx-auto px-4 md:px-8">
