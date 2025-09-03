@@ -171,12 +171,36 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
 };
 
 // Works Component
-function Works({ works, handleWorkClick }) {
+// =================================================================
+// 1. 型定義
+// =================================================================
+
+// まず、`works`配列の中の一つ一つのオブジェクトの型を定義します
+interface Work {
+  id: number;
+  title: string;
+  imageUrl: string;
+}
+
+// 次に、Worksコンポーネント自体が受け取るPropsの型を定義します
+interface WorksProps {
+  works: Work[]; // Work型のオブジェクトが複数入る配列
+  handleWorkClick: (work: Work) => void; // Work型のオブジェクトを引数に取り、何も返さない関数
+}
+
+
+// =================================================================
+// 2. コンポーネント
+// =================================================================
+
+const Works: React.FC<WorksProps> = ({ works, handleWorkClick }) => {
   const [isCarouselView, setIsCarouselView] = useState(true);
   const [currentWorkIndex, setCurrentWorkIndex] = useState(0);
 
-  const nextWork = () => setCurrentWorkIndex((prev) => (prev + 1) % works.length);
-  const prevWork = () => setCurrentWorkIndex((prev) => (prev - 1 + works.length) % works.length);
+  // works.length が 0 の場合にエラーになるのを防ぐ
+  const safeWorksLength = works.length || 1;
+  const nextWork = () => setCurrentWorkIndex((prev) => (prev + 1) % safeWorksLength);
+  const prevWork = () => setCurrentWorkIndex((prev) => (prev - 1 + safeWorksLength) % safeWorksLength);
 
   return (
     <section id="works" className="py-20 md:py-32 min-h-screen flex items-center">
@@ -191,6 +215,9 @@ function Works({ works, handleWorkClick }) {
           <div className="relative">
             <div className="overflow-hidden rounded-lg shadow-lg">
               <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentWorkIndex * 100}%)` }}>
+                {/* `works`が`Work[]`型なので、
+                  TypeScriptは自動的に`work`変数が`Work`型であると推論します。
+                */}
                 {works.map((work) => (
                   <div key={work.id} className="w-full flex-shrink-0 relative cursor-pointer group" onClick={() => handleWorkClick(work)}>
                     <img src={work.imageUrl} alt={work.title} className="w-full h-auto aspect-video object-cover" />
@@ -220,7 +247,7 @@ function Works({ works, handleWorkClick }) {
       </div>
     </section>
   );
-}
+};
 
 // Generic Grid Section Component
 // =================================================================
