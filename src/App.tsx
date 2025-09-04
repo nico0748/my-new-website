@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 
+// import Profile from './features/profile/Profile';
+
 // --- Data Section (from data.js) ---
 // サイトで表示するデータをここに集約します
 
