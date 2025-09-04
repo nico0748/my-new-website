@@ -1,87 +1,76 @@
+import React from 'react';
 
-export interface HeaderProps {
-  activeSection: string;
-  scrollToSection: (id: string) => void;
-};
-
+// SNSリンクの型
 export interface SocialLink {
-  name: string;
-  url: string;
-  icon: React.ReactNode; // SVGやJSX要素など、Reactが描画できるものすべてを表す型
+name: string;
+url: string;
+icon: React.ReactNode;
 }
 
-export interface ProfileData{
-  imageUrl: string;
-  name: string;
-  title: string;
-  bio: string;
-  socialLinks: SocialLink[]; // SocialLink型のオブジェクトが複数入る配列  
+// プロフィールデータの型
+export interface ProfileData {
+name: string;
+title: string;
+bio: string;
+imageUrl: string;
+socialLinks: SocialLink[];
 }
 
-export interface ProfileProps{
-    data: ProfileData;
-}
-
+// 作品データの型
 export interface Work {
-    id: number;
-    title: string;
-    imageUrl: string;
+id: number;
+title: string;
+imageUrl: string;
 }
 
-export interface WorksProps{
-    works: Work[];
-    handleWorkClick: (work: Work) => void; // Work型のオブジェクトを引数に取り、何も返さない関数
-} 
-
+// RecordsとRecsで共通して使われるグリッドアイテムの型
 export interface GridItem {
-    id: string;
-    name: string;
-    desc: string;
-    imageUrl: string;
+id: string;
+name: string;
+desc: string;
+imageUrl: string;
 }
 
-export interface RecordsProps{
-    records: GridItem[];
-    handleRecordClick: (id: string) => void;
+// イベントデータの型
+export interface EventItem {
+id: number;
+text: string;
+imageUrl: string;
+date: string;
 }
 
-export interface GridSectionProps{
-    id: string;
-    title: string;
-    items: GridItem[];
-    onItemClick: (id: string) => void;
+// コンポーネントのProps型
+export interface HeaderProps {
+activeSection: string;
+scrollToSection: (id: string) => void;
 }
 
-export interface GridItem {
-    id: string;
-    name: string;
-    desc: string;
-    imageUrl: string;
+export interface WorksProps {
+works: Work[];
+handleWorkClick: (work: Work) => void;
 }
 
-export interface RecsProps{
-    recs: GridItem[];
-    handleRecsClick: (id: string) => void;
+export interface GridSectionProps {
+id: string;
+title: string;
+items: GridItem[];
+onItemClick: (id: string) => void;
 }
 
-export interface GridSectionProps{
-  id: string;
-  title: string;
-  items: GridItem[];
-  onItemClick: (id: string) => void;
+export interface RecordsProps {
+records: GridItem[];
+handleRecordsClick: (id: string) => void;
 }
 
-export interface EventItem{
-  id: number;
-  imageUrl: string;
-  date: string;
-  text: string;
+export interface RecsProps {
+recs: GridItem[];
+handleRecsClick: (id: string) => void;
 }
 
 export interface EventsProps {
-  events: EventItem[]; // EventItem型のオブジェクトが複数入る配列
+events: EventItem[];
 }
 
-export interface ContactProps{
-    handleContactSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+export interface ContactProps {
+handleContactSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }

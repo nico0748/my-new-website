@@ -1,26 +1,12 @@
 // Profile Component
 import React from 'react';
+import type { ProfileData } from '../../types';
+
 // =================================================================
-// 1. 型定義
+// 1. 型定義は types/index.ts に移行済み
 // =================================================================
 
-// まず、ネストされている `link` オブジェクトの型を定義します
-interface SocialLink {
-  name: string;
-  url: string;
-  icon: React.ReactNode; // SVGやJSX要素など、Reactが描画できるものすべてを表す型
-}
-
-// 次に、`SocialLink` の配列を含む `data` オブジェクト全体の型を定義します
-interface ProfileData {
-  imageUrl: string;
-  name: string;
-  title: string;
-  bio: string;
-  socialLinks: SocialLink[]; // SocialLink型のオブジェクトが複数入る配列
-}
-
-// 最後に、Profileコンポーネントが受け取るPropsの型を定義します
+// Profileコンポーネントが受け取るPropsの型を定義します
 interface ProfileProps {
   data: ProfileData;
 }
