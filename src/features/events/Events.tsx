@@ -21,6 +21,7 @@ const Events: React.FC<EventsProps> = ({ events }) => {
               title={events[currentEventIndex].text}
               date={events[currentEventIndex].date}
               className="mx-auto max-w-2xl"
+              imageHeight="h-64 md:h-80 lg:h-96"
             />
             <CarouselNavigation
               onPrev={prevEvent}

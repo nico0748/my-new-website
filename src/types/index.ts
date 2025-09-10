@@ -106,6 +106,7 @@ export interface ContentCardProps {
   date?: string;
   onClick?: () => void;
   className?: string;
+  imageHeight?: string;
 }
 
 export interface ButtonProps {

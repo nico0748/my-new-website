@@ -7,6 +7,7 @@ interface ContentCardProps {
   date?: string;
   onClick?: () => void;
   className?: string;
+  imageHeight?: string;
 }
 
 const ContentCard: React.FC<ContentCardProps> = ({ 
@@ -15,19 +16,22 @@ const ContentCard: React.FC<ContentCardProps> = ({
   description, 
   date, 
   onClick, 
-  className = "" 
+  className = "",
+  imageHeight = "h-48"
 }) => {
-  const cardClasses = `bg-[#e8dbc6] rounded-lg shadow-md overflow-hidden transition-transform hover:scale-105 ${
+  const cardClasses = `bg-[#e8dbc6] rounded-lg shadow-md overflow-hidden ${
     onClick ? 'cursor-pointer' : ''
   } ${className}`;
 
   return (
     <div className={cardClasses} onClick={onClick}>
-      <img 
-        src={imageUrl} 
-        alt={title || 'Content'} 
-        className="w-full h-48 object-cover" 
-      />
+      <div className="overflow-hidden">
+        <img 
+          src={imageUrl} 
+          alt={title || 'Content'} 
+          className={`w-full ${imageHeight} object-cover transition-transform duration-300 hover:scale-110`}
+        />
+      </div>
       {(title || description || date) && (
         <div className="p-4">
           {title && (

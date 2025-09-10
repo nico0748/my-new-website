@@ -16,11 +16,12 @@ const Works: React.FC<WorksProps> = ({ works, handleWorkClick }) => {
   return (
     <SectionWrapper id="works" title="Works">
       <div className="flex flex-col sm:flex-row justify-between items-center mb-12 gap-4">
-        <h3 className="text-2xl font-semibold">制作実績</h3>
-        <ViewToggleButton 
-          isCarouselView={isCarouselView} 
-          onToggle={() => setIsCarouselView(!isCarouselView)} 
-        />
+        <div className="sm:ml-auto">
+          <ViewToggleButton 
+            isCarouselView={isCarouselView} 
+            onToggle={() => setIsCarouselView(!isCarouselView)} 
+          />
+        </div>
       </div>
 
       {isCarouselView ? (
@@ -32,6 +33,7 @@ const Works: React.FC<WorksProps> = ({ works, handleWorkClick }) => {
                 title={works[currentWorkIndex].title}
                 onClick={() => handleWorkClick(works[currentWorkIndex])}
                 className="mx-auto max-w-2xl"
+                imageHeight="h-64 md:h-80 lg:h-96"
               />
               <CarouselNavigation
                 onPrev={prevWork}
