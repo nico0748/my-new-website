@@ -74,3 +74,46 @@ events: EventItem[];
 export interface ContactProps {
 handleContactSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
+
+// 共通コンポーネントの型定義
+export interface SectionWrapperProps {
+  id: string;
+  title: string;
+  children: React.ReactNode;
+  className?: string;
+}
+
+export interface ViewToggleButtonProps {
+  isCarouselView: boolean;
+  onToggle: () => void;
+  carouselLabel?: string;
+  gridLabel?: string;
+}
+
+export interface CarouselNavigationProps {
+  onPrev: () => void;
+  onNext: () => void;
+  currentIndex: number;
+  totalItems: number;
+  prevLabel?: string;
+  nextLabel?: string;
+}
+
+export interface ContentCardProps {
+  imageUrl: string;
+  title?: string;
+  description?: string;
+  date?: string;
+  onClick?: () => void;
+  className?: string;
+}
+
+export interface ButtonProps {
+  children: React.ReactNode;
+  onClick?: () => void;
+  type?: 'button' | 'submit' | 'reset';
+  variant?: 'primary' | 'secondary' | 'gray';
+  size?: 'sm' | 'md' | 'lg';
+  className?: string;
+  disabled?: boolean;
+}
