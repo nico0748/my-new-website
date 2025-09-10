@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { profileData, works, records, recs, events } from './data/data';
+import { profileData, works, records, recs, events } from './data/data.tsx';
 import Profile from './features/profile/Profile';
 import Header from './components/layouts/header/Header';
 import Hero from './features/hero/Hero';
@@ -8,7 +8,7 @@ import Records from './features/records/Records';
 import Recs from './features/recs/Recs';
 import Events from './features/events/Events';
 import Contact from './features/contact/Contact';
-// import Footer from './components/layouts/footer/Footer';
+import Footer from './components/layouts/footer/Footer';
 import type { Work } from './types';
 
 // --- Main App Component ---
@@ -135,11 +135,7 @@ export default function App() {
         <Contact handleContactSubmit={handleContactSubmit} />
       </main>
 
-      <footer className="bg-[#e8dbc6] text-center py-8 mt-16">
-        <div className="container mx-auto px-4 md:px-8">
-          <p className="text-gray-600">&copy; {new Date().getFullYear()} NICOLABO -にこラボ-. All Rights Reserved.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
