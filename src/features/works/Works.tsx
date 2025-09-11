@@ -33,7 +33,7 @@ const Works: React.FC<WorksProps> = ({ works, handleWorkClick }) => {
                 title={works[currentWorkIndex].title}
                 onClick={() => handleWorkClick(works[currentWorkIndex])}
                 className="mx-auto max-w-2xl"
-                imageHeight="h-64 md:h-80 lg:h-96"
+                imageHeight="h-64 md:h-80 lg:h-96" //カルーセル表示時:モバイル: h-64 (256px) タブレット: h-80 (320px) デスクトップ: h-96 (384px)
               />
               <CarouselNavigation
                 onPrev={prevWork}

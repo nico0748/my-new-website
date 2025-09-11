@@ -17,7 +17,7 @@ const ContentCard: React.FC<ContentCardProps> = ({
   date, 
   onClick, 
   className = "",
-  imageHeight = "h-48"
+  imageHeight = "h-40" //160px height by default 
 }) => {
   const cardClasses = `bg-[#e8dbc6] rounded-lg shadow-md overflow-hidden ${
     onClick ? 'cursor-pointer' : ''
