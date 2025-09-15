@@ -5,8 +5,8 @@ import Button from '../../components/ui/Button';
 
 const Contact: React.FC<ContactProps> = ({ handleContactSubmit }) => {
   return (
-    <SectionWrapper id="contact" title="Contact" className="max-w-2xl">
-      <div className="bg-[#e8dbc6] p-6 md:p-8 rounded-lg shadow-md">
+    <SectionWrapper id="contact" title="Contact">
+      <div className="bg-[#e8dbc6] p-6 md:p-8 rounded-lg shadow-md w-full max-w-2xl">
         <form onSubmit={handleContactSubmit}>
           <div className="mb-6">
             <label htmlFor="name" className="block text-sm font-medium mb-2">お名前</label>
