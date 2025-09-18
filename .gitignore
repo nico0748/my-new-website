@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# .envファイルをGitの管理対象から除外
+.env
+
+# その他（Node.jsプロジェクトで一般的な除外設定）
+node_modules
+*.log

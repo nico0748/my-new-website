@@ -1,10 +1,19 @@
 import fetch from "node-fetch";
 import fs from "fs";
 import * as cheerio from 'cheerio';
+import dotenv from "dotenv";
 
+dotenv.config(); // ★ 2. .envファイルを読み込む設定
+    
 // ① ご自身のアクセストークンに置き換えてください
-const accessToken = "ZGO1XSo2Bgo_rWvbV-gdLkHsncCVnRQDuH3zA6tasrQ";
+const accessToken = process.env.ANNICT_ACCESS_TOKEN;
 const BASE_URL = "https://api.annict.com/v1";
+
+// アクセストークンが設定されていない場合はエラーを出す
+if (!accessToken) {
+  console.error("エラー: .envファイルにANNICT_ACCESS_TOKENが設定されていません。");
+  process.exit(1); // プログラムを終了
+}
 
 /**
  * 公式サイトのURLからtwitter:imageのURLを取得する
