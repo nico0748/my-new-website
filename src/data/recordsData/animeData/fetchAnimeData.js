@@ -1,9 +1,12 @@
 import fetch from "node-fetch";
 import fs from "fs";
 import * as cheerio from 'cheerio';
+import dotenv from "dotenv";
+
+dotenv.config(); // ★ 2. .envファイルを読み込む設定
 
 // ① アクセストークン（大切に保管してください）
-const accessToken = "ZGO1XSo2Bgo_rWvbV-gdLkHsncCVnRQDuH3zA6tasrQ";
+const accessToken = process.env.ANNICT_ACCESS_TOKEN;
 const BASE_URL = "https://api.annict.com/v1";
 
 /**

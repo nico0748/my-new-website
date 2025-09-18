@@ -1,8 +1,10 @@
 import fetch from "node-fetch";
 import fs from "fs";
+import dotenv from "dotenv";
 
+dotenv.config(); // .envファイルを読み込む設定
 // ① アクセストークンをここに入れる（Annictから取得したもの）
-const accessToken = "ZGO1XSo2Bgo_rWvbV-gdLkHsncCVnRQDuH3zA6tasrQ";
+const accessToken = process.env.ANNICT_ACCESS_TOKEN;
 
 // ② Annict API エンドポイント（最新の視聴記録を取得）
 const url = `https://api.annict.com/v1/records?access_token=${accessToken}&per_page=50&sort=id_desc`;
