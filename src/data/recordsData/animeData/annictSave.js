@@ -5,8 +5,7 @@ import fs from "fs";
 const accessToken = "ZGO1XSo2Bgo_rWvbV-gdLkHsncCVnRQDuH3zA6tasrQ";
 
 // ② Annict API エンドポイント（最新の視聴記録を取得）
-const url = `https://api.annict.com/v1/records?access_token=${accessToken}&per_page=100&sort_id=desc`;
-
+const url = `https://api.annict.com/v1/records?access_token=${accessToken}&per_page=50&sort=id_desc`;
 async function fetchAnnictData() {
   try {
     // APIリクエスト
