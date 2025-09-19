@@ -1,5 +1,15 @@
 import { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
+
+// --- Data and Type Imports ---
 import { profileData, works, records, recs, events } from './data/data.tsx';
+import type { Work } from './types';
+
+// --- Page Components ---
+import AllWatchedAnime from './pages/allWatchedAnime';
+import AnimeDetail from './pages/animeDetail';
+
+// --- Feature and Layout Components ---
 import Profile from './features/profile/Profile';
 import Header from './components/layouts/header/Header';
 import Hero from './features/hero/Hero';
@@ -9,23 +19,14 @@ import Recs from './features/recs/Recs';
 import Events from './features/events/Events';
 import Contact from './features/contact/Contact';
 import Footer from './components/layouts/footer/Footer';
-import type { Work } from './types';
 
-// --- Main App Component ---
 
 // =================================================================
-// 1. 型定義は types/index.ts に移行済み
+// 1. ホームページコンポーネント (既存のAppコンポーネントの内容)
 // =================================================================
-
-// =================================================================
-// 2. Appコンポーネント
-// =================================================================
-
-export default function App() {
-  // useStateに型を明示的に指定します
+const HomePage = () => {
   const [activeSection, setActiveSection] = useState<string>('profile');
 
-  // 関数の引数に型を指定します
   const scrollToSection = (id: string): void => {
     const element = document.getElementById(id);
     if (element) {
@@ -83,11 +84,9 @@ export default function App() {
     }
   };
   
-  // 各イベントハンドラの引数に、事前に定義した型を適用します
   const handleWorkClick = (work: Work): void => showMessage(`${work.title}の詳細ページへ遷移します。`);
   
   const handleRecordsClick = (serviceId: string): void => {
-    // serviceMapのキーの型を明示的に指定します
     const serviceMap: { [key: string]: string } = {
       'anime': 'Annictなどのアニメ視聴記録ページへ遷移します。',
       'music': 'Spotifyなどの音楽再生履歴ページへ遷移します。',
@@ -111,18 +110,14 @@ export default function App() {
     showMessage(serviceMap[serviceId] || 'おすすめコンテンツ一覧ページへ遷移します。');
   };
 
-  // フォームイベントの型 `React.FormEvent<HTMLFormElement>` を指定します
   const handleContactSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     showMessage('お問い合わせありがとうございます。内容を確認の上、返信いたします。');
-    // `e.target` が `HTMLFormElement` であることを型アサーションで伝えます
     (e.target as HTMLFormElement).reset();
   };
 
   return (
     <div className="bg-[#f1e6d1] text-[#333] font-sans antialiased">
-      {/* 子コンポーネントに渡すpropsが、それぞれの型定義と一致しているか
-        TypeScriptがチェックしてくれます */}
       <Header activeSection={activeSection} scrollToSection={scrollToSection} />
       
       <main className="container mx-auto px-4 md:px-8">
@@ -137,5 +132,24 @@ export default function App() {
 
       <Footer />
     </div>
+  );
+}
+
+
+// =================================================================
+// 2. Appコンポーネント (ルーティング管理)
+// =================================================================
+export default function App() {
+  return (
+    <Routes>
+      {/* ルートURL ("/") の場合は、既存のホームページを表示 */}
+      <Route path="/" element={<HomePage />} />
+      
+      {/* "/watched-anime" の場合は、視聴済みアニメ一覧ページを表示 */}
+      <Route path="/watched-anime" element={<AllWatchedAnime />} />
+      
+      {/* "/anime/:animeId" の場合は、アニメ詳細ページを表示 */}
+      <Route path="/anime/:animeId" element={<AnimeDetail />} />
+    </Routes>
   );
 }

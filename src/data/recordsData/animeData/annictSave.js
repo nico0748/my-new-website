@@ -3,6 +3,7 @@ import fs from "fs";
 import dotenv from "dotenv";
 
 dotenv.config(); // .envファイルを読み込む設定
+
 // ① アクセストークンをここに入れる（Annictから取得したもの）
 const accessToken = process.env.ANNICT_ACCESS_TOKEN;
 
