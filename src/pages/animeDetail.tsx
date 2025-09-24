@@ -29,7 +29,7 @@ const AnimeDetail: React.FC = () => {
         <img
           src={anime.official_site_twitter_image_url || 'https://via.placeholder.com/800x400'}
           alt={anime.title}
-          className="w-full h-64 object-cover"
+          className="w-full h-96 object-cover"
         />
         <div className="p-6">
           <h1 className="text-3xl font-bold mb-4">{anime.title}</h1>
