@@ -35,7 +35,7 @@ const ContentCard: React.FC<ContentCardProps> = ({
       {(title || description || date) && (
         <div className="p-4">
           {title && (
-            // 下の行のclassNameに "truncate" を追加しました
+            // 下の行のclassNameに "truncate" を追加 *line-clamp-1 でも良さそう
             <h3 className="text-lg font-semibold mb-2 truncate">{title}</h3>
           )}
           {description && (
