@@ -17,7 +17,7 @@ const ContentCard: React.FC<ContentCardProps> = ({
   date, 
   onClick, 
   className = "",
-  imageHeight = "h-40" //160px height by default 
+  imageHeight = "h-40" // 160px height by default 
 }) => {
   const cardClasses = `bg-[#e8dbc6] rounded-lg shadow-md overflow-hidden ${
     onClick ? 'cursor-pointer' : ''
@@ -35,7 +35,8 @@ const ContentCard: React.FC<ContentCardProps> = ({
       {(title || description || date) && (
         <div className="p-4">
           {title && (
-            <h3 className="text-lg font-semibold mb-2">{title}</h3>
+            // 下の行のclassNameに "truncate" を追加しました
+            <h3 className="text-lg font-semibold mb-2 truncate">{title}</h3>
           )}
           {description && (
             <p className="text-sm text-gray-600 mb-2">{description}</p>
