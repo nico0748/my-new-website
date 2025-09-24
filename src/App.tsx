@@ -2,7 +2,12 @@ import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 // --- Data and Type Imports ---
-import { profileData, works, records, recs, events } from './data/data.tsx';
+import { profileData } from './data/profileData/profileData.tsx';
+import { works } from './data/worksData/worksData.tsx';
+import { records } from './data/recordsData/recordsData.tsx';
+import { recs} from './data/recsData/recsData.tsx';
+import { events } from './data/eventsData/eventsData.tsx';
+
 import type { Work } from './types';
 
 // --- Page Components ---
