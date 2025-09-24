@@ -18,6 +18,8 @@ const AllWatchedAnime: React.FC = () => {
   const [sortedAnime, setSortedAnime] = useState<Anime[]>([]);
   // 現在の並び替え種別を保持するState (デフォルトはリリース時期順)
   const [sortType, setSortType] = useState('release-desc');
+  // 検索クエリを保持するState
+  const [searchQuery, setSearchQuery] = useState('');
 
   // "2017年春"のような文字列をソート可能な数値に変換するヘルパー関数
   const getSeasonValue = (season: string): number => {
@@ -40,27 +42,30 @@ const AllWatchedAnime: React.FC = () => {
     return year + seasonValue / 10;
   };
 
-  // sortTypeが変更されたときに並び替え処理を実行します
+  // sortType or searchQueryが変更されたときに処理を実行します
   useEffect(() => {
-    const sortedData = [...animeData] as Anime[]; // 元データをコピーして使用
+    // 1. 検索クエリに基づいてデータをフィルタリング
+    const filteredData = animeData.filter(anime =>
+      anime.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    // 2. フィルタリングされたデータを並び替え
+    const sortedData = [...filteredData] as Anime[];
 
     switch (sortType) {
       case 'title-asc':
-        // タイトル昇順 (ロケールを'ja'に指定して日本語順にソート)
         sortedData.sort((a, b) => a.title.localeCompare(b.title, 'ja'));
         break;
       case 'title-desc':
-        // タイトル降順
         sortedData.sort((a, b) => b.title.localeCompare(a.title, 'ja'));
         break;
       case 'release-desc':
       default:
-        // リリース時期の降順 (新しい順)
         sortedData.sort((a, b) => getSeasonValue(b.release_season) - getSeasonValue(a.release_season));
         break;
     }
     setSortedAnime(sortedData);
-  }, [sortType]);
+  }, [sortType, searchQuery]); // 依存配列にsearchQueryを追加
 
   // 並び替えボタンのスタイルを動的に変更するための関数
   const getButtonClass = (type: string) => {
@@ -73,7 +78,18 @@ const AllWatchedAnime: React.FC = () => {
 
   return (
     <div className="container mx-auto p-4 md:p-8 bg-[#f1e6d1] min-h-screen">
-      <h1 className="text-3xl font-bold mb-8 text-center text-[#333]">視聴済みアニメ一覧</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center text-[#333]">視聴済みアニメ一覧</h1>
+
+      {/* 検索バー */}
+      <div className="mb-8 max-w-lg mx-auto">
+        <input
+          type="text"
+          placeholder="アニメのタイトルを検索..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition shadow-sm"
+        />
+      </div>
 
       {/* 並び替えボタン */}
       <div className="flex flex-wrap justify-center gap-4 mb-8">
