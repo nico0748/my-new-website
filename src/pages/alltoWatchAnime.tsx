@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ContentCard from '../components/ui/ContentCard';
-import animeData from '../data/recordsData/animeData/all_watched_anime.json';
+// 視聴予定のデータをインポート
+import wannaWatchAnimeData from '../data/recordsData/animeData/all_wanna_watch_anime.json';
 
-// アニメデータの型を定義します
 interface Anime {
   id: number;
   title: string;
@@ -13,21 +13,13 @@ interface Anime {
   official_site_twitter_image_url: string | null;
 }
 
-const AllWatchedAnime: React.FC = () => {
-  // 並び替えられたアニメのリストを保持するState
+const AllWannaWatchAnime: React.FC = () => {
   const [sortedAnime, setSortedAnime] = useState<Anime[]>([]);
-  // 現在の並び替え種別を保持するState (デフォルトはリリース時期順)
   const [sortType, setSortType] = useState('release-desc');
-  // 検索クエリを保持するState
   const [searchQuery, setSearchQuery] = useState('');
 
-  // "2017年春"のような文字列をソート可能な数値に変換するヘルパー関数
   const getSeasonValue = (season: string): number => {
-    // seasonがnullやundefined、または文字列でない場合にエラーを防ぐためのチェックを追加
-    if (!season || typeof season !== 'string') {
-      return 0; // 不正なデータは最古として扱う
-    }
-    
+    if (!season || typeof season !== 'string') return 0;
     const year = parseInt(season.substring(0, 4), 10);
     const seasonName = season.substring(5);
     let seasonValue = 0;
@@ -36,20 +28,14 @@ const AllWatchedAnime: React.FC = () => {
       case '春': seasonValue = 2; break;
       case '夏': seasonValue = 3; break;
       case '秋': seasonValue = 4; break;
-      default: seasonValue = 0; break; // 不明な季節は0として扱う
     }
-    // 年と季節を組み合わせて、2017.1 (2017年春) のような数値を作成します
     return year + seasonValue / 10;
   };
 
-  // sortType or searchQueryが変更されたときに処理を実行します
   useEffect(() => {
-    // 1. 検索クエリに基づいてデータをフィルタリング
-    const filteredData = animeData.filter(anime =>
+    const filteredData = wannaWatchAnimeData.filter(anime =>
       anime.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
-
-    // 2. フィルタリングされたデータを並び替え
     const sortedData = [...filteredData] as Anime[];
 
     switch (sortType) {
@@ -65,22 +51,17 @@ const AllWatchedAnime: React.FC = () => {
         break;
     }
     setSortedAnime(sortedData);
-  }, [sortType, searchQuery]); // 依存配列にsearchQueryを追加
+  }, [sortType, searchQuery]);
 
-  // 並び替えボタンのスタイルを動的に変更するための関数
   const getButtonClass = (type: string) => {
     return `px-4 py-2 rounded-lg font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400 ${
-      sortType === type
-        ? 'bg-[#007acc] text-white'
-        : 'bg-white text-gray-700 hover:bg-gray-100'
+      sortType === type ? 'bg-[#007acc] text-white' : 'bg-white text-gray-700 hover:bg-gray-100'
     }`;
   };
 
   return (
     <div className="container mx-auto p-4 md:p-8 bg-[#f1e6d1] min-h-screen">
-      <h1 className="text-3xl font-bold mb-6 text-center text-[#333]">視聴済みアニメ一覧</h1>
-
-      {/* 検索バー */}
+      <h1 className="text-3xl font-bold mb-6 text-center text-[#333]">視聴予定アニメ一覧</h1>
       <div className="mb-8 max-w-lg mx-auto">
         <input
           type="text"
@@ -90,33 +71,15 @@ const AllWatchedAnime: React.FC = () => {
           className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition shadow-sm"
         />
       </div>
-
-      {/* 並び替えボタン */}
       <div className="flex flex-wrap justify-center gap-4 mb-8">
-        <button
-          onClick={() => setSortType('release-desc')}
-          className={getButtonClass('release-desc')}
-        >
-          リリース時期順
-        </button>
-        <button
-          onClick={() => setSortType('title-asc')}
-          className={getButtonClass('title-asc')}
-        >
-          タイトル (昇順)
-        </button>
-        <button
-          onClick={() => setSortType('title-desc')}
-          className={getButtonClass('title-desc')}
-        >
-          タイトル (降順)
-        </button>
+        <button onClick={() => setSortType('release-desc')} className={getButtonClass('release-desc')}>リリース時期順</button>
+        <button onClick={() => setSortType('title-asc')} className={getButtonClass('title-asc')}>タイトル (昇順)</button>
+        <button onClick={() => setSortType('title-desc')} className={getButtonClass('title-desc')}>タイトル (降順)</button>
       </div>
-      
-      {/* アニメカードのグリッド表示 */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {sortedAnime.map((anime) => (
-          <Link to={`/anime/${anime.id}`} key={anime.id}>
+          // ★ 変更点: Linkに `?from=/to-watch-anime` を追加
+          <Link to={`/anime/${anime.id}?from=/to-watch-anime`} key={anime.id}>
             <ContentCard
               imageUrl={anime.official_site_twitter_image_url || 'https://placehold.co/600x400/e8dbc6/333?text=No+Image'}
               title={anime.title}
@@ -129,5 +92,4 @@ const AllWatchedAnime: React.FC = () => {
   );
 };
 
-export default AllWatchedAnime;
-
+export default AllWannaWatchAnime;

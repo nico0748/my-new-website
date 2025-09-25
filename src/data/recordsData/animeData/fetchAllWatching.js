@@ -15,6 +15,9 @@ if (!accessToken) {
   process.exit(1);
 }
 
+// 指定した時間だけ処理を待機させるためのヘルパー関数
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
 /**
  * 公式サイトのURLからOGP画像(twitter:imageなど)のURLを取得します
  * @param {string} siteUrl - アニメの公式サイトURL
@@ -25,7 +28,7 @@ async function fetchTwitterImage(siteUrl) {
   try {
     // ユーザーエージェントを設定して403エラーを回避します
     const response = await fetch(siteUrl, {
-      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36' }
+      headers: { 'User-Agent': 'Mozilla.5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36' }
     });
     if (!response.ok) return null;
     const html = await response.text();
@@ -70,11 +73,11 @@ async function fetchAllWatchingWorks() {
   while (true) {
     console.log(`- 📄 ${currentPage}ページ目のデータを取得中...`);
     
-    // ★ 変更点: filter_statusを 'watching' に変更
     const url = `${BASE_URL}/me/works?access_token=${accessToken}&filter_status=watching&per_page=50&page=${currentPage}`;
     
     const response = await fetch(url);
     if (!response.ok) {
+      // 429エラーの場合は少し待ってからリトライするなどの処理も考えられます
       throw new Error(`APIリクエストに失敗しました (ステータス: ${response.status})`);
     }
     const data = await response.json();
@@ -89,6 +92,8 @@ async function fetchAllWatchingWorks() {
     }
 
     currentPage = data.next_page;
+    // ★ 変更点: APIへの負荷を減らすため、1秒待機します
+    await sleep(1000); 
   }
   return allWorks;
 }
@@ -101,12 +106,20 @@ async function main() {
     // 1. Annict APIから全件取得
     const rawWorks = await fetchAllWatchingWorks();
     console.log(`\n🎉 合計 ${rawWorks.length} 件のアニメが見つかりました。`);
-    console.log("... 各作品の詳細情報を整形します。件数が多い場合、時間がかかりますのでお待ちください ...");
+    console.log("... 各作品のOGP画像を取得します。件数が多い場合、時間がかかりますのでお待ちください ...");
 
-    // 2. 取得した全件データを整形 (Promise.allで並列処理)
-    const formattedWorks = await Promise.all(rawWorks.map(work => formatWorkData(work)));
+    // ★ 変更点: Promise.allによる並列処理から、1件ずつ処理する直列処理に変更
+    const formattedWorks = [];
+    for (const [index, work] of rawWorks.entries()) {
+      const formattedWork = await formatWorkData(work);
+      formattedWorks.push(formattedWork);
+      // 処理状況がわかるようにログを出力します
+      console.log(`- [${index + 1}/${rawWorks.length}] ${work.title} の情報を取得しました。`);
+      // ★ 変更点: 各公式サイトへの負荷を減らすため、200ミリ秒待機します
+      await sleep(200);
+    }
     
-    // 3. ファイルに保存 (★ 変更点: ファイル名を変更)
+    // 3. ファイルに保存
     fs.writeFileSync("all_watching_anime.json", JSON.stringify(formattedWorks, null, 2));
     console.log("\n✅ all_watching_anime.json にすべてのデータを保存しました！");
 
@@ -116,3 +129,4 @@ async function main() {
 }
 
 main();
+

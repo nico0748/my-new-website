@@ -12,6 +12,7 @@ import type { Work } from './types';
 
 // --- Page Components ---
 import AllWatchedAnime from './pages/allWatchedAnime';
+import AllToWatchAnime from './pages/alltoWatchAnime';
 import AnimeDetail from './pages/animeDetail';
 
 // --- Feature and Layout Components ---
@@ -152,7 +153,10 @@ export default function App() {
       
       {/* "/watched-anime" の場合は、視聴済みアニメ一覧ページを表示 */}
       <Route path="/watched-anime" element={<AllWatchedAnime />} />
-      
+
+      {/* "/to-watch-anime" の場合は、視聴予定アニメ一覧ページを表示 */}
+      <Route path="/to-watch-anime" element={<AllToWatchAnime />} />
+
       {/* "/anime/:animeId" の場合は、アニメ詳細ページを表示 */}
       <Route path="/anime/:animeId" element={<AnimeDetail />} />
     </Routes>
