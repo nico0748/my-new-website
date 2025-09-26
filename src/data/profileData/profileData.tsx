@@ -13,7 +13,7 @@ export const profileData = {
   name: 'Nico ',
   title: 'フロントエンドエンジニア',
   bio: 'ここに詳細な自己紹介やこれまでの経歴、スキルなどを記述します。どのような人物なのか、より具体的に伝えるためのスペースです。<br/><br/>趣味や興味のあること、将来の目標などを書くことで、見る人に親近感を持ってもらうことができます。',
-  imageUrl: 'public/sns_icon_round.png',
+  imageUrl: '/sns_icon_round.png',
   socialLinks: [
     { name: 'X (Twitter)', url: '#', icon: SvgIcons.xTwitter },
     { name: 'GitHub', url: '#', icon: SvgIcons.github },
