@@ -127,6 +127,9 @@ const HomePage = () => {
     <div className="bg-[#f1e6d1] text-[#333] font-sans antialiased overflow-x-hidden min-h-screen">
       <Header activeSection={activeSection} scrollToSection={scrollToSection} />
       
+      {/* ヘッダーの高さ分のスペーサーを追加 */}
+      <div className="h-16 sm:h-20"></div>
+      
       <main className="w-full max-w-full overflow-x-hidden px-4 md:px-8">
         <div className="container mx-auto max-w-7xl">
           <Hero />
