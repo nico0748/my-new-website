@@ -17,15 +17,15 @@ const ContentCard: React.FC<ContentCardProps> = ({
   date, 
   onClick, 
   className = "",
-  imageHeight = "h-40" // 160px height by default 
+  imageHeight = "h-48"
 }) => {
-  const cardClasses = `bg-[#e8dbc6] rounded-lg shadow-md overflow-hidden ${
+  const cardClasses = `bg-[#e8dbc6] rounded-lg shadow-md overflow-hidden w-full max-w-full ${
     onClick ? 'cursor-pointer' : ''
   } ${className}`;
 
   return (
     <div className={cardClasses} onClick={onClick}>
-      <div className="overflow-hidden">
+      <div className="overflow-hidden w-full">
         <img 
           src={imageUrl} 
           alt={title || 'Content'} 
@@ -33,13 +33,12 @@ const ContentCard: React.FC<ContentCardProps> = ({
         />
       </div>
       {(title || description || date) && (
-        <div className="p-4">
+        <div className="p-4 w-full">
           {title && (
-            // 下の行のclassNameに "truncate" を追加 *line-clamp-1 でも良さそう
-            <h3 className="text-lg font-semibold mb-2 truncate">{title}</h3>
+            <h3 className="text-lg font-semibold mb-2 truncate w-full">{title}</h3>
           )}
           {description && (
-            <p className="text-sm text-gray-600 mb-2">{description}</p>
+            <p className="text-sm text-gray-600 mb-2 break-words">{description}</p>
           )}
           {date && (
             <p className="text-xs text-gray-500">{date}</p>

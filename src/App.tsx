@@ -124,17 +124,19 @@ const HomePage = () => {
   };
 
   return (
-    <div className="bg-[#f1e6d1] text-[#333] font-sans antialiased">
+    <div className="bg-[#f1e6d1] text-[#333] font-sans antialiased overflow-x-hidden min-h-screen">
       <Header activeSection={activeSection} scrollToSection={scrollToSection} />
       
-      <main className="container mx-auto px-4 md:px-8">
-        <Hero />
-        <Profile data={profileData} />
-        <Works works={works} handleWorkClick={handleWorkClick} />
-        <Records records={records} handleRecordsClick={handleRecordsClick} />
-        <Recs recs={recs} handleRecsClick={handleRecsClick} />
-        <Events events={events} />
-        <Contact handleContactSubmit={handleContactSubmit} />
+      <main className="w-full max-w-full overflow-x-hidden px-4 md:px-8">
+        <div className="container mx-auto max-w-7xl">
+          <Hero />
+          <Profile data={profileData} />
+          <Works works={works} handleWorkClick={handleWorkClick} />
+          <Records records={records} handleRecordsClick={handleRecordsClick} />
+          <Recs recs={recs} handleRecsClick={handleRecsClick} />
+          <Events events={events} />
+          <Contact handleContactSubmit={handleContactSubmit} />
+        </div>
       </main>
 
       <Footer />

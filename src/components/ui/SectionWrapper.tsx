@@ -16,13 +16,15 @@ const SectionWrapper: React.FC<SectionWrapperProps> = ({
   return (
     <section 
       id={id} 
-      className={`py-20 md:py-32 min-h-screen flex items-center justify-center ${className}`}
+      className={`py-20 md:py-32 min-h-screen flex items-center justify-center w-full max-w-full overflow-x-hidden ${className}`}
     >
-      <div className="max-w-5xl mx-auto w-full flex flex-col items-center">
-        <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center">
+      <div className="w-full max-w-5xl mx-auto px-4 flex flex-col items-center">
+        <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center w-full">
           {title}
         </h2>
-        {children}
+        <div className="w-full max-w-full overflow-x-hidden">
+          {children}
+        </div>
       </div>
     </section>
   );

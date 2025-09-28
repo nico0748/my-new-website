@@ -3,7 +3,7 @@ import React from 'react';
 const Hero: React.FC = () => {
   return (
     // <section> に高さを指定し、要素を中央に配置
-    <section className="h-screen flex justify-center items-center">
+    <section className="h-screen flex justify-center items-center overflow-x: hidden;">
       <div className="text-center">
         {/* rubyタグとrtタグを使用してルビを表現 */}
         <ruby className="font-concert-one text-[#333]">

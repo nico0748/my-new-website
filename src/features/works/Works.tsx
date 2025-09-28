@@ -15,47 +15,54 @@ const Works: React.FC<WorksProps> = ({ works, handleWorkClick }) => {
 
   return (
     <SectionWrapper id="works" title="Works">
-      <div className="flex flex-col sm:flex-row justify-between items-center mb-12 gap-4">
-        <div className="sm:ml-auto">
-          <ViewToggleButton 
-            isCarouselView={isCarouselView} 
-            onToggle={() => setIsCarouselView(!isCarouselView)} 
-          />
-        </div>
-      </div>
-
-      {isCarouselView ? (
-        <div className="relative">
-          {works.length > 0 && (
-            <>
-              <ContentCard
-                imageUrl={works[currentWorkIndex].imageUrl}
-                title={works[currentWorkIndex].title}
-                onClick={() => handleWorkClick(works[currentWorkIndex])}
-                className="mx-auto max-w-2xl"
-                imageHeight="h-64 md:h-80 lg:h-96" //カルーセル表示時:モバイル: h-64 (256px) タブレット: h-80 (320px) デスクトップ: h-96 (384px)
-              />
-              <CarouselNavigation
-                onPrev={prevWork}
-                onNext={nextWork}
-                currentIndex={currentWorkIndex}
-                totalItems={works.length}
-              />
-            </>
-          )}
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {works.map(work => (
-            <ContentCard
-              key={work.id}
-              imageUrl={work.imageUrl}
-              title={work.title}
-              onClick={() => handleWorkClick(work)}
+      <div className="w-full max-w-full overflow-x-hidden">
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-8 md:mb-12 gap-4 px-2">
+          <div className="sm:ml-auto">
+            <ViewToggleButton 
+              isCarouselView={isCarouselView} 
+              onToggle={() => setIsCarouselView(!isCarouselView)} 
             />
-          ))}
+          </div>
         </div>
-      )}
+
+        {isCarouselView ? (
+          <div className="relative w-full max-w-full overflow-x-hidden">
+            {works.length > 0 && (
+              <>
+                <div className="w-full max-w-2xl mx-auto px-2">
+                  <ContentCard
+                    imageUrl={works[currentWorkIndex].imageUrl}
+                    title={works[currentWorkIndex].title}
+                    onClick={() => handleWorkClick(works[currentWorkIndex])}
+                    className="w-full max-w-full"
+                    imageHeight="h-48 sm:h-64 md:h-80 lg:h-96"
+                  />
+                </div>
+                <CarouselNavigation
+                  onPrev={prevWork}
+                  onNext={nextWork}
+                  currentIndex={currentWorkIndex}
+                  totalItems={works.length}
+                />
+              </>
+            )}
+          </div>
+        ) : (
+          <div className="w-full max-w-full overflow-x-hidden px-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+              {works.map(work => (
+                <ContentCard
+                  key={work.id}
+                  imageUrl={work.imageUrl}
+                  title={work.title}
+                  onClick={() => handleWorkClick(work)}
+                  className="w-full max-w-full"
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </SectionWrapper>
   );
 };
