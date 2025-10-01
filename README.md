@@ -1,3 +1,10 @@
+<a href="https://nico-labo748.dev" target="_blank">
+  <img
+    src="public/site_ogp1.webp"
+    alt="OGP image of my hobby site"
+  />
+</a>
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
