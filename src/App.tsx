@@ -16,6 +16,8 @@ import AllWatchedAnime from './pages/allWatchedAnime';
 import AllToWatchAnime from './pages/alltoWatchAnime';
 //import AllWatchingAnime from './pages/allWatchingAnime';
 import AnimeDetail from './pages/animeDetail';
+import PortfolioPage from './pages/portfolioPage.tsx';  
+
 //ビルドした本番実行環境だと直接リンク指定で遷移できないので原因究明を急ぐ必要がある
 
 // --- Feature and Layout Components ---
@@ -158,6 +160,9 @@ export default function App() {
     <Routes>
       {/* ルートURL ("/") の場合は、既存のホームページを表示 */}
       <Route path="/" element={<HomePage />} />
+      
+      {/* "/portfolio" の場合は、ポートフォリオページを表示 */}
+      <Route path="/portfolio" element={<PortfolioPage />} />
       
       {/* "/watched-anime" の場合は、視聴済みアニメ一覧ページを表示 */}
       <Route path="/watched-anime" element={<AllWatchedAnime />} />
