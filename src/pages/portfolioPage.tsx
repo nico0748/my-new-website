@@ -3,7 +3,8 @@ import Header from '../components/layouts/header/Header'; // 既存のヘッダ�
 import Footer from '../components/layouts/footer/Footer'; // 既存のフッターを流用
 
 // データは分析された通り、別ファイルで管理するのがおすすめです
-// import { projects } from '../data/portfolioData';
+import { portfolioData } from '../data/portfolioData/portfolioData'; 
+import ProjectCard from '../components/ui/ProjectCard'; 
 
 const PortfolioPage = () => {
   return (
@@ -18,9 +19,13 @@ const PortfolioPage = () => {
         <h1 className="text-4xl font-bold text-center mb-12">
           Portfolio
         </h1>
-        <p className="text-center text-lg">
-          ここに、分析された仕様書案を基にしたポートフォリオのコンテンツを作成していきます。
-        </p>
+        
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {portfolioData.map(item => (
+            <ProjectCard key={item.id} item={item} />
+          ))}
+        </div>
         
         {/* ここにプロジェクトカードを一覧表示するコンポーネントを配置します。
           例: <ProjectGrid projects={projects} />
