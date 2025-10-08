@@ -7,6 +7,7 @@ import { works } from './data/worksData/worksData.tsx';
 import { records } from './data/recordsData/recordsData.tsx';
 import { recs} from './data/recsData/recsData.tsx';
 import { events } from './data/eventsData/eventsData.tsx';
+//Data関連はindex.tsでpropsの行っているため、新規で追加する場合はindex.tsも修正する必要あり
 
 import type { Work } from './types';
 
@@ -15,6 +16,7 @@ import AllWatchedAnime from './pages/allWatchedAnime';
 import AllToWatchAnime from './pages/alltoWatchAnime';
 //import AllWatchingAnime from './pages/allWatchingAnime';
 import AnimeDetail from './pages/animeDetail';
+//ビルドした本番実行環境だと直接リンク指定で遷移できないので原因究明を急ぐ必要がある
 
 // --- Feature and Layout Components ---
 import Profile from './features/profile/Profile';
