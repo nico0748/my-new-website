@@ -8,6 +8,7 @@ import { records } from './data/recordsData/recordsData.tsx';
 import { recs} from './data/recsData/recsData.tsx';
 import { events } from './data/eventsData/eventsData.tsx';
 //Data関連はindex.tsでpropsの行っているため、新規で追加する場合はindex.tsも修正する必要あり
+//Data関連は.tsxから.tsに拡張子を変更する必要があるかも
 
 import type { Work } from './types';
 
