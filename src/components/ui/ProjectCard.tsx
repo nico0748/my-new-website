@@ -15,21 +15,25 @@ const cardVariants = {
     y: 0, 
     opacity: 1,
     transition: {
-      duration: 0.5
+      duration: 0.8
     }
   },
 };
 const ProjectCard: React.FC<Props> = ({ item }) => {
   return (
+    // rounded-lg[-sm, -md, -lg, -xl, -2xl, -3xl]: 角を丸くする, shadow-lg: 大きな影をつける, overflow-hidden: はみ出た部分を隠す
+    // whileHover: ホバー時のアニメーション設定
+    // scale: 拡大率, transition: アニメーションの詳細設定
     <motion.div 
-      className="bg-white rounded-lg shadow-lg overflow-hidden"
+      className="bg-[#e8dbc6] rounded-2xl shadow-lg overflow-hidden"
       variants={cardVariants}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.3 }}
       whileHover={{ scale: 1.05, transition: { duration: 0.2 } }} // ついでにホバーアニメーションも追加
-    >      <img src={item.thumbnail} alt={item.title} className="w-full h-56 object-cover" />
-      <div className="p-6">
+    >      
+      <img src={item.thumbnail} alt={item.title} className="w-full h-56 object-cover " />
+      <div className="p-6 bg-[#e8dbc6]">
         <div className="flex flex-wrap gap-2 mb-4">
           {item.tags.map(tag => (
             <span key={tag} className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">
