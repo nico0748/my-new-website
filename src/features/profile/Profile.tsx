@@ -18,7 +18,7 @@ interface ProfileProps {
 
 const Profile: React.FC<ProfileProps> = ({ data }) => {
   return (
-    <section id="profile" className="py-20 md:py-32 min-h-screen flex items-center">
+    <section id="profile" className="py-10 md:py-16 min-h-[50vh] flex items-center">
       <div className="max-w-4xl mx-auto w-full">
         <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center">Profile</h2>
         <div className="flex flex-col md:flex-row gap-8 items-stretch">
