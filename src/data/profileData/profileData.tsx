@@ -33,12 +33,6 @@ export const profileData = {
         <td style="font-size: 22px;">Hobby</td>
         <td style="font-size: 16px;">App Game / Anime</td>
       </tr>
-      <tr>
-        <th colspan="2" style="text-align: center; font-size: 32px;">Interests</th>
-      </tr>
-      <tr>
-        <td colspan="2" style="font-size: 16px;">Dirt / Flutter / Swift / Unreal Engine / Blender / Maya</td>
-      </tr>
     </table>
   `,
   imageUrl: '/sns_icon_round.png',
