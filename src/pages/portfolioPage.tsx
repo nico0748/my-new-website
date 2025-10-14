@@ -1,6 +1,6 @@
 "use client"
-
-import Header from "../components/layouts/header/Header"
+//レイアウトコンポーネント
+import Header from "../components/layouts/header/Header" //ヘッダーは共通化させずに、個別に設定できるようにする。（ポートフォリオサイト→Profile, Projects, Skills,Timeline ）
 import Footer from "../components/layouts/footer/Footer"
 import Profile from "../features/profile/Profile"
 

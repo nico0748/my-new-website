@@ -23,7 +23,7 @@ import PortfolioPage from './pages/portfolioPage.tsx';
 
 // --- Feature and Layout Components ---
 import Profile from './features/profile/Profile';
-import Header from './components/layouts/header/Header';
+import Header from './components/layouts/header/Header'; //ヘッダーは共通化させずに、個別に設定できるようにする。（ホーム→ Profile, Works, Records, Recs, Events ）
 import Hero from './features/hero/Hero';
 import Works from './features/works/Works';
 import Records from './features/records/Records';
