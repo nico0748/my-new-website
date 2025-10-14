@@ -6,18 +6,22 @@ interface TimelineItemProps {
   year: string
   title: string
   description: string
-  type?: "education" | "work" | "project" | "other"
+  type?: "education" | "work" | "project" | "other" | "certification"
 }
 
 const TimelineItem = ({ year, title, description, type = "other" }: TimelineItemProps) => {
   const getTypeColor = () => {
     switch (type) {
-      case "education":
+      case "other":
         return "bg-blue-500"
-      case "work":
+      case "education":
         return "bg-green-500"
       case "project":
         return "bg-purple-500"
+      case "work":
+        return "bg-red-500"
+      case "certification":
+        return "bg-yellow-500"
       default:
         return "bg-[#8b7355]"
     }
