@@ -10,9 +10,37 @@ const SvgIcons = {
 
 // プロフィールデータ
 export const profileData = {
-  name: 'Nico ',
+  name: 'Nico',
   title: 'フロントエンドエンジニア',
-  bio: 'ここに詳細な自己紹介やこれまでの経歴、スキルなどを記述します。どのような人物なのか、より具体的に伝えるためのスペースです。<br/><br/>趣味や興味のあること、将来の目標などを書くことで、見る人に親近感を持ってもらうことができます。',
+  bio: `
+    <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; font-weight: bold; width: 100%; margin-top: 16px; text-align: left; ">
+      <tr>
+        <th colspan="2" style="text-align: center; font-size: 32px;">About Me</th>
+      </tr>
+      <tr>
+        <td style="font-size: 22px;">Educ</td>
+        <td style="font-size: 16px;">Chiba Institute of Technology — B2</td>
+      </tr>
+      <tr>
+        <td style="font-size: 22px;">Major</td>
+        <td style="font-size: 16px;">Information Engineering</td>
+      </tr>
+      <tr>
+        <td style="font-size: 22px;">Role</td>
+        <td style="font-size: 16px;">Software Engineer — Web Frontend / Game Engineer / 3D Modeler</td>
+      </tr>
+      <tr>
+        <td style="font-size: 22px;">Hobby</td>
+        <td style="font-size: 16px;">App Game / Anime</td>
+      </tr>
+      <tr>
+        <th colspan="2" style="text-align: center; font-size: 32px;">Interests</th>
+      </tr>
+      <tr>
+        <td colspan="2" style="font-size: 16px;">Dirt / Flutter / Swift / Unreal Engine / Blender / Maya</td>
+      </tr>
+    </table>
+  `,
   imageUrl: '/sns_icon_round.png',
   socialLinks: [
     { name: 'X (Twitter)', url: '#', icon: SvgIcons.xTwitter },
