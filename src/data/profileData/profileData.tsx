@@ -13,7 +13,7 @@ export const profileData = {
   name: 'Nico',
   title: 'フロントエンドエンジニア',
   bio: `
-    <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; font-weight: bold; width: 100%; margin-top: 16px; text-align: left; ">
+    <table border="1" cellpadding="10" cellspacing="0" style="border-collapse: collapse; font-weight: bold; width: 100%; margin-top: 10px; text-align: left; ">
       <tr>
         <th colspan="2" style="text-align: center; font-size: 32px;">About Me</th>
       </tr>
