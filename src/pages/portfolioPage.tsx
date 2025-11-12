@@ -1,6 +1,9 @@
 "use client"
 //レイアウトコンポーネント
-import Header from "../components/layouts/header/Header" //ヘッダーは共通化させずに、個別に設定できるようにする。（ポートフォリオサイト→Profile, Projects, Skills,Timeline ）
+//import Header from "../components/layouts/header/Header" //ヘッダーは共通化させずに、個別に設定できるようにする。
+import Header2 from "../components/layouts/header/Header2"
+
+//（ポートフォリオサイト→Profile, Projects, Skills,Timeline ）
 import Footer from "../components/layouts/footer/Footer"
 //import Profile from "../features/profile/Profile"
 import Profile2 from "../features/profile/Profile2"
@@ -8,7 +11,7 @@ import Profile2 from "../features/profile/Profile2"
 // データインポート
 import { portfolioData } from "../data/portfolioData/portfolioData"
 //import { profileData } from "../data/profileData/profileData"
-import { profileData2 } from "../data/profileData/ profileData2"
+import { profileData2 } from "../data/profileData/profileData2"
 import { skillsData } from "../data/skillsData/skillsData"
 import { timelineData } from "../data/timelineData/timelineData"
 
@@ -24,7 +27,7 @@ import { motion } from "framer-motion"
 const PortfolioPage = () => {
   return (
     <div className="bg-[#f1e6d1] text-[#333] font-sans antialiased overflow-x-hidden min-h-screen">
-      <Header activeSection="portfolio" scrollToSection={() => {}} />
+      <Header2 activeSection="portfolio" scrollToSection={() => {}} />
 
       {/* ヘッダーの高さ分のスペーサー */}
       <div className="h-16 sm:h-20"></div>

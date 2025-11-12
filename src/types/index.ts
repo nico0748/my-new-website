@@ -45,6 +45,11 @@ activeSection: string;
 scrollToSection: (id: string) => void;
 }
 
+export interface HeaderProps2{
+  activeSection?: string;
+  scrollToSection: (section: string) => void;
+}
+
 export interface WorksProps {
 works: Work[];
 handleWorkClick: (work: Work) => void;
