@@ -1,33 +1,83 @@
-"use client"
+"use client";
 //レイアウトコンポーネント
 //import Header from "../components/layouts/header/Header" //ヘッダーは共通化させずに、個別に設定できるようにする。
-import Header2 from "../components/layouts/header/Header2"
+import Header2 from "../components/layouts/header/Header2";
 
 //（ポートフォリオサイト→Profile, Projects, Skills,Timeline ）
-import Footer from "../components/layouts/footer/Footer"
+import Footer from "../components/layouts/footer/Footer";
 //import Profile from "../features/profile/Profile"
-import Profile2 from "../features/profile/Profile2"
+import Profile2 from "../features/profile/Profile2";
 
 // データインポート
-import { portfolioData } from "../data/portfolioData/portfolioData"
+import { portfolioData } from "../data/portfolioData/portfolioData";
 //import { profileData } from "../data/profileData/profileData"
-import { profileData2 } from "../data/profileData/profileData2"
-import { skillsData } from "../data/skillsData/skillsData"
-import { timelineData } from "../data/timelineData/timelineData"
+import { profileData2 } from "../data/profileData/profileData2";
+import { skillsData } from "../data/skillsData/skillsData";
+import { timelineData } from "../data/timelineData/timelineData";
 
 // UIコンポーネント
-import ProjectCard from "../components/ui/ProjectCard"
-import SectionWrapper from "../components/ui/SectionWrapper"
-import SkillRadarChart from "../components/ui/SkillRadarChart"
-import TimelineItem from "../components/ui/TimelineItem"
+import ProjectCard from "../components/ui/ProjectCard";
+import SectionWrapper from "../components/ui/SectionWrapper";
+import SkillRadarChart from "../components/ui/SkillRadarChart";
+import TimelineItem from "../components/ui/TimelineItem";
 
 //ライブラリインポート
-import { motion } from "framer-motion"
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 const PortfolioPage = () => {
+  const [activeSection, setActiveSection] = useState<string>("profile");
+
+  const scrollToSection = (id: string): void => {
+    const element = document.getElementById(id);
+    if (element) {
+      window.scrollTo({
+        top: element.offsetTop - 80,
+        behavior: "smooth",
+      });
+      setActiveSection(id);
+    }
+  };
+
+  useEffect(() => {
+    const sections = [
+      "profile",
+      "works",
+      "records",
+      "recs",
+      "events",
+      "contact",
+    ];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: "-50% 0px -50% 0px" }
+    );
+
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => {
+      sections.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) observer.unobserve(el);
+      });
+    };
+  }, []);
+
   return (
     <div className="bg-[#f1e6d1] text-[#333] font-sans antialiased overflow-x-hidden min-h-screen">
-      <Header2 activeSection="portfolio" scrollToSection={() => {}} />
+      <Header2
+        activeSection={activeSection}
+        scrollToSection={scrollToSection}
+      />
 
       {/* ヘッダーの高さ分のスペーサー */}
       <div className="h-16 sm:h-20"></div>
@@ -40,8 +90,10 @@ const PortfolioPage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          {/* <Profile data={profileData} /> */}
-          <Profile2 data={profileData2} />
+          <SectionWrapper id="profile" title="Profile">
+            {/* <Profile data={profileData} /> */}
+            <Profile2 data={profileData2} />
+          </SectionWrapper>
         </motion.div>
 
         {/* Projects Section */}
@@ -57,7 +109,11 @@ const PortfolioPage = () => {
         <SectionWrapper id="skills" title="Skills">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {skillsData.map((category, index) => (
-              <SkillRadarChart key={index} category={category.category} skills={category.skills} />
+              <SkillRadarChart
+                key={index}
+                category={category.category}
+                skills={category.skills}
+              />
             ))}
           </div>
         </SectionWrapper>
@@ -80,7 +136,7 @@ const PortfolioPage = () => {
 
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default PortfolioPage
+export default PortfolioPage;
