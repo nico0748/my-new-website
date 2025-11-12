@@ -2,11 +2,13 @@
 //レイアウトコンポーネント
 import Header from "../components/layouts/header/Header" //ヘッダーは共通化させずに、個別に設定できるようにする。（ポートフォリオサイト→Profile, Projects, Skills,Timeline ）
 import Footer from "../components/layouts/footer/Footer"
-import Profile from "../features/profile/Profile"
+//import Profile from "../features/profile/Profile"
+import Profile2 from "../features/profile/Profile2"
 
 // データインポート
 import { portfolioData } from "../data/portfolioData/portfolioData"
-import { profileData } from "../data/profileData/profileData"
+//import { profileData } from "../data/profileData/profileData"
+import { profileData2 } from "../data/profileData/ profileData2"
 import { skillsData } from "../data/skillsData/skillsData"
 import { timelineData } from "../data/timelineData/timelineData"
 
@@ -35,7 +37,8 @@ const PortfolioPage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <Profile data={profileData} />
+          {/* <Profile data={profileData} /> */}
+          <Profile2 data={profileData2} />
         </motion.div>
 
         {/* Projects Section */}
