@@ -22,7 +22,7 @@ const Profile2 = ({ data }: ProfileProps) => {
       >
       <img src={data.image || "/placeholder-user.jpg"} alt={data.name} className="absolute inset-0 w-full h-full object-cover" />
       </motion.div>
-        <h1 className="text-3xl sm:text-4xl font-bold text-[#333] mb-2">{data.name}</h1>
+        <h1 className="text-5xl sm:text-6xl font-bold text-[#333] mb-2">{data.name}</h1>
         <p className="text-lg sm:text-xl text-[#8b7355] mb-4">{data.title}</p>
         <p className="text-base sm:text-lg text-[#666] max-w-2xl leading-relaxed">{data.description}</p>
     </div>

@@ -122,6 +122,8 @@ const HomePage = () => {
     showMessage(serviceMap[serviceId] || 'おすすめコンテンツ一覧ページへ遷移します。');
   };
 
+  const handleEventClick = (event: typeof events[number]): void => { showMessage(`${event.text}の詳細ページへ遷移します。`);}
+
   const handleContactSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     showMessage('お問い合わせありがとうございます。内容を確認の上、返信いたします。');
@@ -136,16 +138,16 @@ const HomePage = () => {
       <div className="h-16 sm:h-20"></div>
       
       <main className="w-full max-w-full overflow-x-hidden px-4 md:px-8">
-        <div className="container mx-auto max-w-7xl">
+        <div className="container mx-auto max-w-full">
           <Hero />
           <Profile data={profileData} />
           <Works works={works} handleWorkClick={handleWorkClick} />
           <Records records={records} handleRecordsClick={handleRecordsClick} />
           <Recs recs={recs} handleRecsClick={handleRecsClick} />
-          <Events events={events} />
+          <Events events={events} handleEventClick={handleEventClick} />
           <Contact handleContactSubmit={handleContactSubmit} />
         </div>
-      </main>
+      </main> 
 
       <Footer />
     </div>
