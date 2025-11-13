@@ -23,6 +23,13 @@ title: string;
 imageUrl: string;
 }
 
+export interface Event {
+  id: number;
+  title: string;
+  imageUrl: string;
+  date: string;
+}
+
 // RecordsとRecsで共通して使われるグリッドアイテムの型
 export interface GridItem {
 id: string;
@@ -74,6 +81,7 @@ handleRecsClick: (id: string) => void;
 
 export interface EventsProps {
 events: EventItem[];
+handleEventClick: (event: EventItem) => void;
 }
 
 export interface ContactProps {

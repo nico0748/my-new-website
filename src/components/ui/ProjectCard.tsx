@@ -25,12 +25,12 @@ const ProjectCard: React.FC<Props> = ({ item }) => {
     // whileHover: ホバー時のアニメーション設定
     // scale: 拡大率, transition: アニメーションの詳細設定
     <motion.div 
-      className="bg-[#e8dbc6] rounded-2xl shadow-lg overflow-hidden"
+      className="bg-[#e8dbc6] rounded-3xl shadow-lg overflow-hidden p-3 m-3"
       variants={cardVariants}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.3 }}
-      whileHover={{ scale: 1.05, transition: { duration: 0.2 } }} // ついでにホバーアニメーションも追加
+      whileHover={{ scale: 1.03, transition: { duration: 0.2 } }} // ついでにホバーアニメーションも追加
     >      
       <img src={item.thumbnail} alt={item.title} className="w-full h-56 object-cover " />
       <div className="p-6 bg-[#e8dbc6]">

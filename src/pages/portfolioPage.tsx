@@ -90,7 +90,7 @@ const PortfolioPage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <SectionWrapper id="profile" title="Profile">
+          <SectionWrapper id="profile" title="">
             {/* <Profile data={profileData} /> */}
             <Profile2 data={profileData2} />
           </SectionWrapper>

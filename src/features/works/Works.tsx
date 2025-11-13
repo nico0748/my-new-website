@@ -29,7 +29,7 @@ const Works: React.FC<WorksProps> = ({ works, handleWorkClick }) => {
           <div className="relative w-full max-w-full overflow-x-hidden">
             {works.length > 0 && (
               <>
-                <div className="w-full max-w-2xl mx-auto px-2">
+                <div className="w-full max-w-4xl mx-auto px-2">
                   <ContentCard
                     imageUrl={works[currentWorkIndex].imageUrl}
                     title={works[currentWorkIndex].title}
@@ -38,12 +38,14 @@ const Works: React.FC<WorksProps> = ({ works, handleWorkClick }) => {
                     imageHeight="h-48 sm:h-64 md:h-80 lg:h-96"
                   />
                 </div>
-                <CarouselNavigation
-                  onPrev={prevWork}
-                  onNext={nextWork}
-                  currentIndex={currentWorkIndex}
-                  totalItems={works.length}
-                />
+                <div className="max-w-4xl mx-auto">
+                  <CarouselNavigation
+                    onPrev={prevWork}
+                    onNext={nextWork}
+                    currentIndex={currentWorkIndex}
+                    totalItems={works.length}
+                  />
+                </div>
               </>
             )}
           </div>
