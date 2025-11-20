@@ -1,9 +1,15 @@
 export const timelineData = [
   {
-    year: "2025/10~",
+    year: "2025/12~",
     title: "Now",
     description: "Unity・Blenderによるゲーム開発やWebフロントエンドの学習を継続中!",
     type: "other" as const,
+  },
+  {
+    year: "2025/11",
+    title: "千葉大学セキュリティバグハンティングコンテスト 優秀賞受賞",
+    description: "千葉大学主催のセキュリティバグハンティングコンテストに参加し、優秀賞を受賞。",
+    type: "certification" as const,
   },
   {
     year: "2025/10",
@@ -58,7 +64,7 @@ export const timelineData = [
     year: "2018/04",
     title: "栄東中学高等学校に入学",
     description: "帯状疱疹やインフルの苦難を経て、栄東中学に合格し、進学する。",
-    type: "other" as const,
+    type: "education" as const,
   },
   {
     year: "2005/04/08",
