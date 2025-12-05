@@ -25,7 +25,7 @@ const SectionWrapper: React.FC<SectionWrapperProps> = ({
       className={`py-10 md:py-16 min-h-[50vh] flex items-center justify-center w-full max-w-full overflow-x-hidden ${className}`}
     >
       <div className="w-full max-w-8xl mx-auto px-4 flex flex-col items-center ">
-        <h2 className="text-5xl md:text-7xl font-bold mb-12 text-center w-full">
+        <h2 className="text-5xl md:text-7xl font-bold mb-12 text-center w-full text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
           {title}
         </h2>
         <div className="w-full max-w-full overflow-x-hidden">

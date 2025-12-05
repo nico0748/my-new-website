@@ -23,22 +23,22 @@ const SkillRadarChart = ({ category, skills }: SkillRadarChartProps) => {
 
   return (
     <motion.div
-      className="bg-white/80 backdrop-blur-sm rounded-lg p-6 shadow-md"
+      className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 shadow-xl"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
     >
-      <h3 className="text-2xl font-bold text-[#333] mb-6 text-center">{category}</h3>
+      <h3 className="text-2xl font-bold text-white mb-6 text-center tracking-wide">{category}</h3>
 
       {/* レーダーチャート */}
       <div className="mb-6">
         <ResponsiveContainer width="100%" height={300}>
           <RadarChart data={chartData}>
-            <PolarGrid stroke="#d1c4b0" />
-            <PolarAngleAxis dataKey="subject" tick={{ fill: "#333", fontSize: 12 }} />
-            <PolarRadiusAxis angle={90} domain={[0, 5]} tick={{ fill: "#666", fontSize: 10 }} />
-            <Radar name={category} dataKey="value" stroke="#8b7355" fill="#8b7355" fillOpacity={0.6} />
+            <PolarGrid stroke="#444" />
+            <PolarAngleAxis dataKey="subject" tick={{ fill: "#ccc", fontSize: 12 }} />
+            <PolarRadiusAxis angle={90} domain={[0, 5]} tick={{ fill: "#888", fontSize: 10 }} />
+            <Radar name={category} dataKey="value" stroke="#d4af37" fill="#d4af37" fillOpacity={0.4} />
           </RadarChart>
         </ResponsiveContainer>
       </div>
@@ -47,12 +47,12 @@ const SkillRadarChart = ({ category, skills }: SkillRadarChartProps) => {
       <div className="space-y-3">
         {skills.map((skill, index) => (
           <div key={index} className="flex items-center gap-3">
-            <span className="text-sm font-medium text-[#333] w-28 flex-shrink-0">{skill.name}</span>
+            <span className="text-sm font-medium text-gray-300 w-28 flex-shrink-0">{skill.name}</span>
             <div className="flex gap-1 flex-1">
               {[...Array(5)].map((_, levelIndex) => (
                 <motion.div
                   key={levelIndex}
-                  className={`h-3 flex-1 rounded-full ${levelIndex < skill.level ? "bg-[#8b7355]" : "bg-gray-300"}`}
+                  className={`h-2 flex-1 rounded-full ${levelIndex < skill.level ? "bg-[#d4af37] shadow-[0_0_5px_#d4af37]" : "bg-gray-800"}`}
                   initial={{ scaleX: 0 }}
                   whileInView={{ scaleX: 1 }}
                   viewport={{ once: true }}
@@ -60,7 +60,7 @@ const SkillRadarChart = ({ category, skills }: SkillRadarChartProps) => {
                 />
               ))}
             </div>
-            <span className="text-xs text-gray-600 w-8 text-right">{skill.level}/5</span>
+            <span className="text-xs text-gray-500 w-8 text-right">{skill.level}/5</span>
           </div>
         ))}
       </div>
