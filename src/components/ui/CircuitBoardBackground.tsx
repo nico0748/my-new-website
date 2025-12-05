@@ -42,15 +42,15 @@ const CircuitBoardBackground: React.FC<CircuitBoardBackgroundProps> = ({ childre
 
     const paths: Path[] = [];
     const colors = ['#2a3b55', '#1f4068', '#162447']; // Dark blue/purple tones for lines
-    const highlightColors = ['#00ffcc', '#00aaff', '#64ffda', '#7df9ff']; // Cyan/Blue for particles
+    const highlightColors = ['#00ffcc', '#00aaff', '#ffffffff', '#7df9ff']; // Cyan/Blue for particles
 
     // Generate paths
     const numPaths = Math.floor(width / 20); // Density
     
     for (let i = 0; i < numPaths; i++) {
       const startCol = Math.floor(Math.random() * cols);
-      let x = startCol * gridSize;
-      let y = -Math.random() * 500; // Start above screen
+      const x = startCol * gridSize;
+      const y = -Math.random() * 500; // Start above screen
       
       const points: Point[] = [{ x, y }];
       let currentX = x;
