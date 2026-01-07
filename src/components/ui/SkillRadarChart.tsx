@@ -23,7 +23,7 @@ const SkillRadarChart = ({ category, skills }: SkillRadarChartProps) => {
 
   return (
     <motion.div
-      className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 shadow-xl"
+      className="bg-[#1F2833] border border-gray-800 rounded-xl p-6 shadow-md"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -35,10 +35,10 @@ const SkillRadarChart = ({ category, skills }: SkillRadarChartProps) => {
       <div className="mb-6">
         <ResponsiveContainer width="100%" height={300}>
           <RadarChart data={chartData}>
-            <PolarGrid stroke="#444" />
-            <PolarAngleAxis dataKey="subject" tick={{ fill: "#ccc", fontSize: 12 }} />
-            <PolarRadiusAxis angle={90} domain={[0, 5]} tick={{ fill: "#888", fontSize: 10 }} />
-            <Radar name={category} dataKey="value" stroke="#d4af37" fill="#d4af37" fillOpacity={0.4} />
+            <PolarGrid stroke="#374151" />
+            <PolarAngleAxis dataKey="subject" tick={{ fill: "#9ca3af", fontSize: 12 }} />
+            <PolarRadiusAxis angle={90} domain={[0, 5]} tick={{ fill: "#6b7280", fontSize: 10 }} />
+            <Radar name={category} dataKey="value" stroke="#60a5fa" fill="#3b82f6" fillOpacity={0.4} />
           </RadarChart>
         </ResponsiveContainer>
       </div>
@@ -52,7 +52,7 @@ const SkillRadarChart = ({ category, skills }: SkillRadarChartProps) => {
               {[...Array(5)].map((_, levelIndex) => (
                 <motion.div
                   key={levelIndex}
-                  className={`h-2 flex-1 rounded-full ${levelIndex < skill.level ? "bg-[#d4af37] shadow-[0_0_5px_#d4af37]" : "bg-gray-800"}`}
+                  className={`h-2 flex-1 rounded-full ${levelIndex < skill.level ? "bg-blue-500" : "bg-gray-700"}`}
                   initial={{ scaleX: 0 }}
                   whileInView={{ scaleX: 1 }}
                   viewport={{ once: true }}

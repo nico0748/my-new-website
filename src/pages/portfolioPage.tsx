@@ -1,7 +1,7 @@
 import Header2 from "../components/layouts/header/Header2";
 import Footer2 from "../components/layouts/footer/Footer2";
 import Profile2 from "../features/profile/Profile2";
-import CircuitBoardBackground from "../components/ui/CircuitBoardBackground";
+import StarryBackground from "../components/ui/StarryBackground";
 
 // データインポート
 import { portfolioData } from "../data/portfolioData/portfolioData";
@@ -65,7 +65,7 @@ const PortfolioPage = () => {
   }, []);
 
   return (
-    <CircuitBoardBackground>
+    <StarryBackground>
       <div className="font-sans antialiased overflow-x-hidden min-h-screen">
         <Header2
           activeSection={activeSection}
@@ -128,7 +128,7 @@ const PortfolioPage = () => {
 
         <Footer2 />
       </div>
-    </CircuitBoardBackground>
+    </StarryBackground>
   );
 };
 

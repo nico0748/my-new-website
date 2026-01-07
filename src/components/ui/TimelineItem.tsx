@@ -23,25 +23,25 @@ const TimelineItem = ({ year, title, description, type = "other" }: TimelineItem
       case "certification":
         return "bg-yellow-500"
       default:
-        return "bg-[#d4af37]"
+        return "bg-blue-600"
     }
   }
 
   return (
     <motion.div
-      className="relative pl-8 pb-8 border-l-2 border-white/20 last:pb-0"
+      className="relative pl-8 pb-8 border-l-2 border-gray-800 last:pb-0"
       initial={{ opacity: 0, x: -20 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
     >
       {/* タイムラインのドット */}
-      <div className={`absolute left-[-9px] top-0 w-4 h-4 rounded-full ${getTypeColor()} border-4 border-black shadow-[0_0_10px_currentColor]`} />
+      <div className={`absolute left-[-9px] top-0 w-4 h-4 rounded-full ${getTypeColor()} border-4 border-[#0B0C10] shadow-sm`} />
 
-      <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 shadow-lg hover:bg-white/10 transition-colors">
-        <div className="text-sm font-semibold text-[#d4af37] mb-1 tracking-wider">{year}</div>
+      <div className="bg-[#1F2833] border border-gray-800 rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
+        <div className="text-sm font-semibold text-blue-400 mb-1 tracking-wider">{year}</div>
         <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
-        <p className="text-gray-300 leading-relaxed text-sm">{description}</p>
+        <p className="text-gray-400 leading-relaxed text-sm">{description}</p>
       </div>
     </motion.div>
   )
