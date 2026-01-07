@@ -25,7 +25,7 @@ const ProjectCard: React.FC<Props> = ({ item }) => {
     // whileHover: ホバー時のアニメーション設定
     // scale: 拡大率, transition: アニメーションの詳細設定
     <motion.div 
-      className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl shadow-xl overflow-hidden p-0 m-3 group hover:border-[#d4af37]/50 transition-colors duration-300"
+      className="bg-[#1F2833] border border-gray-800 rounded-xl shadow-md overflow-hidden p-0 m-3 group hover:shadow-lg hover:border-blue-900/50 transition-all duration-300"
       variants={cardVariants}
       initial="hidden"
       whileInView="visible"
@@ -33,19 +33,19 @@ const ProjectCard: React.FC<Props> = ({ item }) => {
       whileHover={{ scale: 1.02, transition: { duration: 0.2 } }} // ついでにホバーアニメーションも追加
     >      
       <div className="relative overflow-hidden h-56">
-        <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-60"></div>
+        <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0B0C10]/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       </div>
       <div className="p-6 relative">
         <div className="flex flex-wrap gap-2 mb-4">
           {item.tags.map(tag => (
-            <span key={tag} className="bg-[#d4af37]/20 text-[#d4af37] border border-[#d4af37]/30 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+            <span key={tag} className="bg-blue-900/30 text-blue-300 border border-blue-900/50 text-xs font-semibold px-2.5 py-0.5 rounded-full">
               {tag}
             </span>
           ))}
         </div>
-        <h3 className="text-xl font-bold mb-2 text-white group-hover:text-[#d4af37] transition-colors">{item.title}</h3>
-        <p className="text-gray-300 text-sm leading-relaxed">{item.description}</p>
+        <h3 className="text-xl font-bold mb-2 text-white group-hover:text-blue-400 transition-colors">{item.title}</h3>
+        <p className="text-gray-400 text-sm leading-relaxed">{item.description}</p>
         
         {/* リンクがあれば表示 */}
         <div className="mt-6 flex items-center gap-4">
@@ -55,7 +55,7 @@ const ProjectCard: React.FC<Props> = ({ item }) => {
             </a>
           )}
           {item.repoUrl && (
-            <a href={item.repoUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-200 hover:underline text-sm font-medium">
+            <a href={item.repoUrl} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-300 hover:underline text-sm font-medium">
               GitHub
             </a>
           )}
