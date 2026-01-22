@@ -15,12 +15,52 @@ import SectionWrapper from "../components/ui/SectionWrapper";
 import SkillRadarChart from "../components/ui/SkillRadarChart";
 import TimelineItem from "../components/ui/TimelineItem";
 
+// Custom hooks / utils
+import { fetchSheetData } from "../lib/googleSheets";
+import { mapProfileData, mapPortfolioData, mapSkillsData, mapTimelineData } from "../lib/dataMapper";
+import type { ProfileData, SkillCategory, TimelineItem as TimelineItemType } from "../lib/dataMapper";
+import type { SheetRow } from "../lib/googleSheets";
+import type { PortfolioItem } from "../data/portfolioData/portfolioData";
+
 //ライブラリインポート
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 const PortfolioPage = () => {
   const [activeSection, setActiveSection] = useState<string>("profile");
+  
+  // Data States
+  const [profile, setProfile] = useState<ProfileData>(profileData2);
+  const [portfolio, setPortfolio] = useState<PortfolioItem[]>(portfolioData);
+  const [skills, setSkills] = useState<SkillCategory[]>(skillsData);
+  const [timeline, setTimeline] = useState<TimelineItemType[]>(timelineData);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      // If no API key is present, just stick to local data (already set as initial state)
+      if (!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY) return;
+
+      try {
+        const [profileRows, portfolioRows, skillsRows, timelineRows] = await Promise.all([
+            fetchSheetData<SheetRow>("Profile"),
+            fetchSheetData<SheetRow>("Projects"),
+            fetchSheetData<SheetRow>("Skills"),
+            fetchSheetData<SheetRow>("Timeline")
+        ]);
+
+        if (profileRows.length > 0) setProfile(mapProfileData(profileRows));
+        if (portfolioRows.length > 0) setPortfolio(mapPortfolioData(portfolioRows));
+        if (skillsRows.length > 0) setSkills(mapSkillsData(skillsRows));
+        if (timelineRows.length > 0) setTimeline(mapTimelineData(timelineRows));
+
+      } catch (error) {
+        console.error("Failed to fetch data from Google Sheets, falling back to local data", error);
+        // No action needed as state is initialized with local data
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const scrollToSection = (id: string): void => {
     const element = document.getElementById(id);
@@ -84,14 +124,14 @@ const PortfolioPage = () => {
             transition={{ duration: 0.8 }}
           >
             <SectionWrapper id="profile" title="">
-              <Profile2 data={profileData2} />
+              <Profile2 data={profile} />
             </SectionWrapper>
           </motion.div>
 
           {/* Projects Section */}
           <SectionWrapper id="projects" title="Projects">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {portfolioData.map((item) => (
+              {portfolio.map((item) => (
                 <ProjectCard key={item.id} item={item} />
               ))}
             </div>
@@ -100,7 +140,7 @@ const PortfolioPage = () => {
           {/* Skills Section */}
           <SectionWrapper id="skills" title="Skills">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {skillsData.map((category, index) => (
+              {skills.map((category, index) => (
                 <SkillRadarChart
                   key={index}
                   category={category.category}
@@ -113,7 +153,7 @@ const PortfolioPage = () => {
           {/* Timeline Section */}
           <SectionWrapper id="timeline" title="Timeline">
             <div className="max-w-3xl mx-auto">
-              {timelineData.map((item, index) => (
+              {timeline.map((item, index) => (
                 <TimelineItem
                   key={index}
                   year={item.year}
@@ -127,6 +167,19 @@ const PortfolioPage = () => {
         </main>
 
         <Footer2 />
+        
+        {/* Debug Warning for Missing API Key */}
+        {!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY && (
+          <div className="fixed bottom-4 right-4 bg-red-900/90 text-white p-4 rounded-lg shadow-lg border border-red-500 z-50 max-w-md pointer-events-none">
+            <h4 className="font-bold flex items-center gap-2 text-sm">
+               ⚠️ Google Sheets API 未設定
+            </h4>
+            <p className="text-xs mt-1">
+              APIキーが設定されていないため、ローカルデータを表示しています。
+              スプレッドシートの変更を反映させるには <code>.env.local</code> ファイルを作成してください。
+            </p>
+          </div>
+        )}
       </div>
     </StarryBackground>
   );

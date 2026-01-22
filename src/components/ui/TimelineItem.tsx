@@ -38,11 +38,21 @@ const TimelineItem = ({ year, title, description, type = "other" }: TimelineItem
       {/* タイムラインのドット */}
       <div className={`absolute left-[-9px] top-0 w-4 h-4 rounded-full ${getTypeColor()} border-4 border-[#0B0C10] shadow-sm`} />
 
-      <div className="bg-[#1F2833] border border-gray-800 rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
+      <motion.div
+        className="bg-[#1F2833] border border-gray-800 rounded-xl p-6 shadow-md"
+        whileHover={{ 
+          scale: 1.05, 
+          y: -5,
+          boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1)",
+          borderColor: "rgba(59, 130, 246, 0.5)",
+          zIndex: 20
+        }}
+        transition={{ type: "spring", stiffness: 400, damping: 17 }}
+      >
         <div className="text-sm font-semibold text-blue-400 mb-1 tracking-wider">{year}</div>
         <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
         <p className="text-gray-400 leading-relaxed text-sm">{description}</p>
-      </div>
+      </motion.div>
     </motion.div>
   )
 }

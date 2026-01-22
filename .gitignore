@@ -25,6 +25,7 @@ dist-ssr
 
 # .envファイルをGitの管理対象から除外
 .env
+.env.local
 
 # その他（Node.jsプロジェクトで一般的な除外設定）
 node_modules
