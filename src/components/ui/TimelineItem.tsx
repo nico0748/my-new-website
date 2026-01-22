@@ -44,7 +44,8 @@ const TimelineItem = ({ year, title, description, type = "other" }: TimelineItem
           scale: 1.05, 
           y: -5,
           boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1)",
-          borderColor: "rgba(59, 130, 246, 0.5)"
+          borderColor: "rgba(59, 130, 246, 0.5)",
+          zIndex: 20
         }}
         transition={{ type: "spring", stiffness: 400, damping: 17 }}
       >

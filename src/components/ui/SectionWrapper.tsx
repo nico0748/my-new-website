@@ -28,7 +28,7 @@ const SectionWrapper: React.FC<SectionWrapperProps> = ({
         <h2 className="text-5xl md:text-7xl font-bold mb-12 text-center w-full text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
           {title}
         </h2>
-        <div className="w-full max-w-full overflow-x-hidden">
+        <div className="w-full max-w-full">
           {children}
         </div>
       </div>
