@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-// import { Link } from 'react-router-dom'; // Linkは使わないので削除またはコメントアウト
+// import { Link } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { CalendarDays, ArrowDownAZ, ArrowUpAZ } from 'lucide-react';
 import ContentCard from '../components/ui/ContentCard';
@@ -10,20 +10,16 @@ import { mapAnimeData } from '../lib/dataMapper';
 import type { AnimeItem } from '../lib/dataMapper';
 import type { SheetRow } from '../lib/googleSheets';
 
-const AllWatchedAnime: React.FC = () => {
-  // 並び替えられたアニメのリストを保持するState
+const AllWatchingAnime: React.FC = () => {
   const [sortedAnime, setSortedAnime] = useState<AnimeItem[]>([]);
-  const [originalAnime, setOriginalAnime] = useState<AnimeItem[]>([]); // To store fetched data
-  // 現在の並び替え種別を保持するState (デフォルトはリリース時期順)
+  const [originalAnime, setOriginalAnime] = useState<AnimeItem[]>([]);
   const [sortType, setSortType] = useState('release-desc');
-  // 検索クエリを保持するState
   const [searchQuery, setSearchQuery] = useState('');
-  // 選択されたアニメを保持するState
   const [selectedAnime, setSelectedAnime] = useState<AnimeItem | null>(null);
 
   useEffect(() => {
     const loadData = async () => {
-        const rows = await fetchSheetData<SheetRow>("all-watched-anime");
+        const rows = await fetchSheetData<SheetRow>("all-watching-anime");
         const data = mapAnimeData(rows);
         setOriginalAnime(data);
         setSortedAnime(data);
@@ -31,13 +27,8 @@ const AllWatchedAnime: React.FC = () => {
     loadData();
   }, []);
 
-  // "2017年春"のような文字列をソート可能な数値に変換するヘルパー関数
   const getSeasonValue = (season: string): number => {
-    // seasonがnullやundefined、または文字列でない場合にエラーを防ぐためのチェックを追加
-    if (!season || typeof season !== 'string') {
-      return 0; // 不正なデータは最古として扱う
-    }
-    
+    if (!season || typeof season !== 'string') return 0;
     const year = parseInt(season.substring(0, 4), 10);
     const seasonName = season.substring(5);
     let seasonValue = 0;
@@ -46,20 +37,15 @@ const AllWatchedAnime: React.FC = () => {
       case '春': seasonValue = 2; break;
       case '夏': seasonValue = 3; break;
       case '秋': seasonValue = 4; break;
-      default: seasonValue = 0; break; // 不明な季節は0として扱う
+      default: seasonValue = 0; break;
     }
-    // 年と季節を組み合わせて、2017.1 (2017年春) のような数値を作成します
     return year + seasonValue / 10;
   };
 
-  // sortType or searchQueryが変更されたときに処理を実行します
   useEffect(() => {
-    // 1. 検索クエリに基づいてデータをフィルタリング
     const filteredData = originalAnime.filter(anime =>
       anime.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
-
-    // 2. フィルタリングされたデータを並び替え
     const sortedData = [...filteredData];
 
     switch (sortType) {
@@ -77,7 +63,6 @@ const AllWatchedAnime: React.FC = () => {
     setSortedAnime(sortedData);
   }, [sortType, searchQuery, originalAnime]);
 
-  // 並び替えボタンのスタイルを動的に変更するための関数
   const getButtonClass = (type: string) => {
     return `p-3 rounded-full transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400 shadow-sm ${
       sortType === type
@@ -91,10 +76,9 @@ const AllWatchedAnime: React.FC = () => {
       <PageTransition>
         <div className="container mx-auto p-4 md:p-8 bg-[#f1e6d1] min-h-screen">
           <h1 className="text-3xl md:text-4xl font-concert-one font-bold mb-12 text-center text-gray-800 tracking-wide">
-            視聴済みアニメ一覧
+            視聴中アニメ一覧
           </h1>
-
-          {/* 検索バー */}
+          
           <div className="mb-8 max-w-lg mx-auto">
             <input
               type="text"
@@ -105,7 +89,6 @@ const AllWatchedAnime: React.FC = () => {
             />
           </div>
 
-          {/* 並び替えボタン */}
           <div className="flex flex-wrap justify-center gap-4 mb-8">
             <button
               onClick={() => setSortType('release-desc')}
@@ -129,8 +112,7 @@ const AllWatchedAnime: React.FC = () => {
               <ArrowUpAZ className="w-6 h-6" />
             </button>
           </div>
-          
-          {/* アニメカードのグリッド表示 */}
+
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {sortedAnime.map((anime) => (
               <div key={anime.id} onClick={() => setSelectedAnime(anime)}>
@@ -146,12 +128,11 @@ const AllWatchedAnime: React.FC = () => {
         </div>
       </PageTransition>
 
-      {/* 詳細モーダル */}
       <AnimatePresence>
         {selectedAnime && (
-          <AnimeDetailModal
-            anime={selectedAnime}
-            onClose={() => setSelectedAnime(null)}
+          <AnimeDetailModal 
+            anime={selectedAnime} 
+            onClose={() => setSelectedAnime(null)} 
           />
         )}
       </AnimatePresence>
@@ -159,5 +140,4 @@ const AllWatchedAnime: React.FC = () => {
   );
 };
 
-export default AllWatchedAnime;
-
+export default AllWatchingAnime;

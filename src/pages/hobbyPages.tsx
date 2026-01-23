@@ -1,11 +1,24 @@
 import { useState, useEffect } from 'react';
 
 // --- Data and Type Imports ---
-import { profileData } from '../data/profileData/profileData.tsx';
-import { works } from '../data/worksData/worksData.tsx';
-import { records } from '../data/recordsData/recordsData.tsx';
-import { recs} from '../data/recsData/recsData.tsx';
-import { events } from '../data/eventsData/eventsData.tsx';
+// import { profileData } from '../data/profileData/profileData.tsx'; // Deleted
+// import { works } from '../data/worksData/worksData.tsx';
+// import { records } from '../data/recordsData/recordsData.tsx';
+// import { recs} from '../data/recsData/recsData.tsx';
+// import { events } from '../data/eventsData/eventsData.tsx';
+
+// Fallback data
+const profileData = {
+    name: "Yuumaro",
+    title: "Web Developer",
+    bio: "Porting data to Google Sheets...",
+    imageUrl: "/sns_icon_round.png",
+    socialLinks: []
+};
+const works: any[] = [];
+const records: any[] = [];
+const recs: any[] = [];
+const events: any[] = [];
 
 import type { Work } from '../types';
 

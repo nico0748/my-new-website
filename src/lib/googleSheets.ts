@@ -37,8 +37,6 @@ export const fetchSheetData = async <T>(sheetName: string): Promise<T[]> => {
     return rawData.map((row: string[]) => {
       const item: any = {};
       headers.forEach((header: string, index: number) => {
-        // Handle explicit empty cells or missing columns
-        // Clean header name (trim)
         const cleanHeader = header.trim();
         item[cleanHeader] = row[index] || '';
       });

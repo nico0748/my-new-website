@@ -16,17 +16,13 @@ export default {
         'hero-ruby': 'clamp(25px, 4vw, 50px)',
         'hero-lead': 'clamp(1rem, 2.5vw, 1.75rem)',
         'hero-tag': 'clamp(1rem, 2.5vw, 1.5rem)',
+        'fade-in': 'fadeIn 3.5s cubic-bezier(0.33, 1, 0.68, 1) forwards',
       },
-      // フェードインアニメーションを追加
       keyframes: {
         fadeIn: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
         },
-      },
-      // アニメーションのプロパティを追加
-      animation: {
-        'fade-in': 'fadeIn 3.5s cubic-bezier(0.33, 1, 0.68, 1) forwards',
       },
     },
   },

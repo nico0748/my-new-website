@@ -1,10 +1,10 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 
 // --- Page Components ---
 import AllWatchedAnime from './pages/allWatchedAnime';
 import AllToWatchAnime from './pages/alltoWatchAnime';
-//import AllWatchingAnime from './pages/allWatchingAnime';
-import AnimeDetail from './pages/animeDetail';
+import AllWatchingAnime from './pages/allWatchingAnime';
 import PortfolioPage from './pages/portfolioPage.tsx';
 import HobbyPage from './pages/hobbyPages.tsx';
 
@@ -14,22 +14,26 @@ import HobbyPage from './pages/hobbyPages.tsx';
 // Appコンポーネント (ルーティング管理)
 // =================================================================
 export default function App() {
+  const location = useLocation();
+
   return (
-    <Routes>
-      {/* ルートURL ("/") の場合は、ポートフォリオページを表示 */}
-      <Route path="/" element={<PortfolioPage />} />
-      
-      {/* "/hobbys" の場合は、趣味ページ(元のホームページ)を表示 */}
-      <Route path="/hobbys" element={<HobbyPage />} />
-      
-      {/* "/watched-anime" の場合は、視聴済みアニメ一覧ページを表示 */}
-      <Route path="/watched-anime" element={<AllWatchedAnime />} />
+    <AnimatePresence>
+      <Routes location={location} key={location.pathname}>
+        {/* ルートURL ("/") の場合は、ポートフォリオページを表示 */}
+        <Route path="/" element={<PortfolioPage />} />
+        
+        {/* "/hobbys" の場合は、趣味ページ(元のホームページ)を表示 */}
+        <Route path="/hobbys" element={<HobbyPage />} />
+        
+        {/* "/watched-anime" の場合は、視聴済みアニメ一覧ページを表示 */}
+        <Route path="/watched-anime" element={<AllWatchedAnime />} />
 
-      {/* "/to-watch-anime" の場合は、視聴予定アニメ一覧ページを表示 */}
-      <Route path="/to-watch-anime" element={<AllToWatchAnime />} />
+        {/* "/to-watch-anime" の場合は、視聴予定アニメ一覧ページを表示 */}
+        <Route path="/to-watch-anime" element={<AllToWatchAnime />} />
 
-      {/* "/anime/:animeId" の場合は、アニメ詳細ページを表示 */}
-      <Route path="/anime/:animeId" element={<AnimeDetail />} />
-    </Routes>
+        {/* "/watching-anime" の場合は、視聴中アニメ一覧ページを表示 */}
+        <Route path="/watching-anime" element={<AllWatchingAnime />} />
+      </Routes>
+    </AnimatePresence>
   );
 }
