@@ -90,7 +90,7 @@ const AllWatchedAnime: React.FC = () => {
     <>
       <PageTransition>
         <div className="container mx-auto p-4 md:p-8 bg-[#f1e6d1] min-h-screen">
-          <h1 className="text-3xl md:text-4xl font-concert-one font-bold mb-12 text-center text-gray-800 tracking-wide">
+          <h1 className="text-5xl md:text-7xl font-bold text-center mb-12 text-[#4a3b32] drop-shadow-sm font-rounded tracking-wide">
             視聴済みアニメ一覧
           </h1>
 

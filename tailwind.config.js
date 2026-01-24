@@ -9,6 +9,7 @@ export default {
       // 'Concert One' フォントを追加
       fontFamily: {
         'concert-one': ['"Concert One"', 'sans-serif'],
+        'rounded': ['"M PLUS Rounded 1c"', 'sans-serif'],
       },
       // clamp() に対応するカスタムフォントサイズを追加
       fontSize: {
