@@ -3,11 +3,11 @@ import Footer2 from "../components/layouts/footer/Footer2";
 import Profile2 from "../features/profile/Profile2";
 import StarryBackground from "../components/ui/StarryBackground";
 
-// データインポート
-import { portfolioData } from "../data/portfolioData/portfolioData";
-import { profileData2 } from "../data/profileData/profileData2";
-import { skillsData } from "../data/skillsData/skillsData";
-import { timelineData } from "../data/timelineData/timelineData";
+// データインポート - Deleted
+// import { portfolioData } from "../data/portfolioData/portfolioData";
+// import { profileData2 } from "../data/profileData/profileData2";
+// import { skillsData } from "../data/skillsData/skillsData";
+// import { timelineData } from "../data/timelineData/timelineData";
 
 // UIコンポーネント
 import ProjectCard from "../components/ui/ProjectCard";
@@ -18,9 +18,9 @@ import TimelineItem from "../components/ui/TimelineItem";
 // Custom hooks / utils
 import { fetchSheetData } from "../lib/googleSheets";
 import { mapProfileData, mapPortfolioData, mapSkillsData, mapTimelineData } from "../lib/dataMapper";
-import type { ProfileData, SkillCategory, TimelineItem as TimelineItemType } from "../lib/dataMapper";
+import type { ProfileData, SkillCategory, TimelineItem as TimelineItemType, PortfolioItem } from "../lib/dataMapper";
 import type { SheetRow } from "../lib/googleSheets";
-import type { PortfolioItem } from "../data/portfolioData/portfolioData";
+// import type { PortfolioItem } from "../data/portfolioData/portfolioData"; // Deleted
 
 //ライブラリインポート
 import { useEffect, useState } from "react";
@@ -29,11 +29,11 @@ import { motion } from "framer-motion";
 const PortfolioPage = () => {
   const [activeSection, setActiveSection] = useState<string>("profile");
   
-  // Data States
-  const [profile, setProfile] = useState<ProfileData>(profileData2);
-  const [portfolio, setPortfolio] = useState<PortfolioItem[]>(portfolioData);
-  const [skills, setSkills] = useState<SkillCategory[]>(skillsData);
-  const [timeline, setTimeline] = useState<TimelineItemType[]>(timelineData);
+  // Data States - Initialized with default empty values
+  const [profile, setProfile] = useState<ProfileData>({ name: "", title: "", description: "", image: "" });
+  const [portfolio, setPortfolio] = useState<PortfolioItem[]>([]);
+  const [skills, setSkills] = useState<SkillCategory[]>([]);
+  const [timeline, setTimeline] = useState<TimelineItemType[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {

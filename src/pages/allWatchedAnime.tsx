@@ -1,25 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom'; // Linkは使わないので削除またはコメントアウト
+import { AnimatePresence } from 'framer-motion';
+import { CalendarDays, ArrowDownAZ, ArrowUpAZ } from 'lucide-react';
 import ContentCard from '../components/ui/ContentCard';
-import animeData from '../data/recordsData/animeData/all_watched_anime.json';
-
-// アニメデータの型を定義します
-interface Anime {
-  id: number;
-  title: string;
-  official_site_url: string;
-  release_season: string;
-  twitter_avatar_url: string | null;
-  official_site_twitter_image_url: string | null;
-}
+import PageTransition from '../components/ui/PageTransition';
+import AnimeDetailModal from '../components/ui/AnimeDetailModal';
+import { fetchSheetData } from '../lib/googleSheets';
+import { mapAnimeData } from '../lib/dataMapper';
+import type { AnimeItem } from '../lib/dataMapper';
+import type { SheetRow } from '../lib/googleSheets';
 
 const AllWatchedAnime: React.FC = () => {
   // 並び替えられたアニメのリストを保持するState
-  const [sortedAnime, setSortedAnime] = useState<Anime[]>([]);
+  const [sortedAnime, setSortedAnime] = useState<AnimeItem[]>([]);
+  const [originalAnime, setOriginalAnime] = useState<AnimeItem[]>([]); // To store fetched data
   // 現在の並び替え種別を保持するState (デフォルトはリリース時期順)
   const [sortType, setSortType] = useState('release-desc');
   // 検索クエリを保持するState
   const [searchQuery, setSearchQuery] = useState('');
+  // 選択されたアニメを保持するState
+  const [selectedAnime, setSelectedAnime] = useState<AnimeItem | null>(null);
+
+  useEffect(() => {
+    const loadData = async () => {
+        const rows = await fetchSheetData<SheetRow>("all-watched-anime");
+        const data = mapAnimeData(rows);
+        setOriginalAnime(data);
+        setSortedAnime(data);
+    };
+    loadData();
+  }, []);
 
   // "2017年春"のような文字列をソート可能な数値に変換するヘルパー関数
   const getSeasonValue = (season: string): number => {
@@ -45,12 +55,12 @@ const AllWatchedAnime: React.FC = () => {
   // sortType or searchQueryが変更されたときに処理を実行します
   useEffect(() => {
     // 1. 検索クエリに基づいてデータをフィルタリング
-    const filteredData = animeData.filter(anime =>
+    const filteredData = originalAnime.filter(anime =>
       anime.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     // 2. フィルタリングされたデータを並び替え
-    const sortedData = [...filteredData] as Anime[];
+    const sortedData = [...filteredData];
 
     switch (sortType) {
       case 'title-asc':
@@ -65,67 +75,87 @@ const AllWatchedAnime: React.FC = () => {
         break;
     }
     setSortedAnime(sortedData);
-  }, [sortType, searchQuery]); // 依存配列にsearchQueryを追加
+  }, [sortType, searchQuery, originalAnime]);
 
   // 並び替えボタンのスタイルを動的に変更するための関数
   const getButtonClass = (type: string) => {
-    return `px-4 py-2 rounded-lg font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400 ${
+    return `p-3 rounded-full transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400 shadow-sm ${
       sortType === type
-        ? 'bg-[#007acc] text-white'
-        : 'bg-white text-gray-700 hover:bg-gray-100'
+        ? 'bg-blue-600 text-white shadow-md'
+        : 'bg-white/80 text-gray-600 hover:bg-white hover:text-blue-600'
     }`;
   };
 
   return (
-    <div className="container mx-auto p-4 md:p-8 bg-[#f1e6d1] min-h-screen">
-      <h1 className="text-3xl font-bold mb-6 text-center text-[#333]">視聴済みアニメ一覧</h1>
+    <>
+      <PageTransition>
+        <div className="container mx-auto p-4 md:p-8 bg-[#f1e6d1] min-h-screen">
+          <h1 className="text-5xl md:text-7xl font-bold text-center mb-12 text-[#4a3b32] drop-shadow-sm font-rounded tracking-wide">
+            視聴済みアニメ一覧
+          </h1>
 
-      {/* 検索バー */}
-      <div className="mb-8 max-w-lg mx-auto">
-        <input
-          type="text"
-          placeholder="アニメのタイトルを検索..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition shadow-sm"
-        />
-      </div>
-
-      {/* 並び替えボタン */}
-      <div className="flex flex-wrap justify-center gap-4 mb-8">
-        <button
-          onClick={() => setSortType('release-desc')}
-          className={getButtonClass('release-desc')}
-        >
-          リリース時期順
-        </button>
-        <button
-          onClick={() => setSortType('title-asc')}
-          className={getButtonClass('title-asc')}
-        >
-          タイトル (昇順)
-        </button>
-        <button
-          onClick={() => setSortType('title-desc')}
-          className={getButtonClass('title-desc')}
-        >
-          タイトル (降順)
-        </button>
-      </div>
-      
-      {/* アニメカードのグリッド表示 */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {sortedAnime.map((anime) => (
-          <Link to={`/anime/${anime.id}`} key={anime.id}>
-            <ContentCard
-              imageUrl={anime.official_site_twitter_image_url || 'https://placehold.co/600x400/e8dbc6/333?text=No+Image'}
-              title={anime.title}
-              description={anime.release_season}
+          {/* 検索バー */}
+          <div className="mb-8 max-w-lg mx-auto">
+            <input
+              type="text"
+              placeholder="アニメのタイトルを検索..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full px-6 py-3 rounded-full border border-gray-300 bg-white/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition shadow-sm placeholder-gray-500"
             />
-          </Link>
-        ))}
-      </div>
-    </div>
+          </div>
+
+          {/* 並び替えボタン */}
+          <div className="flex flex-wrap justify-center gap-4 mb-8">
+            <button
+              onClick={() => setSortType('release-desc')}
+              className={getButtonClass('release-desc')}
+              title="リリース時期順"
+            >
+              <CalendarDays className="w-6 h-6" />
+            </button>
+            <button
+              onClick={() => setSortType('title-asc')}
+              className={getButtonClass('title-asc')}
+              title="タイトル (昇順)"
+            >
+              <ArrowDownAZ className="w-6 h-6" />
+            </button>
+            <button
+              onClick={() => setSortType('title-desc')}
+              className={getButtonClass('title-desc')}
+              title="タイトル (降順)"
+            >
+              <ArrowUpAZ className="w-6 h-6" />
+            </button>
+          </div>
+          
+          {/* アニメカードのグリッド表示 */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {sortedAnime.map((anime) => (
+              <div key={anime.id} onClick={() => setSelectedAnime(anime)}>
+                <ContentCard
+                  imageUrl={anime.official_site_twitter_image_url || 'https://placehold.co/600x400/e8dbc6/333?text=No+Image'}
+                  title={anime.title}
+                  description={anime.release_season}
+                  layoutId={`anime-card-${anime.id}`}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </PageTransition>
+
+      {/* 詳細モーダル */}
+      <AnimatePresence>
+        {selectedAnime && (
+          <AnimeDetailModal
+            anime={selectedAnime}
+            onClose={() => setSelectedAnime(null)}
+          />
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 

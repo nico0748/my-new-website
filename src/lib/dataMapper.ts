@@ -1,7 +1,15 @@
-import type { PortfolioItem } from "../data/portfolioData/portfolioData";
 import type { SheetRow } from "./googleSheets";
 
-// Re-defining internal types since some originals might be inferred or not exported perfectly
+export interface PortfolioItem {
+  id: string;
+  title: string;
+  description: string;
+  thumbnail: string;
+  tags: string[];
+  liveUrl?: string;
+  repoUrl?: string;
+}
+
 export interface Skill {
     name: string;
     level: number;
@@ -25,6 +33,15 @@ export interface ProfileData {
     image: string;
 }
 
+export interface AnimeItem {
+    id: string; 
+    title: string;
+    official_site_url: string;
+    release_season: string;
+    twitter_avatar_url: string;
+    official_site_twitter_image_url: string;
+}
+
 export const mapProfileData = (rows: SheetRow[]): ProfileData => {
     const profile: any = {};
     rows.forEach(row => {
@@ -32,7 +49,6 @@ export const mapProfileData = (rows: SheetRow[]): ProfileData => {
             profile[row.key] = row.value;
         }
     });
-    // Default fallback
     return {
         name: profile.name || "",
         title: profile.title || "",
@@ -81,5 +97,16 @@ export const mapPortfolioData = (rows: SheetRow[]): PortfolioItem[] => {
         tags: row.tags ? row.tags.split(',').map(t => t.trim()) : [],
         liveUrl: row.liveUrl,
         repoUrl: row.repoUrl
+    }));
+};
+
+export const mapAnimeData = (rows: SheetRow[]): AnimeItem[] => {
+    return rows.map(row => ({
+        id: row.id || "",
+        title: row.title || "",
+        official_site_url: row.official_site_url || "",
+        release_season: row.release_season || "",
+        twitter_avatar_url: row.twitter_avatar_url || "",
+        official_site_twitter_image_url: row.official_site_twitter_image_url || ""
     }));
 };

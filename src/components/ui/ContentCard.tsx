@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 
 interface ContentCardProps {
   imageUrl: string;
@@ -8,6 +9,7 @@ interface ContentCardProps {
   onClick?: () => void;
   className?: string;
   imageHeight?: string;
+  layoutId?: string;
 }
 
 const ContentCard: React.FC<ContentCardProps> = ({ 
@@ -17,16 +19,21 @@ const ContentCard: React.FC<ContentCardProps> = ({
   date, 
   onClick, 
   className = "",
-  imageHeight = "h-48"
+  imageHeight = "h-48",
+  layoutId
 }) => {
   const cardClasses = `bg-[#e8dbc6] rounded-lg shadow-md overflow-hidden w-full max-w-full ${
     onClick ? 'cursor-pointer' : ''
   } ${className}`;
 
   return (
-    <div className={cardClasses} onClick={onClick}>
+    <motion.div 
+      className={cardClasses} 
+      onClick={onClick}
+      layoutId={layoutId}
+    >
       <div className="overflow-hidden w-full">
-        <img 
+        <motion.img 
           src={imageUrl} 
           alt={title || 'Content'} 
           className={`w-full ${imageHeight} object-cover transition-transform duration-300 hover:scale-110`}
@@ -45,7 +52,7 @@ const ContentCard: React.FC<ContentCardProps> = ({
           )}
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 

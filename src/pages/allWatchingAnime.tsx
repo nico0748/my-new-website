@@ -10,7 +10,7 @@ import { mapAnimeData } from '../lib/dataMapper';
 import type { AnimeItem } from '../lib/dataMapper';
 import type { SheetRow } from '../lib/googleSheets';
 
-const AllToWatchAnime: React.FC = () => {
+const AllWatchingAnime: React.FC = () => {
   const [sortedAnime, setSortedAnime] = useState<AnimeItem[]>([]);
   const [originalAnime, setOriginalAnime] = useState<AnimeItem[]>([]);
   const [sortType, setSortType] = useState('release-desc');
@@ -19,7 +19,7 @@ const AllToWatchAnime: React.FC = () => {
 
   useEffect(() => {
     const loadData = async () => {
-        const rows = await fetchSheetData<SheetRow>("all-wanna-watch-anime");
+        const rows = await fetchSheetData<SheetRow>("all-watching-anime");
         const data = mapAnimeData(rows);
         setOriginalAnime(data);
         setSortedAnime(data);
@@ -37,6 +37,7 @@ const AllToWatchAnime: React.FC = () => {
       case '春': seasonValue = 2; break;
       case '夏': seasonValue = 3; break;
       case '秋': seasonValue = 4; break;
+      default: seasonValue = 0; break;
     }
     return year + seasonValue / 10;
   };
@@ -75,8 +76,9 @@ const AllToWatchAnime: React.FC = () => {
       <PageTransition>
         <div className="container mx-auto p-4 md:p-8 bg-[#f1e6d1] min-h-screen">
           <h1 className="text-5xl md:text-7xl font-bold text-center mb-12 text-[#4a3b32] drop-shadow-sm font-rounded tracking-wide">
-            視聴予定アニメ一覧
+            視聴中アニメ一覧
           </h1>
+          
           <div className="mb-8 max-w-lg mx-auto">
             <input
               type="text"
@@ -86,6 +88,7 @@ const AllToWatchAnime: React.FC = () => {
               className="w-full px-6 py-3 rounded-full border border-gray-300 bg-white/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition shadow-sm placeholder-gray-500"
             />
           </div>
+
           <div className="flex flex-wrap justify-center gap-4 mb-8">
             <button
               onClick={() => setSortType('release-desc')}
@@ -109,6 +112,7 @@ const AllToWatchAnime: React.FC = () => {
               <ArrowUpAZ className="w-6 h-6" />
             </button>
           </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {sortedAnime.map((anime) => (
               <div key={anime.id} onClick={() => setSelectedAnime(anime)}>
@@ -136,4 +140,4 @@ const AllToWatchAnime: React.FC = () => {
   );
 };
 
-export default AllToWatchAnime;
+export default AllWatchingAnime;
