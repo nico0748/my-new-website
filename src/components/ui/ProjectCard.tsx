@@ -1,7 +1,7 @@
 import React from 'react';
-import type { PortfolioItem } from '../../data/portfolioData/portfolioData'; // Step1で作成した型をインポート
+import type { PortfolioItem } from '../../lib/dataMapper'; // Correct import path
 
-import { motion } from 'framer-motion'; // ★ 1. motionをインポート
+import { motion } from 'framer-motion';
 
 // コンポーネントが受け取るpropsの型を定義
 interface Props {
@@ -38,7 +38,7 @@ const ProjectCard: React.FC<Props> = ({ item }) => {
       </div>
       <div className="p-6 relative">
         <div className="flex flex-wrap gap-2 mb-4">
-          {item.tags.map(tag => (
+          {item.tags.map((tag: string) => (
             <span key={tag} className="bg-blue-900/30 text-blue-300 border border-blue-900/50 text-xs font-semibold px-2.5 py-0.5 rounded-full">
               {tag}
             </span>
