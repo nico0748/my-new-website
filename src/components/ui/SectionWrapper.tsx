@@ -6,6 +6,8 @@ interface SectionWrapperProps {
   title: string;
   children: React.ReactNode;
   className?: string;
+  index?: number;
+  label?: string;
 }
 
 const SectionWrapper: React.FC<SectionWrapperProps> = ({
@@ -13,7 +15,12 @@ const SectionWrapper: React.FC<SectionWrapperProps> = ({
   title,
   children,
   className = "",
+  index,
+  label,
 }) => {
+  const indexLabel =
+    typeof index === 'number' ? `§${String(index).padStart(2, '0')}` : null;
+
   return (
     <section
       id={id}
@@ -28,6 +35,32 @@ const SectionWrapper: React.FC<SectionWrapperProps> = ({
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
+            {(indexLabel || label) && (
+              <div
+                className="flex items-center justify-center gap-2 mb-3 text-xs font-semibold tracking-[0.3em] uppercase"
+                style={{
+                  color: '#2563eb',
+                  fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+                }}
+              >
+                {indexLabel && (
+                  <span
+                    className="px-2 py-0.5 rounded-md"
+                    style={{
+                      background: 'rgba(37, 99, 235, 0.08)',
+                      border: '1px solid rgba(37, 99, 235, 0.2)',
+                    }}
+                  >
+                    {indexLabel}
+                  </span>
+                )}
+                <span
+                  className="h-px w-8"
+                  style={{ background: 'rgba(37, 99, 235, 0.35)' }}
+                />
+                <span>{label ?? id}</span>
+              </div>
+            )}
             <h2
               className="text-4xl md:text-6xl font-bold tracking-tight"
               style={{ color: '#1e293b', letterSpacing: '-0.03em' }}

@@ -21,6 +21,36 @@ const Profile2 = ({ data }: ProfileProps) => {
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.6, type: "spring", stiffness: 200 }}
       >
+        {/* 製図風の外周点線リング（回転）*/}
+        <motion.svg
+          className="absolute -inset-4 pointer-events-none"
+          viewBox="0 0 100 100"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 60, repeat: Infinity, ease: 'linear' }}
+        >
+          <circle
+            cx="50"
+            cy="50"
+            r="48"
+            fill="none"
+            stroke="rgba(37, 99, 235, 0.35)"
+            strokeWidth="0.4"
+            strokeDasharray="1.5 2.5"
+          />
+        </motion.svg>
+        {/* 十字ガイド（上下左右の小マーク）*/}
+        {[
+          { top: '-8px', left: '50%', transform: 'translate(-50%, 0)' },
+          { bottom: '-8px', left: '50%', transform: 'translate(-50%, 0)' },
+          { left: '-8px', top: '50%', transform: 'translate(0, -50%)' },
+          { right: '-8px', top: '50%', transform: 'translate(0, -50%)' },
+        ].map((pos, i) => (
+          <span
+            key={i}
+            className="absolute w-1.5 h-1.5 rounded-full"
+            style={{ ...pos, background: 'rgba(37, 99, 235, 0.45)' }}
+          />
+        ))}
         <div
           className="w-36 h-36 sm:w-44 sm:h-44 rounded-full overflow-hidden"
           style={{
