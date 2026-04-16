@@ -2,6 +2,7 @@ import React from 'react';
 import type { PortfolioItem } from '../../lib/dataMapper';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import CornerMarks from './CornerMarks';
 
 interface Props {
   item: PortfolioItem;
@@ -25,12 +26,12 @@ const ProjectCard: React.FC<Props> = ({ item }) => {
 
   return (
     <motion.div
-      className="rounded-2xl overflow-hidden cursor-pointer group"
+      className="relative rounded-2xl cursor-pointer group"
       style={{
         background: 'rgba(255,255,255,0.78)',
         backdropFilter: 'blur(14px)',
         WebkitBackdropFilter: 'blur(14px)',
-        border: '1px solid rgba(99, 152, 219, 0.2)',
+        border: '1px solid rgba(99, 152, 219, 0.25)',
         boxShadow: '0 4px 20px rgba(37, 99, 235, 0.07)',
       }}
       variants={cardVariants}
@@ -45,8 +46,9 @@ const ProjectCard: React.FC<Props> = ({ item }) => {
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       onClick={handleClick}
     >
+      <CornerMarks />
       {/* サムネイル */}
-      <div className="relative overflow-hidden h-48">
+      <div className="relative overflow-hidden h-48 rounded-t-2xl">
         <img
           src={item.thumbnail}
           alt={item.title}

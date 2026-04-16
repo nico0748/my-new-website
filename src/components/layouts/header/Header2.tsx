@@ -17,26 +17,47 @@ const Header2: React.FC<HeaderProps2> = ({ activeSection, scrollToSection }) => 
     >
       <div className="flex items-center justify-between px-6 sm:px-12 md:px-20 py-4">
         {/* Logo */}
-        <span
-          className="text-lg font-bold tracking-tight select-none"
-          style={{ color: '#2563eb', letterSpacing: '-0.02em' }}
-        >
-          Portfolio
-        </span>
+        <div className="flex items-center gap-2 select-none">
+          <span
+            className="text-xs font-semibold tracking-[0.3em]"
+            style={{
+              color: '#2563eb',
+              fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+              opacity: 0.65,
+            }}
+          >
+            //
+          </span>
+          <span
+            className="text-lg font-bold tracking-tight"
+            style={{ color: '#2563eb', letterSpacing: '-0.02em' }}
+          >
+            Portfolio
+          </span>
+        </div>
 
         {/* Nav */}
         <nav className="flex gap-1 sm:gap-2">
-          {navItems.map((item) => (
+          {navItems.map((item, i) => (
             <button
               key={item}
               onClick={() => scrollToSection(item)}
-              className="relative px-3 py-1.5 rounded-lg text-sm font-medium capitalize tracking-wide transition-all duration-200"
+              className="relative px-3 py-1.5 rounded-lg text-sm font-medium capitalize tracking-wide transition-all duration-200 flex items-center gap-1.5"
               style={{
                 color: activeSection === item ? '#2563eb' : '#64748b',
                 background: activeSection === item ? 'rgba(37, 99, 235, 0.08)' : 'transparent',
               }}
             >
-              {item}
+              <span
+                className="hidden sm:inline text-[10px] font-semibold tracking-widest"
+                style={{
+                  fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+                  opacity: 0.55,
+                }}
+              >
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span>{item}</span>
               {activeSection === item && (
                 <span
                   className="absolute bottom-0.5 left-3 right-3 h-0.5 rounded-full"

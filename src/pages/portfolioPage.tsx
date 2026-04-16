@@ -101,7 +101,7 @@ const PortfolioPage = () => {
           </motion.div>
 
           {/* Projects */}
-          <SectionWrapper id="projects" title="Projects">
+          <SectionWrapper id="projects" title="Projects" index={1} label="Works">
             {portfolio.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {portfolio.map((item) => (
@@ -116,7 +116,7 @@ const PortfolioPage = () => {
           </SectionWrapper>
 
           {/* Skills */}
-          <SectionWrapper id="skills" title="Skills">
+          <SectionWrapper id="skills" title="Skills" index={2} label="Stack">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {skills.map((category, index) => (
                 <SkillRadarChart key={index} category={category.category} skills={category.skills} />
@@ -125,7 +125,7 @@ const PortfolioPage = () => {
           </SectionWrapper>
 
           {/* Timeline */}
-          <SectionWrapper id="timeline" title="Timeline">
+          <SectionWrapper id="timeline" title="Timeline" index={3} label="History">
             <div className="max-w-3xl mx-auto">
               {timeline.map((item, index) => (
                 <TimelineItem
