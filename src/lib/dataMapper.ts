@@ -8,6 +8,7 @@ export interface PortfolioItem {
   tags: string[];
   liveUrl?: string;
   repoUrl?: string;
+  markdownFile?: string; // /projects/<id>.md など
 }
 
 export interface Skill {
@@ -96,7 +97,8 @@ export const mapPortfolioData = (rows: SheetRow[]): PortfolioItem[] => {
         thumbnail: row.thumbnail,
         tags: row.tags ? row.tags.split(',').map(t => t.trim()) : [],
         liveUrl: row.liveUrl,
-        repoUrl: row.repoUrl
+        repoUrl: row.repoUrl,
+        markdownFile: row.markdownFile || `/projects/${row.id}.md`,
     }));
 };
 
