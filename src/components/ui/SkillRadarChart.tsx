@@ -14,7 +14,6 @@ interface SkillRadarChartProps {
 }
 
 const SkillRadarChart = ({ category, skills }: SkillRadarChartProps) => {
-  // Rechartsのデータ形式に変換
   const chartData = skills.map((skill) => ({
     subject: skill.name,
     value: skill.level,
@@ -23,36 +22,70 @@ const SkillRadarChart = ({ category, skills }: SkillRadarChartProps) => {
 
   return (
     <motion.div
-      className="bg-[#1F2833] border border-gray-800 rounded-xl p-6 shadow-md"
+      className="rounded-2xl p-6"
+      style={{
+        background: 'rgba(255,255,255,0.75)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        border: '1px solid rgba(99, 152, 219, 0.2)',
+        boxShadow: '0 4px 24px rgba(37, 99, 235, 0.07)',
+      }}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
     >
-      <h3 className="text-2xl font-bold text-white mb-6 text-center tracking-wide">{category}</h3>
+      <h3
+        className="text-xl font-bold mb-6 text-center tracking-tight"
+        style={{ color: '#1e293b' }}
+      >
+        {category}
+      </h3>
 
-      {/* レーダーチャート */}
       <div className="mb-6">
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height={260}>
           <RadarChart data={chartData}>
-            <PolarGrid stroke="#374151" />
-            <PolarAngleAxis dataKey="subject" tick={{ fill: "#9ca3af", fontSize: 12 }} />
-            <PolarRadiusAxis angle={90} domain={[0, 5]} tick={{ fill: "#6b7280", fontSize: 10 }} />
-            <Radar name={category} dataKey="value" stroke="#60a5fa" fill="#3b82f6" fillOpacity={0.4} />
+            <PolarGrid stroke="rgba(99,152,219,0.25)" />
+            <PolarAngleAxis
+              dataKey="subject"
+              tick={{ fill: '#64748b', fontSize: 11, fontWeight: 500 }}
+            />
+            <PolarRadiusAxis
+              angle={90}
+              domain={[0, 5]}
+              tick={{ fill: '#94a3b8', fontSize: 9 }}
+            />
+            <Radar
+              name={category}
+              dataKey="value"
+              stroke="#2563eb"
+              fill="#3b82f6"
+              fillOpacity={0.25}
+              strokeWidth={2}
+            />
           </RadarChart>
         </ResponsiveContainer>
       </div>
 
-      {/* スキル上達度の表 */}
       <div className="space-y-3">
         {skills.map((skill, index) => (
           <div key={index} className="flex items-center gap-3">
-            <span className="text-sm font-medium text-gray-300 w-28 flex-shrink-0">{skill.name}</span>
+            <span
+              className="text-sm font-medium w-28 flex-shrink-0"
+              style={{ color: '#475569' }}
+            >
+              {skill.name}
+            </span>
             <div className="flex gap-1 flex-1">
               {[...Array(5)].map((_, levelIndex) => (
                 <motion.div
                   key={levelIndex}
-                  className={`h-2 flex-1 rounded-full ${levelIndex < skill.level ? "bg-blue-500" : "bg-gray-700"}`}
+                  className="h-2 flex-1 rounded-full"
+                  style={{
+                    background: levelIndex < skill.level
+                      ? 'linear-gradient(90deg, #3b82f6, #6366f1)'
+                      : 'rgba(99,152,219,0.12)',
+                  }}
                   initial={{ scaleX: 0 }}
                   whileInView={{ scaleX: 1 }}
                   viewport={{ once: true }}
@@ -60,7 +93,12 @@ const SkillRadarChart = ({ category, skills }: SkillRadarChartProps) => {
                 />
               ))}
             </div>
-            <span className="text-xs text-gray-500 w-8 text-right">{skill.level}/5</span>
+            <span
+              className="text-xs w-8 text-right font-medium"
+              style={{ color: '#94a3b8' }}
+            >
+              {skill.level}/5
+            </span>
           </div>
         ))}
       </div>
