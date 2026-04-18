@@ -14,6 +14,11 @@ export interface PortfolioItem {
 export interface Skill {
     name: string;
     level: number;
+    description?: string;
+    experienceYears?: number;
+    libraries?: string[];
+    comment?: string;
+    logo?: string;
 }
 export interface SkillCategory {
     category: string;
@@ -65,13 +70,21 @@ export const mapSkillsData = (rows: SheetRow[]): SkillCategory[] => {
         const cat = row.category;
         const name = row.name;
         const level = parseInt(row.level, 10) || 0;
-        
+
         if (!cat || !name) return;
 
         if (!categories[cat]) {
             categories[cat] = [];
         }
-        categories[cat].push({ name, level });
+        categories[cat].push({
+            name,
+            level,
+            description: row.description || undefined,
+            experienceYears: row.experienceYears ? parseInt(row.experienceYears, 10) : undefined,
+            libraries: row.libraries ? row.libraries.split(',').map((l: string) => l.trim()).filter(Boolean) : undefined,
+            comment: row.comment || undefined,
+            logo: row.logo || undefined,
+        });
     });
 
     return Object.keys(categories).map(cat => ({
