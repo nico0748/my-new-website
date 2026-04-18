@@ -15,6 +15,7 @@ import type { SheetRow } from "../lib/googleSheets";
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const PortfolioPage = () => {
   const [activeSection, setActiveSection] = useState<string>("profile");
@@ -103,11 +104,29 @@ const PortfolioPage = () => {
           {/* Projects */}
           <SectionWrapper id="projects" title="Projects" index={1} label="Works">
             {portfolio.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {portfolio.map((item) => (
-                  <ProjectCard key={item.id} item={item} />
-                ))}
-              </div>
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {portfolio.slice(0, 6).map((item) => (
+                    <ProjectCard key={item.id} item={item} />
+                  ))}
+                </div>
+                {portfolio.length > 6 && (
+                  <div className="flex justify-center mt-8">
+                    <Link
+                      to="/projects"
+                      className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 hover:opacity-90"
+                      style={{
+                        background: 'rgba(255,255,255,0.8)',
+                        color: '#2563eb',
+                        border: '1px solid rgba(37, 99, 235, 0.25)',
+                        boxShadow: '0 2px 12px rgba(37, 99, 235, 0.08)',
+                      }}
+                    >
+                      すべてのプロジェクトを見る →
+                    </Link>
+                  </div>
+                )}
+              </>
             ) : (
               <p className="text-center py-12 text-sm" style={{ color: '#94a3b8' }}>
                 プロジェクトデータがありません（Google Sheets を設定してください）
@@ -118,9 +137,23 @@ const PortfolioPage = () => {
           {/* Skills */}
           <SectionWrapper id="skills" title="Skills" index={2} label="Stack">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {skills.map((category, index) => (
+              {skills.slice(0, 6).map((category, index) => (
                 <SkillRadarChart key={index} category={category.category} skills={category.skills} />
               ))}
+            </div>
+            <div className="flex justify-center mt-8">
+              <Link
+                to="/skills"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 hover:opacity-90"
+                style={{
+                  background: 'rgba(255,255,255,0.8)',
+                  color: '#2563eb',
+                  border: '1px solid rgba(37, 99, 235, 0.25)',
+                  boxShadow: '0 2px 12px rgba(37, 99, 235, 0.08)',
+                }}
+              >
+                すべてのスキルを見る →
+              </Link>
             </div>
           </SectionWrapper>
 
