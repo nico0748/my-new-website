@@ -5,6 +5,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 import GraphPaperBackground from "../components/ui/GraphPaperBackground";
+import CornerMarks from "../components/ui/CornerMarks";
 import { fetchSheetData } from "../lib/googleSheets";
 import { mapPortfolioData } from "../lib/dataMapper";
 import type { PortfolioItem } from "../lib/dataMapper";
@@ -177,15 +178,16 @@ const ProjectDetailPage = () => {
 
           {/* Markdown コンテンツ */}
           <div
-            className="rounded-2xl p-8"
+            className="relative rounded-2xl p-8"
             style={{
               background: 'rgba(255,255,255,0.75)',
               backdropFilter: 'blur(12px)',
               WebkitBackdropFilter: 'blur(12px)',
-              border: '1px solid rgba(99, 152, 219, 0.18)',
+              border: '1px solid rgba(99, 152, 219, 0.22)',
               boxShadow: '0 4px 24px rgba(37, 99, 235, 0.06)',
             }}
           >
+            <CornerMarks size={12} offset={-6} />
             {mdError ? (
               <div className="text-center py-12">
                 <p className="text-2xl mb-2">📄</p>

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion"
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from "recharts"
+import CornerMarks from "./CornerMarks"
 
 interface Skill {
   name: string
@@ -22,12 +23,12 @@ const SkillRadarChart = ({ category, skills }: SkillRadarChartProps) => {
 
   return (
     <motion.div
-      className="rounded-2xl p-6"
+      className="relative rounded-2xl p-6"
       style={{
         background: 'rgba(255,255,255,0.75)',
         backdropFilter: 'blur(12px)',
         WebkitBackdropFilter: 'blur(12px)',
-        border: '1px solid rgba(99, 152, 219, 0.2)',
+        border: '1px solid rgba(99, 152, 219, 0.25)',
         boxShadow: '0 4px 24px rgba(37, 99, 235, 0.07)',
       }}
       initial={{ opacity: 0, y: 20 }}
@@ -35,6 +36,17 @@ const SkillRadarChart = ({ category, skills }: SkillRadarChartProps) => {
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
     >
+      <CornerMarks />
+      <div
+        className="text-[10px] font-semibold tracking-[0.3em] uppercase mb-1 text-center"
+        style={{
+          color: '#2563eb',
+          fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+          opacity: 0.7,
+        }}
+      >
+        // category
+      </div>
       <h3
         className="text-xl font-bold mb-6 text-center tracking-tight"
         style={{ color: '#1e293b' }}
