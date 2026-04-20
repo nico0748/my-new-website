@@ -30,6 +30,8 @@ export interface TimelineItem {
     title: string;
     description: string;
     type: "education" | "work" | "project" | "other" | "certification";
+    href?: string;
+    status?: "done" | "upcoming";
 }
 
 export interface ProfileData {
@@ -95,10 +97,12 @@ export const mapSkillsData = (rows: SheetRow[]): SkillCategory[] => {
 
 export const mapTimelineData = (rows: SheetRow[]): TimelineItem[] => {
     return rows.map(row => ({
-        year: row.year,
+        year: row.year || "",
         title: row.title,
         description: row.description,
-        type: row.type as any || "other"
+        type: (row.type as TimelineItem["type"]) || "other",
+        href: row.href || undefined,
+        status: (row.status as TimelineItem["status"]) || "done",
     }));
 };
 

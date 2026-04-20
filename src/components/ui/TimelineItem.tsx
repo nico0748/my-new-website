@@ -1,91 +1,129 @@
-"use client"
-
 import { motion } from "framer-motion"
-import CornerMarks from "./CornerMarks"
 
 interface TimelineItemProps {
   year: string
   title: string
   description: string
   type?: "education" | "work" | "project" | "other" | "certification"
+  href?: string
+  status?: "done" | "upcoming"
+  index?: number
+  isFirstOfYear?: boolean
 }
 
 const typeConfig = {
-  education:     { color: '#22c55e', label: 'Education', bg: 'rgba(34,197,94,0.1)' },
-  work:          { color: '#ef4444', label: 'Work',      bg: 'rgba(239,68,68,0.1)' },
-  project:       { color: '#8b5cf6', label: 'Project',   bg: 'rgba(139,92,246,0.1)' },
-  certification: { color: '#f59e0b', label: 'Cert',      bg: 'rgba(245,158,11,0.1)' },
-  other:         { color: '#3b82f6', label: 'Other',     bg: 'rgba(59,130,246,0.1)' },
+  education:     { color: '#22c55e', label: 'Education' },
+  work:          { color: '#ef4444', label: 'Work' },
+  project:       { color: '#8b5cf6', label: 'Project' },
+  certification: { color: '#f59e0b', label: 'Cert' },
+  other:         { color: '#3b82f6', label: 'Other' },
 }
 
-const TimelineItem = ({ year, title, description, type = "other" }: TimelineItemProps) => {
+const TimelineItem = ({
+  year,
+  title,
+  description,
+  type = "other",
+  href,
+  status = "done",
+  index = 0,
+  isFirstOfYear = false,
+}: TimelineItemProps) => {
   const cfg = typeConfig[type] ?? typeConfig.other
 
   return (
     <motion.div
-      className="relative pl-10 pb-8 last:pb-0"
-      initial={{ opacity: 0, x: -20 }}
-      whileInView={{ opacity: 1, x: 0 }}
+      className={`relative pl-10 last:mb-0 ${isFirstOfYear && index > 0 ? "mt-6 mb-10" : "mb-10"}`}
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.4, delay: index * 0.06 }}
     >
-      {/* 点線の縦ライン（製図のガイドライン風）*/}
-      <div
-        className="absolute top-0 bottom-0 left-0 w-px"
+      {/* Dot */}
+      <span
+        className="absolute left-0 top-[5px] flex h-4 w-4 items-center justify-center rounded-full"
         style={{
-          backgroundImage:
-            'linear-gradient(to bottom, rgba(37, 99, 235, 0.35) 50%, transparent 50%)',
-          backgroundSize: '1px 6px',
-          backgroundRepeat: 'repeat-y',
+          background: '#f4f6fb',
+          boxShadow: `0 0 0 2px ${cfg.color}`,
         }}
-      />
-
-      {/* ドット + 外周リング */}
-      <div
-        className="absolute left-[-7px] top-1 w-3.5 h-3.5 rounded-full border-2 border-white"
-        style={{ background: cfg.color, boxShadow: `0 0 0 3px ${cfg.bg}` }}
-      />
-
-      <motion.div
-        className="relative rounded-2xl p-5"
-        style={{
-          background: 'rgba(255,255,255,0.75)',
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-          border: '1px solid rgba(99, 152, 219, 0.22)',
-          boxShadow: '0 2px 12px rgba(37, 99, 235, 0.05)',
-        }}
-        whileHover={{
-          y: -4,
-          boxShadow: '0 12px 28px rgba(37, 99, 235, 0.12)',
-        }}
-        transition={{ type: "spring", stiffness: 400, damping: 20 }}
       >
-        <CornerMarks size={8} offset={-4} />
-        <div className="flex items-center gap-2 mb-2">
-          <span
-            className="text-xs font-bold tracking-widest uppercase px-2 py-0.5 rounded-full"
-            style={{ color: cfg.color, background: cfg.bg }}
-          >
-            {cfg.label}
-          </span>
-          <span
-            className="text-sm font-semibold tracking-wide"
-            style={{ color: '#2563eb' }}
-          >
-            {year}
-          </span>
-        </div>
-        <h3
-          className="text-lg font-bold mb-1.5 tracking-tight"
-          style={{ color: '#1e293b' }}
+        <span
+          className="h-1.5 w-1.5 rounded-full"
+          style={{ background: cfg.color }}
+        />
+      </span>
+
+      {/* Year label */}
+      {year && isFirstOfYear && (
+        <span
+          className="font-bold text-2xl md:text-3xl tracking-tight block"
+          style={{ color: '#1e293b', letterSpacing: '-0.03em' }}
         >
-          {title}
-        </h3>
-        <p className="text-sm leading-relaxed" style={{ color: '#64748b' }}>
+          {year}
+        </span>
+      )}
+
+      {/* Title + badges */}
+      <h3 className="mt-2 flex flex-wrap items-center gap-2.5 text-base font-medium md:text-lg">
+        {href ? (
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline decoration-1 underline-offset-[5px] transition-colors duration-200"
+            style={{
+              color: '#1e293b',
+              textDecorationColor: 'rgba(30,41,59,0.2)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.textDecorationColor = '#1e293b'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.textDecorationColor = 'rgba(30,41,59,0.2)'
+            }}
+          >
+            {title}
+          </a>
+        ) : (
+          <span style={{ color: '#1e293b' }}>{title}</span>
+        )}
+
+        {/* Type badge */}
+        <span
+          className="rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-widest"
+          style={{
+            color: cfg.color,
+            background: `${cfg.color}15`,
+            border: `1px solid ${cfg.color}30`,
+          }}
+        >
+          {cfg.label}
+        </span>
+
+        {/* Upcoming badge */}
+        {status === "upcoming" && (
+          <span
+            className="rounded-full px-3 py-0.5 text-[10px] font-semibold uppercase tracking-widest"
+            style={{
+              background: 'rgba(34, 197, 94, 0.12)',
+              color: '#16a34a',
+              border: '1px solid rgba(34, 197, 94, 0.25)',
+            }}
+          >
+            Upcoming
+          </span>
+        )}
+      </h3>
+
+      {/* Description */}
+      {description && (
+        <p
+          className="mt-1.5 text-sm leading-relaxed md:text-base"
+          style={{ color: '#64748b' }}
+        >
           {description}
         </p>
-      </motion.div>
+      )}
     </motion.div>
   )
 }
