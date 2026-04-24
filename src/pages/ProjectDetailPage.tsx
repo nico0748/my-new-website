@@ -5,6 +5,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 import GraphPaperBackground from "../components/ui/GraphPaperBackground";
+import ThemeToggle from "../components/ui/ThemeToggle";
 import CornerMarks from "../components/ui/CornerMarks";
 import { fetchSheetData } from "../lib/googleSheets";
 import { mapPortfolioData } from "../lib/dataMapper";
@@ -20,7 +21,6 @@ const ProjectDetailPage = () => {
   const [loading, setLoading] = useState(true);
   const [mdError, setMdError] = useState(false);
 
-  // プロジェクトデータを取得
   useEffect(() => {
     const load = async () => {
       let items: PortfolioItem[] = [];
@@ -37,7 +37,6 @@ const ProjectDetailPage = () => {
       const found = items.find((p) => p.id === id);
       setProject(found ?? null);
 
-      // Markdown を fetch
       const mdPath = found?.markdownFile ?? `/projects/${id}.md`;
       try {
         const res = await fetch(mdPath);
@@ -62,7 +61,7 @@ const ProjectDetailPage = () => {
         <div className="flex items-center justify-center min-h-screen">
           <motion.div
             className="w-10 h-10 rounded-full border-2 border-t-transparent"
-            style={{ borderColor: '#2563eb', borderTopColor: 'transparent' }}
+            style={{ borderColor: 'var(--accent)', borderTopColor: 'transparent' }}
             animate={{ rotate: 360 }}
             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
           />
@@ -77,20 +76,23 @@ const ProjectDetailPage = () => {
       <header
         className="fixed top-0 left-0 right-0 z-50 px-6 py-4"
         style={{
-          background: 'rgba(244, 246, 251, 0.85)',
+          background: 'var(--header-bg)',
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)',
-          borderBottom: '1px solid rgba(99, 152, 219, 0.2)',
+          borderBottom: '1px solid var(--border-color)',
         }}
       >
-        <button
-          onClick={() => navigate(-1)}
-          className="flex items-center gap-2 text-sm font-medium transition-colors duration-200 hover:text-blue-600"
-          style={{ color: '#64748b' }}
-        >
-          <span>←</span>
-          <span>戻る</span>
-        </button>
+        <div className="flex items-center justify-between max-w-3xl mx-auto">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-2 text-sm font-medium transition-colors duration-200"
+            style={{ color: 'var(--text-secondary)' }}
+          >
+            <span>←</span>
+            <span>戻る</span>
+          </button>
+          <ThemeToggle />
+        </div>
       </header>
 
       <main className="max-w-3xl mx-auto px-4 pt-28 pb-24">
@@ -104,7 +106,7 @@ const ProjectDetailPage = () => {
             <div className="mb-10">
               {/* サムネイル */}
               {project.thumbnail && (
-                <div className="rounded-2xl overflow-hidden mb-8 shadow-md" style={{ boxShadow: '0 8px 32px rgba(37,99,235,0.1)' }}>
+                <div className="rounded-2xl overflow-hidden mb-8 shadow-md" style={{ boxShadow: '0 8px 32px var(--accent-shadow)' }}>
                   <img src={project.thumbnail} alt={project.title} className="w-full h-64 object-cover" />
                 </div>
               )}
@@ -116,9 +118,9 @@ const ProjectDetailPage = () => {
                     key={tag}
                     className="text-xs font-semibold px-3 py-1 rounded-full"
                     style={{
-                      background: 'rgba(37, 99, 235, 0.08)',
-                      color: '#2563eb',
-                      border: '1px solid rgba(37, 99, 235, 0.15)',
+                      background: 'var(--tag-bg)',
+                      color: 'var(--tag-color)',
+                      border: '1px solid var(--tag-border)',
                     }}
                   >
                     {tag}
@@ -129,11 +131,11 @@ const ProjectDetailPage = () => {
               {/* タイトル */}
               <h1
                 className="text-4xl sm:text-5xl font-bold tracking-tight mb-3"
-                style={{ color: '#1e293b', letterSpacing: '-0.03em' }}
+                style={{ color: 'var(--text-primary)', letterSpacing: '-0.03em' }}
               >
                 {project.title}
               </h1>
-              <p className="text-lg mb-6" style={{ color: '#64748b' }}>
+              <p className="text-lg mb-6" style={{ color: 'var(--text-secondary)' }}>
                 {project.description}
               </p>
 
@@ -161,9 +163,9 @@ const ProjectDetailPage = () => {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200"
                     style={{
-                      background: 'rgba(255,255,255,0.8)',
-                      color: '#1e293b',
-                      border: '1px solid rgba(99,152,219,0.3)',
+                      background: 'var(--card-bg)',
+                      color: 'var(--text-primary)',
+                      border: '1px solid var(--border-color)',
                     }}
                   >
                     GitHub
@@ -172,7 +174,7 @@ const ProjectDetailPage = () => {
               </div>
 
               {/* 区切り線 */}
-              <div className="mt-10 h-px" style={{ background: 'rgba(99,152,219,0.2)' }} />
+              <div className="mt-10 h-px" style={{ background: 'var(--border-color)' }} />
             </div>
           )}
 
@@ -180,22 +182,22 @@ const ProjectDetailPage = () => {
           <div
             className="relative rounded-2xl p-8"
             style={{
-              background: 'rgba(255,255,255,0.75)',
+              background: 'var(--card-bg)',
               backdropFilter: 'blur(12px)',
               WebkitBackdropFilter: 'blur(12px)',
-              border: '1px solid rgba(99, 152, 219, 0.22)',
-              boxShadow: '0 4px 24px rgba(37, 99, 235, 0.06)',
+              border: '1px solid var(--card-border)',
+              boxShadow: '0 4px 24px var(--card-shadow)',
             }}
           >
             <CornerMarks size={12} offset={-6} />
             {mdError ? (
               <div className="text-center py-12">
                 <p className="text-2xl mb-2">📄</p>
-                <p className="font-semibold mb-1" style={{ color: '#1e293b' }}>
+                <p className="font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>
                   コンテンツが見つかりません
                 </p>
-                <p className="text-sm" style={{ color: '#94a3b8' }}>
-                  <code className="px-1.5 py-0.5 rounded text-xs" style={{ background: 'rgba(99,152,219,0.1)' }}>
+                <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
+                  <code className="px-1.5 py-0.5 rounded text-xs" style={{ background: 'var(--code-bg)' }}>
                     public/projects/{id}.md
                   </code>{" "}
                   にMarkdownファイルを配置してください。

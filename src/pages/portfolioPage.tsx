@@ -116,10 +116,10 @@ const PortfolioPage = () => {
                       to="/projects"
                       className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 hover:opacity-90"
                       style={{
-                        background: 'rgba(255,255,255,0.8)',
-                        color: '#2563eb',
-                        border: '1px solid rgba(37, 99, 235, 0.25)',
-                        boxShadow: '0 2px 12px rgba(37, 99, 235, 0.08)',
+                        background: 'var(--card-bg)',
+                        color: 'var(--accent)',
+                        border: '1px solid var(--accent-border)',
+                        boxShadow: '0 2px 12px var(--accent-shadow)',
                       }}
                     >
                       すべてのプロジェクトを見る →
@@ -128,7 +128,7 @@ const PortfolioPage = () => {
                 )}
               </>
             ) : (
-              <p className="text-center py-12 text-sm" style={{ color: '#94a3b8' }}>
+              <p className="text-center py-12 text-sm" style={{ color: 'var(--text-muted)' }}>
                 プロジェクトデータがありません（Google Sheets を設定してください）
               </p>
             )}
@@ -146,10 +146,10 @@ const PortfolioPage = () => {
                 to="/skills"
                 className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 hover:opacity-90"
                 style={{
-                  background: 'rgba(255,255,255,0.8)',
-                  color: '#2563eb',
-                  border: '1px solid rgba(37, 99, 235, 0.25)',
-                  boxShadow: '0 2px 12px rgba(37, 99, 235, 0.08)',
+                  background: 'var(--card-bg)',
+                  color: 'var(--accent)',
+                  border: '1px solid var(--accent-border)',
+                  boxShadow: '0 2px 12px var(--accent-shadow)',
                 }}
               >
                 すべてのスキルを見る →
@@ -170,7 +170,7 @@ const PortfolioPage = () => {
           <div
             className="fixed bottom-4 right-4 p-4 rounded-2xl z-50 max-w-sm pointer-events-none"
             style={{
-              background: 'rgba(255,255,255,0.9)',
+              background: 'var(--warning-bg)',
               backdropFilter: 'blur(12px)',
               border: '1px solid rgba(239,68,68,0.3)',
               boxShadow: '0 8px 24px rgba(239,68,68,0.12)',
@@ -179,7 +179,7 @@ const PortfolioPage = () => {
             <h4 className="font-bold text-sm flex items-center gap-1.5" style={{ color: '#ef4444' }}>
               ⚠️ Google Sheets API 未設定
             </h4>
-            <p className="text-xs mt-1" style={{ color: '#64748b' }}>
+            <p className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>
               <code className="px-1 py-0.5 rounded text-xs" style={{ background: 'rgba(239,68,68,0.08)' }}>
                 .env.local
               </code>{" "}
@@ -217,7 +217,7 @@ const TimelineSection = ({ items }: { items: TimelineItemType[] }) => {
         {/* Background track */}
         <div
           className="pointer-events-none absolute bottom-0 left-[7px] top-[12px] w-px"
-          style={{ background: 'rgba(99, 152, 219, 0.15)' }}
+          style={{ background: 'var(--border-color)' }}
         />
         {/* Scroll-linked gradient line */}
         <motion.div

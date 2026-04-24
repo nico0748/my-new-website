@@ -39,7 +39,7 @@ const SectionWrapper: React.FC<SectionWrapperProps> = ({
               <div
                 className="flex items-center justify-center gap-2 mb-3 text-xs font-semibold tracking-[0.3em] uppercase"
                 style={{
-                  color: '#2563eb',
+                  color: 'var(--accent)',
                   fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
                 }}
               >
@@ -47,8 +47,8 @@ const SectionWrapper: React.FC<SectionWrapperProps> = ({
                   <span
                     className="px-2 py-0.5 rounded-md"
                     style={{
-                      background: 'rgba(37, 99, 235, 0.08)',
-                      border: '1px solid rgba(37, 99, 235, 0.2)',
+                      background: 'var(--accent-bg)',
+                      border: '1px solid var(--accent-border)',
                     }}
                   >
                     {indexLabel}
@@ -56,22 +56,22 @@ const SectionWrapper: React.FC<SectionWrapperProps> = ({
                 )}
                 <span
                   className="h-px w-8"
-                  style={{ background: 'rgba(37, 99, 235, 0.35)' }}
+                  style={{ background: 'var(--accent-border)' }}
                 />
                 <span>{label ?? id}</span>
               </div>
             )}
             <h2
               className="text-4xl md:text-6xl font-bold tracking-tight"
-              style={{ color: '#1e293b', letterSpacing: '-0.03em' }}
+              style={{ color: 'var(--text-primary)', letterSpacing: '-0.03em' }}
             >
               {title}
             </h2>
             {/* セクションタイトル下のアクセントライン */}
             <div className="flex items-center justify-center gap-2 mt-4">
-              <span className="w-8 h-0.5 rounded-full" style={{ background: '#2563eb' }} />
-              <span className="w-2 h-2 rounded-full" style={{ background: '#2563eb' }} />
-              <span className="w-8 h-0.5 rounded-full" style={{ background: '#2563eb' }} />
+              <span className="w-8 h-0.5 rounded-full" style={{ background: 'var(--accent)' }} />
+              <span className="w-2 h-2 rounded-full" style={{ background: 'var(--accent)' }} />
+              <span className="w-8 h-0.5 rounded-full" style={{ background: 'var(--accent)' }} />
             </div>
           </motion.div>
         )}

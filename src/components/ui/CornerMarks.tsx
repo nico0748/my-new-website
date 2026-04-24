@@ -8,7 +8,7 @@ interface CornerMarksProps {
 }
 
 const CornerMarks: React.FC<CornerMarksProps> = ({
-  color = 'rgba(37, 99, 235, 0.45)',
+  color = 'var(--corner-marks-color, rgba(37, 99, 235, 0.45))',
   size = 10,
   offset = -5,
   strokeWidth = 1.25,

@@ -33,7 +33,7 @@ const Profile2 = ({ data }: ProfileProps) => {
             cy="50"
             r="48"
             fill="none"
-            stroke="rgba(37, 99, 235, 0.35)"
+            stroke="var(--accent-border)"
             strokeWidth="0.4"
             strokeDasharray="1.5 2.5"
           />
@@ -48,14 +48,14 @@ const Profile2 = ({ data }: ProfileProps) => {
           <span
             key={i}
             className="absolute w-1.5 h-1.5 rounded-full"
-            style={{ ...pos, background: 'rgba(37, 99, 235, 0.45)' }}
+            style={{ ...pos, background: 'var(--accent-border)' }}
           />
         ))}
         <div
           className="w-36 h-36 sm:w-44 sm:h-44 rounded-full overflow-hidden"
           style={{
-            border: '3px solid rgba(37, 99, 235, 0.25)',
-            boxShadow: '0 8px 32px rgba(37, 99, 235, 0.15), 0 0 0 6px rgba(37, 99, 235, 0.06)',
+            border: '3px solid var(--avatar-border)',
+            boxShadow: '0 8px 32px var(--avatar-shadow), 0 0 0 6px var(--avatar-ring)',
           }}
         >
           <img
@@ -66,8 +66,8 @@ const Profile2 = ({ data }: ProfileProps) => {
         </div>
         {/* オンラインバッジ */}
         <span
-          className="absolute bottom-2 right-2 w-4 h-4 rounded-full border-2 border-white"
-          style={{ background: '#22c55e' }}
+          className="absolute bottom-2 right-2 w-4 h-4 rounded-full border-2"
+          style={{ background: '#22c55e', borderColor: 'var(--online-badge-border)' }}
         />
       </motion.div>
 
@@ -80,19 +80,19 @@ const Profile2 = ({ data }: ProfileProps) => {
       >
         <h1
           className="text-5xl sm:text-6xl font-bold mb-2 tracking-tight"
-          style={{ color: '#1e293b', letterSpacing: '-0.03em' }}
+          style={{ color: 'var(--text-primary)', letterSpacing: '-0.03em' }}
         >
           {data.name}
         </h1>
         <p
           className="text-base sm:text-lg font-medium tracking-widest uppercase mb-5"
-          style={{ color: '#2563eb' }}
+          style={{ color: 'var(--accent)' }}
         >
           {data.title}
         </p>
         <p
           className="text-base sm:text-lg max-w-2xl leading-relaxed text-center"
-          style={{ color: '#64748b' }}
+          style={{ color: 'var(--text-secondary)' }}
         >
           {data.description}
         </p>
@@ -108,9 +108,9 @@ const Profile2 = ({ data }: ProfileProps) => {
         <span
           className="px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide"
           style={{
-            background: 'rgba(37, 99, 235, 0.08)',
-            color: '#2563eb',
-            border: '1px solid rgba(37, 99, 235, 0.2)',
+            background: 'var(--accent-bg)',
+            color: 'var(--accent)',
+            border: '1px solid var(--accent-border)',
           }}
         >
           Open to work

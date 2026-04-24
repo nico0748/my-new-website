@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import GraphPaperBackground from "../components/ui/GraphPaperBackground";
+import ThemeToggle from "../components/ui/ThemeToggle";
 import ProjectCard from "../components/ui/ProjectCard";
 import { fetchSheetData } from "../lib/googleSheets";
 import { mapPortfolioData } from "../lib/dataMapper";
@@ -36,7 +37,7 @@ const ProjectsPage = () => {
         <div className="flex items-center justify-center min-h-screen">
           <motion.div
             className="w-10 h-10 rounded-full border-2 border-t-transparent"
-            style={{ borderColor: "#2563eb", borderTopColor: "transparent" }}
+            style={{ borderColor: "var(--accent)", borderTopColor: "transparent" }}
             animate={{ rotate: 360 }}
             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
           />
@@ -52,30 +53,33 @@ const ProjectsPage = () => {
         <header
           className="fixed top-0 left-0 right-0 z-50 px-6 py-4"
           style={{
-            background: "rgba(244, 246, 251, 0.85)",
+            background: "var(--header-bg)",
             backdropFilter: "blur(16px)",
             WebkitBackdropFilter: "blur(16px)",
-            borderBottom: "1px solid rgba(99, 152, 219, 0.2)",
+            borderBottom: "1px solid var(--border-color)",
           }}
         >
           <div className="flex items-center justify-between max-w-7xl mx-auto">
             <Link
               to="/"
-              className="flex items-center gap-2 text-sm font-medium transition-colors duration-200 hover:text-blue-600"
-              style={{ color: "#64748b" }}
+              className="flex items-center gap-2 text-sm font-medium transition-colors duration-200"
+              style={{ color: "var(--text-secondary)" }}
             >
               <span>←</span>
               <span>Portfolio</span>
             </Link>
-            <span
-              className="text-xs font-semibold tracking-[0.3em] uppercase"
-              style={{
-                color: "#2563eb",
-                fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
-              }}
-            >
-              // Projects
-            </span>
+            <div className="flex items-center gap-3">
+              <span
+                className="text-xs font-semibold tracking-[0.3em] uppercase"
+                style={{
+                  color: "var(--accent)",
+                  fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+                }}
+              >
+                // Projects
+              </span>
+              <ThemeToggle />
+            </div>
           </div>
         </header>
 
@@ -92,7 +96,7 @@ const ProjectsPage = () => {
             <div
               className="text-xs font-semibold tracking-[0.3em] uppercase mb-3"
               style={{
-                color: "#2563eb",
+                color: "var(--accent)",
                 fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
               }}
             >
@@ -100,13 +104,13 @@ const ProjectsPage = () => {
             </div>
             <h1
               className="text-4xl sm:text-5xl font-bold tracking-tight mb-4"
-              style={{ color: "#1e293b", letterSpacing: "-0.03em" }}
+              style={{ color: "var(--text-primary)", letterSpacing: "-0.03em" }}
             >
               Projects
             </h1>
             <p
               className="text-base sm:text-lg max-w-2xl mx-auto leading-relaxed"
-              style={{ color: "#64748b" }}
+              style={{ color: "var(--text-secondary)" }}
             >
               これまでに取り組んだプロジェクトの一覧です。
               各プロジェクトをクリックすると詳細を確認できます。
@@ -123,7 +127,7 @@ const ProjectsPage = () => {
           ) : (
             <p
               className="text-center py-12 text-sm"
-              style={{ color: "#94a3b8" }}
+              style={{ color: "var(--text-muted)" }}
             >
               プロジェクトデータがありません（Google Sheets を設定してください）
             </p>
@@ -134,11 +138,11 @@ const ProjectsPage = () => {
         <footer
           className="text-center py-10 mt-20"
           style={{
-            borderTop: "1px solid rgba(99, 152, 219, 0.2)",
-            background: "rgba(244, 246, 251, 0.6)",
+            borderTop: "1px solid var(--border-color)",
+            background: "var(--footer-bg)",
           }}
         >
-          <p className="text-sm" style={{ color: "#94a3b8" }}>
+          <p className="text-sm" style={{ color: "var(--text-muted)" }}>
             &copy; {new Date().getFullYear()} NICOLABO -にこラボ-. All Rights
             Reserved.
           </p>

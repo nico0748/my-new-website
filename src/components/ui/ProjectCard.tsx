@@ -28,11 +28,11 @@ const ProjectCard: React.FC<Props> = ({ item }) => {
     <motion.div
       className="relative rounded-2xl cursor-pointer group"
       style={{
-        background: 'rgba(255,255,255,0.78)',
+        background: 'var(--card-bg)',
         backdropFilter: 'blur(14px)',
         WebkitBackdropFilter: 'blur(14px)',
-        border: '1px solid rgba(99, 152, 219, 0.25)',
-        boxShadow: '0 4px 20px rgba(37, 99, 235, 0.07)',
+        border: '1px solid var(--card-border)',
+        boxShadow: `0 4px 20px var(--card-shadow)`,
       }}
       variants={cardVariants}
       initial="hidden"
@@ -40,8 +40,7 @@ const ProjectCard: React.FC<Props> = ({ item }) => {
       viewport={{ once: true, amount: 0.2 }}
       whileHover={{
         y: -6,
-        boxShadow: '0 20px 40px rgba(37, 99, 235, 0.15)',
-        borderColor: 'rgba(37, 99, 235, 0.4)',
+        boxShadow: '0 20px 40px var(--hover-card-shadow)',
       }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       onClick={handleClick}
@@ -71,9 +70,9 @@ const ProjectCard: React.FC<Props> = ({ item }) => {
               key={tag}
               className="text-xs font-semibold px-2.5 py-0.5 rounded-full"
               style={{
-                background: 'rgba(37, 99, 235, 0.08)',
-                color: '#2563eb',
-                border: '1px solid rgba(37, 99, 235, 0.15)',
+                background: 'var(--tag-bg)',
+                color: 'var(--tag-color)',
+                border: '1px solid var(--tag-border)',
               }}
             >
               {tag}
@@ -83,12 +82,12 @@ const ProjectCard: React.FC<Props> = ({ item }) => {
 
         {/* タイトル */}
         <h3
-          className="text-lg font-bold mb-2 tracking-tight transition-colors duration-200 group-hover:text-blue-600"
-          style={{ color: '#1e293b' }}
+          className="text-lg font-bold mb-2 tracking-tight transition-colors duration-200"
+          style={{ color: 'var(--text-primary)' }}
         >
           {item.title}
         </h3>
-        <p className="text-sm leading-relaxed line-clamp-2" style={{ color: '#64748b' }}>
+        <p className="text-sm leading-relaxed line-clamp-2" style={{ color: 'var(--text-secondary)' }}>
           {item.description}
         </p>
 
@@ -100,7 +99,7 @@ const ProjectCard: React.FC<Props> = ({ item }) => {
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm font-semibold hover:underline transition-colors duration-200"
-              style={{ color: '#2563eb' }}
+              style={{ color: 'var(--accent)' }}
               onClick={(e) => e.stopPropagation()}
             >
               サイトを見る ↗
@@ -112,7 +111,7 @@ const ProjectCard: React.FC<Props> = ({ item }) => {
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm font-medium hover:underline transition-colors duration-200"
-              style={{ color: '#94a3b8' }}
+              style={{ color: 'var(--text-muted)' }}
               onClick={(e) => e.stopPropagation()}
             >
               GitHub

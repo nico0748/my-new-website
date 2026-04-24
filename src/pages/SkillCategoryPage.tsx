@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import GraphPaperBackground from "../components/ui/GraphPaperBackground";
+import ThemeToggle from "../components/ui/ThemeToggle";
 import CornerMarks from "../components/ui/CornerMarks";
 import { fetchSheetData } from "../lib/googleSheets";
 import { mapSkillsData, mapPortfolioData } from "../lib/dataMapper";
@@ -67,7 +68,7 @@ const SkillCategoryPage = () => {
         <div className="flex items-center justify-center min-h-screen">
           <motion.div
             className="w-10 h-10 rounded-full border-2 border-t-transparent"
-            style={{ borderColor: "#2563eb", borderTopColor: "transparent" }}
+            style={{ borderColor: "var(--accent)", borderTopColor: "transparent" }}
             animate={{ rotate: 360 }}
             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
           />
@@ -80,13 +81,13 @@ const SkillCategoryPage = () => {
     return (
       <GraphPaperBackground>
         <div className="flex flex-col items-center justify-center min-h-screen gap-4">
-          <p className="text-lg font-semibold" style={{ color: "#1e293b" }}>
+          <p className="text-lg font-semibold" style={{ color: "var(--text-primary)" }}>
             カテゴリが見つかりません
           </p>
           <Link
             to="/skills"
             className="text-sm font-medium hover:underline"
-            style={{ color: "#2563eb" }}
+            style={{ color: "var(--accent)" }}
           >
             ← スキル一覧に戻る
           </Link>
@@ -110,43 +111,46 @@ const SkillCategoryPage = () => {
         <header
           className="fixed top-0 left-0 right-0 z-50 px-6 py-4"
           style={{
-            background: "rgba(244, 246, 251, 0.85)",
+            background: "var(--header-bg)",
             backdropFilter: "blur(16px)",
             WebkitBackdropFilter: "blur(16px)",
-            borderBottom: "1px solid rgba(99, 152, 219, 0.2)",
+            borderBottom: "1px solid var(--border-color)",
           }}
         >
           <div className="flex items-center justify-between max-w-5xl mx-auto">
             <button
               onClick={() => navigate("/skills")}
-              className="flex items-center gap-2 text-sm font-medium transition-colors duration-200 hover:text-blue-600"
-              style={{ color: "#64748b" }}
+              className="flex items-center gap-2 text-sm font-medium transition-colors duration-200"
+              style={{ color: "var(--text-secondary)" }}
             >
               <span>←</span>
               <span>Skills</span>
             </button>
 
-            {/* Category tabs */}
-            <nav className="hidden md:flex gap-1 overflow-x-auto">
-              {allCategories.map((cat) => (
-                <Link
-                  key={cat.category}
-                  to={`/skills/${encodeURIComponent(cat.category)}`}
-                  className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 whitespace-nowrap"
-                  style={{
-                    color:
-                      cat.category === decodedCategory ? "#2563eb" : "#64748b",
-                    background:
-                      cat.category === decodedCategory
-                        ? "rgba(37, 99, 235, 0.08)"
-                        : "transparent",
-                    fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
-                  }}
-                >
-                  {cat.category}
-                </Link>
-              ))}
-            </nav>
+            <div className="flex items-center gap-3">
+              {/* Category tabs */}
+              <nav className="hidden md:flex gap-1 overflow-x-auto">
+                {allCategories.map((cat) => (
+                  <Link
+                    key={cat.category}
+                    to={`/skills/${encodeURIComponent(cat.category)}`}
+                    className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 whitespace-nowrap"
+                    style={{
+                      color:
+                        cat.category === decodedCategory ? "var(--accent)" : "var(--text-secondary)",
+                      background:
+                        cat.category === decodedCategory
+                          ? "var(--accent-bg)"
+                          : "transparent",
+                      fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+                    }}
+                  >
+                    {cat.category}
+                  </Link>
+                ))}
+              </nav>
+              <ThemeToggle />
+            </div>
           </div>
         </header>
 
@@ -163,7 +167,7 @@ const SkillCategoryPage = () => {
             <div
               className="text-xs font-semibold tracking-[0.3em] uppercase mb-3"
               style={{
-                color: "#2563eb",
+                color: "var(--accent)",
                 fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
               }}
             >
@@ -171,7 +175,7 @@ const SkillCategoryPage = () => {
             </div>
             <h1
               className="text-4xl sm:text-5xl font-bold tracking-tight mb-4"
-              style={{ color: "#1e293b", letterSpacing: "-0.03em" }}
+              style={{ color: "var(--text-primary)", letterSpacing: "-0.03em" }}
             >
               {decodedCategory}
             </h1>
@@ -192,20 +196,20 @@ const SkillCategoryPage = () => {
                   key={stat.label}
                   className="flex items-center gap-2 px-3 py-1.5 rounded-lg"
                   style={{
-                    background: "rgba(255,255,255,0.7)",
-                    border: "1px solid rgba(99, 152, 219, 0.2)",
+                    background: "var(--card-bg)",
+                    border: "1px solid var(--border-color)",
                   }}
                 >
                   <span
                     className="text-sm font-bold"
-                    style={{ color: "#2563eb" }}
+                    style={{ color: "var(--accent)" }}
                   >
                     {stat.value}
                   </span>
                   <span
                     className="text-xs font-medium"
                     style={{
-                      color: "#94a3b8",
+                      color: "var(--text-muted)",
                       fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
                     }}
                   >
@@ -226,7 +230,7 @@ const SkillCategoryPage = () => {
             <span
               className="text-[10px] font-semibold tracking-[0.2em] uppercase"
               style={{
-                color: "#94a3b8",
+                color: "var(--text-muted)",
                 fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
               }}
             >
@@ -243,7 +247,7 @@ const SkillCategoryPage = () => {
                         className="w-1.5 h-1.5 rounded-full"
                         style={{
                           background:
-                            i < lv ? l.color : "rgba(99,152,219,0.15)",
+                            i < lv ? l.color : "var(--skill-bar-empty)",
                         }}
                       />
                     ))}
@@ -270,11 +274,11 @@ const SkillCategoryPage = () => {
                   key={skill.name}
                   className="relative rounded-2xl p-6"
                   style={{
-                    background: "rgba(255,255,255,0.78)",
+                    background: "var(--card-bg)",
                     backdropFilter: "blur(14px)",
                     WebkitBackdropFilter: "blur(14px)",
-                    border: "1px solid rgba(99, 152, 219, 0.22)",
-                    boxShadow: "0 4px 20px rgba(37, 99, 235, 0.06)",
+                    border: "1px solid var(--card-border)",
+                    boxShadow: "0 4px 20px var(--card-shadow)",
                   }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -288,7 +292,7 @@ const SkillCategoryPage = () => {
                       <div className="flex items-center gap-3 mb-2">
                         <h3
                           className="text-lg font-bold tracking-tight"
-                          style={{ color: "#1e293b" }}
+                          style={{ color: "var(--text-primary)" }}
                         >
                           {skill.name}
                         </h3>
@@ -306,8 +310,8 @@ const SkillCategoryPage = () => {
                           <span
                             className="text-xs font-medium px-2 py-0.5 rounded-full"
                             style={{
-                              background: "rgba(99,152,219,0.08)",
-                              color: "#64748b",
+                              background: "var(--skill-bar-empty)",
+                              color: "var(--text-secondary)",
                               fontFamily:
                                 "'JetBrains Mono', 'Fira Code', monospace",
                             }}
@@ -328,7 +332,7 @@ const SkillCategoryPage = () => {
                                 background:
                                   li < skill.level
                                     ? `linear-gradient(90deg, #3b82f6, #6366f1)`
-                                    : "rgba(99,152,219,0.12)",
+                                    : "var(--skill-bar-empty)",
                               }}
                             />
                           ))}
@@ -336,7 +340,7 @@ const SkillCategoryPage = () => {
                         <span
                           className="text-xs font-medium w-8 text-right"
                           style={{
-                            color: "#94a3b8",
+                            color: "var(--text-muted)",
                             fontFamily:
                               "'JetBrains Mono', 'Fira Code', monospace",
                           }}
@@ -349,7 +353,7 @@ const SkillCategoryPage = () => {
                       {skill.description && (
                         <p
                           className="text-sm leading-relaxed mb-3"
-                          style={{ color: "#64748b" }}
+                          style={{ color: "var(--text-secondary)" }}
                         >
                           {skill.description}
                         </p>
@@ -361,7 +365,7 @@ const SkillCategoryPage = () => {
                           <div
                             className="text-[10px] font-semibold tracking-[0.2em] uppercase mb-2"
                             style={{
-                              color: "#94a3b8",
+                              color: "var(--text-muted)",
                               fontFamily:
                                 "'JetBrains Mono', 'Fira Code', monospace",
                             }}
@@ -374,10 +378,9 @@ const SkillCategoryPage = () => {
                                 key={lib}
                                 className="text-xs font-medium px-2.5 py-1 rounded-lg"
                                 style={{
-                                  background: "rgba(99, 152, 219, 0.08)",
-                                  color: "#475569",
-                                  border:
-                                    "1px solid rgba(99, 152, 219, 0.18)",
+                                  background: "var(--skill-bar-empty)",
+                                  color: "var(--text-body)",
+                                  border: "1px solid var(--border-color)",
                                 }}
                               >
                                 {lib}
@@ -392,14 +395,14 @@ const SkillCategoryPage = () => {
                         <div
                           className="rounded-lg px-4 py-3 mb-3"
                           style={{
-                            background: "rgba(37, 99, 235, 0.04)",
+                            background: "var(--blockquote-bg)",
                             borderLeft: `3px solid ${lvl.color}`,
                           }}
                         >
                           <div
                             className="text-[10px] font-semibold tracking-[0.2em] uppercase mb-1"
                             style={{
-                              color: "#94a3b8",
+                              color: "var(--text-muted)",
                               fontFamily:
                                 "'JetBrains Mono', 'Fira Code', monospace",
                             }}
@@ -408,7 +411,7 @@ const SkillCategoryPage = () => {
                           </div>
                           <p
                             className="text-sm leading-relaxed"
-                            style={{ color: "#475569" }}
+                            style={{ color: "var(--text-body)" }}
                           >
                             {skill.comment}
                           </p>
@@ -421,7 +424,7 @@ const SkillCategoryPage = () => {
                           <div
                             className="text-[10px] font-semibold tracking-[0.2em] uppercase mb-2"
                             style={{
-                              color: "#94a3b8",
+                              color: "var(--text-muted)",
                               fontFamily:
                                 "'JetBrains Mono', 'Fira Code', monospace",
                             }}
@@ -433,22 +436,11 @@ const SkillCategoryPage = () => {
                               <Link
                                 key={proj.id}
                                 to={`/projects/${proj.id}`}
-                                className="group/proj flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200"
+                                className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200"
                                 style={{
-                                  background: "rgba(37, 99, 235, 0.06)",
-                                  color: "#475569",
-                                  border:
-                                    "1px solid rgba(37, 99, 235, 0.12)",
-                                }}
-                                onMouseEnter={(e) => {
-                                  e.currentTarget.style.background =
-                                    "rgba(37, 99, 235, 0.12)";
-                                  e.currentTarget.style.color = "#2563eb";
-                                }}
-                                onMouseLeave={(e) => {
-                                  e.currentTarget.style.background =
-                                    "rgba(37, 99, 235, 0.06)";
-                                  e.currentTarget.style.color = "#475569";
+                                  background: "var(--accent-bg)",
+                                  color: "var(--text-body)",
+                                  border: "1px solid var(--accent-border)",
                                 }}
                               >
                                 {proj.thumbnail && (
@@ -459,7 +451,7 @@ const SkillCategoryPage = () => {
                                   />
                                 )}
                                 <span>{proj.title}</span>
-                                <span className="opacity-0 group-hover/proj:opacity-100 transition-opacity">
+                                <span style={{ color: "var(--accent)" }}>
                                   →
                                 </span>
                               </Link>
@@ -477,7 +469,7 @@ const SkillCategoryPage = () => {
                           cy="32"
                           r="28"
                           fill="none"
-                          stroke="rgba(99,152,219,0.12)"
+                          stroke="var(--skill-bar-empty)"
                           strokeWidth="4"
                         />
                         <circle
@@ -527,9 +519,9 @@ const SkillCategoryPage = () => {
                       to={`/skills/${encodeURIComponent(prev.category)}`}
                       className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200"
                       style={{
-                        background: "rgba(255,255,255,0.7)",
-                        color: "#64748b",
-                        border: "1px solid rgba(99,152,219,0.2)",
+                        background: "var(--card-bg)",
+                        color: "var(--text-secondary)",
+                        border: "1px solid var(--border-color)",
                       }}
                     >
                       <span>←</span>
@@ -543,9 +535,9 @@ const SkillCategoryPage = () => {
                       to={`/skills/${encodeURIComponent(next.category)}`}
                       className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200"
                       style={{
-                        background: "rgba(255,255,255,0.7)",
-                        color: "#64748b",
-                        border: "1px solid rgba(99,152,219,0.2)",
+                        background: "var(--card-bg)",
+                        color: "var(--text-secondary)",
+                        border: "1px solid var(--border-color)",
                       }}
                     >
                       <span>{next.category}</span>
@@ -564,11 +556,11 @@ const SkillCategoryPage = () => {
         <footer
           className="text-center py-10 mt-20"
           style={{
-            borderTop: "1px solid rgba(99, 152, 219, 0.2)",
-            background: "rgba(244, 246, 251, 0.6)",
+            borderTop: "1px solid var(--border-color)",
+            background: "var(--footer-bg)",
           }}
         >
-          <p className="text-sm" style={{ color: "#94a3b8" }}>
+          <p className="text-sm" style={{ color: "var(--text-muted)" }}>
             &copy; {new Date().getFullYear()} NICOLABO -にこラボ-. All Rights
             Reserved.
           </p>

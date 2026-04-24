@@ -2,6 +2,90 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─── Theme CSS Variables ─────────────────────────────────────── */
+
+/* Dark mode (default) */
+:root {
+  --bg: #0a0a0f;
+  --bg-rgb: 10, 10, 15;
+  --card-bg: rgba(18, 18, 28, 0.78);
+  --card-bg-solid: #12121c;
+  --card-border: rgba(99, 152, 219, 0.15);
+  --card-shadow: rgba(0, 0, 0, 0.3);
+  --header-bg: rgba(10, 10, 15, 0.88);
+  --footer-bg: rgba(10, 10, 15, 0.6);
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-body: #a1adc0;
+  --accent: #3b82f6;
+  --accent-hover: #60a5fa;
+  --accent-bg: rgba(59, 130, 246, 0.1);
+  --accent-border: rgba(59, 130, 246, 0.25);
+  --accent-shadow: rgba(59, 130, 246, 0.12);
+  --grid-major: rgba(99, 152, 219, 0.08);
+  --grid-minor: rgba(99, 152, 219, 0.03);
+  --border-color: rgba(99, 152, 219, 0.12);
+  --code-bg: rgba(99, 152, 219, 0.12);
+  --code-border: rgba(99, 152, 219, 0.2);
+  --pre-bg: #1a1a2e;
+  --pre-text: #e2e8f0;
+  --tag-bg: rgba(59, 130, 246, 0.12);
+  --tag-color: #60a5fa;
+  --tag-border: rgba(59, 130, 246, 0.2);
+  --dot-bg: #0a0a0f;
+  --hover-card-shadow: rgba(59, 130, 246, 0.2);
+  --warning-bg: rgba(18, 18, 28, 0.95);
+  --blockquote-bg: rgba(59, 130, 246, 0.06);
+  --table-even-bg: rgba(99, 152, 219, 0.05);
+  --skill-bar-empty: rgba(99, 152, 219, 0.1);
+  --avatar-border: rgba(59, 130, 246, 0.3);
+  --avatar-shadow: rgba(59, 130, 246, 0.2);
+  --avatar-ring: rgba(59, 130, 246, 0.08);
+  --online-badge-border: #0a0a0f;
+}
+
+/* Light mode */
+[data-theme="light"] {
+  --bg: #f4f6fb;
+  --bg-rgb: 244, 246, 251;
+  --card-bg: rgba(255, 255, 255, 0.78);
+  --card-bg-solid: #ffffff;
+  --card-border: rgba(99, 152, 219, 0.22);
+  --card-shadow: rgba(37, 99, 235, 0.07);
+  --header-bg: rgba(244, 246, 251, 0.85);
+  --footer-bg: rgba(244, 246, 251, 0.6);
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+  --text-body: #475569;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-bg: rgba(37, 99, 235, 0.08);
+  --accent-border: rgba(37, 99, 235, 0.2);
+  --accent-shadow: rgba(37, 99, 235, 0.07);
+  --grid-major: rgba(99, 152, 219, 0.18);
+  --grid-minor: rgba(99, 152, 219, 0.07);
+  --border-color: rgba(99, 152, 219, 0.2);
+  --code-bg: rgba(99, 152, 219, 0.1);
+  --code-border: rgba(99, 152, 219, 0.2);
+  --pre-bg: #1e293b;
+  --pre-text: #e2e8f0;
+  --tag-bg: rgba(37, 99, 235, 0.08);
+  --tag-color: #2563eb;
+  --tag-border: rgba(37, 99, 235, 0.15);
+  --dot-bg: #f4f6fb;
+  --hover-card-shadow: rgba(37, 99, 235, 0.15);
+  --warning-bg: rgba(255, 255, 255, 0.9);
+  --blockquote-bg: rgba(37, 99, 235, 0.04);
+  --table-even-bg: rgba(99, 152, 219, 0.04);
+  --skill-bar-empty: rgba(99, 152, 219, 0.12);
+  --avatar-border: rgba(37, 99, 235, 0.25);
+  --avatar-shadow: rgba(37, 99, 235, 0.15);
+  --avatar-ring: rgba(37, 99, 235, 0.06);
+  --online-badge-border: #ffffff;
+}
+
 /* 横スクロール防止 */
 html, body {
   overflow-x: hidden;
@@ -31,7 +115,7 @@ pre, code {
 
 /* ─── Markdown スタイル (プロジェクト詳細ページ) ─────────────────────── */
 .prose-custom {
-  color: #1e293b;
+  color: var(--text-primary);
   font-size: 1rem;
   line-height: 1.75;
 }
@@ -39,17 +123,17 @@ pre, code {
 .prose-custom h1 {
   font-size: 2rem;
   font-weight: 800;
-  color: #1e293b;
+  color: var(--text-primary);
   margin: 2rem 0 1rem;
   letter-spacing: -0.03em;
-  border-bottom: 2px solid rgba(99, 152, 219, 0.25);
+  border-bottom: 2px solid var(--border-color);
   padding-bottom: 0.5rem;
 }
 
 .prose-custom h2 {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--text-primary);
   margin: 1.75rem 0 0.75rem;
   letter-spacing: -0.02em;
 }
@@ -57,37 +141,37 @@ pre, code {
 .prose-custom h3 {
   font-size: 1.2rem;
   font-weight: 700;
-  color: #334155;
+  color: var(--text-secondary);
   margin: 1.5rem 0 0.5rem;
 }
 
 .prose-custom p {
   margin: 0.75rem 0;
-  color: #475569;
+  color: var(--text-body);
 }
 
 .prose-custom a {
-  color: #2563eb;
+  color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 
 .prose-custom a:hover {
-  color: #1d4ed8;
+  color: var(--accent-hover);
 }
 
 .prose-custom ul {
   list-style: disc;
   padding-left: 1.5rem;
   margin: 0.75rem 0;
-  color: #475569;
+  color: var(--text-body);
 }
 
 .prose-custom ol {
   list-style: decimal;
   padding-left: 1.5rem;
   margin: 0.75rem 0;
-  color: #475569;
+  color: var(--text-body);
 }
 
 .prose-custom li {
@@ -97,16 +181,16 @@ pre, code {
 .prose-custom code {
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
   font-size: 0.875rem;
-  background: rgba(99, 152, 219, 0.1);
-  color: #2563eb;
+  background: var(--code-bg);
+  color: var(--accent);
   padding: 0.15rem 0.45rem;
   border-radius: 6px;
-  border: 1px solid rgba(99, 152, 219, 0.2);
+  border: 1px solid var(--code-border);
 }
 
 .prose-custom pre {
-  background: #1e293b;
-  color: #e2e8f0;
+  background: var(--pre-bg);
+  color: var(--pre-text);
   padding: 1.25rem 1.5rem;
   border-radius: 14px;
   overflow-x: auto;
@@ -128,15 +212,15 @@ pre, code {
   border-left: 4px solid rgba(37, 99, 235, 0.4);
   padding: 0.5rem 1rem;
   margin: 1rem 0;
-  background: rgba(37, 99, 235, 0.04);
+  background: var(--blockquote-bg);
   border-radius: 0 8px 8px 0;
-  color: #64748b;
+  color: var(--text-secondary);
   font-style: italic;
 }
 
 .prose-custom hr {
   border: none;
-  border-top: 1px solid rgba(99, 152, 219, 0.25);
+  border-top: 1px solid var(--border-color);
   margin: 2rem 0;
 }
 
@@ -148,22 +232,22 @@ pre, code {
 }
 
 .prose-custom th {
-  background: rgba(37, 99, 235, 0.08);
-  color: #2563eb;
+  background: var(--accent-bg);
+  color: var(--accent);
   font-weight: 700;
   padding: 0.6rem 1rem;
   text-align: left;
-  border: 1px solid rgba(99, 152, 219, 0.2);
+  border: 1px solid var(--border-color);
 }
 
 .prose-custom td {
   padding: 0.6rem 1rem;
-  border: 1px solid rgba(99, 152, 219, 0.15);
-  color: #475569;
+  border: 1px solid var(--border-color);
+  color: var(--text-body);
 }
 
 .prose-custom tr:nth-child(even) td {
-  background: rgba(99, 152, 219, 0.04);
+  background: var(--table-even-bg);
 }
 
 .prose-custom img {
@@ -171,5 +255,5 @@ pre, code {
   margin: 1rem auto;
   display: block;
   max-width: 100%;
-  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 4px 16px var(--accent-shadow);
 }

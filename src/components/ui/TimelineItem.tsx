@@ -43,7 +43,7 @@ const TimelineItem = ({
       <span
         className="absolute left-0 top-[5px] flex h-4 w-4 items-center justify-center rounded-full"
         style={{
-          background: '#f4f6fb',
+          background: 'var(--dot-bg)',
           boxShadow: `0 0 0 2px ${cfg.color}`,
         }}
       >
@@ -57,35 +57,37 @@ const TimelineItem = ({
       {year && isFirstOfYear && (
         <span
           className="font-bold text-2xl md:text-3xl tracking-tight block"
-          style={{ color: '#1e293b', letterSpacing: '-0.03em' }}
+          style={{ color: 'var(--text-primary)', letterSpacing: '-0.03em' }}
         >
           {year}
         </span>
       )}
 
       {/* Title + badges */}
-      <h3 className="mt-2 flex flex-wrap items-center gap-2.5 text-base font-medium md:text-lg">
+      <h3 className="mt-2 flex flex-wrap items-center gap-2.5 text-lg font-bold md:text-xl tracking-tight">
         {href ? (
           <a
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="underline decoration-1 underline-offset-[5px] transition-colors duration-200"
+            className="underline decoration-2 underline-offset-[5px] transition-colors duration-200"
             style={{
-              color: '#1e293b',
-              textDecorationColor: 'rgba(30,41,59,0.2)',
+              color: 'var(--text-primary)',
+              textDecorationColor: 'var(--accent-border)',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.textDecorationColor = '#1e293b'
+              e.currentTarget.style.color = 'var(--accent)'
+              e.currentTarget.style.textDecorationColor = 'var(--accent)'
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.textDecorationColor = 'rgba(30,41,59,0.2)'
+              e.currentTarget.style.color = 'var(--text-primary)'
+              e.currentTarget.style.textDecorationColor = 'var(--accent-border)'
             }}
           >
             {title}
           </a>
         ) : (
-          <span style={{ color: '#1e293b' }}>{title}</span>
+          <span style={{ color: 'var(--text-primary)' }}>{title}</span>
         )}
 
         {/* Type badge */}
@@ -119,7 +121,7 @@ const TimelineItem = ({
       {description && (
         <p
           className="mt-1.5 text-sm leading-relaxed md:text-base"
-          style={{ color: '#64748b' }}
+          style={{ color: 'var(--text-secondary)' }}
         >
           {description}
         </p>
