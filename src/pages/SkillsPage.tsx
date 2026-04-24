@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
 import GraphPaperBackground from "../components/ui/GraphPaperBackground";
+import ThemeToggle from "../components/ui/ThemeToggle";
 import CornerMarks from "../components/ui/CornerMarks";
 import { fetchSheetData } from "../lib/googleSheets";
 import { mapSkillsData, mapPortfolioData } from "../lib/dataMapper";
@@ -83,7 +84,7 @@ const SkillsPage = () => {
         <div className="flex items-center justify-center min-h-screen">
           <motion.div
             className="w-10 h-10 rounded-full border-2 border-t-transparent"
-            style={{ borderColor: "#2563eb", borderTopColor: "transparent" }}
+            style={{ borderColor: "var(--accent)", borderTopColor: "transparent" }}
             animate={{ rotate: 360 }}
             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
           />
@@ -99,30 +100,33 @@ const SkillsPage = () => {
         <header
           className="fixed top-0 left-0 right-0 z-50 px-6 py-4"
           style={{
-            background: "rgba(244, 246, 251, 0.85)",
+            background: "var(--header-bg)",
             backdropFilter: "blur(16px)",
             WebkitBackdropFilter: "blur(16px)",
-            borderBottom: "1px solid rgba(99, 152, 219, 0.2)",
+            borderBottom: "1px solid var(--border-color)",
           }}
         >
           <div className="flex items-center justify-between max-w-5xl mx-auto">
             <Link
               to="/"
-              className="flex items-center gap-2 text-sm font-medium transition-colors duration-200 hover:text-blue-600"
-              style={{ color: "#64748b" }}
+              className="flex items-center gap-2 text-sm font-medium transition-colors duration-200"
+              style={{ color: "var(--text-secondary)" }}
             >
               <span>←</span>
               <span>Portfolio</span>
             </Link>
-            <span
-              className="text-xs font-semibold tracking-[0.3em] uppercase"
-              style={{
-                color: "#2563eb",
-                fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
-              }}
-            >
-              // Skills
-            </span>
+            <div className="flex items-center gap-3">
+              <span
+                className="text-xs font-semibold tracking-[0.3em] uppercase"
+                style={{
+                  color: "var(--accent)",
+                  fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+                }}
+              >
+                // Skills
+              </span>
+              <ThemeToggle />
+            </div>
           </div>
         </header>
 
@@ -139,7 +143,7 @@ const SkillsPage = () => {
             <div
               className="text-xs font-semibold tracking-[0.3em] uppercase mb-3"
               style={{
-                color: "#2563eb",
+                color: "var(--accent)",
                 fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
               }}
             >
@@ -147,13 +151,13 @@ const SkillsPage = () => {
             </div>
             <h1
               className="text-4xl sm:text-5xl font-bold tracking-tight mb-4"
-              style={{ color: "#1e293b", letterSpacing: "-0.03em" }}
+              style={{ color: "var(--text-primary)", letterSpacing: "-0.03em" }}
             >
               技術スタック
             </h1>
             <p
               className="text-base sm:text-lg max-w-2xl mx-auto leading-relaxed"
-              style={{ color: "#64748b" }}
+              style={{ color: "var(--text-secondary)" }}
             >
               これまでに使用した技術・ツールの一覧です。
               各スキルをクリックすると、使用経験の詳細を確認できます。
@@ -171,11 +175,11 @@ const SkillsPage = () => {
                   key={cat.category}
                   className="relative rounded-2xl overflow-hidden"
                   style={{
-                    background: "rgba(255,255,255,0.78)",
+                    background: "var(--card-bg)",
                     backdropFilter: "blur(14px)",
                     WebkitBackdropFilter: "blur(14px)",
-                    border: "1px solid rgba(99, 152, 219, 0.2)",
-                    boxShadow: "0 2px 16px rgba(37, 99, 235, 0.05)",
+                    border: "1px solid var(--border-color)",
+                    boxShadow: "0 2px 16px var(--card-shadow)",
                   }}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -193,7 +197,7 @@ const SkillsPage = () => {
                     <div className="flex items-center gap-3 mb-4">
                       <h2
                         className="text-lg font-bold tracking-tight"
-                        style={{ color: "#1e293b" }}
+                        style={{ color: "var(--text-primary)" }}
                       >
                         {cat.category}
                       </h2>
@@ -223,13 +227,13 @@ const SkillsPage = () => {
                             style={{
                               background: selected
                                 ? `${catColor}12`
-                                : "rgba(255,255,255,0.6)",
+                                : "var(--card-bg)",
                               border: selected
                                 ? `1.5px solid ${catColor}50`
-                                : "1px solid rgba(99, 152, 219, 0.18)",
+                                : "1px solid var(--border-color)",
                               boxShadow: selected
                                 ? `0 4px 16px ${catColor}18`
-                                : "0 1px 4px rgba(37, 99, 235, 0.04)",
+                                : "0 1px 4px var(--card-shadow)",
                             }}
                           >
                             {/* Logo or Fallback */}
@@ -250,7 +254,7 @@ const SkillsPage = () => {
                             <span
                               className="text-sm font-medium whitespace-nowrap"
                               style={{
-                                color: selected ? catColor : "#1e293b",
+                                color: selected ? catColor : "var(--text-primary)",
                               }}
                             >
                               {skill.name}
@@ -282,9 +286,8 @@ const SkillsPage = () => {
                             <div
                               className="relative mt-4 rounded-xl p-5"
                               style={{
-                                background: "rgba(255,255,255,0.6)",
-                                border:
-                                  "1px solid rgba(99, 152, 219, 0.15)",
+                                background: "var(--card-bg)",
+                                border: "1px solid var(--border-color)",
                               }}
                             >
                               <CornerMarks
@@ -307,7 +310,7 @@ const SkillsPage = () => {
                                     )}
                                     <h3
                                       className="text-lg font-bold tracking-tight"
-                                      style={{ color: "#1e293b" }}
+                                      style={{ color: "var(--text-primary)" }}
                                     >
                                       {skill.name}
                                     </h3>
@@ -325,9 +328,8 @@ const SkillsPage = () => {
                                       <span
                                         className="text-xs font-medium px-2 py-0.5 rounded-full"
                                         style={{
-                                          background:
-                                            "rgba(99,152,219,0.08)",
-                                          color: "#64748b",
+                                          background: "var(--skill-bar-empty)",
+                                          color: "var(--text-secondary)",
                                           fontFamily:
                                             "'JetBrains Mono', 'Fira Code', monospace",
                                         }}
@@ -348,7 +350,7 @@ const SkillsPage = () => {
                                             background:
                                               li < skill.level
                                                 ? `linear-gradient(90deg, ${catColor}, ${lvl.color})`
-                                                : "rgba(99,152,219,0.12)",
+                                                : "var(--skill-bar-empty)",
                                           }}
                                         />
                                       ))}
@@ -356,7 +358,7 @@ const SkillsPage = () => {
                                     <span
                                       className="text-xs font-medium w-8 text-right"
                                       style={{
-                                        color: "#94a3b8",
+                                        color: "var(--text-muted)",
                                         fontFamily:
                                           "'JetBrains Mono', 'Fira Code', monospace",
                                       }}
@@ -369,7 +371,7 @@ const SkillsPage = () => {
                                   {skill.description && (
                                     <p
                                       className="text-sm leading-relaxed mb-3"
-                                      style={{ color: "#64748b" }}
+                                      style={{ color: "var(--text-secondary)" }}
                                     >
                                       {skill.description}
                                     </p>
@@ -387,7 +389,7 @@ const SkillsPage = () => {
                                       <div
                                         className="text-[10px] font-semibold tracking-[0.2em] uppercase mb-1"
                                         style={{
-                                          color: "#94a3b8",
+                                          color: "var(--text-muted)",
                                           fontFamily:
                                             "'JetBrains Mono', 'Fira Code', monospace",
                                         }}
@@ -396,7 +398,7 @@ const SkillsPage = () => {
                                       </div>
                                       <p
                                         className="text-sm leading-relaxed"
-                                        style={{ color: "#475569" }}
+                                        style={{ color: "var(--text-body)" }}
                                       >
                                         {skill.comment}
                                       </p>
@@ -410,7 +412,7 @@ const SkillsPage = () => {
                                         <div
                                           className="text-[10px] font-semibold tracking-[0.2em] uppercase mb-2"
                                           style={{
-                                            color: "#94a3b8",
+                                            color: "var(--text-muted)",
                                             fontFamily:
                                               "'JetBrains Mono', 'Fira Code', monospace",
                                           }}
@@ -423,11 +425,9 @@ const SkillsPage = () => {
                                               key={lib}
                                               className="text-xs font-medium px-2.5 py-1 rounded-lg"
                                               style={{
-                                                background:
-                                                  "rgba(99, 152, 219, 0.08)",
-                                                color: "#475569",
-                                                border:
-                                                  "1px solid rgba(99, 152, 219, 0.18)",
+                                                background: "var(--skill-bar-empty)",
+                                                color: "var(--text-body)",
+                                                border: "1px solid var(--border-color)",
                                               }}
                                             >
                                               {lib}
@@ -443,7 +443,7 @@ const SkillsPage = () => {
                                       <div
                                         className="text-[10px] font-semibold tracking-[0.2em] uppercase mb-2"
                                         style={{
-                                          color: "#94a3b8",
+                                          color: "var(--text-muted)",
                                           fontFamily:
                                             "'JetBrains Mono', 'Fira Code', monospace",
                                         }}
@@ -455,13 +455,11 @@ const SkillsPage = () => {
                                           <Link
                                             key={proj.id}
                                             to={`/projects/${proj.id}`}
-                                            className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 hover:bg-blue-50"
+                                            className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200"
                                             style={{
-                                              background:
-                                                "rgba(37, 99, 235, 0.06)",
-                                              color: "#475569",
-                                              border:
-                                                "1px solid rgba(37, 99, 235, 0.12)",
+                                              background: "var(--accent-bg)",
+                                              color: "var(--text-body)",
+                                              border: "1px solid var(--accent-border)",
                                             }}
                                           >
                                             {proj.thumbnail && (
@@ -472,7 +470,7 @@ const SkillsPage = () => {
                                               />
                                             )}
                                             <span>{proj.title}</span>
-                                            <span style={{ color: "#2563eb" }}>
+                                            <span style={{ color: "var(--accent)" }}>
                                               →
                                             </span>
                                           </Link>
@@ -489,7 +487,7 @@ const SkillsPage = () => {
                                     related.length === 0 && (
                                       <p
                                         className="text-sm"
-                                        style={{ color: "#94a3b8" }}
+                                        style={{ color: "var(--text-muted)" }}
                                       >
                                         詳細情報は Google Sheets の
                                         Skills シートに追記すると表示されます。
@@ -509,7 +507,7 @@ const SkillsPage = () => {
                                       cy="32"
                                       r="28"
                                       fill="none"
-                                      stroke="rgba(99,152,219,0.12)"
+                                      stroke="var(--skill-bar-empty)"
                                       strokeWidth="4"
                                     />
                                     <circle
@@ -556,11 +554,11 @@ const SkillsPage = () => {
           <motion.div
             className="relative rounded-2xl p-6 sm:p-8 mt-12 max-w-4xl mx-auto"
             style={{
-              background: "rgba(255,255,255,0.75)",
+              background: "var(--card-bg)",
               backdropFilter: "blur(12px)",
               WebkitBackdropFilter: "blur(12px)",
-              border: "1px solid rgba(99, 152, 219, 0.22)",
-              boxShadow: "0 4px 20px rgba(37, 99, 235, 0.06)",
+              border: "1px solid var(--card-border)",
+              boxShadow: "0 4px 20px var(--card-shadow)",
             }}
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -571,7 +569,7 @@ const SkillsPage = () => {
             <div
               className="text-xs font-semibold tracking-[0.2em] uppercase mb-4"
               style={{
-                color: "#2563eb",
+                color: "var(--accent)",
                 fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
               }}
             >
@@ -579,7 +577,7 @@ const SkillsPage = () => {
             </div>
             <p
               className="text-sm leading-relaxed mb-6"
-              style={{ color: "#64748b" }}
+              style={{ color: "var(--text-secondary)" }}
             >
               各スキルは 1〜5
               の5段階で自己評価しています。以下の基準に基づき、実務経験や学習状況を踏まえて設定しています。
@@ -628,7 +626,7 @@ const SkillsPage = () => {
                             background:
                               i < item.level
                                 ? item.color
-                                : "rgba(99,152,219,0.15)",
+                                : "var(--skill-bar-empty)",
                           }}
                         />
                       ))}
@@ -642,7 +640,7 @@ const SkillsPage = () => {
                   </div>
                   <p
                     className="text-sm leading-relaxed flex-1"
-                    style={{ color: "#64748b" }}
+                    style={{ color: "var(--text-secondary)" }}
                   >
                     {item.desc}
                   </p>
@@ -656,11 +654,11 @@ const SkillsPage = () => {
         <footer
           className="text-center py-10 mt-20"
           style={{
-            borderTop: "1px solid rgba(99, 152, 219, 0.2)",
-            background: "rgba(244, 246, 251, 0.6)",
+            borderTop: "1px solid var(--border-color)",
+            background: "var(--footer-bg)",
           }}
         >
-          <p className="text-sm" style={{ color: "#94a3b8" }}>
+          <p className="text-sm" style={{ color: "var(--text-muted)" }}>
             &copy; {new Date().getFullYear()} NICOLABO -にこラボ-. All Rights
             Reserved.
           </p>
