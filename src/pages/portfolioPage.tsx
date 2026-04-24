@@ -6,15 +6,15 @@ import GraphPaperBackground from "../components/ui/GraphPaperBackground";
 import ProjectCard from "../components/ui/ProjectCard";
 import SectionWrapper from "../components/ui/SectionWrapper";
 import SkillRadarChart from "../components/ui/SkillRadarChart";
-import TimelineItem from "../components/ui/TimelineItem";
+import TimelineItemComponent from "../components/ui/TimelineItem";
 
 import { fetchSheetData } from "../lib/googleSheets";
 import { mapProfileData, mapPortfolioData, mapSkillsData, mapTimelineData } from "../lib/dataMapper";
 import type { ProfileData, SkillCategory, TimelineItem as TimelineItemType, PortfolioItem } from "../lib/dataMapper";
 import type { SheetRow } from "../lib/googleSheets";
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
 
 const PortfolioPage = () => {
@@ -159,17 +159,7 @@ const PortfolioPage = () => {
 
           {/* Timeline */}
           <SectionWrapper id="timeline" title="Timeline" index={3} label="History">
-            <div className="max-w-3xl mx-auto">
-              {timeline.map((item, index) => (
-                <TimelineItem
-                  key={index}
-                  year={item.year}
-                  title={item.title}
-                  description={item.description}
-                  type={item.type}
-                />
-              ))}
-            </div>
+            <TimelineSection items={timeline} />
           </SectionWrapper>
         </main>
 
@@ -199,6 +189,57 @@ const PortfolioPage = () => {
         )}
       </div>
     </GraphPaperBackground>
+  );
+};
+
+/** Scroll-linked timeline with gradient vertical line */
+const TimelineSection = ({ items }: { items: TimelineItemType[] }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start center", "end end"],
+  });
+  const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
+
+  // Determine which items are the first occurrence of their year
+  const seenYears = new Set<string>();
+  const firstOfYear = items.map((item) => {
+    if (item.year && !seenYears.has(item.year)) {
+      seenYears.add(item.year);
+      return true;
+    }
+    return false;
+  });
+
+  return (
+    <div className="max-w-2xl mx-auto">
+      <div ref={ref} className="relative">
+        {/* Background track */}
+        <div
+          className="pointer-events-none absolute bottom-0 left-[7px] top-[12px] w-px"
+          style={{ background: 'rgba(99, 152, 219, 0.15)' }}
+        />
+        {/* Scroll-linked gradient line */}
+        <motion.div
+          style={{ scaleY, background: 'linear-gradient(to bottom, #2563eb, #8b5cf6, #06b6d4)' }}
+          className="pointer-events-none absolute bottom-0 left-[7px] top-[12px] w-px origin-top"
+        />
+
+        {items.map((item, index) => (
+          <TimelineItemComponent
+            key={index}
+            year={item.year}
+            title={item.title}
+            description={item.description}
+            type={item.type}
+            href={item.href}
+            status={item.status}
+            index={index}
+            isFirstOfYear={firstOfYear[index]}
+          />
+        ))}
+      </div>
+    </div>
   );
 };
 
