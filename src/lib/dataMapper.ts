@@ -27,6 +27,8 @@ export interface SkillCategory {
 
 export interface TimelineItem {
     year: string;
+    yearLabel?: string;
+    month?: string;
     title: string;
     description: string;
     type: "education" | "work" | "project" | "other" | "certification";
@@ -98,6 +100,8 @@ export const mapSkillsData = (rows: SheetRow[]): SkillCategory[] => {
 export const mapTimelineData = (rows: SheetRow[]): TimelineItem[] => {
     return rows.map(row => ({
         year: row.year || "",
+        yearLabel: row.yearLabel || undefined,
+        month: row.month || undefined,
         title: row.title,
         description: row.description,
         type: (row.type as TimelineItem["type"]) || "other",
