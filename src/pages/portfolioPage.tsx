@@ -13,8 +13,8 @@ import { mapProfileData, mapPortfolioData, mapSkillsData, mapTimelineData } from
 import type { ProfileData, SkillCategory, TimelineItem as TimelineItemType, PortfolioItem } from "../lib/dataMapper";
 import type { SheetRow } from "../lib/googleSheets";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 const PortfolioPage = () => {
@@ -192,53 +192,59 @@ const PortfolioPage = () => {
   );
 };
 
-/** Scroll-linked timeline with gradient vertical line */
+/** Year-grouped timeline rendered as a table-like layout */
 const TimelineSection = ({ items }: { items: TimelineItemType[] }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start center", "end end"],
-  });
-  const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
-
-  // Determine which items are the first occurrence of their year
-  const seenYears = new Set<string>();
-  const firstOfYear = items.map((item) => {
-    if (item.year && !seenYears.has(item.year)) {
-      seenYears.add(item.year);
-      return true;
+  // Group consecutive items sharing the same year. Use the first non-empty
+  // yearLabel within a group as the group's sub-label.
+  const groups: { year: string; yearLabel?: string; items: TimelineItemType[] }[] = [];
+  items.forEach((item) => {
+    const last = groups[groups.length - 1];
+    if (last && last.year === item.year) {
+      last.items.push(item);
+      if (!last.yearLabel && item.yearLabel) last.yearLabel = item.yearLabel;
+    } else {
+      groups.push({ year: item.year, yearLabel: item.yearLabel, items: [item] });
     }
-    return false;
   });
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div ref={ref} className="relative">
-        {/* Background track */}
-        <div
-          className="pointer-events-none absolute bottom-0 left-[7px] top-[12px] w-px"
-          style={{ background: 'var(--border-color)' }}
-        />
-        {/* Scroll-linked gradient line */}
-        <motion.div
-          style={{ scaleY, background: 'linear-gradient(to bottom, #2563eb, #8b5cf6, #06b6d4)' }}
-          className="pointer-events-none absolute bottom-0 left-[7px] top-[12px] w-px origin-top"
-        />
-
-        {items.map((item, index) => (
-          <TimelineItemComponent
-            key={index}
-            year={item.year}
-            title={item.title}
-            description={item.description}
-            type={item.type}
-            href={item.href}
-            status={item.status}
-            index={index}
-            isFirstOfYear={firstOfYear[index]}
-          />
-        ))}
-      </div>
+    <div className="max-w-3xl mx-auto space-y-10">
+      {groups.map((group, gi) => {
+        const startIdx = groups.slice(0, gi).reduce((acc, g) => acc + g.items.length, 0);
+        return (
+          <div key={`${group.year}-${gi}`}>
+            <div className="flex items-baseline gap-3 mb-3 px-1">
+              <h3
+                className="text-2xl md:text-3xl font-bold tracking-tight"
+                style={{ color: 'var(--text-primary)', letterSpacing: '-0.02em' }}
+              >
+                {group.year}
+              </h3>
+              {group.yearLabel && (
+                <span
+                  className="text-xs sm:text-sm"
+                  style={{ color: 'var(--text-muted)' }}
+                >
+                  {group.yearLabel}
+                </span>
+              )}
+            </div>
+            <div className="space-y-1.5">
+              {group.items.map((item, ii) => (
+                <TimelineItemComponent
+                  key={`${gi}-${ii}`}
+                  month={item.month}
+                  title={item.title}
+                  description={item.description}
+                  href={item.href}
+                  status={item.status}
+                  index={startIdx + ii}
+                />
+              ))}
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 };
