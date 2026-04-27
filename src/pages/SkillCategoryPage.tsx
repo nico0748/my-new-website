@@ -331,7 +331,7 @@ const SkillCategoryPage = () => {
                               style={{
                                 background:
                                   li < skill.level
-                                    ? `linear-gradient(90deg, #3b82f6, #6366f1)`
+                                    ? lvl.color
                                     : "var(--skill-bar-empty)",
                               }}
                             />
