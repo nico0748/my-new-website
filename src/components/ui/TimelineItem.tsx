@@ -39,7 +39,7 @@ const TimelineItem = ({
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm sm:text-base font-medium underline-offset-4 hover:underline transition-colors duration-200"
+              className="text-base sm:text-lg font-semibold underline-offset-4 hover:underline transition-colors duration-200"
               style={{ color: 'var(--text-primary)' }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.color = 'var(--accent)'
@@ -52,7 +52,7 @@ const TimelineItem = ({
             </a>
           ) : (
             <span
-              className="text-sm sm:text-base font-medium"
+              className="text-base sm:text-lg font-semibold"
               style={{ color: 'var(--text-primary)' }}
             >
               {title}
