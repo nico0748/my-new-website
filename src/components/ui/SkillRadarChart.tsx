@@ -95,7 +95,7 @@ const SkillRadarChart = ({ category, skills }: SkillRadarChartProps) => {
                   className="h-2 flex-1 rounded-full"
                   style={{
                     background: levelIndex < skill.level
-                      ? 'linear-gradient(90deg, #3b82f6, #6366f1)'
+                      ? 'var(--accent)'
                       : 'var(--skill-bar-empty)',
                   }}
                   initial={{ scaleX: 0 }}
