@@ -106,11 +106,11 @@ const PortfolioPage = () => {
             {portfolio.length > 0 ? (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {portfolio.slice(0, 6).map((item) => (
+                  {portfolio.slice(0, 3).map((item) => (
                     <ProjectCard key={item.id} item={item} />
                   ))}
                 </div>
-                {portfolio.length > 6 && (
+                {portfolio.length > 3 && (
                   <div className="flex justify-center mt-8">
                     <Link
                       to="/projects"
@@ -137,7 +137,7 @@ const PortfolioPage = () => {
           {/* Skills */}
           <SectionWrapper id="skills" title="Skills" index={2} label="Stack">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {skills.slice(0, 6).map((category, index) => (
+              {skills.slice(0, 3).map((category, index) => (
                 <SkillRadarChart key={index} category={category.category} skills={category.skills} />
               ))}
             </div>
