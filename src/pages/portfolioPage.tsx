@@ -192,10 +192,9 @@ const PortfolioPage = () => {
   );
 };
 
-/** Year-grouped timeline rendered as a table-like layout */
+/** Zigzag vertical timeline with center line, year banners, and animated nodes. */
 const TimelineSection = ({ items }: { items: TimelineItemType[] }) => {
-  // Group consecutive items sharing the same year. Use the first non-empty
-  // yearLabel within a group as the group's sub-label.
+  // Group consecutive items sharing the same year.
   const groups: { year: string; yearLabel?: string; items: TimelineItemType[] }[] = [];
   items.forEach((item) => {
     const last = groups[groups.length - 1];
@@ -208,28 +207,65 @@ const TimelineSection = ({ items }: { items: TimelineItemType[] }) => {
   });
 
   return (
-    <div className="max-w-3xl mx-auto space-y-10">
+    <div className="relative max-w-4xl mx-auto pb-8">
+      {/* Center line (desktop) */}
+      <div
+        className="absolute top-0 bottom-0 hidden md:block w-px"
+        style={{
+          left: '50%',
+          transform: 'translateX(-50%)',
+          background:
+            'linear-gradient(to bottom, transparent 0%, var(--border-color) 8%, var(--border-color) 92%, transparent 100%)',
+        }}
+      />
+      {/* Left line (mobile) */}
+      <div
+        className="absolute top-0 bottom-0 md:hidden w-px"
+        style={{
+          left: '1rem',
+          background:
+            'linear-gradient(to bottom, transparent 0%, var(--border-color) 6%, var(--border-color) 94%, transparent 100%)',
+        }}
+      />
+
       {groups.map((group, gi) => {
-        const startIdx = groups.slice(0, gi).reduce((acc, g) => acc + g.items.length, 0);
+        const startIdx = groups
+          .slice(0, gi)
+          .reduce((acc, g) => acc + g.items.length, 0);
         return (
-          <div key={`${group.year}-${gi}`}>
-            <div className="flex items-baseline gap-3 mb-3 px-1">
-              <h3
-                className="text-2xl md:text-3xl font-bold tracking-tight"
-                style={{ color: 'var(--text-primary)', letterSpacing: '-0.02em' }}
+          <div key={`${group.year}-${gi}`} className="relative">
+            {/* Year banner — sits on top of the center line */}
+            <div className="relative flex justify-start md:justify-center pl-12 md:pl-0 mb-8 md:mb-10 mt-2 md:mt-4">
+              <div
+                className="relative z-10 inline-flex items-baseline gap-2 px-4 py-1.5 rounded-full"
+                style={{
+                  background: 'var(--card-bg-solid)',
+                  border: '1.5px solid var(--accent-border)',
+                }}
               >
-                {group.year}
-              </h3>
-              {group.yearLabel && (
                 <span
-                  className="text-xs sm:text-sm"
-                  style={{ color: 'var(--text-muted)' }}
+                  className="text-lg md:text-xl font-bold tracking-tight tabular-nums"
+                  style={{
+                    color: 'var(--accent)',
+                    letterSpacing: '-0.02em',
+                    fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+                  }}
                 >
-                  {group.yearLabel}
+                  {group.year}
                 </span>
-              )}
+                {group.yearLabel && (
+                  <span
+                    className="text-[11px] sm:text-xs font-medium"
+                    style={{ color: 'var(--text-muted)' }}
+                  >
+                    {group.yearLabel}
+                  </span>
+                )}
+              </div>
             </div>
-            <div className="space-y-1.5">
+
+            {/* Items */}
+            <div className="space-y-8 md:space-y-12 mb-12">
               {group.items.map((item, ii) => (
                 <TimelineItemComponent
                   key={`${gi}-${ii}`}
@@ -238,6 +274,7 @@ const TimelineSection = ({ items }: { items: TimelineItemType[] }) => {
                   description={item.description}
                   href={item.href}
                   status={item.status}
+                  type={item.type}
                   index={startIdx + ii}
                 />
               ))}
