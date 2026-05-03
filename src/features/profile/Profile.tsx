@@ -23,7 +23,10 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
         <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center">Profile</h2>
         <div className="flex flex-col md:flex-row gap-8 items-stretch">
           {/* 左のボックス */}
-          <div className="md:w-1/3 w-full bg-[#e8dbc6] p-6 rounded-lg shadow-md flex flex-col">
+          <div
+            className="md:w-1/3 w-full p-6 rounded-lg shadow-md flex flex-col"
+            style={{ background: 'var(--card-bg-solid)', border: '1px solid var(--border-color)' }}
+          >
             <img src={data.imageUrl} alt={data.name} className="w-full h-auto aspect-square object-cover rounded-md mb-4" />
             <h3 className="text-2xl font-bold mb-2 text-center">{data.name}</h3>
             <p className="text-base text-gray-700 text-center">{data.title}</p>
@@ -40,7 +43,10 @@ const Profile: React.FC<ProfileProps> = ({ data }) => {
             </div>
           </div>
           {/* 右のボックス */}
-          <div className="md:w-2/3 w-full bg-[#e8dbc6] p-6 md:p-8 rounded-lg shadow-md">
+          <div
+            className="md:w-2/3 w-full p-6 md:p-8 rounded-lg shadow-md"
+            style={{ background: 'var(--card-bg-solid)', border: '1px solid var(--border-color)' }}
+          >
             <p className="text-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: data.bio }}></p>
           </div>
         </div>

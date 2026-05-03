@@ -6,10 +6,14 @@ export default {
   ],
   theme: {
     extend: {
-      // 'Concert One' フォントを追加
+      // 和風フォント（明朝体ベース）
       fontFamily: {
-        'concert-one': ['"Concert One"', 'sans-serif'],
-        'rounded': ['"M PLUS Rounded 1c"', 'sans-serif'],
+        'mincho':       ['"Shippori Mincho B1"', '"Noto Serif JP"', 'serif'],
+        'display':      ['"Hina Mincho"', '"Shippori Mincho B1"', 'serif'],
+        'handwritten':  ['"Klee One"', 'cursive'],
+        'noto-serif':   ['"Noto Serif JP"', 'serif'],
+        'rounded':      ['"M PLUS Rounded 1c"', 'sans-serif'],
+        'mono':         ['"JetBrains Mono"', 'monospace'],
       },
       // clamp() に対応するカスタムフォントサイズを追加
       fontSize: {

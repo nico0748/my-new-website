@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
-import GraphPaperBackground from "../components/ui/GraphPaperBackground";
-import ThemeToggle from "../components/ui/ThemeToggle";
+import WashiBackground from "../components/ui/WashiBackground";
 import ProjectCard from "../components/ui/ProjectCard";
 import { fetchSheetData } from "../lib/googleSheets";
 import { mapPortfolioData } from "../lib/dataMapper";
@@ -33,7 +32,7 @@ const ProjectsPage = () => {
 
   if (loading) {
     return (
-      <GraphPaperBackground>
+      <WashiBackground>
         <div className="flex items-center justify-center min-h-screen">
           <motion.div
             className="w-10 h-10 rounded-full border-2 border-t-transparent"
@@ -42,12 +41,12 @@ const ProjectsPage = () => {
             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
           />
         </div>
-      </GraphPaperBackground>
+      </WashiBackground>
     );
   }
 
   return (
-    <GraphPaperBackground>
+    <WashiBackground>
       <div className="font-sans antialiased min-h-screen">
         {/* Header */}
         <header
@@ -73,12 +72,11 @@ const ProjectsPage = () => {
                 className="text-xs font-semibold tracking-[0.3em] uppercase"
                 style={{
                   color: "var(--accent)",
-                  fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+                  fontFamily: "'Hina Mincho', 'Shippori Mincho B1', serif",
                 }}
               >
-                // Projects
+                Projects
               </span>
-              <ThemeToggle />
             </div>
           </div>
         </header>
@@ -97,10 +95,10 @@ const ProjectsPage = () => {
               className="text-xs font-semibold tracking-[0.3em] uppercase mb-3"
               style={{
                 color: "var(--accent)",
-                fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+                fontFamily: "'Hina Mincho', 'Shippori Mincho B1', serif",
               }}
             >
-              // All Works
+              All Works
             </div>
             <h1
               className="text-4xl sm:text-5xl font-bold tracking-tight mb-4"
@@ -148,7 +146,7 @@ const ProjectsPage = () => {
           </p>
         </footer>
       </div>
-    </GraphPaperBackground>
+    </WashiBackground>
   );
 };
 

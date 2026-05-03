@@ -17,40 +17,45 @@ interface TypeStyle {
 }
 
 const TYPE_STYLES: Record<TimelineEventType, TypeStyle> = {
+  // 紺青 (konjou)
   education: {
-    label: "学業",
-    color: "#9333ea",
-    bg: "rgba(147, 51, 234, 0.10)",
-    border: "rgba(147, 51, 234, 0.30)",
-    shadow: "rgba(147, 51, 234, 0.18)",
+    label: "Education",
+    color: "#5d6dad",
+    bg: "rgba(93, 109, 173, 0.10)",
+    border: "rgba(93, 109, 173, 0.30)",
+    shadow: "rgba(93, 109, 173, 0.18)",
   },
+  // 藍 (ai)
   work: {
-    label: "仕事",
-    color: "#2563eb",
-    bg: "rgba(37, 99, 235, 0.10)",
-    border: "rgba(37, 99, 235, 0.30)",
-    shadow: "rgba(37, 99, 235, 0.18)",
+    label: "Work",
+    color: "#1f4e79",
+    bg: "rgba(31, 78, 121, 0.10)",
+    border: "rgba(31, 78, 121, 0.30)",
+    shadow: "rgba(31, 78, 121, 0.18)",
   },
+  // 緋色 (hi-iro)
   project: {
-    label: "制作",
-    color: "#16a34a",
-    bg: "rgba(22, 163, 74, 0.10)",
-    border: "rgba(22, 163, 74, 0.30)",
-    shadow: "rgba(22, 163, 74, 0.18)",
+    label: "Project",
+    color: "#c8443c",
+    bg: "rgba(200, 68, 60, 0.10)",
+    border: "rgba(200, 68, 60, 0.30)",
+    shadow: "rgba(200, 68, 60, 0.18)",
   },
+  // 山吹 (yamabuki)
   certification: {
-    label: "資格",
-    color: "#d97706",
-    bg: "rgba(217, 119, 6, 0.10)",
-    border: "rgba(217, 119, 6, 0.30)",
-    shadow: "rgba(217, 119, 6, 0.18)",
+    label: "Certification",
+    color: "#c89b3c",
+    bg: "rgba(200, 155, 60, 0.12)",
+    border: "rgba(200, 155, 60, 0.32)",
+    shadow: "rgba(200, 155, 60, 0.20)",
   },
+  // 利休鼠 (rikyu-nezumi)
   other: {
-    label: "その他",
-    color: "#64748b",
-    bg: "rgba(100, 116, 139, 0.10)",
-    border: "rgba(100, 116, 139, 0.30)",
-    shadow: "rgba(100, 116, 139, 0.18)",
+    label: "Other",
+    color: "#787276",
+    bg: "rgba(120, 114, 118, 0.10)",
+    border: "rgba(120, 114, 118, 0.28)",
+    shadow: "rgba(120, 114, 118, 0.16)",
   },
 }
 
@@ -287,7 +292,8 @@ const Card = ({
             className="text-xs font-semibold tabular-nums"
             style={{
               color: typeStyle.color,
-              fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+              fontFamily: "'Hina Mincho', 'Shippori Mincho B1', serif",
+              letterSpacing: '0.05em',
             }}
           >
             {month}

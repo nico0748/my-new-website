@@ -5,6 +5,7 @@ import { CalendarDays, ArrowDownAZ, ArrowUpAZ } from 'lucide-react';
 import ContentCard from '../components/ui/ContentCard';
 import PageTransition from '../components/ui/PageTransition';
 import AnimeDetailModal from '../components/ui/AnimeDetailModal';
+import WashiBackground from '../components/ui/WashiBackground';
 import { fetchSheetData } from '../lib/googleSheets';
 import { mapAnimeData } from '../lib/dataMapper';
 import type { AnimeItem } from '../lib/dataMapper';
@@ -87,10 +88,17 @@ const AllWatchedAnime: React.FC = () => {
   };
 
   return (
-    <>
+    <WashiBackground>
       <PageTransition>
-        <div className="container mx-auto p-4 md:p-8 bg-[#f1e6d1] min-h-screen">
-          <h1 className="text-5xl md:text-7xl font-bold text-center mb-12 text-[#4a3b32] drop-shadow-sm font-rounded tracking-wide">
+        <div className="container mx-auto p-4 md:p-8 min-h-screen">
+          <h1
+            className="text-5xl md:text-7xl font-bold text-center mb-12 drop-shadow-sm tracking-wide"
+            style={{
+              color: 'var(--text-primary)',
+              fontFamily: "'Hina Mincho', 'Shippori Mincho B1', serif",
+              letterSpacing: '0.06em',
+            }}
+          >
             視聴済みアニメ一覧
           </h1>
 
@@ -155,7 +163,7 @@ const AllWatchedAnime: React.FC = () => {
           />
         )}
       </AnimatePresence>
-    </>
+    </WashiBackground>
   );
 };
 

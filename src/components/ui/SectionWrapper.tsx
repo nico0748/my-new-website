@@ -8,7 +8,11 @@ interface SectionWrapperProps {
   className?: string;
   index?: number;
   label?: string;
+  subtitle?: string;
 }
+
+const KANSUJI = ['零', '壱', '弐', '参', '肆', '伍', '陸', '漆', '捌', '玖'];
+const toKansuji = (n: number) => (n >= 0 && n < KANSUJI.length ? KANSUJI[n] : String(n));
 
 const SectionWrapper: React.FC<SectionWrapperProps> = ({
   id,
@@ -17,62 +21,88 @@ const SectionWrapper: React.FC<SectionWrapperProps> = ({
   className = "",
   index,
   label,
+  subtitle,
 }) => {
-  const indexLabel =
-    typeof index === 'number' ? `§${String(index).padStart(2, '0')}` : null;
+  const kansuji = typeof index === 'number' ? toKansuji(index) : null;
 
   return (
     <section
       id={id}
-      className={`py-16 md:py-24 min-h-[50vh] flex items-center justify-center w-full max-w-full overflow-x-hidden ${className}`}
+      className={`relative py-10 md:py-14 flex items-center justify-center w-full max-w-full overflow-x-hidden ${className}`}
     >
       <div className="w-full max-w-7xl mx-auto px-4 flex flex-col items-center">
         {title && (
           <motion.div
-            className="mb-14 text-center"
+            className="mb-8 md:mb-10 text-center"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            {(indexLabel || label) && (
+            {(kansuji || label) && (
               <div
-                className="flex items-center justify-center gap-2 mb-3 text-xs font-semibold tracking-[0.3em] uppercase"
+                className="flex items-center justify-center gap-3 mb-4 text-xs font-medium tracking-[0.3em] uppercase"
                 style={{
                   color: 'var(--accent)',
-                  fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+                  fontFamily: "'Hina Mincho', 'Shippori Mincho B1', serif",
                 }}
               >
-                {indexLabel && (
+                {kansuji && (
                   <span
-                    className="px-2 py-0.5 rounded-md"
+                    className="inline-flex items-center justify-center"
                     style={{
-                      background: 'var(--accent-bg)',
-                      border: '1px solid var(--accent-border)',
+                      width: '28px',
+                      height: '28px',
+                      background: 'var(--seal-red)',
+                      color: 'rgba(245, 237, 225, 0.95)',
+                      fontSize: '15px',
+                      fontWeight: 700,
+                      transform: 'rotate(-4deg)',
+                      letterSpacing: 0,
+                      borderRadius: '2px',
+                      fontFamily: "'Hina Mincho', 'Shippori Mincho B1', serif",
                     }}
                   >
-                    {indexLabel}
+                    {kansuji}
                   </span>
                 )}
                 <span
-                  className="h-px w-8"
+                  className="h-px w-10"
                   style={{ background: 'var(--accent-border)' }}
                 />
-                <span>{label ?? id}</span>
+                <span style={{ letterSpacing: '0.4em' }}>{label ?? id}</span>
               </div>
             )}
             <h2
-              className="text-4xl md:text-6xl font-bold tracking-tight"
-              style={{ color: 'var(--text-primary)', letterSpacing: '-0.03em' }}
+              className="text-4xl md:text-6xl font-bold"
+              style={{
+                color: 'var(--text-primary)',
+                letterSpacing: '0.04em',
+                fontFamily: "'Hina Mincho', 'Shippori Mincho B1', serif",
+              }}
             >
               {title}
             </h2>
-            {/* セクションタイトル下のアクセントライン */}
-            <div className="flex items-center justify-center gap-2 mt-4">
-              <span className="w-8 h-0.5 rounded-full" style={{ background: 'var(--accent)' }} />
-              <span className="w-2 h-2 rounded-full" style={{ background: 'var(--accent)' }} />
-              <span className="w-8 h-0.5 rounded-full" style={{ background: 'var(--accent)' }} />
+            {/* セクションタイトル下のアクセント — 細い墨線 + 朱の点 */}
+            <div className="flex items-center justify-center gap-2 mt-5">
+              <span className="w-12 h-px" style={{ background: 'var(--text-muted)' }} />
+              <span
+                className="w-1.5 h-1.5 rounded-full"
+                style={{ background: 'var(--seal-red)' }}
+              />
+              <span className="w-12 h-px" style={{ background: 'var(--text-muted)' }} />
             </div>
+            {subtitle && (
+              <p
+                className="mt-5 text-sm sm:text-base max-w-2xl mx-auto leading-loose"
+                style={{
+                  color: 'var(--text-secondary)',
+                  fontFamily: "'Shippori Mincho B1', 'Noto Serif JP', serif",
+                }}
+              >
+                {subtitle}
+              </p>
+            )}
           </motion.div>
         )}
         <div className="w-full max-w-full">
