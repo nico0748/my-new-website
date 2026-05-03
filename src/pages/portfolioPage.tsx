@@ -1,12 +1,14 @@
 import Header2 from "../components/layouts/header/Header2";
 import Footer2 from "../components/layouts/footer/Footer2";
+import HeroSection from "../features/hero/HeroSection";
 import Profile2 from "../features/profile/Profile2";
-import GraphPaperBackground from "../components/ui/GraphPaperBackground";
+import WashiBackground from "../components/ui/WashiBackground";
 
 import ProjectCard from "../components/ui/ProjectCard";
 import SectionWrapper from "../components/ui/SectionWrapper";
 import SkillRadarChart from "../components/ui/SkillRadarChart";
 import TimelineItemComponent from "../components/ui/TimelineItem";
+import FoxPeek from "../components/ui/FoxPeek";
 
 import { fetchSheetData } from "../lib/googleSheets";
 import { mapProfileData, mapPortfolioData, mapSkillsData, mapTimelineData } from "../lib/dataMapper";
@@ -14,7 +16,6 @@ import type { ProfileData, SkillCategory, TimelineItem as TimelineItemType, Port
 import type { SheetRow } from "../lib/googleSheets";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 const PortfolioPage = () => {
@@ -82,35 +83,58 @@ const PortfolioPage = () => {
   }, []);
 
   return (
-    <GraphPaperBackground>
+    <WashiBackground>
       <div className="font-sans antialiased overflow-x-hidden min-h-screen">
         <Header2 activeSection={activeSection} scrollToSection={scrollToSection} />
 
-        {/* ヘッダー分のスペーサー */}
-        <div className="h-16 sm:h-20" />
+        {/* Hero — フルスクリーン（profile.name + profile.title）*/}
+        <HeroSection
+          name={profile.name}
+          title={profile.title}
+          onScrollDown={() => scrollToSection("profile")}
+        />
 
-        <main className="container mx-auto py-12 px-4 w-full max-w-full overflow-x-hidden">
-          {/* Profile */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        <main className="container mx-auto px-4 w-full max-w-full overflow-x-hidden">
+          {/* About me（既存の profile セクション） */}
+          <SectionWrapper
+            id="profile"
+            title="About me"
+            index={1}
+            label="Profile"
+            subtitle="自己紹介と、これまでに歩んできた背景・関心の方向性をまとめています。"
           >
-            <SectionWrapper id="profile" title="">
-              <Profile2 data={profile} />
-            </SectionWrapper>
-          </motion.div>
+            <Profile2 data={profile} />
+          </SectionWrapper>
 
-          {/* Projects */}
-          <SectionWrapper id="projects" title="Projects" index={1} label="Works">
+          {/* Works */}
+          <SectionWrapper
+            id="projects"
+            title="Works"
+            index={2}
+            label="Projects"
+            subtitle="腕によりをかけて制作した、愛すべき成果物たちをご紹介します。"
+          >
             {portfolio.length > 0 ? (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {portfolio.slice(0, 3).map((item) => (
-                    <ProjectCard key={item.id} item={item} />
-                  ))}
+                  {portfolio.slice(0, 6).map((item, idx) =>
+                    idx === 0 ? (
+                      <FoxPeek
+                        key={item.id}
+                        side="left"
+                        size={130}
+                        image="/japanese-fox2.png"
+                        peekRatio={0.5}
+                        block
+                      >
+                        <ProjectCard item={item} />
+                      </FoxPeek>
+                    ) : (
+                      <ProjectCard key={item.id} item={item} />
+                    )
+                  )}
                 </div>
-                {portfolio.length > 3 && (
+                {portfolio.length > 6 && (
                   <div className="flex justify-center mt-8">
                     <Link
                       to="/projects"
@@ -135,11 +159,30 @@ const PortfolioPage = () => {
           </SectionWrapper>
 
           {/* Skills */}
-          <SectionWrapper id="skills" title="Skills" index={2} label="Stack">
+          <SectionWrapper
+            id="skills"
+            title="Skills"
+            index={3}
+            label="Stack"
+            subtitle="日々の制作で使っている技術スタックを、得意分野ごとにレーダーチャートで可視化しています。"
+          >
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {skills.slice(0, 3).map((category, index) => (
-                <SkillRadarChart key={index} category={category.category} skills={category.skills} />
-              ))}
+              {skills.slice(0, 3).map((category, index) =>
+                index === 0 ? (
+                  <FoxPeek
+                    key={index}
+                    side="right"
+                    size={130}
+                    image="/japanese-fox3.png"
+                    peekRatio={0.5}
+                    block
+                  >
+                    <SkillRadarChart category={category.category} skills={category.skills} />
+                  </FoxPeek>
+                ) : (
+                  <SkillRadarChart key={index} category={category.category} skills={category.skills} />
+                )
+              )}
             </div>
             <div className="flex justify-center mt-8">
               <Link
@@ -158,7 +201,13 @@ const PortfolioPage = () => {
           </SectionWrapper>
 
           {/* Timeline */}
-          <SectionWrapper id="timeline" title="Timeline" index={3} label="History">
+          <SectionWrapper
+            id="timeline"
+            title="Timeline"
+            index={4}
+            label="History"
+            subtitle="学業・仕事・制作・資格など、これまでの歩みを時系列で振り返ります。"
+          >
             <TimelineSection items={timeline} />
           </SectionWrapper>
         </main>
@@ -188,7 +237,7 @@ const PortfolioPage = () => {
           </div>
         )}
       </div>
-    </GraphPaperBackground>
+    </WashiBackground>
   );
 };
 
@@ -247,8 +296,8 @@ const TimelineSection = ({ items }: { items: TimelineItemType[] }) => {
                   className="text-lg md:text-xl font-bold tracking-tight tabular-nums"
                   style={{
                     color: 'var(--accent)',
-                    letterSpacing: '-0.02em',
-                    fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+                    letterSpacing: '0.06em',
+                    fontFamily: "'Hina Mincho', 'Shippori Mincho B1', serif",
                   }}
                 >
                   {group.year}

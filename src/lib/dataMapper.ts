@@ -41,6 +41,9 @@ export interface ProfileData {
     title: string;
     description: string;
     image: string;
+    blogUrl?: string;
+    githubUrl?: string;
+    qiitaUrl?: string;
 }
 
 export interface AnimeItem {
@@ -63,7 +66,10 @@ export const mapProfileData = (rows: SheetRow[]): ProfileData => {
         name: profile.name || "",
         title: profile.title || "",
         description: profile.description || "",
-        image: profile.image || "/sns_icon_round.png"
+        image: profile.image || "/sns_icon_round.png",
+        blogUrl: profile.blogUrl || undefined,
+        githubUrl: profile.githubUrl || undefined,
+        qiitaUrl: profile.qiitaUrl || undefined,
     };
 };
 

@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
-import GraphPaperBackground from "../components/ui/GraphPaperBackground";
-import ThemeToggle from "../components/ui/ThemeToggle";
+import WashiBackground from "../components/ui/WashiBackground";
 import CornerMarks from "../components/ui/CornerMarks";
 import { fetchSheetData } from "../lib/googleSheets";
 import { mapSkillsData, mapPortfolioData } from "../lib/dataMapper";
@@ -11,11 +10,11 @@ import type { SkillCategory, Skill, PortfolioItem } from "../lib/dataMapper";
 import type { SheetRow } from "../lib/googleSheets";
 
 const levelLabels: Record<number, { label: string; color: string; desc: string }> = {
-  1: { label: "Introductory", color: "#94a3b8", desc: "基本概念を理解し、参照しながら作業できる" },
-  2: { label: "Beginner", color: "#64748b", desc: "小規模なタスクを遂行できる" },
-  3: { label: "Intermediate", color: "#f59e0b", desc: "一般的な業務を自力でこなせる" },
-  4: { label: "Advanced", color: "#22c55e", desc: "複雑な課題にも対応し、設計判断を主導できる" },
-  5: { label: "Expert", color: "#b03eb6ff", desc: "高度な設計・最適化に取り組める" },
+  1: { label: "Introductory", color: "#a89e8a", desc: "基本概念を理解し、参照しながら作業できる" }, // 灰桜
+  2: { label: "Beginner", color: "#8b7355", desc: "小規模なタスクを遂行できる" },                 // 黄朽葉
+  3: { label: "Intermediate", color: "#c89b3c", desc: "一般的な業務を自力でこなせる" },          // 山吹
+  4: { label: "Advanced", color: "#5a7247", desc: "複雑な課題にも対応し、設計判断を主導できる" }, // 苔色
+  5: { label: "Expert", color: "#c8443c", desc: "高度な設計・最適化に取り組める" },               // 緋色
 };
 
 const SkillCategoryPage = () => {
@@ -64,7 +63,7 @@ const SkillCategoryPage = () => {
 
   if (loading) {
     return (
-      <GraphPaperBackground>
+      <WashiBackground>
         <div className="flex items-center justify-center min-h-screen">
           <motion.div
             className="w-10 h-10 rounded-full border-2 border-t-transparent"
@@ -73,13 +72,13 @@ const SkillCategoryPage = () => {
             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
           />
         </div>
-      </GraphPaperBackground>
+      </WashiBackground>
     );
   }
 
   if (!currentCategory) {
     return (
-      <GraphPaperBackground>
+      <WashiBackground>
         <div className="flex flex-col items-center justify-center min-h-screen gap-4">
           <p className="text-lg font-semibold" style={{ color: "var(--text-primary)" }}>
             カテゴリが見つかりません
@@ -92,7 +91,7 @@ const SkillCategoryPage = () => {
             ← スキル一覧に戻る
           </Link>
         </div>
-      </GraphPaperBackground>
+      </WashiBackground>
     );
   }
 
@@ -105,7 +104,7 @@ const SkillCategoryPage = () => {
     currentCategory.skills.length;
 
   return (
-    <GraphPaperBackground>
+    <WashiBackground>
       <div className="font-sans antialiased min-h-screen">
         {/* Header */}
         <header
@@ -142,14 +141,13 @@ const SkillCategoryPage = () => {
                         cat.category === decodedCategory
                           ? "var(--accent-bg)"
                           : "transparent",
-                      fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+                      fontFamily: "'Hina Mincho', 'Shippori Mincho B1', serif",
                     }}
                   >
                     {cat.category}
                   </Link>
                 ))}
               </nav>
-              <ThemeToggle />
             </div>
           </div>
         </header>
@@ -168,10 +166,10 @@ const SkillCategoryPage = () => {
               className="text-xs font-semibold tracking-[0.3em] uppercase mb-3"
               style={{
                 color: "var(--accent)",
-                fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+                fontFamily: "'Hina Mincho', 'Shippori Mincho B1', serif",
               }}
             >
-              // スキルカテゴリ
+              スキルカテゴリ
             </div>
             <h1
               className="text-4xl sm:text-5xl font-bold tracking-tight mb-4"
@@ -210,7 +208,7 @@ const SkillCategoryPage = () => {
                     className="text-xs font-medium"
                     style={{
                       color: "var(--text-muted)",
-                      fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+                      fontFamily: "'Hina Mincho', 'Shippori Mincho B1', serif",
                     }}
                   >
                     {stat.label}
@@ -231,7 +229,7 @@ const SkillCategoryPage = () => {
               className="text-[10px] font-semibold tracking-[0.2em] uppercase"
               style={{
                 color: "var(--text-muted)",
-                fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+                fontFamily: "'Hina Mincho', 'Shippori Mincho B1', serif",
               }}
             >
               レベル基準:
@@ -313,7 +311,7 @@ const SkillCategoryPage = () => {
                               background: "var(--skill-bar-empty)",
                               color: "var(--text-secondary)",
                               fontFamily:
-                                "'JetBrains Mono', 'Fira Code', monospace",
+                                "'Hina Mincho', 'Shippori Mincho B1', serif",
                             }}
                           >
                             {skill.experienceYears}年
@@ -342,7 +340,7 @@ const SkillCategoryPage = () => {
                           style={{
                             color: "var(--text-muted)",
                             fontFamily:
-                              "'JetBrains Mono', 'Fira Code', monospace",
+                              "'Hina Mincho', 'Shippori Mincho B1', serif",
                           }}
                         >
                           {skill.level}/5
@@ -367,7 +365,7 @@ const SkillCategoryPage = () => {
                             style={{
                               color: "var(--text-muted)",
                               fontFamily:
-                                "'JetBrains Mono', 'Fira Code', monospace",
+                                "'Hina Mincho', 'Shippori Mincho B1', serif",
                             }}
                           >
                             ライブラリ / フレームワーク
@@ -404,7 +402,7 @@ const SkillCategoryPage = () => {
                             style={{
                               color: "var(--text-muted)",
                               fontFamily:
-                                "'JetBrains Mono', 'Fira Code', monospace",
+                                "'Hina Mincho', 'Shippori Mincho B1', serif",
                             }}
                           >
                             熟練度コメント
@@ -426,7 +424,7 @@ const SkillCategoryPage = () => {
                             style={{
                               color: "var(--text-muted)",
                               fontFamily:
-                                "'JetBrains Mono', 'Fira Code', monospace",
+                                "'Hina Mincho', 'Shippori Mincho B1', serif",
                             }}
                           >
                             関連プロジェクト
@@ -491,7 +489,7 @@ const SkillCategoryPage = () => {
                           fill={lvl.color}
                           fontSize="16"
                           fontWeight="700"
-                          fontFamily="'JetBrains Mono', 'Fira Code', monospace"
+                          fontFamily="'Hina Mincho', 'Shippori Mincho B1', serif"
                         >
                           {skill.level}
                         </text>
@@ -566,7 +564,7 @@ const SkillCategoryPage = () => {
           </p>
         </footer>
       </div>
-    </GraphPaperBackground>
+    </WashiBackground>
   );
 };
 

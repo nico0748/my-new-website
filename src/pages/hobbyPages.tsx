@@ -32,6 +32,7 @@ import Recs from '../features/recs/Recs';
 import Events from '../features/events/Events';
 import Contact from '../features/contact/Contact';
 import Footer from '../components/layouts/footer/Footer';
+import WashiBackground from '../components/ui/WashiBackground';
 
 const HobbyPage = () => {
   const [activeSection, setActiveSection] = useState<string>('profile');
@@ -128,26 +129,31 @@ const HobbyPage = () => {
   };
 
   return (
-    <div className="bg-[#f1e6d1] text-[#333] font-sans antialiased overflow-x-hidden min-h-screen">
-      <Header activeSection={activeSection} scrollToSection={scrollToSection} />
-      
-      {/* ヘッダーの高さ分のスペーサーを追加 */}
-      <div className="h-16 sm:h-20"></div>
-      
-      <main className="w-full max-w-full overflow-x-hidden px-4 md:px-8">
-        <div className="container mx-auto max-w-full">
-          <Hero />
-          <Profile data={profileData} />
-          <Works works={works} handleWorkClick={handleWorkClick} />
-          <Records records={records} handleRecordsClick={handleRecordsClick} />
-          <Recs recs={recs} handleRecsClick={handleRecsClick} />
-          <Events events={events} handleEventClick={handleEventClick} />
-          <Contact handleContactSubmit={handleContactSubmit} />
-        </div>
-      </main> 
+    <WashiBackground>
+      <div
+        className="font-sans antialiased overflow-x-hidden min-h-screen"
+        style={{ color: 'var(--text-primary)' }}
+      >
+        <Header activeSection={activeSection} scrollToSection={scrollToSection} />
 
-      <Footer />
-    </div>
+        {/* ヘッダーの高さ分のスペーサーを追加 */}
+        <div className="h-16 sm:h-20"></div>
+
+        <main className="w-full max-w-full overflow-x-hidden px-4 md:px-8">
+          <div className="container mx-auto max-w-full">
+            <Hero />
+            <Profile data={profileData} />
+            <Works works={works} handleWorkClick={handleWorkClick} />
+            <Records records={records} handleRecordsClick={handleRecordsClick} />
+            <Recs recs={recs} handleRecsClick={handleRecsClick} />
+            <Events events={events} handleEventClick={handleEventClick} />
+            <Contact handleContactSubmit={handleContactSubmit} />
+          </div>
+        </main>
+
+        <Footer />
+      </div>
+    </WashiBackground>
   );
 }
 
