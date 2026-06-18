@@ -1,7 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useSearchParams } from "react-router-dom";
-import HankoSeal from "../../components/ui/HankoSeal";
-import FoxPeek from "../../components/ui/FoxPeek";
 
 interface ProfileData2 {
   name: string;
@@ -48,7 +46,7 @@ const Profile2 = ({ data }: ProfileProps) => {
   return (
     <div className="max-w-4xl mx-auto px-2 sm:px-4">
       <div className="grid md:grid-cols-[auto_1fr] gap-10 md:gap-14 items-start">
-        {/* 円窓のアバター + 朱印（落款） */}
+        {/* アバター + ターミナル風バッジ */}
         <motion.div
           className="relative mx-auto md:mx-0"
           initial={{ opacity: 0, y: 12 }}
@@ -56,27 +54,32 @@ const Profile2 = ({ data }: ProfileProps) => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <FoxPeek side="left" size={110} image="/japanese-fox4.png" peekRatio={0.5}>
-            <div
-              className="w-36 h-36 sm:w-44 sm:h-44 rounded-full overflow-hidden"
-              style={{
-                border: "1px solid var(--text-primary)",
-                boxShadow:
-                  "0 0 0 5px var(--bg), 0 0 0 6px var(--accent), 0 8px 24px var(--card-shadow)",
-              }}
-            >
-              <img
-                src={data.image || "/sns_icon_round.png"}
-                alt={data.name}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </FoxPeek>
           <div
-            className="absolute -right-2 -bottom-2"
-            style={{ transform: "rotate(-8deg)" }}
+            className="w-36 h-36 sm:w-44 sm:h-44 rounded-lg overflow-hidden"
+            style={{
+              border: "1px solid var(--accent-border)",
+              boxShadow:
+                "0 0 0 5px var(--bg), 0 0 0 6px var(--accent), 0 8px 24px var(--card-shadow), 0 0 30px var(--accent-shadow)",
+            }}
           >
-            <HankoSeal text="銘" size={42} rotation={0} />
+            <img
+              src={data.image || "/sns_icon_round.png"}
+              alt={data.name}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div
+            className="absolute -right-2 -bottom-2 px-2 py-1 text-xs font-semibold"
+            style={{
+              background: "var(--surface)",
+              border: "1px solid var(--accent-border)",
+              color: "var(--accent)",
+              borderRadius: "4px",
+              fontFamily: "'JetBrains Mono', monospace",
+              boxShadow: "0 2px 8px var(--card-shadow)",
+            }}
+          >
+            {"{ dev }"}
           </div>
         </motion.div>
 
@@ -100,7 +103,7 @@ const Profile2 = ({ data }: ProfileProps) => {
                 className="relative inline-block text-3xl sm:text-4xl md:text-5xl font-bold leading-tight"
                 style={{
                   color: "var(--text-primary)",
-                  fontFamily: "'Hina Mincho', 'Shippori Mincho B1', serif",
+                  fontFamily: "'JetBrains Mono', 'Noto Sans JP', monospace",
                   letterSpacing: "0.06em",
                   minWidth: "5ch",
                 }}
@@ -127,22 +130,21 @@ const Profile2 = ({ data }: ProfileProps) => {
             </button>
           </div>
 
-          {/* 小見出しラベル — 朱の細線 + 「自己紹介」 */}
+          {/* 小見出しラベル — ターミナルコメント風 */}
           <div className="flex items-center gap-3 mb-5">
             <span
               className="h-px w-10"
-              style={{ background: "var(--seal-red)" }}
+              style={{ background: "var(--accent)" }}
             />
             <span
               className="text-xs"
               style={{
-                color: "var(--seal-red)",
-                fontFamily: "'Hina Mincho', 'Shippori Mincho B1', serif",
-                letterSpacing: "0.5em",
-                paddingRight: "0.5em",
+                color: "var(--accent)",
+                fontFamily: "'JetBrains Mono', monospace",
+                letterSpacing: "0.2em",
               }}
             >
-              自 己 紹 介
+              // about-me
             </span>
           </div>
 
@@ -157,9 +159,9 @@ const Profile2 = ({ data }: ProfileProps) => {
               className="text-sm sm:text-base whitespace-pre-line"
               style={{
                 color: "var(--text-body)",
-                fontFamily: "'Shippori Mincho B1', 'Noto Serif JP', serif",
+                fontFamily: "'Noto Sans JP', sans-serif",
                 lineHeight: "2.05",
-                letterSpacing: "0.04em",
+                letterSpacing: "0.02em",
               }}
             >
               {data.description}
@@ -197,7 +199,7 @@ const Profile2 = ({ data }: ProfileProps) => {
                         border: "1px solid var(--card-border)",
                         borderRadius: 2,
                         color: "var(--text-primary)",
-                        fontFamily: "'Hina Mincho', 'Shippori Mincho B1', serif",
+                        fontFamily: "'JetBrains Mono', 'Noto Sans JP', monospace",
                         letterSpacing: "0.12em",
                         fontSize: "13px",
                         boxShadow: "0 1px 3px var(--card-shadow)",

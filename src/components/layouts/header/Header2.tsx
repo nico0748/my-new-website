@@ -1,8 +1,6 @@
 import React from 'react';
 import type { HeaderProps2 } from '../../../types';
 
-const KANSUJI = ['零', '壱', '弐', '参', '肆', '伍', '陸', '漆', '捌', '玖'];
-
 const Header2: React.FC<HeaderProps2> = ({ activeSection, scrollToSection }) => {
   const navItems = ['profile', 'projects', 'skills', 'timeline'];
 
@@ -18,33 +16,33 @@ const Header2: React.FC<HeaderProps2> = ({ activeSection, scrollToSection }) => 
       }}
     >
       <div className="flex items-center justify-between px-6 sm:px-12 md:px-20 py-4">
-        {/* Logo — 朱印風の○ + Portfolio */}
-        <div className="flex items-center gap-2.5 select-none">
+        {/* Logo — プロンプトグリフ + portfolio */}
+        <div
+          className="flex items-center gap-2 select-none"
+          style={{ fontFamily: "'JetBrains Mono', monospace" }}
+        >
           <span
-            className="inline-flex items-center justify-center"
+            className="inline-flex items-center justify-center font-bold"
             style={{
-              width: '22px',
-              height: '22px',
-              background: 'var(--seal-red)',
-              color: 'rgba(245, 237, 225, 0.95)',
-              fontSize: '12px',
-              fontWeight: 700,
-              borderRadius: '2px',
-              transform: 'rotate(-4deg)',
-              fontFamily: "'Hina Mincho', 'Shippori Mincho B1', serif",
+              width: '24px',
+              height: '24px',
+              background: 'var(--accent-bg)',
+              border: '1px solid var(--accent-border)',
+              color: 'var(--accent)',
+              fontSize: '13px',
+              borderRadius: '4px',
             }}
           >
-            に
+            {'>'}_
           </span>
           <span
-            className="text-lg font-bold"
+            className="text-base sm:text-lg font-bold"
             style={{
-              color: 'var(--accent)',
-              letterSpacing: '0.08em',
-              fontFamily: "'Hina Mincho', 'Shippori Mincho B1', serif",
+              color: 'var(--text-primary)',
+              letterSpacing: '0.02em',
             }}
           >
-            Portfolio
+            <span style={{ color: 'var(--accent)' }}>~/</span>portfolio
           </span>
         </div>
 
@@ -59,18 +57,18 @@ const Header2: React.FC<HeaderProps2> = ({ activeSection, scrollToSection }) => 
                 style={{
                   color: activeSection === item ? 'var(--accent)' : 'var(--text-secondary)',
                   background: activeSection === item ? 'var(--accent-bg)' : 'transparent',
-                  letterSpacing: '0.1em',
-                  fontFamily: "'Shippori Mincho B1', 'Noto Serif JP', serif",
+                  letterSpacing: '0.08em',
+                  fontFamily: "'JetBrains Mono', monospace",
                 }}
               >
                 <span
                   className="hidden sm:inline text-[12px]"
                   style={{
-                    fontFamily: "'Hina Mincho', 'Shippori Mincho B1', serif",
-                    opacity: 0.55,
+                    color: 'var(--accent)',
+                    opacity: 0.7,
                   }}
                 >
-                  {KANSUJI[i + 1] ?? String(i + 1)}
+                  {String(i + 1).padStart(2, '0')}
                 </span>
                 <span>{item}</span>
                 {activeSection === item && (

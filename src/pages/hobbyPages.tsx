@@ -32,7 +32,7 @@ import Recs from '../features/recs/Recs';
 import Events from '../features/events/Events';
 import Contact from '../features/contact/Contact';
 import Footer from '../components/layouts/footer/Footer';
-import WashiBackground from '../components/ui/WashiBackground';
+import TerminalBackground from '../components/ui/TerminalBackground';
 
 const HobbyPage = () => {
   const [activeSection, setActiveSection] = useState<string>('profile');
@@ -129,7 +129,7 @@ const HobbyPage = () => {
   };
 
   return (
-    <WashiBackground>
+    <TerminalBackground>
       <div
         className="font-sans antialiased overflow-x-hidden min-h-screen"
         style={{ color: 'var(--text-primary)' }}
@@ -153,7 +153,7 @@ const HobbyPage = () => {
 
         <Footer />
       </div>
-    </WashiBackground>
+    </TerminalBackground>
   );
 }
 

@@ -11,8 +11,7 @@ interface SectionWrapperProps {
   subtitle?: string;
 }
 
-const KANSUJI = ['零', '壱', '弐', '参', '肆', '伍', '陸', '漆', '捌', '玖'];
-const toKansuji = (n: number) => (n >= 0 && n < KANSUJI.length ? KANSUJI[n] : String(n));
+const pad2 = (n: number) => String(n).padStart(2, '0');
 
 const SectionWrapper: React.FC<SectionWrapperProps> = ({
   id,
@@ -23,7 +22,7 @@ const SectionWrapper: React.FC<SectionWrapperProps> = ({
   label,
   subtitle,
 }) => {
-  const kansuji = typeof index === 'number' ? toKansuji(index) : null;
+  const num = typeof index === 'number' ? pad2(index) : null;
 
   return (
     <section
@@ -39,65 +38,67 @@ const SectionWrapper: React.FC<SectionWrapperProps> = ({
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            {(kansuji || label) && (
+            {(num || label) && (
               <div
-                className="flex items-center justify-center gap-3 mb-4 text-xs font-medium tracking-[0.3em] uppercase"
+                className="flex items-center justify-center gap-3 mb-4 text-xs font-medium tracking-[0.2em]"
                 style={{
                   color: 'var(--accent)',
-                  fontFamily: "'Hina Mincho', 'Shippori Mincho B1', serif",
+                  fontFamily: "'JetBrains Mono', monospace",
                 }}
               >
-                {kansuji && (
+                {num && (
                   <span
-                    className="inline-flex items-center justify-center"
+                    className="inline-flex items-center justify-center px-2 py-0.5"
                     style={{
-                      width: '28px',
-                      height: '28px',
-                      background: 'var(--seal-red)',
-                      color: 'rgba(245, 237, 225, 0.95)',
-                      fontSize: '15px',
-                      fontWeight: 700,
-                      transform: 'rotate(-4deg)',
-                      letterSpacing: 0,
-                      borderRadius: '2px',
-                      fontFamily: "'Hina Mincho', 'Shippori Mincho B1', serif",
+                      background: 'var(--accent-bg)',
+                      border: '1px solid var(--accent-border)',
+                      color: 'var(--accent)',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      borderRadius: '4px',
                     }}
                   >
-                    {kansuji}
+                    {num}
                   </span>
                 )}
-                <span
-                  className="h-px w-10"
-                  style={{ background: 'var(--accent-border)' }}
-                />
-                <span style={{ letterSpacing: '0.4em' }}>{label ?? id}</span>
+                <span style={{ color: 'var(--text-muted)' }}>
+                  <span style={{ color: 'var(--accent)' }}>~/</span>
+                  {(label ?? id).toLowerCase()}
+                  <span style={{ color: 'var(--text-secondary)' }}> ❯</span>
+                </span>
               </div>
             )}
             <h2
               className="text-4xl md:text-6xl font-bold"
               style={{
                 color: 'var(--text-primary)',
-                letterSpacing: '0.04em',
-                fontFamily: "'Hina Mincho', 'Shippori Mincho B1', serif",
+                letterSpacing: '0.02em',
+                fontFamily: "'JetBrains Mono', 'Noto Sans JP', monospace",
               }}
             >
               {title}
+              <span
+                className="terminal-cursor ml-1"
+                style={{ color: 'var(--accent)' }}
+              >
+                _
+              </span>
             </h2>
-            {/* セクションタイトル下のアクセント — 細い墨線 + 朱の点 */}
+            {/* セクションタイトル下のアクセント — シアンの下線 */}
             <div className="flex items-center justify-center gap-2 mt-5">
-              <span className="w-12 h-px" style={{ background: 'var(--text-muted)' }} />
+              <span className="w-16 h-px" style={{ background: 'var(--accent)' }} />
               <span
                 className="w-1.5 h-1.5 rounded-full"
-                style={{ background: 'var(--seal-red)' }}
+                style={{ background: 'var(--accent)', boxShadow: '0 0 8px var(--accent)' }}
               />
-              <span className="w-12 h-px" style={{ background: 'var(--text-muted)' }} />
+              <span className="w-16 h-px" style={{ background: 'var(--accent)' }} />
             </div>
             {subtitle && (
               <p
                 className="mt-5 text-sm sm:text-base max-w-2xl mx-auto leading-loose"
                 style={{
                   color: 'var(--text-secondary)',
-                  fontFamily: "'Shippori Mincho B1', 'Noto Serif JP', serif",
+                  fontFamily: "'Noto Sans JP', sans-serif",
                 }}
               >
                 {subtitle}

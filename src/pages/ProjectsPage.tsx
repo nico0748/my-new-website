@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
-import WashiBackground from "../components/ui/WashiBackground";
+import TerminalBackground from "../components/ui/TerminalBackground";
 import ProjectCard from "../components/ui/ProjectCard";
 import { fetchSheetData } from "../lib/googleSheets";
 import { mapPortfolioData } from "../lib/dataMapper";
@@ -32,7 +32,7 @@ const ProjectsPage = () => {
 
   if (loading) {
     return (
-      <WashiBackground>
+      <TerminalBackground>
         <div className="flex items-center justify-center min-h-screen">
           <motion.div
             className="w-10 h-10 rounded-full border-2 border-t-transparent"
@@ -41,12 +41,12 @@ const ProjectsPage = () => {
             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
           />
         </div>
-      </WashiBackground>
+      </TerminalBackground>
     );
   }
 
   return (
-    <WashiBackground>
+    <TerminalBackground>
       <div className="font-sans antialiased min-h-screen">
         {/* Header */}
         <header
@@ -72,7 +72,7 @@ const ProjectsPage = () => {
                 className="text-xs font-semibold tracking-[0.3em] uppercase"
                 style={{
                   color: "var(--accent)",
-                  fontFamily: "'Hina Mincho', 'Shippori Mincho B1', serif",
+                  fontFamily: "'JetBrains Mono', 'Noto Sans JP', monospace",
                 }}
               >
                 Projects
@@ -95,7 +95,7 @@ const ProjectsPage = () => {
               className="text-xs font-semibold tracking-[0.3em] uppercase mb-3"
               style={{
                 color: "var(--accent)",
-                fontFamily: "'Hina Mincho', 'Shippori Mincho B1', serif",
+                fontFamily: "'JetBrains Mono', 'Noto Sans JP', monospace",
               }}
             >
               All Works
@@ -146,7 +146,7 @@ const ProjectsPage = () => {
           </p>
         </footer>
       </div>
-    </WashiBackground>
+    </TerminalBackground>
   );
 };
 

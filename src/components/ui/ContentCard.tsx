@@ -22,15 +22,19 @@ const ContentCard: React.FC<ContentCardProps> = ({
   imageHeight = "h-48",
   layoutId
 }) => {
-  const cardClasses = `bg-[#e8dbc6] rounded-lg shadow-md overflow-hidden w-full max-w-full ${
+  const cardClasses = `rounded-lg shadow-md overflow-hidden w-full max-w-full ${
     onClick ? 'cursor-pointer' : ''
   } ${className}`;
 
   return (
-    <motion.div 
-      className={cardClasses} 
+    <motion.div
+      className={cardClasses}
       onClick={onClick}
       layoutId={layoutId}
+      style={{
+        background: 'var(--card-bg)',
+        border: '1px solid var(--card-border)',
+      }}
     >
       <div className="overflow-hidden w-full">
         <motion.img 
@@ -45,10 +49,10 @@ const ContentCard: React.FC<ContentCardProps> = ({
             <h3 className="text-lg font-semibold mb-2 truncate w-full">{title}</h3>
           )}
           {description && (
-            <p className="text-sm text-gray-600 mb-2 break-words">{description}</p>
+            <p className="text-sm mb-2 break-words" style={{ color: 'var(--text-secondary)' }}>{description}</p>
           )}
           {date && (
-            <p className="text-xs text-gray-500">{date}</p>
+            <p className="text-xs" style={{ color: 'var(--text-muted)' }}>{date}</p>
           )}
         </div>
       )}
