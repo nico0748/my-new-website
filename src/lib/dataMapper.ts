@@ -46,6 +46,20 @@ export interface ProfileData {
     qiitaUrl?: string;
 }
 
+export interface TopicItem {
+  id: string;
+  title: string;
+  description: string;
+  category: string;        // "news" | "cve" | "vuln" | "daily" | "it" | "other"（自由文字列・未知は other スタイル）
+  date: string;            // YYYY-MM-DD
+  tags: string[];
+  thumbnail?: string;
+  author?: string;
+  markdownFile?: string;   // 既定: /topics/<id>.md
+  externalUrl?: string;    // CVE/ニュース原典リンク（Phase2 自動取込でも使用）
+  source?: string;         // "manual" | "auto"（Phase2 向け・既定 manual）
+}
+
 export interface AnimeItem {
     id: string; 
     title: string;
@@ -127,6 +141,25 @@ export const mapPortfolioData = (rows: SheetRow[]): PortfolioItem[] => {
         repoUrl: row.repoUrl,
         markdownFile: row.markdownFile || `/projects/${row.id}.md`,
     }));
+};
+
+export const mapTopicData = (rows: SheetRow[]): TopicItem[] => {
+    return rows
+        .filter(row => row.id && row.title)
+        .map(row => ({
+            id: row.id,
+            title: row.title,
+            description: row.description || "",
+            category: (row.category || "other").trim(),
+            date: row.date || "",
+            tags: row.tags ? row.tags.split(',').map(t => t.trim()).filter(Boolean) : [],
+            thumbnail: row.thumbnail || undefined,
+            author: row.author || undefined,
+            markdownFile: row.markdownFile || `/topics/${row.id}.md`,
+            externalUrl: row.externalUrl || undefined,
+            source: row.source || "manual",
+        }))
+        .sort((a, b) => (a.date < b.date ? 1 : -1)); // 新しい順
 };
 
 export const mapAnimeData = (rows: SheetRow[]): AnimeItem[] => {

@@ -81,6 +81,8 @@ style={{
 | `/` | PortfolioPage | メインポートフォリオ |
 | `/hobbys` | HobbyPage | 趣味ページ |
 | `/projects/:id` | ProjectDetailPage | Markdownで詳細を表示 |
+| `/topics` | TopicsPage | セキュリティ等のトピック一覧（カテゴリ絞り込み） |
+| `/topics/:id` | TopicDetailPage | Markdownで詳細を表示（md 無しは description + externalUrl にフォールバック） |
 | `/skills` | SkillsPage | 技術スタック一覧（カテゴリ行＋クリック展開） |
 | `/skills/:category` | → `/skills` | リダイレクト |
 | `/watched-anime` 等 | アニメページ群 | 既存 |
@@ -111,6 +113,18 @@ style={{
 - `public/projects/<プロジェクトID>.md` にMarkdownファイルを置くと自動表示される
 - Markdownのスタイルは `src/index.css` の `.prose-custom` クラスで定義
 - `react-markdown` + `remark-gfm` でレンダリング（GFM対応: テーブル・チェックボックス等）
+
+---
+
+## Topics コンテンツ（セキュリティ等）
+
+- データソースは Google Sheets の **「Topics」シート**（既存の Projects と同じ仕組み）
+  - ヘッダー列: `id, title, description, category, date, tags, thumbnail, author, markdownFile, externalUrl, source`
+  - 型・マッパーは `src/lib/dataMapper.ts` の `TopicItem` / `mapTopicData`（新しい順にソート）
+- 記事本文は `public/topics/<id>.md` に置くと `/topics/:id` で自動表示（`.prose-custom`）。md が無い場合は `description` ＋ `externalUrl` にフォールバック
+- **カテゴリ**: `news` / `cve` / `vuln` / `daily` / `it` / `other`（自由文字列・未知は other 扱い）。色・ラベル・絵文字は `src/lib/topicCategories.ts` の `getTopicCategoryStyle` で一元管理。新カテゴリはここに追加する
+- 一覧 `TopicsPage` / 詳細 `TopicDetailPage` / カード `TopicCard`。トップページ（`portfolioPage.tsx`）にも最新3件の抜粋セクション（`id="topics"`）あり
+- `source = "auto"` / `externalUrl` は将来の自動取り込み（CVE/ニュースフィード）用に予約済み
 
 ---
 

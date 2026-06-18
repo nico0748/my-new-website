@@ -5,13 +5,14 @@ import Profile2 from "../features/profile/Profile2";
 import TerminalBackground from "../components/ui/TerminalBackground";
 
 import ProjectCard from "../components/ui/ProjectCard";
+import TopicCard from "../components/ui/TopicCard";
 import SectionWrapper from "../components/ui/SectionWrapper";
 import SkillRadarChart from "../components/ui/SkillRadarChart";
 import TimelineItemComponent from "../components/ui/TimelineItem";
 
 import { fetchSheetData } from "../lib/googleSheets";
-import { mapProfileData, mapPortfolioData, mapSkillsData, mapTimelineData } from "../lib/dataMapper";
-import type { ProfileData, SkillCategory, TimelineItem as TimelineItemType, PortfolioItem } from "../lib/dataMapper";
+import { mapProfileData, mapPortfolioData, mapSkillsData, mapTimelineData, mapTopicData } from "../lib/dataMapper";
+import type { ProfileData, SkillCategory, TimelineItem as TimelineItemType, PortfolioItem, TopicItem } from "../lib/dataMapper";
 import type { SheetRow } from "../lib/googleSheets";
 
 import { useEffect, useState } from "react";
@@ -24,23 +25,26 @@ const PortfolioPage = () => {
   const [portfolio, setPortfolio] = useState<PortfolioItem[]>([]);
   const [skills, setSkills] = useState<SkillCategory[]>([]);
   const [timeline, setTimeline] = useState<TimelineItemType[]>([]);
+  const [topics, setTopics] = useState<TopicItem[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       if (!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY) return;
 
       try {
-        const [profileRows, portfolioRows, skillsRows, timelineRows] = await Promise.all([
+        const [profileRows, portfolioRows, skillsRows, timelineRows, topicsRows] = await Promise.all([
           fetchSheetData<SheetRow>("Profile"),
           fetchSheetData<SheetRow>("Projects"),
           fetchSheetData<SheetRow>("Skills"),
           fetchSheetData<SheetRow>("Timeline"),
+          fetchSheetData<SheetRow>("Topics"),
         ]);
 
         if (profileRows.length > 0) setProfile(mapProfileData(profileRows));
         if (portfolioRows.length > 0) setPortfolio(mapPortfolioData(portfolioRows));
         if (skillsRows.length > 0) setSkills(mapSkillsData(skillsRows));
         if (timelineRows.length > 0) setTimeline(mapTimelineData(timelineRows));
+        if (topicsRows.length > 0) setTopics(mapTopicData(topicsRows));
       } catch (error) {
         console.error("Failed to fetch data from Google Sheets", error);
       }
@@ -58,7 +62,7 @@ const PortfolioPage = () => {
   };
 
   useEffect(() => {
-    const sections = ["profile", "projects", "skills", "timeline"];
+    const sections = ["profile", "topics", "projects", "skills", "timeline"];
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -105,11 +109,48 @@ const PortfolioPage = () => {
             <Profile2 data={profile} />
           </SectionWrapper>
 
+          {/* Topics */}
+          <SectionWrapper
+            id="topics"
+            title="Topics"
+            index={2}
+            label="Latest"
+            subtitle="セキュリティニュース・CVE分析・脆弱性解説・1日1題をまとめています。"
+          >
+            {topics.length > 0 ? (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {topics.slice(0, 3).map((item) => (
+                    <TopicCard key={item.id} item={item} />
+                  ))}
+                </div>
+                <div className="flex justify-center mt-8">
+                  <Link
+                    to="/topics"
+                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 hover:opacity-90"
+                    style={{
+                      background: 'var(--card-bg)',
+                      color: 'var(--accent)',
+                      border: '1px solid var(--accent-border)',
+                      boxShadow: '0 2px 12px var(--accent-shadow)',
+                    }}
+                  >
+                    すべてのトピックを見る →
+                  </Link>
+                </div>
+              </>
+            ) : (
+              <p className="text-center py-12 text-sm" style={{ color: 'var(--text-muted)' }}>
+                トピックがありません（Google Sheets の「Topics」シートを設定してください）
+              </p>
+            )}
+          </SectionWrapper>
+
           {/* Works */}
           <SectionWrapper
             id="projects"
             title="Works"
-            index={2}
+            index={3}
             label="Projects"
             subtitle="腕によりをかけて制作した、愛すべき成果物たちをご紹介します。"
           >
@@ -148,7 +189,7 @@ const PortfolioPage = () => {
           <SectionWrapper
             id="skills"
             title="Skills"
-            index={3}
+            index={4}
             label="Stack"
             subtitle="日々の制作で使っている技術スタックを、得意分野ごとにレーダーチャートで可視化しています。"
           >
@@ -177,7 +218,7 @@ const PortfolioPage = () => {
           <SectionWrapper
             id="timeline"
             title="Timeline"
-            index={4}
+            index={5}
             label="History"
             subtitle="学業・仕事・制作・資格など、これまでの歩みを時系列で振り返ります。"
           >

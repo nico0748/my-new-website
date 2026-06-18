@@ -2,7 +2,7 @@ import React from 'react';
 import type { HeaderProps2 } from '../../../types';
 
 const Header2: React.FC<HeaderProps2> = ({ activeSection, scrollToSection }) => {
-  const navItems = ['profile', 'projects', 'skills', 'timeline'];
+  const navItems = ['profile', 'topics', 'projects', 'skills', 'timeline'];
 
   return (
     <header
