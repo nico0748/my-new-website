@@ -17,45 +17,45 @@ interface TypeStyle {
 }
 
 const TYPE_STYLES: Record<TimelineEventType, TypeStyle> = {
-  // 紺青 (konjou)
+  // ブルー
   education: {
     label: "Education",
-    color: "#5d6dad",
-    bg: "rgba(93, 109, 173, 0.10)",
-    border: "rgba(93, 109, 173, 0.30)",
-    shadow: "rgba(93, 109, 173, 0.18)",
+    color: "#5c9dff",
+    bg: "rgba(92, 157, 255, 0.10)",
+    border: "rgba(92, 157, 255, 0.30)",
+    shadow: "rgba(92, 157, 255, 0.20)",
   },
-  // 藍 (ai)
+  // シアン（メインアクセント）
   work: {
     label: "Work",
-    color: "#1f4e79",
-    bg: "rgba(31, 78, 121, 0.10)",
-    border: "rgba(31, 78, 121, 0.30)",
-    shadow: "rgba(31, 78, 121, 0.18)",
+    color: "#00e5cc",
+    bg: "rgba(0, 229, 204, 0.10)",
+    border: "rgba(0, 229, 204, 0.30)",
+    shadow: "rgba(0, 229, 204, 0.20)",
   },
-  // 緋色 (hi-iro)
+  // マゼンタ
   project: {
     label: "Project",
-    color: "#c8443c",
-    bg: "rgba(200, 68, 60, 0.10)",
-    border: "rgba(200, 68, 60, 0.30)",
-    shadow: "rgba(200, 68, 60, 0.18)",
+    color: "#ff5c8a",
+    bg: "rgba(255, 92, 138, 0.10)",
+    border: "rgba(255, 92, 138, 0.30)",
+    shadow: "rgba(255, 92, 138, 0.20)",
   },
-  // 山吹 (yamabuki)
+  // アンバー
   certification: {
     label: "Certification",
-    color: "#c89b3c",
-    bg: "rgba(200, 155, 60, 0.12)",
-    border: "rgba(200, 155, 60, 0.32)",
-    shadow: "rgba(200, 155, 60, 0.20)",
+    color: "#ffb454",
+    bg: "rgba(255, 180, 84, 0.12)",
+    border: "rgba(255, 180, 84, 0.32)",
+    shadow: "rgba(255, 180, 84, 0.20)",
   },
-  // 利休鼠 (rikyu-nezumi)
+  // グレー
   other: {
     label: "Other",
-    color: "#787276",
-    bg: "rgba(120, 114, 118, 0.10)",
-    border: "rgba(120, 114, 118, 0.28)",
-    shadow: "rgba(120, 114, 118, 0.16)",
+    color: "#8a96a3",
+    bg: "rgba(138, 150, 163, 0.10)",
+    border: "rgba(138, 150, 163, 0.28)",
+    shadow: "rgba(138, 150, 163, 0.18)",
   },
 }
 
@@ -292,7 +292,7 @@ const Card = ({
             className="text-xs font-semibold tabular-nums"
             style={{
               color: typeStyle.color,
-              fontFamily: "'Hina Mincho', 'Shippori Mincho B1', serif",
+              fontFamily: "'JetBrains Mono', 'Noto Sans JP', monospace",
               letterSpacing: '0.05em',
             }}
           >

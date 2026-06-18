@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-import WashiBackground from "../components/ui/WashiBackground";
+import TerminalBackground from "../components/ui/TerminalBackground";
 import CornerMarks from "../components/ui/CornerMarks";
 import { fetchSheetData } from "../lib/googleSheets";
 import { mapPortfolioData } from "../lib/dataMapper";
@@ -56,7 +56,7 @@ const ProjectDetailPage = () => {
 
   if (loading) {
     return (
-      <WashiBackground>
+      <TerminalBackground>
         <div className="flex items-center justify-center min-h-screen">
           <motion.div
             className="w-10 h-10 rounded-full border-2 border-t-transparent"
@@ -65,12 +65,12 @@ const ProjectDetailPage = () => {
             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
           />
         </div>
-      </WashiBackground>
+      </TerminalBackground>
     );
   }
 
   return (
-    <WashiBackground>
+    <TerminalBackground>
       {/* ヘッダー */}
       <header
         className="fixed top-0 left-0 right-0 z-50 px-6 py-4"
@@ -211,7 +211,7 @@ const ProjectDetailPage = () => {
           </div>
         </motion.div>
       </main>
-    </WashiBackground>
+    </TerminalBackground>
   );
 };
 

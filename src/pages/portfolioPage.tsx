@@ -2,13 +2,12 @@ import Header2 from "../components/layouts/header/Header2";
 import Footer2 from "../components/layouts/footer/Footer2";
 import HeroSection from "../features/hero/HeroSection";
 import Profile2 from "../features/profile/Profile2";
-import WashiBackground from "../components/ui/WashiBackground";
+import TerminalBackground from "../components/ui/TerminalBackground";
 
 import ProjectCard from "../components/ui/ProjectCard";
 import SectionWrapper from "../components/ui/SectionWrapper";
 import SkillRadarChart from "../components/ui/SkillRadarChart";
 import TimelineItemComponent from "../components/ui/TimelineItem";
-import FoxPeek from "../components/ui/FoxPeek";
 
 import { fetchSheetData } from "../lib/googleSheets";
 import { mapProfileData, mapPortfolioData, mapSkillsData, mapTimelineData } from "../lib/dataMapper";
@@ -83,7 +82,7 @@ const PortfolioPage = () => {
   }, []);
 
   return (
-    <WashiBackground>
+    <TerminalBackground>
       <div className="font-sans antialiased overflow-x-hidden min-h-screen">
         <Header2 activeSection={activeSection} scrollToSection={scrollToSection} />
 
@@ -117,22 +116,9 @@ const PortfolioPage = () => {
             {portfolio.length > 0 ? (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {portfolio.slice(0, 6).map((item, idx) =>
-                    idx === 0 ? (
-                      <FoxPeek
-                        key={item.id}
-                        side="left"
-                        size={130}
-                        image="/japanese-fox2.png"
-                        peekRatio={0.5}
-                        block
-                      >
-                        <ProjectCard item={item} />
-                      </FoxPeek>
-                    ) : (
-                      <ProjectCard key={item.id} item={item} />
-                    )
-                  )}
+                  {portfolio.slice(0, 6).map((item) => (
+                    <ProjectCard key={item.id} item={item} />
+                  ))}
                 </div>
                 {portfolio.length > 6 && (
                   <div className="flex justify-center mt-8">
@@ -167,22 +153,9 @@ const PortfolioPage = () => {
             subtitle="日々の制作で使っている技術スタックを、得意分野ごとにレーダーチャートで可視化しています。"
           >
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {skills.slice(0, 3).map((category, index) =>
-                index === 0 ? (
-                  <FoxPeek
-                    key={index}
-                    side="right"
-                    size={130}
-                    image="/japanese-fox3.png"
-                    peekRatio={0.5}
-                    block
-                  >
-                    <SkillRadarChart category={category.category} skills={category.skills} />
-                  </FoxPeek>
-                ) : (
-                  <SkillRadarChart key={index} category={category.category} skills={category.skills} />
-                )
-              )}
+              {skills.slice(0, 3).map((category, index) => (
+                <SkillRadarChart key={index} category={category.category} skills={category.skills} />
+              ))}
             </div>
             <div className="flex justify-center mt-8">
               <Link
@@ -237,7 +210,7 @@ const PortfolioPage = () => {
           </div>
         )}
       </div>
-    </WashiBackground>
+    </TerminalBackground>
   );
 };
 
@@ -297,7 +270,7 @@ const TimelineSection = ({ items }: { items: TimelineItemType[] }) => {
                   style={{
                     color: 'var(--accent)',
                     letterSpacing: '0.06em',
-                    fontFamily: "'Hina Mincho', 'Shippori Mincho B1', serif",
+                    fontFamily: "'JetBrains Mono', 'Noto Sans JP', monospace",
                   }}
                 >
                   {group.year}

@@ -2,62 +2,66 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ─── Theme: 和風 × 妖狐（Wafu × Yoko） ─────────────────────────────
-   wa-iro.com オマージュ。生成り（きなり）の和紙地に、緋色の朱印アクセント。
-   ライトテーマ単独構成。 */
+/* ─── Theme: Dark Terminal（ダーク・ターミナル IT 系） ──────────────────
+   漆黒地にエレクトリック・シアンのアクセント。ターミナル / ハッカー系の演出。
+   ダークテーマ単独構成。 */
 
 :root {
-  /* 地色 / 背景 */
-  --bg: #f5ede1;                            /* 生成り（きなり） */
-  --bg-rgb: 245, 237, 225;
-  --card-bg: rgba(253, 248, 238, 0.78);     /* 絹白 半透明 */
-  --card-bg-solid: #fdf8ee;
-  --card-border: rgba(200, 68, 60, 0.18);   /* 緋色の極薄 */
-  --card-shadow: rgba(76, 50, 30, 0.08);    /* 墨の薄影 */
-  --header-bg: rgba(245, 237, 225, 0.85);
-  --footer-bg: rgba(245, 237, 225, 0.6);
+  /* 地色 / サーフェス */
+  --bg: #0a0d12;                            /* 漆黒（near-black, cool） */
+  --bg-rgb: 10, 13, 18;
+  --surface: #11161d;                       /* パネル面 */
+  --card-bg: rgba(17, 22, 29, 0.72);        /* グラス面 半透明 */
+  --card-bg-solid: #11161d;
+  --card-border: rgba(0, 229, 204, 0.18);   /* シアンの極薄 */
+  --card-shadow: rgba(0, 0, 0, 0.5);
+  --header-bg: rgba(10, 13, 18, 0.85);
+  --footer-bg: rgba(10, 13, 18, 0.6);
 
   /* 文字 */
-  --text-primary: #2c1810;                  /* 墨色（sumi-iro） */
-  --text-secondary: #5e4836;                /* 代赭（taisha） */
-  --text-muted: #8b7355;                    /* 黄朽葉（kikuchiba） */
-  --text-body: #3c2a1a;
+  --text-primary: #e6edf3;                  /* オフホワイト */
+  --text-secondary: #9da7b3;                /* スレートグレー */
+  --text-muted: #5c6773;                    /* ミュート */
+  --text-body: #c4ccd4;
 
-  /* アクセント — 緋色（fox shrine vermillion） */
-  --accent: #c8443c;
-  --accent-hover: #a83a32;                  /* 蘇芳（suou） */
-  --accent-bg: rgba(200, 68, 60, 0.08);
-  --accent-border: rgba(200, 68, 60, 0.25);
-  --accent-shadow: rgba(200, 68, 60, 0.15);
+  /* アクセント — エレクトリック・シアン */
+  --accent: #00e5cc;
+  --accent-hover: #3df0db;
+  --accent-bg: rgba(0, 229, 204, 0.08);
+  --accent-border: rgba(0, 229, 204, 0.28);
+  --accent-shadow: rgba(0, 229, 204, 0.25);
 
-  /* 妖狐サブカラー */
-  --accent-gold: #c89b3c;                   /* 山吹色（yamabuki） */
-  --accent-fox: #9b4a3a;                    /* 狐色（kitsune-iro） */
-  --accent-sumi: #1a1310;                   /* 漆黒 */
+  /* サブカラー（旧 --accent-gold/--accent-fox/--accent-sumi を転用） */
+  --accent-gold: #ffb454;                   /* アンバー（warning/secondary） */
+  --accent-fox: #ff5c8a;                    /* マゼンタ（第2差し色） */
+  --accent-sumi: #060809;                   /* 最暗 */
+  --accent-amber: #ffb454;
+  --accent-magenta: #ff5c8a;
 
-  /* 罫線・繊維 */
-  --border-color: rgba(139, 115, 85, 0.25); /* 和紙繊維色 */
-  --washi-fiber: rgba(139, 115, 85, 0.06);
-  --seal-red: #9c2e29;                      /* 朱印 */
+  /* 罫線・グリッド */
+  --border-color: rgba(255, 255, 255, 0.08);
+  --washi-fiber: rgba(0, 229, 204, 0.04);   /* 旧名維持: 微細ノイズ */
+  --grid-line: rgba(0, 229, 204, 0.06);
+  --seal-red: #00e5cc;                      /* 旧朱印参照 → シアン化 */
 
   /* Markdown / コード */
-  --code-bg: rgba(200, 68, 60, 0.08);
-  --code-border: rgba(200, 68, 60, 0.18);
-  --pre-bg: #2c1810;
-  --pre-text: #f5ede1;
-  --tag-bg: rgba(200, 68, 60, 0.08);
-  --tag-color: #c8443c;
-  --tag-border: rgba(200, 68, 60, 0.18);
-  --dot-bg: #f5ede1;
-  --hover-card-shadow: rgba(200, 68, 60, 0.18);
-  --warning-bg: rgba(253, 248, 238, 0.95);
-  --blockquote-bg: rgba(200, 68, 60, 0.05);
-  --table-even-bg: rgba(139, 115, 85, 0.05);
-  --skill-bar-empty: rgba(139, 115, 85, 0.1);
-  --avatar-border: rgba(200, 68, 60, 0.3);
-  --avatar-shadow: rgba(200, 68, 60, 0.18);
-  --avatar-ring: rgba(200, 68, 60, 0.06);
-  --online-badge-border: #fdf8ee;
+  --code-bg: rgba(0, 229, 204, 0.08);
+  --code-border: rgba(0, 229, 204, 0.18);
+  --pre-bg: #0d1117;
+  --pre-text: #e6edf3;
+  --tag-bg: rgba(0, 229, 204, 0.08);
+  --tag-color: #00e5cc;
+  --tag-border: rgba(0, 229, 204, 0.22);
+  --dot-bg: #0a0d12;
+  --hover-card-shadow: rgba(0, 229, 204, 0.22);
+  --warning-bg: rgba(17, 22, 29, 0.95);
+  --blockquote-bg: rgba(0, 229, 204, 0.05);
+  --table-even-bg: rgba(255, 255, 255, 0.03);
+  --skill-bar-empty: rgba(255, 255, 255, 0.08);
+  --avatar-border: rgba(0, 229, 204, 0.3);
+  --avatar-shadow: rgba(0, 229, 204, 0.22);
+  --avatar-ring: rgba(0, 229, 204, 0.06);
+  --online-badge-border: #11161d;
 }
 
 /* ─── 既定タイポグラフィ ─────────────────────────────── */
@@ -70,16 +74,53 @@ html, body {
 }
 
 body {
-  font-family: 'Shippori Mincho B1', 'Noto Serif JP', 'Hiragino Mincho ProN', '游明朝', YuMincho, serif;
+  font-family: 'JetBrains Mono', 'Noto Sans JP', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
   color: var(--text-primary);
   background-color: var(--bg);
   font-feature-settings: "palt";        /* プロポーショナル詰め */
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   -webkit-font-smoothing: antialiased;
 }
 
 * {
   box-sizing: border-box;
+}
+
+/* ─── ターミナル系ディテール（スクロールバー / 選択色） ───────── */
+
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 229, 204, 0.25);
+  border: 2px solid var(--bg);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 229, 204, 0.45);
+}
+
+/* 点滅カーソル（ターミナル演出） */
+@keyframes terminal-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.terminal-cursor {
+  display: inline-block;
+  animation: terminal-blink 1.1s steps(1) infinite;
 }
 
 .container {
@@ -116,11 +157,11 @@ pre, code {
   color: var(--text-primary);
   font-size: 1rem;
   line-height: 1.85;
-  font-family: 'Shippori Mincho B1', 'Noto Serif JP', serif;
+  font-family: 'Noto Sans JP', 'JetBrains Mono', sans-serif;
 }
 
 .prose-custom h1 {
-  font-family: 'Hina Mincho', 'Shippori Mincho B1', serif;
+  font-family: 'JetBrains Mono', 'Noto Sans JP', sans-serif;
   font-size: 2rem;
   font-weight: 700;
   color: var(--text-primary);
@@ -142,7 +183,7 @@ pre, code {
 }
 
 .prose-custom h2 {
-  font-family: 'Hina Mincho', 'Shippori Mincho B1', serif;
+  font-family: 'JetBrains Mono', 'Noto Sans JP', sans-serif;
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--text-primary);
@@ -151,7 +192,7 @@ pre, code {
 }
 
 .prose-custom h3 {
-  font-family: 'Shippori Mincho B1', serif;
+  font-family: 'JetBrains Mono', 'Noto Sans JP', sans-serif;
   font-size: 1.2rem;
   font-weight: 700;
   color: var(--text-secondary);
@@ -230,7 +271,7 @@ pre, code {
   background: var(--blockquote-bg);
   color: var(--text-secondary);
   font-style: normal;
-  font-family: 'Hina Mincho', 'Shippori Mincho B1', serif;
+  font-family: 'JetBrains Mono', 'Noto Sans JP', sans-serif;
 }
 
 .prose-custom hr {
@@ -253,7 +294,7 @@ pre, code {
   padding: 0.6rem 1rem;
   text-align: left;
   border: 1px solid var(--border-color);
-  font-family: 'Hina Mincho', 'Shippori Mincho B1', serif;
+  font-family: 'JetBrains Mono', 'Noto Sans JP', sans-serif;
 }
 
 .prose-custom td {

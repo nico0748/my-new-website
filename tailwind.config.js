@@ -6,13 +6,13 @@ export default {
   ],
   theme: {
     extend: {
-      // 和風フォント（明朝体ベース）
+      // ダーク・ターミナル（英数=等幅 / 和文=ゴシック）
       fontFamily: {
-        'mincho':       ['"Shippori Mincho B1"', '"Noto Serif JP"', 'serif'],
-        'display':      ['"Hina Mincho"', '"Shippori Mincho B1"', 'serif'],
-        'handwritten':  ['"Klee One"', 'cursive'],
-        'noto-serif':   ['"Noto Serif JP"', 'serif'],
-        'rounded':      ['"M PLUS Rounded 1c"', 'sans-serif'],
+        'mincho':       ['"Noto Sans JP"', 'sans-serif'],          // 本文（和文）
+        'display':      ['"JetBrains Mono"', '"Noto Sans JP"', 'monospace'], // 見出し
+        'handwritten':  ['"JetBrains Mono"', 'monospace'],
+        'noto-serif':   ['"Noto Sans JP"', 'sans-serif'],
+        'rounded':      ['"Noto Sans JP"', 'sans-serif'],
         'mono':         ['"JetBrains Mono"', 'monospace'],
       },
       // clamp() に対応するカスタムフォントサイズを追加
