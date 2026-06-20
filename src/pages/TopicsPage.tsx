@@ -131,7 +131,7 @@ const TopicsPage = () => {
               className="text-base sm:text-lg max-w-2xl mx-auto leading-relaxed"
               style={{ color: "var(--text-secondary)" }}
             >
-              セキュリティニュース・CVE分析・脆弱性解説・1日1題をまとめています。
+              セキュリティニュース・CVE分析・脆弱性解説をまとめています。
             </p>
           </motion.div>
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import NetworkSphere from './NetworkSphere';
 
 interface TerminalBackgroundProps {
   children: React.ReactNode;
@@ -23,6 +24,9 @@ const TerminalBackground: React.FC<TerminalBackgroundProps> = ({ children }) => 
             'radial-gradient(ellipse at center, black 30%, transparent 85%)',
         }}
       />
+
+      {/* 球体ネットワーク網（回転するワイヤーフレーム球） */}
+      <NetworkSphere />
 
       {/* シアングロー（上部に仄かに） */}
       <div
