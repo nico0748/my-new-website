@@ -12,6 +12,8 @@ import ProjectsPage from './pages/ProjectsPage.tsx';
 import SkillsPage from './pages/SkillsPage.tsx';
 import TopicsPage from './pages/TopicsPage.tsx';
 import TopicDetailPage from './pages/TopicDetailPage.tsx';
+import StudyPage from './pages/StudyPage.tsx';
+import StudyDetailPage from './pages/StudyDetailPage.tsx';
 
 export default function App() {
   const location = useLocation();
@@ -28,6 +30,8 @@ export default function App() {
         <Route path="/projects/:id" element={<ProjectDetailPage />} />
         <Route path="/topics" element={<TopicsPage />} />
         <Route path="/topics/:id" element={<TopicDetailPage />} />
+        <Route path="/study" element={<StudyPage />} />
+        <Route path="/study/:id" element={<StudyDetailPage />} />
         <Route path="/skills" element={<SkillsPage />} />
         <Route path="/skills/:category" element={<Navigate to="/skills" replace />} />
       </Routes>

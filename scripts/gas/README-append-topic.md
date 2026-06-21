@@ -85,8 +85,25 @@ claude-obsidian（ローカル定期タスク 7:00 / 19:00）
 - `id` が既にシートに存在する場合は `duplicated` に入り、重複追記されません（冪等）。
 - `token` 不一致は `{ "ok": false, "error": "unauthorized" }`。
 
+## Topics と Study の両対応（1つのWeb Appで2シート）
+
+`append-topic.gs` は **Topics と Study の両方**に追記できます。リクエストの `sheet` フィールドで
+追記先タブを切り替えます（ホワイトリスト: `Topics` / `Study`。省略時は `Topics`）。指定タブが
+存在しなければ**自動作成しヘッダー行を敷きます**。
+
+```json
+{ "token": "...", "sheet": "Study", "rows": [ { "id": "...", "title": "...", ... } ] }
+```
+
+- Topicsニュース連携（`sync_topics_to_website.py`）は `sheet` を送らない → 既定の `Topics` に追記。
+- Study連携（`sync_study_to_website.py`）は `sheet: "Study"` を送る → `Study` タブに追記。
+- **URL・トークンは共通**。1つのウェブアプリで両方を捌けます。
+
+> ⚠️ コードを上書きしたら **デプロイ → デプロイを管理 → 編集 → 新バージョン → デプロイ** で反映
+> （URLは変わりません）。これをやらないと旧コードのままで Study 追記が効きません。
+
 ## 補足
-- `source` は将来の自動取込用に予約されていた値。本連携では `"auto"` を入れます。
+- `source` は将来の自動取込用に予約されていた値。ニュース連携では `"auto"`、Study（自作記事）では `"manual"` を入れます。
 - カテゴリ（news/cve/vuln/daily/it/other）の色・絵文字はフロントの `src/lib/topicCategories.ts` と対応。
 - セキュリティ: ウェブアプリは「全員」公開ですが、**トークンが無ければ追記不可**。トークンは
   リポジトリにコミットしない（`topics_sync.local.json` は claude-obsidian 側で gitignore 済み）。

@@ -60,8 +60,22 @@ export interface TopicItem {
   source?: string;         // "manual" | "auto"（Phase2 向け・既定 manual）
 }
 
+export interface StudyItem {
+  id: string;
+  title: string;
+  description: string;
+  category: string;        // "language" | "framework" | "cs" | "security" | "infra" | "book" | "other"（自由文字列・未知は other）
+  date: string;            // YYYY-MM-DD
+  tags: string[];
+  thumbnail?: string;
+  author?: string;
+  markdownFile?: string;   // 既定: /study/<id>.md
+  externalUrl?: string;    // 参考リンク
+  source?: string;         // "manual" | "auto"（claude-obsidian 連携・既定 manual）
+}
+
 export interface AnimeItem {
-    id: string; 
+    id: string;
     title: string;
     official_site_url: string;
     release_season: string;
@@ -156,6 +170,25 @@ export const mapTopicData = (rows: SheetRow[]): TopicItem[] => {
             thumbnail: row.thumbnail || undefined,
             author: row.author || undefined,
             markdownFile: row.markdownFile || `/topics/${row.id}.md`,
+            externalUrl: row.externalUrl || undefined,
+            source: row.source || "manual",
+        }))
+        .sort((a, b) => (a.date < b.date ? 1 : -1)); // 新しい順
+};
+
+export const mapStudyData = (rows: SheetRow[]): StudyItem[] => {
+    return rows
+        .filter(row => row.id && row.title)
+        .map(row => ({
+            id: row.id,
+            title: row.title,
+            description: row.description || "",
+            category: (row.category || "other").trim(),
+            date: row.date || "",
+            tags: row.tags ? row.tags.split(',').map(t => t.trim()).filter(Boolean) : [],
+            thumbnail: row.thumbnail || undefined,
+            author: row.author || undefined,
+            markdownFile: row.markdownFile || `/study/${row.id}.md`,
             externalUrl: row.externalUrl || undefined,
             source: row.source || "manual",
         }))

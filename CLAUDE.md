@@ -128,6 +128,19 @@ style={{
 
 ---
 
+## Study コンテンツ（学習記録）
+
+学習・深掘りした内容の記録。Topics と同一構造（claude-obsidian で執筆 → Google Sheets へ送信 → サイト表示）。
+
+- データソースは Google Sheets の **「Study」シート**（ヘッダー列は Topics と同一）
+  - 型・マッパーは `src/lib/dataMapper.ts` の `StudyItem` / `mapStudyData`（新しい順にソート）
+- 記事本文は `public/study/<id>.md` に置くと `/study/:id` で自動表示。md が無い場合は `description` ＋ `externalUrl` にフォールバック
+- **カテゴリ**: `language` / `framework` / `cs` / `security` / `infra` / `book` / `other`（自由文字列・未知は other）。色・ラベル・絵文字は `src/lib/studyCategories.ts` の `getStudyCategoryStyle` で一元管理
+- 一覧 `StudyPage` / 詳細 `StudyDetailPage` / カード `StudyCard`。トップにも最新3件の抜粋セクション（`id="study"`）あり
+- **GAS（`scripts/gas/`）は Topics/Study 兼用**: `append-topic.gs` は `sheet` パラメータで追記先を切替（許可リスト `['Topics','Study']`）、`notify-topics.gs` は両シートの onChange を1トリガーで Slack 通知（シートごとに最終通知行を管理）
+
+---
+
 ## PWA
 
 - `vite-plugin-pwa` で Service Worker と webmanifest を自動生成

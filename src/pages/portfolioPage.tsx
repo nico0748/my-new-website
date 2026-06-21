@@ -6,13 +6,14 @@ import TerminalBackground from "../components/ui/TerminalBackground";
 
 import ProjectCard from "../components/ui/ProjectCard";
 import TopicCard from "../components/ui/TopicCard";
+import StudyCard from "../components/ui/StudyCard";
 import SectionWrapper from "../components/ui/SectionWrapper";
 import SkillRadarChart from "../components/ui/SkillRadarChart";
 import TimelineItemComponent from "../components/ui/TimelineItem";
 
 import { fetchSheetData } from "../lib/googleSheets";
-import { mapProfileData, mapPortfolioData, mapSkillsData, mapTimelineData, mapTopicData } from "../lib/dataMapper";
-import type { ProfileData, SkillCategory, TimelineItem as TimelineItemType, PortfolioItem, TopicItem } from "../lib/dataMapper";
+import { mapProfileData, mapPortfolioData, mapSkillsData, mapTimelineData, mapTopicData, mapStudyData } from "../lib/dataMapper";
+import type { ProfileData, SkillCategory, TimelineItem as TimelineItemType, PortfolioItem, TopicItem, StudyItem } from "../lib/dataMapper";
 import type { SheetRow } from "../lib/googleSheets";
 
 import { useEffect, useState } from "react";
@@ -26,18 +27,20 @@ const PortfolioPage = () => {
   const [skills, setSkills] = useState<SkillCategory[]>([]);
   const [timeline, setTimeline] = useState<TimelineItemType[]>([]);
   const [topics, setTopics] = useState<TopicItem[]>([]);
+  const [studies, setStudies] = useState<StudyItem[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       if (!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY) return;
 
       try {
-        const [profileRows, portfolioRows, skillsRows, timelineRows, topicsRows] = await Promise.all([
+        const [profileRows, portfolioRows, skillsRows, timelineRows, topicsRows, studyRows] = await Promise.all([
           fetchSheetData<SheetRow>("Profile"),
           fetchSheetData<SheetRow>("Projects"),
           fetchSheetData<SheetRow>("Skills"),
           fetchSheetData<SheetRow>("Timeline"),
           fetchSheetData<SheetRow>("Topics"),
+          fetchSheetData<SheetRow>("Study"),
         ]);
 
         if (profileRows.length > 0) setProfile(mapProfileData(profileRows));
@@ -45,6 +48,7 @@ const PortfolioPage = () => {
         if (skillsRows.length > 0) setSkills(mapSkillsData(skillsRows));
         if (timelineRows.length > 0) setTimeline(mapTimelineData(timelineRows));
         if (topicsRows.length > 0) setTopics(mapTopicData(topicsRows));
+        if (studyRows.length > 0) setStudies(mapStudyData(studyRows));
       } catch (error) {
         console.error("Failed to fetch data from Google Sheets", error);
       }
@@ -62,7 +66,7 @@ const PortfolioPage = () => {
   };
 
   useEffect(() => {
-    const sections = ["profile", "topics", "projects", "skills", "timeline"];
+    const sections = ["profile", "topics", "study", "projects", "skills", "timeline"];
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -146,11 +150,48 @@ const PortfolioPage = () => {
             )}
           </SectionWrapper>
 
+          {/* Study */}
+          <SectionWrapper
+            id="study"
+            title="Study"
+            index={3}
+            label="Learning"
+            subtitle="学習・深掘りした内容の記録です。"
+          >
+            {studies.length > 0 ? (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {studies.slice(0, 3).map((item) => (
+                    <StudyCard key={item.id} item={item} />
+                  ))}
+                </div>
+                <div className="flex justify-center mt-8">
+                  <Link
+                    to="/study"
+                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 hover:opacity-90"
+                    style={{
+                      background: 'var(--card-bg)',
+                      color: 'var(--accent)',
+                      border: '1px solid var(--accent-border)',
+                      boxShadow: '0 2px 12px var(--accent-shadow)',
+                    }}
+                  >
+                    すべての学習記録を見る →
+                  </Link>
+                </div>
+              </>
+            ) : (
+              <p className="text-center py-12 text-sm" style={{ color: 'var(--text-muted)' }}>
+                学習記録がありません（Google Sheets の「Study」シートを設定してください）
+              </p>
+            )}
+          </SectionWrapper>
+
           {/* Works */}
           <SectionWrapper
             id="projects"
             title="Works"
-            index={3}
+            index={4}
             label="Projects"
             subtitle="腕によりをかけて制作した、愛すべき成果物たちをご紹介します。"
           >
@@ -189,7 +230,7 @@ const PortfolioPage = () => {
           <SectionWrapper
             id="skills"
             title="Skills"
-            index={4}
+            index={5}
             label="Stack"
             subtitle="日々の制作で使っている技術スタックを、得意分野ごとにレーダーチャートで可視化しています。"
           >
@@ -218,7 +259,7 @@ const PortfolioPage = () => {
           <SectionWrapper
             id="timeline"
             title="Timeline"
-            index={5}
+            index={6}
             label="History"
             subtitle="学業・仕事・制作・資格など、これまでの歩みを時系列で振り返ります。"
           >

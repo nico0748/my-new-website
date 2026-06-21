@@ -23,7 +23,9 @@
  *   id, title, description, category, date, tags, thumbnail, author, markdownFile, externalUrl, source
  */
 
-var SHEET_NAME = 'Topics';
+var DEFAULT_SHEET = 'Topics';
+// 追記を許可するシート（タブ）名のホワイトリスト。リクエストの "sheet" で切替（無ければ自動作成）。
+var ALLOWED_SHEETS = ['Topics', 'Study'];
 var EXPECTED_HEADERS = [
   'id', 'title', 'description', 'category', 'date',
   'tags', 'thumbnail', 'author', 'markdownFile', 'externalUrl', 'source'
@@ -54,10 +56,16 @@ function doPost(e) {
       return json_({ ok: false, error: 'no rows' });
     }
 
+    // 追記先シートを決定（payload.sheet がホワイトリストにあれば採用、無ければ既定 Topics）
+    var sheetName = (body.sheet && ALLOWED_SHEETS.indexOf(String(body.sheet)) >= 0)
+      ? String(body.sheet) : DEFAULT_SHEET;
+
     var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var sheet = ss.getSheetByName(SHEET_NAME);
+    var sheet = ss.getSheetByName(sheetName);
     if (!sheet) {
-      return json_({ ok: false, error: 'sheet not found: ' + SHEET_NAME });
+      // タブが存在しなければ作成し、ヘッダー行を敷く
+      sheet = ss.insertSheet(sheetName);
+      sheet.getRange(1, 1, 1, EXPECTED_HEADERS.length).setValues([EXPECTED_HEADERS]);
     }
 
     // ヘッダー取得（無ければ既定ヘッダーを敷く）
@@ -117,7 +125,7 @@ function doPost(e) {
 
 /** 動作確認用: GET で疎通だけ返す（トークンは検証しない簡易ヘルスチェック）。 */
 function doGet() {
-  return json_({ ok: true, service: 'append-topic', sheet: SHEET_NAME });
+  return json_({ ok: true, service: 'append-row', sheets: ALLOWED_SHEETS });
 }
 
 function json_(obj) {

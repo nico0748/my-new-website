@@ -1,15 +1,16 @@
-# Topics 更新時の Slack 通知（Google Apps Script）
+# Topics / Study 更新時の Slack 通知（Google Apps Script）
 
-Google Sheets「Topics」シートに行が追加されたら、Slack に即時通知を飛ばす仕組みです。
+Google Sheets「Topics」「Study」シートに行が追加されたら、Slack に即時通知を飛ばす仕組みです。
 このサイトはバックエンドを持たない静的 SPA のため、データソースである Google Sheets 側に
 紐づく **Google Apps Script (GAS)** で通知を実装します。
 
 - 実行コード本体: [`notify-topics.gs`](./notify-topics.gs)（このファイルはリポジトリ管理用の参照コピー）
 - 実体は対象スプレッドシートの Apps Script プロジェクトで動作します。
+- **1つのトリガーで Topics / Study の両シートをカバー**します（シートごとに最終通知行を管理）。
 
 ```
-Google Sheets「Topics」に行追加
-   └─ onChange トリガー（即時）
+Google Sheets「Topics」「Study」に行追加
+   └─ onChange トリガー（即時・全シート共通）
         └─ GAS が Slack Incoming Webhook を POST
              └─ #security チャンネルに通知 🔔
 ```
@@ -32,7 +33,7 @@ Apps Script の **プロジェクトの設定（⚙）→ スクリプト プロ
 | `SLACK_WEBHOOK_URL` | 手順1で取得した Webhook URL |
 | `SITE_BASE_URL` | `https://nico-labo748.dev`（末尾スラッシュ無し） |
 
-> `LAST_NOTIFIED_ROW` は内部状態として自動で作成・更新されるので手動設定は不要。
+> `LAST_NOTIFIED_ROW_<シート名>` は内部状態として自動で作成・更新されるので手動設定は不要。
 
 ### 4. トリガーを追加
 Apps Script の **トリガー（⏰）→ トリガーを追加**:
@@ -43,11 +44,12 @@ Apps Script の **トリガー（⏰）→ トリガーを追加**:
 > onChange はインストール型トリガーのため、初回追加時に権限承認が必要です。
 
 ### 5. 動作確認
-- 関数 `testNotifyLatest` を手動実行すると、最新行の内容で Slack にテスト通知が飛びます。
-- 実際に「Topics」シートへ1行追加し、Slack に通知が届くことを確認してください。
-- 通知メッセージ内のリンクは `SITE_BASE_URL/topics/<id>` を指します。
+- 関数 `testNotifyLatest` を手動実行すると、各対象シート（Topics/Study）の最新行で Slack にテスト通知が飛びます。
+- 実際に「Topics」または「Study」シートへ1行追加し、Slack に通知が届くことを確認してください。
+- 通知メッセージ内のリンクは Topics は `SITE_BASE_URL/topics/<id>`、Study は `SITE_BASE_URL/study/<id>` を指します。
 
 ## 補足
-- 初回の onChange 発火時は「取りこぼし防止」のため基準行だけ記録し、通知はしません（2回目以降の新規行から通知）。
-- カテゴリの絵文字はフロントの `src/lib/topicCategories.ts` と対応しています。
+- 初回の onChange 発火時は「取りこぼし防止」のため各シートの基準行だけ記録し、通知はしません（2回目以降の新規行から通知）。
+- 通知対象シートは `notify-topics.gs` 冒頭の `SHEETS` 配列で管理（`{ name, path, label }`）。シートを足す場合はここに追記。
+- カテゴリの絵文字はフロントの `src/lib/topicCategories.ts` / `src/lib/studyCategories.ts` と対応しています。
 - 将来 CVE/ニュースフィードを自動取り込み（`source = "auto"`）してシートへ追記する運用にしても、この通知はそのまま発火します。
