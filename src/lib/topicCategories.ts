@@ -13,6 +13,9 @@ const CATEGORY_STYLES: Record<string, TopicCategoryStyle> = {
   vuln:  { label: "脆弱性", color: "#ffb454", emoji: "⚠️" }, // アンバー
   daily: { label: "1日1題", color: "#5ad17e", emoji: "🧩" }, // グリーン
   it:    { label: "IT",     color: "#5c9dff", emoji: "💻" }, // ブルー
+  frontend: { label: "Frontend", color: "#00e5cc", emoji: "🎨" }, // シアン
+  backend:  { label: "Backend",  color: "#ffb454", emoji: "⚙️" }, // アンバー
+  ai:       { label: "AI",       color: "#a78bfa", emoji: "🤖" }, // パープル
   other: { label: "Other",  color: "#8a96a3", emoji: "📌" }, // グレー
 };
 
