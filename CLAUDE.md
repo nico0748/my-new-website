@@ -85,6 +85,9 @@ style={{
 | `/topics/:id` | TopicDetailPage | Markdownで詳細を表示（md 無しは description + externalUrl にフォールバック） |
 | `/skills` | SkillsPage | 技術スタック一覧（カテゴリ行＋クリック展開） |
 | `/skills/:category` | → `/skills` | リダイレクト |
+| `/learn` | LearnPage | 教材トップ（分野カード一覧） |
+| `/learn/:domain` | LearnDomainPage | 分野ページ（章ごとに記事を整理） |
+| `/learn/:domain/:id` | LearnDetailPage | 記事詳細（本文は TSX コンポーネント） |
 | `/watched-anime` 等 | アニメページ群 | 既存 |
 
 - 新しいページを追加する場合は `src/App.tsx` にルートを追加し、`src/pages/` 以下にページコンポーネントを作成する。
@@ -141,6 +144,43 @@ style={{
 
 ---
 
+## Learn コンテンツ（IT 教材知識）
+
+Web・インフラ・セキュリティを分野ごとに体系立ててまとめた教材集。Study/Topics が「時系列フロー型（新しい順のフィード）」なのに対し、Learn は **分野→章→記事で体系立てた「ストック型（教科書）」**。日付順ではなく章の順序で読ませる。
+
+### データの持ち方 — ⚠️ Sheets ではなく TSX 同居（教材のみの例外）
+
+- 記事は **`src/content/learn/<domain>/<id>.tsx`** に置く。各ファイルが次の2つを export する：
+  - `export const meta: LearnMeta` … 一覧・絞り込み・章の並び順に使うメタ情報
+  - `export default function Article()` … 本文（自由な TSX。演出の自由度を優先）
+- **索引は `import.meta.glob` で自動生成**（`src/lib/learnRegistry.ts`）。記事を増やすときは TSX を1本足すだけ。レジストリやページの編集は不要
+- 記事本文は `.learn-docs .prose` でラップされるので、素の `<h2>`/`<p>`/`<ul>` はそのまま整形される。加えて `src/components/learn/kit.tsx` の部品（`Section` `Callout` `Code` `Steps`/`Step` `KeyPoints` `ComparisonTable` `KVList` `TipBox` `Figure` `Cmd` `Lead` `Divider`）でリッチに書ける
+- ⚠️ **これは「ハードコードされたデータを `src/` に置かない」ルールの教材専用の例外**。教材本文はデータではなくコード（自由度の高い表現）であるため。Study/Topics/Projects 等は従来どおり Google Sheets を使う
+
+### デザイン — ⚠️ ポートフォリオとは独立（Learn 専用スタイル）
+
+- Learn はポートフォリオのダーク・ターミナル調を**踏襲しない**。**Progate 系のライトなドキュメント調**（Inter フォント／ティール `#22b0a0` ＋ ピンク CTA `#ff5c7a` ／白背景・ネイビー見出し）で構成する
+- 専用 CSS は `src/styles/learn.css`。**すべて `.learn-docs` 配下にスコープ**し、グローバル（index.css のダークテーマ・Tailwind）に影響させない。CSS 変数も `.learn-docs` 上で定義（`--accent` 等の portfolio 変数は使わない）
+- レイアウトは2系統:
+  - **`/learn`（ランディング）= `LearnPage`**: サイドバーなしの Progate 系マーケティング面。ヒーロー＋ミント帯＋**コースカード（`.course-grid` / `.course-card`）**。body 背景は `useEffect` で白に切替
+  - **`/learn/:domain`・`/learn/:domain/:id` = `LearnDomainPage` / `LearnDetailPage`**: `LearnLayout`（固定ヘッダー＋進捗バー＋左サイドバー `DomainNav` ＋ 780px 本文）。詳細は本文 h2 から「On this page」自動生成＋前後ナビ
+- **⚠️ 絵文字（emoji / ピクトグラム）は Learn UI 全体で使わない**。分野アイコンは `public/learn/covers/<domain>.svg` の**カバー画像**で表現する（`←`/`→` 等の矢印記号は可）
+- 「分野」は UI 上 **「コース」** と表記する（内部キーは `domain` のまま）
+
+### 区分（コース・章・レベル）
+
+- **コース（domain / URL）**: `web`（ティール `#22b0a0`） / `infra`（アンバー `#e6a532`） / `security`（ピンク `#f0637e`）。将来 `cs` / `dev` を追加可能。各コースは `accent`（色）・`cover`（カバー画像パス）・`description` を持つ
+- **章（section）**: コースごとに定義（例: web = `web-basics` / `frontend` / `backend` / `api`）。配列順が表示順
+- **レベル（level）**: `intro`(入門) / `basic`(基礎) / `practice`(実践)
+- **order**: 章内の並び順（体系順。日付ではない）
+- コーススタイル・章定義・レベルは `src/lib/learnCategories.ts` で一元管理。コース/章を増やすときはここに追加し、カバー画像を `public/learn/covers/` に置く
+- 一覧 `LearnPage` / コース `LearnDomainPage`（学習パス）/ 詳細 `LearnDetailPage`
+- **メタ任意項目**: `minutes`（目安の所要時間・分）を持たせるとカード/詳細に「約N分」表示
+- **学習進捗（localStorage）**: 見出し読了 `nicotech:read:<path>#<anchor>`（`kit.tsx` の `Section` チェックボックス）→ 全見出し読了で記事完了 `nicotech:done:<path>` を `LearnLayout` が自動設定。コース進捗は `src/lib/learnProgress.ts`（`getCourseProgress` 等）で集計し、コースページの進捗バー・ランディングのカード進捗に反映。変更時は `nicotech:progress` イベントを発火し `useProgressTick` で再描画
+- **⚠️ トップ（`portfolioPage.tsx`）・ヘッダー nav には出さない**。教材ライブラリはポートフォリオとは独立させ、`/learn` への直接アクセス（ルーティング）のみで到達させる方針。導線セクションやnavリンクを追加しないこと
+
+---
+
 ## PWA
 
 - `vite-plugin-pwa` で Service Worker と webmanifest を自動生成
@@ -189,7 +229,9 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
 - 旧 `WashiBackground` / `SeigaihaPattern` / `StarryBackground` / `GraphPaperBackground` を使用しない（`TerminalBackground` に統一）
 - 和風パレット（`#f5ede1` 生成り / `#c8443c` 緋色 / `#2c1810` 墨色 など）や明朝体（`Hina Mincho` / `Shippori Mincho B1`）をポートフォリオに新規採用しない（ダーク・ターミナルに統一）
 - 見出し・ロゴは等幅（`JetBrains Mono`）、和文本文はゴシック（`Noto Sans JP`）を使う。明朝体・手書き体（`Klee One`）は新規採用しない
-- ハードコードされたデータを `src/` 以下に置かない（Google Sheets に移行済み）
+- ハードコードされたデータを `src/` 以下に置かない（Google Sheets に移行済み）。※例外は Learn 教材のみ（`src/content/learn/` の TSX 記事。詳細は「Learn コンテンツ」節）
+- **Learn（`/learn`）UI で絵文字（emoji / ピクトグラム）を使わない**。コース・カテゴリのアイコンは `public/learn/covers/` のカバー画像か SVG アイコンで表現する（矢印記号 `←`/`→` は可）
+- Learn のデザインにポートフォリオのダーク・ターミナル調（`TerminalBackground`・`--accent` 等の portfolio 変数）を持ち込まない。Learn は `.learn-docs` スコープの専用スタイル（`src/styles/learn.css`・Progate 系ライトテーマ）で統一する
 - ハードコードされた色（`#xxxxxx`）を直接書かず、CSS 変数（`var(--accent)` 等）経由で参照する
 - 未使用の `console.log` をコミットしない
 - `--no-verify` フラグは使わない

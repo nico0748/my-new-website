@@ -1,0 +1,23 @@
+<svg width="320" height="180" viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AI コース">
+  <rect width="320" height="180" fill="#8C5FE8"/>
+  <g stroke="#ffffff" stroke-width="2.8" stroke-opacity="0.75">
+    <path d="M118 60 L160 77 M118 60 L160 113 M118 95 L160 77 M118 95 L160 113 M118 130 L160 77 M118 130 L160 113"/>
+    <path d="M160 77 L202 95 M160 113 L202 95"/>
+  </g>
+  <g fill="#8C5FE8" stroke="#ffffff" stroke-width="3">
+    <circle cx="118" cy="60" r="9"/>
+    <circle cx="118" cy="95" r="9"/>
+    <circle cx="118" cy="130" r="9"/>
+    <circle cx="160" cy="77" r="9"/>
+    <circle cx="160" cy="113" r="9"/>
+    <circle cx="202" cy="95" r="9"/>
+  </g>
+  <g fill="#ffffff" fill-opacity="0.14">
+    <circle cx="118" cy="60" r="9"/>
+    <circle cx="118" cy="95" r="9"/>
+    <circle cx="118" cy="130" r="9"/>
+    <circle cx="160" cy="77" r="9"/>
+    <circle cx="160" cy="113" r="9"/>
+    <circle cx="202" cy="95" r="9"/>
+  </g>
+</svg>
