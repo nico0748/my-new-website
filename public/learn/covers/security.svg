@@ -1,0 +1,6 @@
+<svg width="320" height="180" viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="セキュリティ コース">
+  <rect width="320" height="180" fill="#F0637E"/>
+  <path d="M160 46 L196 60 V96 C196 118 180 132 160 140 C140 132 124 118 124 96 V60 Z"
+        fill="#ffffff" fill-opacity="0.14" stroke="#ffffff" stroke-width="3.4" stroke-linejoin="round"/>
+  <path d="M146 92 l10 11 l20 -24" stroke="#ffffff" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -20,4 +20,12 @@ export default tseslint.config([
       globals: globals.browser,
     },
   },
+  {
+    // 教材記事は「meta（定数）＋ 本文（default component）」を同居させる設計のため、
+    // fast-refresh の only-export-components ルールを content/learn 配下では無効化する。
+    files: ['src/content/learn/**/*.tsx'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
 ])

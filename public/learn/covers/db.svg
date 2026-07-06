@@ -1,0 +1,7 @@
+<svg width="320" height="180" viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="データベース コース">
+  <rect width="320" height="180" fill="#5F6FE0"/>
+  <path d="M116 62 v58 a44 14 0 0 0 88 0 v-58" fill="#ffffff" fill-opacity="0.14" stroke="#ffffff" stroke-width="3.4"/>
+  <ellipse cx="160" cy="62" rx="44" ry="14" fill="#ffffff" fill-opacity="0.14" stroke="#ffffff" stroke-width="3.4"/>
+  <path d="M116 82 a44 14 0 0 0 88 0" stroke="#ffffff" stroke-width="3" stroke-opacity="0.85"/>
+  <path d="M116 101 a44 14 0 0 0 88 0" stroke="#ffffff" stroke-width="3" stroke-opacity="0.85"/>
+</svg>

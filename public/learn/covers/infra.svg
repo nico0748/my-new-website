@@ -1,0 +1,14 @@
+<svg width="320" height="180" viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="インフラ コース">
+  <rect width="320" height="180" fill="#E6A532"/>
+  <g stroke="#ffffff" stroke-width="3">
+    <rect x="112" y="50" width="96" height="26" rx="6" fill="#ffffff" fill-opacity="0.14"/>
+    <rect x="112" y="84" width="96" height="26" rx="6" fill="#ffffff" fill-opacity="0.14"/>
+    <rect x="112" y="118" width="96" height="26" rx="6" fill="#ffffff" fill-opacity="0.14"/>
+  </g>
+  <g fill="#ffffff">
+    <circle cx="126" cy="63" r="3.4"/>
+    <circle cx="126" cy="97" r="3.4"/>
+    <circle cx="126" cy="131" r="3.4"/>
+  </g>
+  <path d="M150 63 h44 M150 97 h44 M150 131 h44" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round" stroke-opacity="0.85"/>
+</svg>
