@@ -34,7 +34,7 @@ const LearnDomainPage = () => {
     return () => { document.title = "nicoTech Learn"; };
   }, [domain]);
 
-  if (!isLearnDomain(domain)) return <Navigate to="/learn" replace />;
+  if (!isLearnDomain(domain)) return <Navigate to="/nicotech" replace />;
 
   const style = DOMAIN_STYLES[domain];
   const groups = getSectionedEntries(domain);
@@ -71,7 +71,7 @@ const LearnDomainPage = () => {
           )}
           {resume && (
             <div className="resume-row">
-              <Link to={`/learn/${domain}/${resume.meta.id}`} className="btn-cta small">
+              <Link to={`/nicotech/${domain}/${resume.meta.id}`} className="btn-cta small">
                 {lastEntry ? "続きから読む" : "コースを始める"}
               </Link>
               <span className="resume-title">{resume.meta.title}</span>
@@ -93,7 +93,7 @@ const LearnDomainPage = () => {
                 return (
                   <Link
                     key={e.meta.id}
-                    to={`/learn/${domain}/${e.meta.id}`}
+                    to={`/nicotech/${domain}/${e.meta.id}`}
                     className={`path-item${done ? " done" : ""}`}
                   >
                     <span className="path-num" style={done ? { background: style.accent, borderColor: style.accent } : undefined}>

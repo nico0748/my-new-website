@@ -19,6 +19,13 @@ import LearnPage from './pages/LearnPage.tsx';
 import LearnDomainPage from './pages/LearnDomainPage.tsx';
 import LearnDetailPage from './pages/LearnDetailPage.tsx';
 
+/** 旧 /learn/... を新 /nicotech/... へ置き換えてリダイレクト（クエリ・ハッシュ保持）。 */
+function LearnRedirect() {
+  const loc = useLocation();
+  const to = loc.pathname.replace(/^\/learn/, "/nicotech") + loc.search + loc.hash;
+  return <Navigate to={to} replace />;
+}
+
 export default function App() {
   const location = useLocation();
   useAnalytics(); // GA4: ルート遷移ごとに page_view を送信（本番のみ）
@@ -37,9 +44,11 @@ export default function App() {
         <Route path="/topics/:id" element={<TopicDetailPage />} />
         <Route path="/study" element={<StudyPage />} />
         <Route path="/study/:id" element={<StudyDetailPage />} />
-        <Route path="/learn" element={<LearnPage />} />
-        <Route path="/learn/:domain" element={<LearnDomainPage />} />
-        <Route path="/learn/:domain/:id" element={<LearnDetailPage />} />
+        <Route path="/nicotech" element={<LearnPage />} />
+        <Route path="/nicotech/:domain" element={<LearnDomainPage />} />
+        <Route path="/nicotech/:domain/:id" element={<LearnDetailPage />} />
+        {/* 旧 /learn/* は /nicotech/* へリダイレクト（ブックマーク互換） */}
+        <Route path="/learn/*" element={<LearnRedirect />} />
         <Route path="/skills" element={<SkillsPage />} />
         <Route path="/skills/:category" element={<Navigate to="/skills" replace />} />
       </Routes>

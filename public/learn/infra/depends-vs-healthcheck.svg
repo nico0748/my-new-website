@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 340" font-family="'Inter','Noto Sans JP',sans-serif">
+  <defs>
+    <marker id="dh-gray" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <polygon points="0,1 9,5 0,9" fill="#94a3b8"/>
+    </marker>
+    <marker id="dh-red" markerWidth="11" markerHeight="11" refX="8" refY="5" orient="auto">
+      <polygon points="0,1 10,5 0,9" fill="#dc2626"/>
+    </marker>
+    <marker id="dh-grn" markerWidth="11" markerHeight="11" refX="8" refY="5" orient="auto">
+      <polygon points="0,1 10,5 0,9" fill="#22c55e"/>
+    </marker>
+  </defs>
+
+  <text x="28" y="30" fill="#1a1a2e" font-size="14" font-weight="700">“起動した” と “使える” は違う</text>
+
+  <!-- ===== ROW 1 : depends_on only ===== -->
+  <rect x="14" y="60" width="150" height="66" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+  <text x="30" y="88" fill="#b45309" font-size="12.5" font-weight="700">① depends_on だけ</text>
+  <text x="30" y="108" fill="#d97706" font-size="11">“起動”しか待たない</text>
+
+  <!-- postgres started (amber) -->
+  <rect x="182" y="74" width="126" height="52" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+  <text x="245" y="96" text-anchor="middle" fill="#b45309" font-size="12.5" font-weight="700">postgres 起動</text>
+  <text x="245" y="114" text-anchor="middle" fill="#d97706" font-size="10.5">起動しただけ（受付前）</text>
+
+  <line x1="308" y1="100" x2="348" y2="100" stroke="#94a3b8" stroke-width="2" marker-end="url(#dh-gray)"/>
+  <text x="328" y="90" text-anchor="middle" fill="#475569" font-size="10.5" font-weight="700">直後</text>
+
+  <!-- backend started (green) -->
+  <rect x="352" y="74" width="120" height="52" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="412" y="96" text-anchor="middle" fill="#15803d" font-size="12.5" font-weight="700">backend 起動</text>
+  <text x="412" y="114" text-anchor="middle" fill="#16a34a" font-size="10.5">すぐ接続しにいく</text>
+
+  <!-- fail arrow (red dashed) -->
+  <line x1="472" y1="100" x2="536" y2="100" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#dh-red)"/>
+  <circle cx="504" cy="100" r="12" fill="#dc2626"/>
+  <path d="M499 95 L509 105 M509 95 L499 105" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+
+  <!-- fail result -->
+  <rect x="540" y="74" width="160" height="52" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <text x="620" y="96" text-anchor="middle" fill="#b91c1c" font-size="12.5" font-weight="700">connection refused</text>
+  <text x="620" y="114" text-anchor="middle" fill="#dc2626" font-size="10.5">受付前だった → 失敗</text>
+
+  <!-- time axis row1 -->
+  <line x1="182" y1="140" x2="704" y2="140" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#dh-gray)"/>
+  <text x="700" y="132" text-anchor="end" fill="#94a3b8" font-size="10.5">時間 →</text>
+
+  <!-- divider -->
+  <line x1="14" y1="168" x2="704" y2="168" stroke="#e2e8f0" stroke-width="1.5"/>
+
+  <!-- ===== ROW 2 : healthcheck ===== -->
+  <rect x="14" y="196" width="150" height="76" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="30" y="222" fill="#15803d" font-size="12.5" font-weight="700">② healthcheck +</text>
+  <text x="30" y="240" fill="#15803d" font-family="ui-monospace,'SF Mono',Menlo,monospace" font-size="10.5">service_healthy</text>
+  <text x="30" y="259" fill="#16a34a" font-size="11">“受付OK”まで待つ</text>
+
+  <!-- postgres started (amber) -->
+  <rect x="182" y="212" width="118" height="52" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+  <text x="241" y="234" text-anchor="middle" fill="#b45309" font-size="12.5" font-weight="700">postgres 起動</text>
+  <text x="241" y="252" text-anchor="middle" fill="#d97706" font-size="10.5">受付前</text>
+
+  <!-- healthcheck probe -->
+  <text x="330" y="204" text-anchor="middle" fill="#15803d" font-size="10.5" font-weight="700">healthcheck</text>
+  <line x1="300" y1="238" x2="356" y2="238" stroke="#22c55e" stroke-width="2" marker-end="url(#dh-grn)"/>
+  <circle cx="330" cy="238" r="11" fill="#fff" stroke="#22c55e" stroke-width="1.8"/>
+  <path d="M324 238 L329 243 L337 232" fill="none" stroke="#22c55e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- healthy (green) -->
+  <rect x="360" y="212" width="112" height="52" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="416" y="234" text-anchor="middle" fill="#15803d" font-size="12.5" font-weight="700">healthy</text>
+  <text x="416" y="252" text-anchor="middle" fill="#16a34a" font-size="10.5">受付OK</text>
+
+  <line x1="472" y1="238" x2="512" y2="238" stroke="#22c55e" stroke-width="2" marker-end="url(#dh-grn)"/>
+  <text x="492" y="228" text-anchor="middle" fill="#15803d" font-size="10" font-weight="700">待って</text>
+
+  <!-- backend success -->
+  <rect x="516" y="212" width="150" height="52" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="583" y="234" text-anchor="middle" fill="#15803d" font-size="12.5" font-weight="700">backend 起動</text>
+  <text x="583" y="252" text-anchor="middle" fill="#16a34a" font-size="10.5">接続成功</text>
+  <circle cx="682" cy="238" r="13" fill="#22c55e"/>
+  <path d="M676 238 L681 243 L689 231" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- time axis row2 -->
+  <line x1="182" y1="280" x2="704" y2="280" stroke="#94a3b8" stroke-width="1.6" marker-end="url(#dh-gray)"/>
+  <text x="700" y="294" text-anchor="end" fill="#94a3b8" font-size="10.5">時間 →</text>
+
+  <!-- caption -->
+  <text x="360" y="326" text-anchor="middle" font-size="13" fill="#1a1a2e"><tspan font-weight="700">“起動した”と“使える”は違う。</tspan>healthcheck が本当の準備完了を教える</text>
+</svg>

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 220" font-family="'Inter','Noto Sans JP',sans-serif">
+  <defs>
+    <filter id="rf" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- Registry -->
+  <g filter="url(#rf)">
+    <rect x="30" y="62" width="180" height="80" rx="10" fill="#f97316"/>
+  </g>
+  <text x="120" y="95" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">Docker Hub</text>
+  <text x="120" y="116" text-anchor="middle" fill="#fed7aa" font-size="12">レジストリ（倉庫）</text>
+
+  <!-- arrow pull -->
+  <line x1="210" y1="102" x2="288" y2="102" stroke="#94a3b8" stroke-width="2"/>
+  <polygon points="286,96 298,102 286,108" fill="#94a3b8"/>
+  <text x="249" y="92" text-anchor="middle" fill="#475569" font-size="12" font-weight="600">pull</text>
+
+  <!-- Image -->
+  <rect x="300" y="62" width="160" height="80" rx="10" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="380" y="95" text-anchor="middle" fill="#4f46e5" font-size="14" font-weight="700">イメージ</text>
+  <text x="380" y="116" text-anchor="middle" fill="#6366f1" font-size="12">ローカルに保存</text>
+
+  <!-- arrow create+start -->
+  <line x1="460" y1="102" x2="538" y2="102" stroke="#94a3b8" stroke-width="2"/>
+  <polygon points="536,96 548,102 536,108" fill="#94a3b8"/>
+  <text x="499" y="92" text-anchor="middle" fill="#475569" font-size="12" font-weight="600">create→start</text>
+
+  <!-- Container -->
+  <g filter="url(#rf)">
+    <rect x="550" y="62" width="150" height="80" rx="10" fill="#22c55e"/>
+  </g>
+  <text x="625" y="95" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">コンテナ</text>
+  <text x="625" y="116" text-anchor="middle" fill="#bbf7d0" font-size="12">起動中</text>
+
+  <!-- caption -->
+  <text x="360" y="185" text-anchor="middle" fill="#1a1a2e" font-size="13"><tspan font-weight="700">docker run</tspan> = （ローカルに無ければ）pull → create → start を1コマンドでまとめて実行</text>
+</svg>

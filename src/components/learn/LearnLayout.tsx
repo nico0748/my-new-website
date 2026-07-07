@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 import NicoTechMark from "./NicoTechMark";
 import LearnSearch from "./LearnSearch";
+import OnboardingGuide from "./OnboardingGuide";
 import { DOMAIN_ORDER, DOMAIN_STYLES } from "../../lib/learnCategories";
 import type { LearnDomain } from "../../lib/learnCategories";
 import "../../styles/learn.css";
@@ -145,13 +146,13 @@ const LearnLayout = ({ activeDomain, sidebar, children, toc = false }: Props) =>
             <line x1="3" y1="18" x2="21" y2="18" />
           </svg>
         </button>
-        <Link to="/learn" className="logo">
+        <Link to="/nicotech" className="logo">
           <NicoTechMark size={32} />
           <span className="logo-text">nico<span className="accent">Tech</span></span>
         </Link>
         <nav className="course-nav" aria-label="コース">
           {DOMAIN_ORDER.map((d) => (
-            <Link key={d} to={`/learn/${d}`} className={activeDomain === d ? "active" : ""}>
+            <Link key={d} to={`/nicotech/${d}`} className={activeDomain === d ? "active" : ""}>
               {DOMAIN_STYLES[d].label}
             </Link>
           ))}
@@ -167,10 +168,19 @@ const LearnLayout = ({ activeDomain, sidebar, children, toc = false }: Props) =>
           <span className="header-search-text">検索</span>
           <kbd>⌘K</kbd>
         </button>
-        <Link to="/" className="back-link">← Portfolio</Link>
+        <button
+          className="header-help"
+          aria-label="使い方ガイドを開く"
+          onClick={() => window.dispatchEvent(new CustomEvent("nicotech:guide-open"))}
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" /><path d="M9.2 9.2a3 3 0 0 1 5.6 1c0 2-2.8 2.5-2.8 4" /><line x1="12" y1="17.5" x2="12" y2="17.51" />
+          </svg>
+        </button>
       </header>
 
       <LearnSearch />
+      <OnboardingGuide />
 
       {/* Progress bar */}
       <div className="progress-bar" role="progressbar" aria-valuenow={Math.round(progress)} aria-valuemin={0} aria-valuemax={100}>

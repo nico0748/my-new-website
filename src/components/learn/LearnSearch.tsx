@@ -91,7 +91,7 @@ const LearnSearch = () => {
 
   const go = (it: Indexed) => {
     setOpen(false);
-    navigate(`/learn/${it.domain}/${it.id}`);
+    navigate(`/nicotech/${it.domain}/${it.id}`);
   };
 
   const onInputKey = (e: React.KeyboardEvent) => {

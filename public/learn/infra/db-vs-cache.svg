@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 320" font-family="'Inter','Noto Sans JP',sans-serif">
+  <defs>
+    <filter id="dc" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- ===== Left: Postgres (真実の源) ===== -->
+  <rect x="20" y="12" width="310" height="270" rx="12" fill="#f8f9fb" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="175" y="40" text-anchor="middle" fill="#1a1a2e" font-size="15" font-weight="700">Postgres</text>
+  <text x="175" y="58" text-anchor="middle" fill="#5a5a7a" font-size="11.5">リレーショナル DB</text>
+
+  <!-- db cylinder -->
+  <g filter="url(#dc)">
+    <path d="M123 86 L123 158 A52 15 0 0 0 227 158 L227 86" fill="#bfdbfe" stroke="#3b82f6" stroke-width="1.5"/>
+  </g>
+  <ellipse cx="175" cy="86" rx="52" ry="15" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <path d="M123 108 A52 15 0 0 0 227 108" fill="none" stroke="#93c5fd" stroke-width="1"/>
+  <path d="M123 130 A52 15 0 0 0 227 130" fill="none" stroke="#93c5fd" stroke-width="1"/>
+  <!-- lock = source of truth -->
+  <path d="M167 140 a8 8 0 0 1 16 0 v5" fill="none" stroke="#1e40af" stroke-width="2.4"/>
+  <rect x="163" y="144" width="24" height="18" rx="3" fill="#1e40af"/>
+  <circle cx="175" cy="151" r="2.4" fill="#fff"/>
+  <rect x="174" y="151" width="2" height="6" fill="#fff"/>
+
+  <text x="40" y="192" fill="#475569" font-size="11.5">・<tspan fill="#15803d" font-weight="700">永続</tspan>（ディスクに保存）</text>
+  <text x="40" y="214" fill="#475569" font-size="11.5">・<tspan fill="#3b82f6" font-weight="700">正確</tspan>（トランザクション）</text>
+  <text x="40" y="236" fill="#475569" font-size="11.5">・<tspan fill="#d97706" font-weight="700">やや遅い</tspan></text>
+  <text x="40" y="258" fill="#475569" font-size="11.5">・<tspan fill="#3b82f6" font-weight="700">真実の源</tspan>（source of truth）</text>
+
+  <!-- ===== VS badge ===== -->
+  <circle cx="360" cy="145" r="22" fill="#1a1a2e"/>
+  <text x="360" y="150" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">VS</text>
+
+  <!-- ===== Right: Redis (キャッシュ) ===== -->
+  <rect x="390" y="12" width="310" height="270" rx="12" fill="#f8f9fb" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="545" y="40" text-anchor="middle" fill="#1a1a2e" font-size="15" font-weight="700">Redis</text>
+  <text x="545" y="58" text-anchor="middle" fill="#5a5a7a" font-size="11.5">インメモリ / キャッシュ</text>
+
+  <!-- sticky note (dashed = 揮発) + lightning -->
+  <g filter="url(#dc)">
+    <rect x="498" y="78" width="94" height="90" rx="8" fill="#fef2f2" stroke="#fecaca" stroke-width="1.5" stroke-dasharray="5 4"/>
+  </g>
+  <polygon points="552,86 526,128 545,128 539,160 571,114 551,114" fill="#dc2626"/>
+  <rect x="600" y="112" width="56" height="22" rx="11" fill="#dc2626"/>
+  <text x="628" y="127" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">揮発</text>
+
+  <text x="410" y="192" fill="#475569" font-size="11.5">・<tspan fill="#dc2626" font-weight="700">揮発</tspan>（メモリ上・消える）</text>
+  <text x="410" y="214" fill="#475569" font-size="11.5">・<tspan fill="#dc2626" font-weight="700">高速</tspan></text>
+  <text x="410" y="236" fill="#475569" font-size="11.5">・<tspan fill="#d97706" font-weight="700">消えてもいい</tspan></text>
+  <text x="410" y="258" fill="#475569" font-size="11.5">・<tspan fill="#dc2626" font-weight="700">キャッシュ</tspan>（一時保存）</text>
+
+  <!-- caption -->
+  <text x="360" y="304" text-anchor="middle" fill="#1a1a2e" font-size="12.5">消えたら困るデータは <tspan font-weight="700" fill="#3b82f6">Postgres</tspan>、速くて消えてもいいものは <tspan font-weight="700" fill="#dc2626">Redis</tspan></text>
+</svg>

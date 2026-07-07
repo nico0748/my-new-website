@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 340" font-family="'Inter','Noto Sans JP',sans-serif">
+  <defs>
+    <filter id="mvs" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- ===== Left: monolith ===== -->
+  <rect x="20" y="12" width="330" height="290" rx="12" fill="#f8f9fb" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="185" y="38" text-anchor="middle" fill="#1a1a2e" font-size="15" font-weight="700">1コンテナに全部</text>
+
+  <!-- one big container -->
+  <g filter="url(#mvs)">
+    <rect x="42" y="56" width="286" height="152" rx="10" fill="#fff" stroke="#94a3b8" stroke-width="1.5"/>
+  </g>
+  <text x="185" y="74" text-anchor="middle" fill="#64748b" font-size="11.5">1 つの app コンテナに全部入り</text>
+
+  <rect x="56" y="90" width="126" height="36" rx="6" fill="#6366f1"/>
+  <text x="119" y="113" text-anchor="middle" fill="#fff" font-size="12.5" font-weight="600">frontend</text>
+  <rect x="190" y="90" width="126" height="36" rx="6" fill="#22c55e"/>
+  <text x="253" y="113" text-anchor="middle" fill="#fff" font-size="12.5" font-weight="600">backend</text>
+  <rect x="56" y="134" width="126" height="36" rx="6" fill="#3b82f6"/>
+  <text x="119" y="157" text-anchor="middle" fill="#fff" font-size="12.5" font-weight="600">db</text>
+  <rect x="190" y="134" width="126" height="36" rx="6" fill="#dc2626"/>
+  <text x="253" y="157" text-anchor="middle" fill="#fff" font-size="12.5" font-weight="600">redis</text>
+
+  <text x="185" y="196" text-anchor="middle" fill="#5a5a7a" font-size="11">→ ぜんぶ 1 つにまとまっている</text>
+
+  <text x="44" y="238" fill="#c2410c" font-size="11.5" font-weight="600">・1 つ直すと全部を再起動</text>
+  <text x="44" y="262" fill="#c2410c" font-size="11.5" font-weight="600">・全部が同じ寿命</text>
+  <text x="44" y="286" fill="#c2410c" font-size="11.5" font-weight="600">・技術スタックが固定</text>
+
+  <!-- ===== VS badge ===== -->
+  <circle cx="380" cy="150" r="22" fill="#1a1a2e"/>
+  <text x="380" y="155" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">VS</text>
+
+  <!-- ===== Right: split into services ===== -->
+  <rect x="410" y="12" width="330" height="290" rx="12" fill="#f8f9fb" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="575" y="38" text-anchor="middle" fill="#1a1a2e" font-size="15" font-weight="700">役割ごとに分割</text>
+
+  <g filter="url(#mvs)">
+    <rect x="432" y="62" width="132" height="64" rx="10" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/>
+    <rect x="586" y="62" width="132" height="64" rx="10" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+    <rect x="432" y="140" width="132" height="64" rx="10" fill="#bfdbfe" stroke="#3b82f6" stroke-width="1.5"/>
+    <rect x="586" y="140" width="132" height="64" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+  </g>
+  <text x="498" y="92" text-anchor="middle" fill="#4f46e5" font-size="13" font-weight="700">frontend</text>
+  <text x="498" y="110" text-anchor="middle" fill="#6366f1" font-size="10.5">画面 / UI</text>
+  <text x="652" y="92" text-anchor="middle" fill="#15803d" font-size="13" font-weight="700">backend</text>
+  <text x="652" y="110" text-anchor="middle" fill="#16a34a" font-size="10.5">ロジック</text>
+  <text x="498" y="170" text-anchor="middle" fill="#1e40af" font-size="13" font-weight="700">db</text>
+  <text x="498" y="188" text-anchor="middle" fill="#2563eb" font-size="10.5">postgres</text>
+  <text x="652" y="170" text-anchor="middle" fill="#b91c1c" font-size="13" font-weight="700">redis</text>
+  <text x="652" y="188" text-anchor="middle" fill="#dc2626" font-size="10.5">cache</text>
+
+  <text x="432" y="238" fill="#15803d" font-size="11.5" font-weight="600">・1 つずつ再起動できる</text>
+  <text x="432" y="262" fill="#15803d" font-size="11.5" font-weight="600">・必要な所だけスケール</text>
+  <text x="432" y="286" fill="#15803d" font-size="11.5" font-weight="600">・技術は自由に選べる</text>
+
+  <!-- caption -->
+  <text x="380" y="326" text-anchor="middle" fill="#1a1a2e" font-size="12.5">役割で分けると、変更・再起動・<tspan font-weight="700" fill="#15803d">スケールが独立</tspan>する</text>
+</svg>

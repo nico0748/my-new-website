@@ -34,7 +34,7 @@ const DomainNav = ({ domain, activeId }: Props) => {
               return (
                 <li key={e.meta.id}>
                   <Link
-                    to={`/learn/${domain}/${e.meta.id}`}
+                    to={`/nicotech/${domain}/${e.meta.id}`}
                     className={`nav-item${activeId === e.meta.id ? " active" : ""}${done ? " done" : ""}`}
                   >
                     <span className="nav-mark">{done && <DoneMark />}</span>

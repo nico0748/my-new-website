@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 340" font-family="'Inter','Noto Sans JP',sans-serif">
+  <defs>
+    <filter id="pi-sh" x="-6%" y="-6%" width="112%" height="116%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.08"/>
+    </filter>
+    <marker id="pi-blue" markerWidth="11" markerHeight="11" refX="8" refY="5" orient="auto">
+      <polygon points="0,1 10,5 0,9" fill="#2496ed"/>
+    </marker>
+  </defs>
+
+  <text x="28" y="30" fill="#1a1a2e" font-size="14" font-weight="700">公開ポート と 内部通信</text>
+
+  <!-- external browser -->
+  <g filter="url(#pi-sh)">
+    <rect x="20" y="150" width="120" height="64" rx="12" fill="#6366f1"/>
+  </g>
+  <text x="80" y="178" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">ブラウザ</text>
+  <text x="80" y="197" text-anchor="middle" fill="#c7d2fe" font-size="11">外部からアクセス</text>
+
+  <!-- VPS / docker network panel -->
+  <rect x="200" y="50" width="500" height="240" rx="12" fill="#f8f9fb" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="222" y="76" fill="#6366f1" font-size="13" font-weight="700">1台のVPS ／ Docker ネットワーク</text>
+
+  <!-- gate on left wall -->
+  <rect x="192" y="150" width="16" height="64" rx="3" fill="#eff8ff" stroke="#2496ed" stroke-width="2"/>
+  <rect x="188" y="146" width="24" height="8" rx="2" fill="#2496ed"/>
+  <text x="182" y="238" text-anchor="middle" fill="#2496ed" font-size="11" font-weight="700">門</text>
+
+  <!-- publish arrow: browser -> gate -> nginx -->
+  <line x1="140" y1="182" x2="238" y2="182" stroke="#2496ed" stroke-width="2.5" marker-end="url(#pi-blue)"/>
+  <text x="175" y="136" text-anchor="middle" font-family="ui-monospace,'SF Mono',Menlo,monospace" font-size="12" font-weight="700" fill="#2496ed">ports: 8080:80</text>
+  <text x="175" y="151" text-anchor="middle" fill="#0369a1" font-size="10.5">ホスト→コンテナを公開</text>
+
+  <!-- nginx container -->
+  <rect x="240" y="152" width="120" height="60" rx="10" fill="#eff8ff" stroke="#2496ed" stroke-width="1.5"/>
+  <text x="300" y="178" text-anchor="middle" fill="#0b6cb3" font-size="13" font-weight="700">nginx</text>
+  <text x="300" y="197" text-anchor="middle" fill="#2496ed" font-size="11">唯一の入口</text>
+
+  <!-- nginx -> backend (internal) -->
+  <line x1="360" y1="182" x2="408" y2="182" stroke="#2496ed" stroke-width="2.5" marker-end="url(#pi-blue)"/>
+
+  <!-- backend container -->
+  <rect x="410" y="152" width="120" height="60" rx="10" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="470" y="178" text-anchor="middle" fill="#15803d" font-size="13" font-weight="700">backend</text>
+  <text x="470" y="197" text-anchor="middle" fill="#16a34a" font-size="11">アプリ本体</text>
+
+  <!-- backend -> postgres -->
+  <line x1="530" y1="168" x2="582" y2="128" stroke="#2496ed" stroke-width="2.5" marker-end="url(#pi-blue)"/>
+  <!-- backend -> redis -->
+  <line x1="530" y1="196" x2="582" y2="236" stroke="#2496ed" stroke-width="2.5" marker-end="url(#pi-blue)"/>
+  <text x="556" y="180" text-anchor="middle" fill="#0369a1" font-size="10.5" font-weight="700">サービス名で直通</text>
+  <text x="556" y="193" text-anchor="middle" fill="#0369a1" font-size="10">（公開不要）</text>
+
+  <!-- postgres -->
+  <rect x="586" y="96" width="102" height="52" rx="10" fill="#bfdbfe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="637" y="119" text-anchor="middle" fill="#1e40af" font-size="12.5" font-weight="700">postgres</text>
+  <rect x="604" y="76" width="66" height="18" rx="9" fill="#fff" stroke="#64748b" stroke-width="1.2"/>
+  <text x="637" y="89" text-anchor="middle" fill="#475569" font-size="10.5" font-weight="700">公開しない</text>
+  <text x="637" y="138" text-anchor="middle" fill="#2563eb" font-size="10">DB</text>
+
+  <!-- redis -->
+  <rect x="586" y="214" width="102" height="52" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="637" y="237" text-anchor="middle" fill="#b91c1c" font-size="12.5" font-weight="700">redis</text>
+  <rect x="604" y="194" width="66" height="18" rx="9" fill="#fff" stroke="#64748b" stroke-width="1.2"/>
+  <text x="637" y="207" text-anchor="middle" fill="#475569" font-size="10.5" font-weight="700">公開しない</text>
+  <text x="637" y="256" text-anchor="middle" fill="#dc2626" font-size="10">キャッシュ</text>
+
+  <!-- caption -->
+  <text x="360" y="322" text-anchor="middle" font-size="13" fill="#1a1a2e">外に出す門は<tspan font-weight="700" fill="#2496ed">入口だけ</tspan>。DB・Redisは内部通信で十分＝<tspan font-weight="700" fill="#15803d">公開しない方が安全</tspan></text>
+</svg>

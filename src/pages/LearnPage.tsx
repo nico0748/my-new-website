@@ -2,13 +2,16 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import type { CSSProperties } from "react";
 import NicoTechMark from "../components/learn/NicoTechMark";
+import OnboardingGuide from "../components/learn/OnboardingGuide";
 import "../styles/learn.css";
 
 import {
   DOMAIN_ORDER,
   DOMAIN_STYLES,
   DOMAIN_SECTIONS,
+  isAdvancedDomain,
 } from "../lib/learnCategories";
+import type { LearnDomain } from "../lib/learnCategories";
 import { getDomainCount, getEntry } from "../lib/learnRegistry";
 import { getCourseProgress, getLastOpened, useProgressTick } from "../lib/learnProgress";
 
@@ -25,7 +28,7 @@ const LearnPage = () => {
   useEffect(() => {
     const prev = document.body.style.background;
     document.body.style.background = "#ffffff";
-    document.title = "nicoTech Learn — Web・インフラ・セキュリティの教材";
+    document.title = "nicoTech Learn — エンジニアのための体系的な教材";
     return () => {
       document.body.style.background = prev;
       document.title = "nicoTech Learn";
@@ -36,24 +39,72 @@ const LearnPage = () => {
   const last = getLastOpened();
   const lastEntry = last ? getEntry(last.domain, last.id) : undefined;
 
+  const basicDomains = DOMAIN_ORDER.filter((d) => !isAdvancedDomain(d));
+  const advancedDomains = DOMAIN_ORDER.filter(isAdvancedDomain);
+
+  const renderCard = (domain: LearnDomain) => {
+    const style = DOMAIN_STYLES[domain];
+    const articles = getDomainCount(domain);
+    const chapters = DOMAIN_SECTIONS[domain].length;
+    const prog = getCourseProgress(domain);
+    return (
+      <Link
+        key={domain}
+        to={`/nicotech/${domain}`}
+        className="course-card"
+        style={{ "--cc-accent": style.accent } as CSSProperties}
+      >
+        <span className="cc-cover">
+          <img src={style.cover} alt={`${style.label} コース`} loading="lazy" />
+        </span>
+        <span className="cc-body">
+          <span className="cc-title">{style.label}</span>
+          <span className="cc-desc">{style.description}</span>
+          <span className="cc-meta">
+            <LessonIcon />
+            全{chapters}章 · {articles}記事
+          </span>
+          {prog.total > 0 && (
+            <span className="cc-progress">
+              <span className="cc-progress-bar">
+                <span className="cc-progress-fill" style={{ width: `${prog.percent}%` }} />
+              </span>
+              <span className="cc-progress-label">
+                {prog.done > 0 ? `完了 ${prog.done}/${prog.total}` : "未着手"}
+              </span>
+            </span>
+          )}
+        </span>
+      </Link>
+    );
+  };
+
   return (
     <div className="learn-docs">
       <div className="learn-landing">
         {/* Header */}
         <header className="landing-header">
-          <Link to="/learn" className="logo">
+          <Link to="/nicotech" className="logo">
             <NicoTechMark size={38} />
             <span className="logo-text">nico<span className="accent">Tech</span></span>
           </Link>
           <div className="lh-right">
-            <Link to="/" className="lh-link">← Portfolio</Link>
+            <button
+              className="header-help"
+              aria-label="使い方ガイドを開く"
+              onClick={() => window.dispatchEvent(new CustomEvent("nicotech:guide-open"))}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" /><path d="M9.2 9.2a3 3 0 0 1 5.6 1c0 2-2.8 2.5-2.8 4" /><line x1="12" y1="17.5" x2="12" y2="17.51" />
+              </svg>
+            </button>
             <a href="#courses" className="btn-cta small">コースを見る</a>
           </div>
         </header>
 
         {/* Hero */}
         <section className="hero">
-          <h1>体系立てて学ぶ、<br />Web・インフラ・セキュリティ</h1>
+          <h1>体系立てて学ぶ、<br />Web・インフラ・CS・AI まで</h1>
           <p className="hero-sub">
             断片的な知識ではなく、章の順に積み上げて理解する教材ライブラリ。
           </p>
@@ -70,7 +121,7 @@ const LearnPage = () => {
           <div className="hero-cta-row">
             <a href="#courses" className="btn-cta">まずはコースを見る</a>
             {lastEntry && (
-              <Link to={`/learn/${lastEntry.meta.domain}/${lastEntry.meta.id}`} className="btn-resume">
+              <Link to={`/nicotech/${lastEntry.meta.domain}/${lastEntry.meta.id}`} className="btn-resume">
                 続きから読む
                 <span className="br-title">{lastEntry.meta.title}</span>
               </Link>
@@ -90,46 +141,17 @@ const LearnPage = () => {
         <section className="courses-section" id="courses">
           <div className="cs-head">
             <h2>コース一覧</h2>
-            <p>学びたい分野を選んでください。各コースは章ごとに整理された記事で構成されています。</p>
+            <p>まずは「基礎」で土台を固め、「応用」で実務レベルへ。学びたい分野を選んでください。</p>
           </div>
 
+          <h3 className="course-group-label">基礎コース</h3>
           <div className="course-grid">
-            {DOMAIN_ORDER.map((domain) => {
-              const style = DOMAIN_STYLES[domain];
-              const articles = getDomainCount(domain);
-              const chapters = DOMAIN_SECTIONS[domain].length;
-              const prog = getCourseProgress(domain);
-              return (
-                <Link
-                  key={domain}
-                  to={`/learn/${domain}`}
-                  className="course-card"
-                  style={{ "--cc-accent": style.accent } as CSSProperties}
-                >
-                  <span className="cc-cover">
-                    <img src={style.cover} alt={`${style.label} コース`} loading="lazy" />
-                  </span>
-                  <span className="cc-body">
-                    <span className="cc-title">{style.label}</span>
-                    <span className="cc-desc">{style.description}</span>
-                    <span className="cc-meta">
-                      <LessonIcon />
-                      全{chapters}章 · {articles}記事
-                    </span>
-                    {prog.total > 0 && (
-                      <span className="cc-progress">
-                        <span className="cc-progress-bar">
-                          <span className="cc-progress-fill" style={{ width: `${prog.percent}%` }} />
-                        </span>
-                        <span className="cc-progress-label">
-                          {prog.done > 0 ? `完了 ${prog.done}/${prog.total}` : "未着手"}
-                        </span>
-                      </span>
-                    )}
-                  </span>
-                </Link>
-              );
-            })}
+            {basicDomains.map(renderCard)}
+          </div>
+
+          <h3 className="course-group-label">応用コース</h3>
+          <div className="course-grid">
+            {advancedDomains.map(renderCard)}
           </div>
         </section>
 
@@ -138,6 +160,7 @@ const LearnPage = () => {
           &copy; {new Date().getFullYear()} NICOLABO -にこラボ-. Learn Library.
         </footer>
       </div>
+      <OnboardingGuide />
     </div>
   );
 };

@@ -12,7 +12,7 @@ interface Props {
 const LearnCard = ({ meta, index }: Props) => {
   const level = getLevelStyle(meta.level);
   return (
-    <Link to={`/learn/${meta.domain}/${meta.id}`} className="article-item">
+    <Link to={`/nicotech/${meta.domain}/${meta.id}`} className="article-item">
       {typeof index === "number" && <span className="ai-num">{String(index).padStart(2, "0")}</span>}
       <span className="ai-body">
         <span className="ai-title">{meta.title}</span>

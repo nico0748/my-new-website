@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 300" font-family="'Inter','Noto Sans JP',sans-serif">
+  <defs>
+    <filter id="fb" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.08"/>
+    </filter>
+    <marker id="fbArrow" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+      <polygon points="0,1 9,5 0,9" fill="#2496ed"/>
+    </marker>
+    <marker id="fbGray" markerWidth="9" markerHeight="9" refX="4.5" refY="4.5" orient="auto">
+      <polygon points="0,1 8,4.5 0,8" fill="#94a3b8"/>
+    </marker>
+  </defs>
+
+  <!-- ===== boundary ===== -->
+  <text x="360" y="34" text-anchor="middle" fill="#1a1a2e" font-size="12.5" font-weight="700">境界 = API という約束</text>
+  <line x1="360" y1="46" x2="360" y2="250" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="6 6"/>
+
+  <!-- ===== frontend node ===== -->
+  <g filter="url(#fb)"><rect x="64" y="64" width="210" height="118" rx="12" fill="#6366f1"/></g>
+  <text x="169" y="94" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">frontend</text>
+  <text x="169" y="114" text-anchor="middle" fill="#c7d2fe" font-size="11.5">表示・UI（見える部分）</text>
+  <rect x="80" y="128" width="178" height="42" rx="8" fill="#eef2ff"/>
+  <text x="169" y="154" text-anchor="middle" fill="#4f46e5" font-size="11.5">画面・ボタン・一覧</text>
+
+  <!-- ===== backend node ===== -->
+  <g filter="url(#fb)"><rect x="446" y="64" width="210" height="118" rx="12" fill="#22c55e"/></g>
+  <text x="551" y="94" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">backend</text>
+  <text x="551" y="114" text-anchor="middle" fill="#dcfce7" font-size="11.5">ロジック・データ（裏側）</text>
+  <!-- hidden internals (dashed box = front には見えない) -->
+  <rect x="462" y="126" width="178" height="46" rx="8" fill="#ffffff" fill-opacity="0.16" stroke="#ffffff" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <path d="M474 138 L474 158 A16 5 0 0 0 506 158 L506 138" fill="#dcfce7" stroke="#15803d" stroke-width="1"/>
+  <ellipse cx="490" cy="138" rx="16" ry="5" fill="#bbf7d0" stroke="#15803d" stroke-width="1"/>
+  <text x="490" y="156" text-anchor="middle" fill="#15803d" font-size="15" font-weight="700">?</text>
+  <text x="562" y="145" text-anchor="middle" fill="#fff" font-size="10.5">front からは</text>
+  <text x="562" y="160" text-anchor="middle" fill="#fff" font-size="10.5">見えない中身</text>
+
+  <!-- ===== HTTP + JSON (crosses boundary) ===== -->
+  <line x1="280" y1="112" x2="440" y2="112" stroke="#2496ed" stroke-width="2" marker-start="url(#fbArrow)" marker-end="url(#fbArrow)"/>
+  <text x="360" y="102" text-anchor="middle" fill="#2496ed" font-size="12" font-weight="700">HTTP + JSON</text>
+
+  <!-- connectors to bubbles -->
+  <line x1="169" y1="182" x2="169" y2="198" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#fbGray)"/>
+  <line x1="551" y1="182" x2="551" y2="198" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#fbGray)"/>
+
+  <!-- request bubble (frontend side) -->
+  <rect x="64" y="202" width="210" height="36" rx="8" fill="#fff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="169" y="225" text-anchor="middle" font-family="ui-monospace,'SF Mono',Menlo,monospace" fill="#4f46e5" font-size="12.5" font-weight="700">GET /api/messages</text>
+
+  <!-- response bubble (backend side) -->
+  <rect x="446" y="202" width="210" height="36" rx="8" fill="#fff" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="551" y="225" text-anchor="middle" font-family="ui-monospace,'SF Mono',Menlo,monospace" fill="#15803d" font-size="12" font-weight="700">200 OK  [ { … } ]</text>
+
+  <!-- caption -->
+  <text x="360" y="282" text-anchor="middle" fill="#1a1a2e" font-size="12.5">決めた形（<tspan font-weight="700" fill="#2496ed">API</tspan>）だけで喋る。<tspan font-weight="700">中身</tspan>は互いに知らなくていい</text>
+</svg>

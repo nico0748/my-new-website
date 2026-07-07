@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 500" font-family="'Inter','Noto Sans JP',sans-serif">
+  <defs>
+    <filter id="shadow" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.08"/>
+    </filter>
+    <linearGradient id="vpsGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f8f9fb"/>
+      <stop offset="100%" stop-color="#f0f1f5"/>
+    </linearGradient>
+  </defs>
+
+  <!-- User -->
+  <g filter="url(#shadow)">
+    <rect x="230" y="10" width="140" height="44" rx="22" fill="#6366f1"/>
+    <text x="300" y="37" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">ユーザー</text>
+  </g>
+
+  <!-- Arrow: User -> Cloudflare -->
+  <line x1="300" y1="54" x2="300" y2="86" stroke="#94a3b8" stroke-width="2"/>
+  <polygon points="294,84 300,94 306,84" fill="#94a3b8"/>
+  <text x="316" y="75" fill="#94a3b8" font-size="11" font-weight="500">HTTPS</text>
+
+  <!-- Cloudflare -->
+  <g filter="url(#shadow)">
+    <rect x="190" y="94" width="220" height="44" rx="8" fill="#f97316"/>
+    <text x="300" y="121" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">Cloudflare</text>
+    <text x="428" y="121" fill="#fdba74" font-size="11">CDN / WAF / DNS</text>
+  </g>
+
+  <!-- Arrow: Cloudflare -> VPS -->
+  <line x1="300" y1="138" x2="300" y2="170" stroke="#94a3b8" stroke-width="2"/>
+  <polygon points="294,168 300,178 306,168" fill="#94a3b8"/>
+
+  <!-- VPS Box -->
+  <rect x="50" y="178" width="500" height="308" rx="12" fill="url(#vpsGrad)" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="70" y="204" fill="#6366f1" font-size="13" font-weight="700">VPS (Ubuntu)</text>
+
+  <!-- nginx -->
+  <g filter="url(#shadow)">
+    <rect x="175" y="218" width="250" height="48" rx="8" fill="#22c55e"/>
+    <text x="300" y="247" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">nginx</text>
+    <text x="440" y="247" fill="#86efac" font-size="11">リバースプロキシ</text>
+  </g>
+
+  <!-- Arrows: nginx -> apps -->
+  <line x1="240" y1="266" x2="180" y2="304" stroke="#94a3b8" stroke-width="1.5"/>
+  <polygon points="176,300 180,310 186,302" fill="#94a3b8"/>
+  <line x1="360" y1="266" x2="420" y2="304" stroke="#94a3b8" stroke-width="1.5"/>
+  <polygon points="414,302 420,310 424,300" fill="#94a3b8"/>
+
+  <!-- Frontend -->
+  <g filter="url(#shadow)">
+    <rect x="80" y="310" width="190" height="56" rx="8" fill="#fff" stroke="#e2e4e9" stroke-width="1.2"/>
+    <text x="175" y="334" text-anchor="middle" fill="#1a1a2e" font-size="13" font-weight="600">Frontend</text>
+    <text x="175" y="353" text-anchor="middle" fill="#94a3b8" font-size="11">Next.js</text>
+  </g>
+
+  <!-- Backend -->
+  <g filter="url(#shadow)">
+    <rect x="330" y="310" width="190" height="56" rx="8" fill="#fff" stroke="#e2e4e9" stroke-width="1.2"/>
+    <text x="425" y="334" text-anchor="middle" fill="#1a1a2e" font-size="13" font-weight="600">Backend</text>
+    <text x="425" y="353" text-anchor="middle" fill="#94a3b8" font-size="11">Go / Echo</text>
+  </g>
+
+  <!-- Arrows: Backend -> DB/Redis -->
+  <line x1="380" y1="366" x2="260" y2="406" stroke="#94a3b8" stroke-width="1.5"/>
+  <polygon points="256,402 260,412 266,404" fill="#94a3b8"/>
+  <line x1="460" y1="366" x2="420" y2="406" stroke="#94a3b8" stroke-width="1.5"/>
+  <polygon points="416,402 420,412 426,404" fill="#94a3b8"/>
+
+  <!-- PostgreSQL -->
+  <g filter="url(#shadow)">
+    <rect x="120" y="412" width="180" height="56" rx="8" fill="#3b82f6"/>
+    <text x="210" y="436" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">PostgreSQL</text>
+    <text x="210" y="455" text-anchor="middle" fill="#bfdbfe" font-size="11">メインDB</text>
+  </g>
+
+  <!-- Redis -->
+  <g filter="url(#shadow)">
+    <rect x="330" y="412" width="170" height="56" rx="8" fill="#ef4444"/>
+    <text x="415" y="436" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">Redis</text>
+    <text x="415" y="455" text-anchor="middle" fill="#fecaca" font-size="11">キャッシュ</text>
+  </g>
+</svg>

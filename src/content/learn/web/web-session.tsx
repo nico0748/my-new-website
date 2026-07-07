@@ -8,7 +8,7 @@ export const meta: LearnMeta = {
   description: "ステートレスな HTTP でユーザーの状態を保つ仕組み。サーバーサイド/クライアントサイドの方式、セッション ID、セキュリティ対策を扱う。",
   domain: "web",
   section: "web-basics",
-  order: 7,
+  order: 6,
   level: "basic",
   tags: ["セッション", "Cookie", "認証"],
   updated: "2026-07-07",
