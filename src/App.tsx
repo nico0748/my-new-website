@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
+import { useAnalytics } from './lib/analytics';
 
 // --- Page Components ---
 import AllWatchedAnime from './pages/allWatchedAnime';
@@ -20,6 +21,7 @@ import LearnDetailPage from './pages/LearnDetailPage.tsx';
 
 export default function App() {
   const location = useLocation();
+  useAnalytics(); // GA4: ルート遷移ごとに page_view を送信（本番のみ）
 
   return (
     <AnimatePresence mode="wait">

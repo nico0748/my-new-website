@@ -218,6 +218,72 @@ export const DomTreeFigure: FC<{ caption?: ReactNode }> = ({ caption }) => (
 );
 
 /* ────────────────────────────────────────────────────────────
+   VDomDiffFigure — 仮想 DOM の差分検出をアニメで見せる。
+   ①新しい仮想DOMを再構築 → ②旧とdiffして変更ノードを検出 →
+   ③実DOMは変わったノードだけ更新（他はスキップ）。
+   1 本の 6s タイムラインに全要素を同期。prefers-reduced-motion では
+   最終状態を静的表示（アニメなし）。色は図の凡例で固定。
+   ──────────────────────────────────────────────────────────── */
+export const VDomDiffFigure: FC<{ caption?: ReactNode }> = ({ caption }) => (
+  <div className="dgm">
+    <div className="vdiff">
+      <div className="vdiff-stages">
+        <span className="vstage s1"><b>1</b> 仮想DOM 再構築</span>
+        <span className="vsep" aria-hidden="true">→</span>
+        <span className="vstage s2"><b>2</b> 差分検出 <i>diff</i></span>
+        <span className="vsep" aria-hidden="true">→</span>
+        <span className="vstage s3"><b>3</b> 実DOM へ最小反映</span>
+      </div>
+
+      <div className="vdiff-cols">
+        {/* 前回の仮想DOM */}
+        <div className="vcol">
+          <div className="vcol-head">前回の仮想DOM</div>
+          <ul className="vtree"><li><code>ul</code>
+            <ul>
+              <li><code>li</code><span className="vt">Cat</span></li>
+              <li><code>li</code><span className="vt">Dog</span></li>
+              <li className="vold"><code>li</code><span className="vt">Fish</span></li>
+            </ul>
+          </li></ul>
+        </div>
+
+        {/* 新しい仮想DOM */}
+        <div className="vcol">
+          <div className="vcol-head">新しい仮想DOM</div>
+          <ul className="vtree"><li><code>ul</code>
+            <ul>
+              <li className="vsame"><code>li</code><span className="vt">Cat</span></li>
+              <li className="vsame"><code>li</code><span className="vt">Dog</span></li>
+              <li className="vnew"><code>li</code><span className="vt">Bird</span><span className="vbadge vbadge-diff">変更</span></li>
+            </ul>
+          </li></ul>
+        </div>
+
+        {/* 実 DOM */}
+        <div className="vcol">
+          <div className="vcol-head">実 DOM</div>
+          <ul className="vtree"><li><code>ul</code>
+            <ul>
+              <li className="vskip"><code>li</code><span className="vt">Cat</span><span className="vbadge vbadge-skip">変更なし</span></li>
+              <li className="vskip"><code>li</code><span className="vt">Dog</span><span className="vbadge vbadge-skip">変更なし</span></li>
+              <li className="vapply"><code>li</code>
+                <span className="vswap"><span className="vt vt-old">Fish</span><span className="vt vt-new">Bird</span></span>
+                <span className="vbadge vbadge-apply">更新</span>
+              </li>
+            </ul>
+          </li></ul>
+        </div>
+      </div>
+    </div>
+    <div className="domfig-note">
+      state が変わると、React は<strong>新しい仮想DOMを丸ごと作り直し</strong>、前回と diff して<strong>変わったノードだけ</strong>を実DOMに反映します。Cat・Dog はスキップされ、Fish → Bird の 1 箇所だけが更新されます。
+    </div>
+    {caption && <div className="dgm-caption">{caption}</div>}
+  </div>
+);
+
+/* ────────────────────────────────────────────────────────────
    LayerStack — 積層構造。上→下（rev で下→上）にハイライトが流れる。
    TCP/IP 階層、ランタイム/フレームワークの層、OS 構造などに。
    ──────────────────────────────────────────────────────────── */

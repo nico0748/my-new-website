@@ -261,7 +261,9 @@
 .learn-docs .callout-danger .callout-title { color: var(--color-danger); }
 
 /* ---- Comparison Table ---- */
-.learn-docs .comparison-table { width: 100%; border-collapse: collapse; margin: 20px 0 24px; font-size: 14px; }
+.learn-docs .table-wrap { overflow-x: auto; margin: 20px 0 24px; -webkit-overflow-scrolling: touch; }
+.learn-docs .table-wrap .comparison-table { margin: 0; }
+.learn-docs .comparison-table { width: 100%; border-collapse: collapse; margin: 20px 0 24px; font-size: 14px; min-width: 480px; }
 .learn-docs .comparison-table th {
   text-align: left; padding: 10px 14px; background: var(--color-bg-secondary);
   border: 1px solid var(--color-border); font-weight: 600; font-size: 13px;
@@ -695,6 +697,33 @@
 }
 
 /* ================================================================
+   レスポンシブ追補（スマホでの可読性・はみ出し対策）
+   ================================================================ */
+/* 狭い画面では SVG 図解を縮めすぎず、必要なら横スクロールで可読性を保つ */
+@media (max-width: 600px) {
+  .learn-docs .dgm { overflow-x: auto; padding: 16px 12px 10px; -webkit-overflow-scrolling: touch; }
+  .learn-docs .dgm-svg { min-width: 440px; }
+  .learn-docs .dgm-caption { min-width: 440px; }
+}
+/* Bridge の見出し（科目チップ）が長いと折り返す */
+.learn-docs .bridge-title { flex-wrap: wrap; }
+/* コードブロックはスマホで少し小さく */
+@media (max-width: 480px) {
+  .learn-docs .code-block pre code { font-size: 12.5px; }
+  .learn-docs .code-block pre { padding: 14px 14px; }
+  .learn-docs .landing-header .lh-link { display: none; }
+  .learn-docs .hero-stats { gap: 20px; }
+  .learn-docs .path-item { padding: 14px; gap: 12px; }
+  .learn-docs .quiz { padding: 16px; }
+  .learn-docs .bridge-box { padding: 14px 14px; }
+}
+/* 長い URL や語をスマホで折り返す */
+@media (max-width: 640px) {
+  .learn-docs p, .learn-docs li { overflow-wrap: anywhere; }
+  .learn-docs .breadcrumb { overflow-wrap: anywhere; }
+}
+
+/* ================================================================
    Quiz（理解度チェック / kit.tsx）
    ================================================================ */
 .learn-docs .quiz {
@@ -907,4 +936,120 @@
 
 @media (max-width: 640px) {
   .learn-docs .domfig { grid-template-columns: 1fr; gap: 24px; }
+}
+
+/* ================================================================
+   VDomDiffFigure — 仮想DOM 差分検出のアニメ図解
+   静的（既定＝reduced-motion）で最終状態、no-preference で 6s ループ
+   ================================================================ */
+.learn-docs .vdiff { margin: 8px 0 4px; }
+.learn-docs .vdiff-stages { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+.learn-docs .vstage {
+  display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 600;
+  padding: 5px 12px; border-radius: 999px; border: 1px solid var(--color-border);
+  background: var(--color-primary-light); color: var(--color-primary-dark);
+}
+.learn-docs .vstage b {
+  display: inline-flex; width: 18px; height: 18px; border-radius: 50%;
+  align-items: center; justify-content: center; font-size: 11px;
+  border: 1px solid currentColor; background: transparent;
+}
+.learn-docs .vstage i { font-style: normal; font-family: var(--font-mono); font-size: 11px; opacity: 0.8; }
+.learn-docs .vsep { color: var(--color-text-secondary); }
+
+.learn-docs .vdiff-cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.learn-docs .vcol-head { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-text-secondary); margin-bottom: 10px; text-align: center; }
+.learn-docs .vtree, .learn-docs .vtree ul { list-style: none; margin: 0; padding: 0; }
+.learn-docs .vtree ul { margin-left: 7px; border-left: 1px dashed var(--color-border); padding-left: 10px; }
+.learn-docs .vtree li { position: relative; padding: 3px 0; font-size: 12.5px; display: flex; align-items: center; gap: 6px; border-radius: 6px; }
+.learn-docs .vtree code { font-family: var(--font-mono); font-size: 11.5px; padding: 0 5px; border-radius: 4px; background: var(--color-bg-secondary); border: 1px solid var(--color-border); color: var(--color-text-secondary); }
+.learn-docs .vt { color: var(--color-text); }
+.learn-docs .vbadge { font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 999px; margin-left: auto; }
+.learn-docs .vbadge-diff { color: #b26f14; background: #fbf1df; border: 1px solid #eccf95; }
+.learn-docs .vbadge-skip { color: var(--color-text-secondary); background: var(--color-bg-secondary); border: 1px solid var(--color-border); }
+.learn-docs .vbadge-apply { color: #12907f; background: #e6f7f4; border: 1px solid #9fe0d3; }
+
+/* 変更ノード（新VDOM） */
+.learn-docs .vnew { background: #fdf6ea; }
+.learn-docs .vnew > .vt { color: #b26f14; font-weight: 700; }
+.learn-docs .vold > .vt { text-decoration: line-through; color: var(--color-text-secondary); }
+.learn-docs .vskip > .vt { color: var(--color-text-secondary); }
+
+/* 実DOM 更新行 */
+.learn-docs .vapply { background: #e6f7f4; }
+.learn-docs .vswap { position: relative; display: inline-block; min-width: 34px; }
+.learn-docs .vt-old { opacity: 0; text-decoration: line-through; color: var(--color-text-secondary); }
+.learn-docs .vt-new { position: absolute; left: 0; top: 0; opacity: 1; color: #12907f; font-weight: 700; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .learn-docs .vstage.s1 { animation: vdStage1 6s infinite; }
+  .learn-docs .vstage.s2 { animation: vdStage2 6s infinite; }
+  .learn-docs .vstage.s3 { animation: vdStage3 6s infinite; }
+  .learn-docs .vnew { animation: vdNew 6s infinite; }
+  .learn-docs .vbadge-diff { animation: vdDiffBadge 6s infinite; }
+  .learn-docs .vsame { animation: vdSame 6s infinite; }
+  .learn-docs .vapply { animation: vdApply 6s infinite; }
+  .learn-docs .vbadge-skip { animation: vdSkip 6s infinite; }
+  .learn-docs .vbadge-apply { animation: vdApplyBadge 6s infinite; }
+  .learn-docs .vt-old { animation: vdTextOld 6s infinite; }
+  .learn-docs .vt-new { animation: vdTextNew 6s infinite; }
+}
+
+@keyframes vdStage1 {
+  0%, 4% { background: var(--color-bg-secondary); color: var(--color-text-secondary); }
+  7%, 30% { background: var(--color-primary); color: #fff; }
+  33%, 100% { background: var(--color-primary-light); color: var(--color-primary-dark); }
+}
+@keyframes vdStage2 {
+  0%, 32% { background: var(--color-bg-secondary); color: var(--color-text-secondary); }
+  35%, 58% { background: var(--color-primary); color: #fff; }
+  61%, 100% { background: var(--color-primary-light); color: var(--color-primary-dark); }
+}
+@keyframes vdStage3 {
+  0%, 60% { background: var(--color-bg-secondary); color: var(--color-text-secondary); }
+  63%, 90% { background: var(--color-primary); color: #fff; }
+  93%, 100% { background: var(--color-primary-light); color: var(--color-primary-dark); }
+}
+@keyframes vdNew {
+  0%, 8% { background: transparent; }
+  14% { background: #fbe6c6; }
+  22% { background: #fdf1dd; }
+  30%, 100% { background: #fdf6ea; }
+}
+@keyframes vdDiffBadge {
+  0%, 32% { opacity: 0; transform: scale(0.6); }
+  37% { opacity: 1; transform: scale(1.12); }
+  42%, 100% { opacity: 1; transform: scale(1); }
+}
+@keyframes vdSame {
+  0%, 33% { background: transparent; }
+  40%, 56% { background: var(--color-primary-light); }
+  66%, 100% { background: transparent; }
+}
+@keyframes vdApply {
+  0%, 60% { background: transparent; }
+  66% { background: #cdeee6; }
+  78% { background: #e0f4ef; }
+  100% { background: #e6f7f4; }
+}
+@keyframes vdSkip {
+  0%, 60% { opacity: 0; }
+  65%, 100% { opacity: 1; }
+}
+@keyframes vdApplyBadge {
+  0%, 61% { opacity: 0; transform: scale(0.6); }
+  67% { opacity: 1; transform: scale(1.12); }
+  72%, 100% { opacity: 1; transform: scale(1); }
+}
+@keyframes vdTextOld {
+  0%, 64% { opacity: 1; }
+  71%, 100% { opacity: 0; }
+}
+@keyframes vdTextNew {
+  0%, 64% { opacity: 0; }
+  71%, 100% { opacity: 1; }
+}
+
+@media (max-width: 640px) {
+  .learn-docs .vdiff-cols { grid-template-columns: 1fr; gap: 18px; }
 }

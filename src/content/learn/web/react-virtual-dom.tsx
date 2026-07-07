@@ -1,6 +1,6 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
 import { Lead, Section, SubSection, Callout, Code, Cmd, KVList, ComparisonTable, KeyPoints, Bridge, TipBox, Divider } from "../../../components/learn/kit";
-import { FlowChain } from "../../../components/learn/diagrams";
+import { FlowChain, VDomDiffFigure } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
   id: "react-virtual-dom",
@@ -77,6 +77,8 @@ const node = {
         更新前後の仮想 DOM ツリーを突き合わせ、変わった箇所だけを抽出する処理を「差分検出（reconciliation）」と呼びます。
         開発者は「あるべき結果」を宣言するだけでよく、どこをどう書き換えるかは React が引き受けてくれます。
       </Callout>
+
+      <VDomDiffFigure caption="① 新しい仮想DOMを再構築 → ② 前回とdiffして変更ノード（Fish→Bird）を検出 → ③ 実DOMはその 1 箇所だけを更新（Cat・Dog はスキップ）。" />
 
       <Section>なぜ「速い」のか — 計算量の話</Section>
       <p>
