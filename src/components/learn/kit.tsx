@@ -217,16 +217,18 @@ export const ComparisonTable: React.FC<{ headers: string[]; rows: ReactNode[][] 
   headers,
   rows,
 }) => (
-  <table className="comparison-table">
-    <thead>
-      <tr>{headers.map((h, i) => <th key={i}>{h}</th>)}</tr>
-    </thead>
-    <tbody>
-      {rows.map((r, i) => (
-        <tr key={i}>{r.map((c, j) => <td key={j}>{c}</td>)}</tr>
-      ))}
-    </tbody>
-  </table>
+  <div className="table-wrap">
+    <table className="comparison-table">
+      <thead>
+        <tr>{headers.map((h, i) => <th key={i}>{h}</th>)}</tr>
+      </thead>
+      <tbody>
+        {rows.map((r, i) => (
+          <tr key={i}>{r.map((c, j) => <td key={j}>{c}</td>)}</tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
 );
 
 /* ── Key-Value リスト ── */
