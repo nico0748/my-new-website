@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 320" font-family="'Inter','Noto Sans JP',sans-serif">
+  <defs>
+    <marker id="duA" markerWidth="11" markerHeight="11" refX="8" refY="5" orient="auto">
+      <polygon points="0,1 10,5 0,9" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <!-- Internet -->
+  <text x="360" y="30" text-anchor="middle" fill="#1a1a2e" font-size="14" font-weight="700">インターネット（ → :8080 へのアクセス）</text>
+  <line x1="360" y1="40" x2="360" y2="64" stroke="#94a3b8" stroke-width="2"/>
+  <polygon points="354,62 360,72 366,62" fill="#94a3b8"/>
+
+  <!-- Cloud FW -->
+  <rect x="120" y="74" width="480" height="48" rx="9" fill="#fff7ed" stroke="#f97316" stroke-width="2"/>
+  <text x="300" y="98" text-anchor="middle" fill="#c2410c" font-size="13" font-weight="700">Oracle Cloud セキュリティリスト（Layer 1）</text>
+  <text x="300" y="114" text-anchor="middle" fill="#9a3412" font-size="11">閉じていればここで遮断できる（Docker の影響を受けない）</text>
+
+  <!-- UFW -->
+  <rect x="120" y="160" width="480" height="48" rx="9" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="300" y="184" text-anchor="middle" fill="#4f46e5" font-size="13" font-weight="700">UFW（Layer 2 / deny のはず）</text>
+  <text x="300" y="200" text-anchor="middle" fill="#6366f1" font-size="11">本来ここで 8080 を止めたい…</text>
+
+  <!-- Container -->
+  <rect x="120" y="246" width="480" height="48" rx="9" fill="#dcfce7" stroke="#22c55e" stroke-width="2"/>
+  <text x="360" y="270" text-anchor="middle" fill="#15803d" font-size="13" font-weight="700">コンテナ :8080</text>
+  <text x="360" y="286" text-anchor="middle" fill="#16a34a" font-size="11">外部に公開されてしまう</text>
+
+  <!-- bypass arrow (red dashed, around UFW on the right) -->
+  <path d="M620 122 L660 122 L660 270 L604 270" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#duA)"/>
+  <text x="678" y="200" text-anchor="middle" fill="#dc2626" font-size="11" font-weight="700" transform="rotate(90 678 200)">UFW を素通り</text>
+
+  <text x="300" y="312" text-anchor="middle" fill="#dc2626" font-size="12" font-weight="700">Docker の -p は iptables を直書きし、UFW のルールより前に割り込む</text>
+</svg>

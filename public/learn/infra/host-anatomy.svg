@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" font-family="'Inter','Noto Sans JP',sans-serif">
+  <defs>
+    <filter id="ha" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- You (local PC) -->
+  <g filter="url(#ha)">
+    <rect x="24" y="148" width="150" height="78" rx="10" fill="#6366f1"/>
+  </g>
+  <text x="99" y="180" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">あなたのPC</text>
+  <text x="99" y="200" text-anchor="middle" fill="#c7d2fe" font-size="11">ターミナル / VS Code</text>
+
+  <!-- SSH arrow -->
+  <line x1="174" y1="187" x2="222" y2="187" stroke="#475569" stroke-width="2"/>
+  <polygon points="220,181 232,187 220,193" fill="#475569"/>
+  <text x="200" y="172" text-anchor="middle" fill="#1a1a2e" font-size="12" font-weight="700">SSH</text>
+  <text x="200" y="214" text-anchor="middle" fill="#475569" font-size="10">ubuntu / deploy</text>
+
+  <!-- Host box -->
+  <rect x="240" y="34" width="456" height="300" rx="12" fill="#f8f9fb" stroke="#94a3b8" stroke-width="2"/>
+  <text x="468" y="60" text-anchor="middle" fill="#1a1a2e" font-size="15" font-weight="700">ホスト ＝ VPS（1台の Linux サーバー）</text>
+  <text x="468" y="79" text-anchor="middle" fill="#64748b" font-size="11">第1章で SSH ログインした、あの Ubuntu サーバーそのもの</text>
+
+  <!-- Containers -->
+  <rect x="262" y="96" width="130" height="56" rx="8" fill="#22c55e"/>
+  <text x="327" y="120" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">コンテナ</text>
+  <text x="327" y="138" text-anchor="middle" fill="#bbf7d0" font-size="11">nginx</text>
+  <rect x="403" y="96" width="130" height="56" rx="8" fill="#2496ed"/>
+  <text x="468" y="120" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">コンテナ</text>
+  <text x="468" y="138" text-anchor="middle" fill="#bae6fd" font-size="11">アプリ</text>
+  <rect x="544" y="96" width="130" height="56" rx="8" fill="#3b82f6"/>
+  <text x="609" y="120" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">コンテナ</text>
+  <text x="609" y="138" text-anchor="middle" fill="#bfdbfe" font-size="11">DB</text>
+
+  <!-- Docker daemon -->
+  <rect x="262" y="166" width="412" height="42" rx="8" fill="#1d4ed8" opacity="0.9"/>
+  <text x="468" y="192" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">Docker デーモン（dockerd・root で常駐）</text>
+
+  <!-- Host OS / kernel -->
+  <rect x="262" y="218" width="412" height="42" rx="8" fill="#64748b"/>
+  <text x="468" y="244" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">Linux カーネル / ホスト OS</text>
+
+  <!-- Hardware -->
+  <rect x="262" y="270" width="412" height="42" rx="8" fill="#334155"/>
+  <text x="468" y="296" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">ハードウェア（CPU / メモリ / ディスク）</text>
+
+  <text x="468" y="328" text-anchor="middle" fill="#475569" font-size="11">あなたが打つ <tspan font-weight="700">docker コマンドはホストの中で動く</tspan>。コンテナもホストの上に乗る。</text>
+</svg>

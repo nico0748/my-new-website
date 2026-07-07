@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 350" font-family="'Inter','Noto Sans JP',sans-serif">
+  <defs>
+    <filter id="rh" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- ===== Left: docker run hell ===== -->
+  <rect x="20" y="12" width="330" height="300" rx="12" fill="#f8f9fb" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="185" y="38" text-anchor="middle" fill="#1a1a2e" font-size="15" font-weight="700">docker run 地獄</text>
+
+  <rect x="36" y="54" width="298" height="30" rx="6" fill="#fff7ed" stroke="#fed7aa"/>
+  <text x="46" y="73" font-family="ui-monospace,'SF Mono',Menlo,monospace" fill="#9a3412" font-size="9.5" font-weight="600">docker run -d --name db -e PW=*** -v pgdata:…</text>
+  <rect x="36" y="90" width="298" height="30" rx="6" fill="#fff7ed" stroke="#fed7aa"/>
+  <text x="46" y="109" font-family="ui-monospace,'SF Mono',Menlo,monospace" fill="#9a3412" font-size="9.5" font-weight="600">docker run -d --name redis --restart unless-…</text>
+  <rect x="36" y="126" width="298" height="30" rx="6" fill="#fff7ed" stroke="#fed7aa"/>
+  <text x="46" y="145" font-family="ui-monospace,'SF Mono',Menlo,monospace" fill="#9a3412" font-size="9.5" font-weight="600">docker run -d --name backend -p 8000 --link db</text>
+  <rect x="36" y="162" width="298" height="30" rx="6" fill="#fff7ed" stroke="#fed7aa"/>
+  <text x="46" y="181" font-family="ui-monospace,'SF Mono',Menlo,monospace" fill="#9a3412" font-size="9.5" font-weight="600">docker run -d --name frontend -p 3000 -e API=…</text>
+  <rect x="36" y="198" width="298" height="30" rx="6" fill="#fff7ed" stroke="#fed7aa"/>
+  <text x="46" y="217" font-family="ui-monospace,'SF Mono',Menlo,monospace" fill="#9a3412" font-size="9.5" font-weight="600">docker run -d --name nginx -p 80 -v conf:… …</text>
+
+  <text x="185" y="246" text-anchor="middle" fill="#c2410c" font-size="10.5">↑ 毎回この長い呪文を手で打つ</text>
+
+  <text x="36" y="266" fill="#c2410c" font-size="11.5" font-weight="600">・毎回コマンドを手打ち</text>
+  <text x="36" y="286" fill="#c2410c" font-size="11.5" font-weight="600">・起動順序を自分で管理</text>
+  <text x="36" y="306" fill="#c2410c" font-size="11.5" font-weight="600">・手順が属人化する</text>
+
+  <!-- ===== VS badge ===== -->
+  <circle cx="380" cy="160" r="22" fill="#1a1a2e"/>
+  <text x="380" y="165" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">VS</text>
+
+  <!-- ===== Right: docker compose ===== -->
+  <rect x="410" y="12" width="330" height="300" rx="12" fill="#f8f9fb" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="575" y="38" text-anchor="middle" fill="#1a1a2e" font-size="15" font-weight="700">docker compose</text>
+
+  <!-- compose.yml card -->
+  <g filter="url(#rh)"><rect x="430" y="52" width="290" height="142" rx="8" fill="#fff" stroke="#d1d5db" stroke-width="1.2"/></g>
+  <rect x="430" y="52" width="5" height="142" fill="#22c55e"/>
+  <text x="448" y="72" font-family="ui-monospace,'SF Mono',Menlo,monospace" fill="#15803d" font-size="12" font-weight="700">compose.yml</text>
+  <line x1="430" y1="80" x2="720" y2="80" stroke="#e2e8f0"/>
+  <text x="448" y="100" font-family="ui-monospace,'SF Mono',Menlo,monospace" fill="#2496ed" font-size="11" font-weight="700">services:</text>
+  <text x="466" y="122" font-family="ui-monospace,'SF Mono',Menlo,monospace" fill="#2496ed" font-size="11" font-weight="700">db:</text>
+  <text x="560" y="122" font-family="ui-monospace,'SF Mono',Menlo,monospace" fill="#475569" font-size="11">image: postgres</text>
+  <text x="466" y="144" font-family="ui-monospace,'SF Mono',Menlo,monospace" fill="#2496ed" font-size="11" font-weight="700">redis:</text>
+  <text x="560" y="144" font-family="ui-monospace,'SF Mono',Menlo,monospace" fill="#475569" font-size="11">image: redis</text>
+  <text x="466" y="166" font-family="ui-monospace,'SF Mono',Menlo,monospace" fill="#2496ed" font-size="11" font-weight="700">backend:</text>
+  <text x="560" y="166" font-family="ui-monospace,'SF Mono',Menlo,monospace" fill="#475569" font-size="11">build: ./backend</text>
+  <text x="466" y="188" font-family="ui-monospace,'SF Mono',Menlo,monospace" fill="#2496ed" font-size="11" font-weight="700">frontend:</text>
+  <text x="560" y="188" font-family="ui-monospace,'SF Mono',Menlo,monospace" fill="#475569" font-size="11">build: ./frontend</text>
+
+  <!-- command -->
+  <rect x="430" y="210" width="290" height="32" rx="6" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="575" y="231" text-anchor="middle" font-family="ui-monospace,'SF Mono',Menlo,monospace" fill="#15803d" font-size="12.5" font-weight="700">docker compose up -d</text>
+
+  <text x="430" y="266" fill="#15803d" font-size="11.5" font-weight="600">・1 ファイルにまとめる</text>
+  <text x="430" y="286" fill="#15803d" font-size="11.5" font-weight="600">・宣言的（あるべき姿を書く）</text>
+  <text x="430" y="306" fill="#15803d" font-size="11.5" font-weight="600">・誰でも同じ環境を再現</text>
+
+  <!-- caption -->
+  <text x="380" y="336" text-anchor="middle" fill="#1a1a2e" font-size="12.5">命令の羅列（<tspan font-weight="700" fill="#c2410c">how</tspan>）から、1 枚の宣言（<tspan font-weight="700" fill="#15803d">what</tspan>）へ</text>
+</svg>

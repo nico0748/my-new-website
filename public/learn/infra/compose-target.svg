@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 452" font-family="'Inter','Noto Sans JP',sans-serif">
+  <defs>
+    <filter id="ct-sh" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.08"/>
+    </filter>
+    <marker id="ct-a" markerWidth="11" markerHeight="11" refX="8" refY="5" orient="auto">
+      <polygon points="0,1 10,5 0,9" fill="#94a3b8"/>
+    </marker>
+  </defs>
+
+  <!-- browser -->
+  <g filter="url(#ct-sh)">
+    <rect x="290" y="14" width="140" height="44" rx="22" fill="#6366f1"/>
+    <text x="360" y="41" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">ブラウザ</text>
+  </g>
+
+  <!-- browser -> VPS -->
+  <line x1="360" y1="58" x2="360" y2="84" stroke="#94a3b8" stroke-width="2" marker-end="url(#ct-a)"/>
+
+  <!-- VPS panel -->
+  <rect x="40" y="92" width="640" height="320" rx="12" fill="#f8f9fb" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="62" y="118" fill="#6366f1" font-size="13" font-weight="700">1台のVPS</text>
+
+  <!-- nginx -->
+  <g filter="url(#ct-sh)">
+    <rect x="266" y="134" width="188" height="56" rx="8" fill="#22c55e"/>
+    <text x="360" y="159" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">nginx</text>
+    <text x="360" y="178" text-anchor="middle" fill="#dcfce7" font-size="11">リバースプロキシ（入口 :80）</text>
+  </g>
+
+  <!-- nginx -> frontend / backend -->
+  <line x1="330" y1="190" x2="224" y2="236" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#ct-a)"/>
+  <line x1="390" y1="190" x2="496" y2="236" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#ct-a)"/>
+  <text x="250" y="216" text-anchor="middle" font-family="ui-monospace,'SF Mono',Menlo,monospace" font-size="14" font-weight="700" fill="#15803d">/</text>
+  <text x="466" y="216" text-anchor="middle" font-family="ui-monospace,'SF Mono',Menlo,monospace" font-size="12" font-weight="700" fill="#2563eb">/api</text>
+
+  <!-- frontend -->
+  <g filter="url(#ct-sh)">
+    <rect x="118" y="240" width="184" height="58" rx="8" fill="#fff" stroke="#e2e4e9" stroke-width="1.2"/>
+    <text x="210" y="266" text-anchor="middle" fill="#1a1a2e" font-size="13" font-weight="600">frontend</text>
+    <text x="210" y="285" text-anchor="middle" fill="#94a3b8" font-size="11">静的UI</text>
+  </g>
+
+  <!-- backend -->
+  <g filter="url(#ct-sh)">
+    <rect x="418" y="240" width="184" height="58" rx="8" fill="#fff" stroke="#e2e4e9" stroke-width="1.2"/>
+    <text x="510" y="266" text-anchor="middle" fill="#1a1a2e" font-size="13" font-weight="600">backend</text>
+    <text x="510" y="285" text-anchor="middle" fill="#94a3b8" font-size="11">API</text>
+  </g>
+
+  <!-- backend -> postgres / redis -->
+  <line x1="470" y1="298" x2="252" y2="350" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#ct-a)"/>
+  <line x1="510" y1="298" x2="510" y2="350" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#ct-a)"/>
+
+  <!-- postgres -->
+  <g filter="url(#ct-sh)">
+    <rect x="118" y="354" width="184" height="58" rx="8" fill="#3b82f6"/>
+    <text x="210" y="380" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">postgres</text>
+    <text x="210" y="399" text-anchor="middle" fill="#bfdbfe" font-size="11">永続データ</text>
+  </g>
+
+  <!-- redis -->
+  <g filter="url(#ct-sh)">
+    <rect x="418" y="354" width="184" height="58" rx="8" fill="#ef4444"/>
+    <text x="510" y="380" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">redis</text>
+    <text x="510" y="399" text-anchor="middle" fill="#fecaca" font-size="11">キャッシュ</text>
+  </g>
+
+  <!-- caption -->
+  <text x="360" y="440" text-anchor="middle" fill="#1a1a2e" font-size="13">この章で最終的に組み立てる<tspan font-weight="700" fill="#4f46e5">5サービス</tspan>構成</text>
+</svg>

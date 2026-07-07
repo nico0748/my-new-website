@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" font-family="'Inter','Noto Sans JP',sans-serif">
+  <defs>
+    <filter id="s" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- ===== Left panel: VM ===== -->
+  <rect x="20" y="12" width="330" height="276" rx="12" fill="#f8f9fb" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="185" y="36" text-anchor="middle" fill="#1a1a2e" font-size="15" font-weight="700">仮想マシン (VM)</text>
+
+  <!-- Apps -->
+  <g filter="url(#s)">
+    <rect x="34" y="52" width="95" height="32" rx="6" fill="#fff" stroke="#e2e4e9"/>
+    <rect x="137" y="52" width="95" height="32" rx="6" fill="#fff" stroke="#e2e4e9"/>
+    <rect x="240" y="52" width="95" height="32" rx="6" fill="#fff" stroke="#e2e4e9"/>
+  </g>
+  <text x="81.5" y="73" text-anchor="middle" fill="#1a1a2e" font-size="12" font-weight="600">App A</text>
+  <text x="184.5" y="73" text-anchor="middle" fill="#1a1a2e" font-size="12" font-weight="600">App B</text>
+  <text x="287.5" y="73" text-anchor="middle" fill="#1a1a2e" font-size="12" font-weight="600">App C</text>
+
+  <!-- Libs -->
+  <rect x="34" y="90" width="95" height="28" rx="6" fill="#eef2ff"/>
+  <rect x="137" y="90" width="95" height="28" rx="6" fill="#eef2ff"/>
+  <rect x="240" y="90" width="95" height="28" rx="6" fill="#eef2ff"/>
+  <text x="81.5" y="108" text-anchor="middle" fill="#4f46e5" font-size="11">Bin/Libs</text>
+  <text x="184.5" y="108" text-anchor="middle" fill="#4f46e5" font-size="11">Bin/Libs</text>
+  <text x="287.5" y="108" text-anchor="middle" fill="#4f46e5" font-size="11">Bin/Libs</text>
+
+  <!-- Guest OS (heavy) -->
+  <rect x="34" y="124" width="95" height="32" rx="6" fill="#f97316"/>
+  <rect x="137" y="124" width="95" height="32" rx="6" fill="#f97316"/>
+  <rect x="240" y="124" width="95" height="32" rx="6" fill="#f97316"/>
+  <text x="81.5" y="145" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">ゲストOS</text>
+  <text x="184.5" y="145" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">ゲストOS</text>
+  <text x="287.5" y="145" text-anchor="middle" fill="#fff" font-size="11" font-weight="600">ゲストOS</text>
+
+  <!-- Hypervisor -->
+  <rect x="34" y="162" width="301" height="30" rx="6" fill="#6366f1"/>
+  <text x="184.5" y="182" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">ハイパーバイザー</text>
+
+  <!-- Host OS -->
+  <rect x="34" y="198" width="301" height="28" rx="6" fill="#64748b"/>
+  <text x="184.5" y="217" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">ホストOS</text>
+
+  <!-- Infra -->
+  <rect x="34" y="232" width="301" height="28" rx="6" fill="#334155"/>
+  <text x="184.5" y="251" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">インフラ (ハードウェア)</text>
+
+  <text x="185" y="278" text-anchor="middle" fill="#c2410c" font-size="11" font-weight="600">OS を丸ごと3つ抱える → 重い・起動が遅い</text>
+
+  <!-- ===== VS badge ===== -->
+  <circle cx="380" cy="150" r="22" fill="#1a1a2e"/>
+  <text x="380" y="155" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">VS</text>
+
+  <!-- ===== Right panel: Container ===== -->
+  <rect x="410" y="12" width="330" height="276" rx="12" fill="#f8f9fb" stroke="#d1d5db" stroke-width="1.5"/>
+  <text x="575" y="36" text-anchor="middle" fill="#1a1a2e" font-size="15" font-weight="700">コンテナ (Docker)</text>
+
+  <!-- Apps -->
+  <g filter="url(#s)">
+    <rect x="424" y="52" width="95" height="32" rx="6" fill="#fff" stroke="#e2e4e9"/>
+    <rect x="527" y="52" width="95" height="32" rx="6" fill="#fff" stroke="#e2e4e9"/>
+    <rect x="630" y="52" width="95" height="32" rx="6" fill="#fff" stroke="#e2e4e9"/>
+  </g>
+  <text x="471.5" y="73" text-anchor="middle" fill="#1a1a2e" font-size="12" font-weight="600">App A</text>
+  <text x="574.5" y="73" text-anchor="middle" fill="#1a1a2e" font-size="12" font-weight="600">App B</text>
+  <text x="677.5" y="73" text-anchor="middle" fill="#1a1a2e" font-size="12" font-weight="600">App C</text>
+
+  <!-- Libs -->
+  <rect x="424" y="90" width="95" height="28" rx="6" fill="#eef2ff"/>
+  <rect x="527" y="90" width="95" height="28" rx="6" fill="#eef2ff"/>
+  <rect x="630" y="90" width="95" height="28" rx="6" fill="#eef2ff"/>
+  <text x="471.5" y="108" text-anchor="middle" fill="#4f46e5" font-size="11">Bin/Libs</text>
+  <text x="574.5" y="108" text-anchor="middle" fill="#4f46e5" font-size="11">Bin/Libs</text>
+  <text x="677.5" y="108" text-anchor="middle" fill="#4f46e5" font-size="11">Bin/Libs</text>
+
+  <!-- Docker Engine -->
+  <rect x="424" y="124" width="301" height="32" rx="6" fill="#2496ed"/>
+  <text x="574.5" y="145" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">Docker Engine</text>
+
+  <!-- Host OS (shared kernel) -->
+  <rect x="424" y="162" width="301" height="30" rx="6" fill="#22c55e"/>
+  <text x="574.5" y="182" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">ホストOS（カーネルを共有）</text>
+
+  <!-- Infra -->
+  <rect x="424" y="198" width="301" height="28" rx="6" fill="#334155"/>
+  <text x="574.5" y="217" text-anchor="middle" fill="#fff" font-size="12" font-weight="600">インフラ (ハードウェア)</text>
+
+  <text x="575" y="251" text-anchor="middle" fill="#15803d" font-size="11" font-weight="600">ゲストOS が無い → 軽い・起動が速い</text>
+  <text x="575" y="272" text-anchor="middle" fill="#5a5a7a" font-size="11">ホストのカーネルを全コンテナで共有する</text>
+</svg>

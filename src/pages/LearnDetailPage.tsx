@@ -18,7 +18,7 @@ const Spinner = () => (
 );
 
 const FooterLink = ({ meta, dir }: { meta: LearnMeta; dir: "prev" | "next" }) => (
-  <Link to={`/learn/${meta.domain}/${meta.id}`} className={dir}>
+  <Link to={`/nicotech/${meta.domain}/${meta.id}`} className={dir}>
     <span className="nav-label">{dir === "prev" ? "← 前の記事" : "次の記事 →"}</span>
     <span className="nav-title">{meta.title}</span>
   </Link>
@@ -56,21 +56,21 @@ const LearnDetailPage = () => {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       const t = e.target as HTMLElement | null;
       if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
-      if (e.key === "ArrowLeft" && prev) navigate(`/learn/${prev.domain}/${prev.id}`);
-      else if (e.key === "ArrowRight" && next) navigate(`/learn/${next.domain}/${next.id}`);
+      if (e.key === "ArrowLeft" && prev) navigate(`/nicotech/${prev.domain}/${prev.id}`);
+      else if (e.key === "ArrowRight" && next) navigate(`/nicotech/${next.domain}/${next.id}`);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [navigate, prev, next]);
 
-  if (!validDomain) return <Navigate to="/learn" replace />;
+  if (!validDomain) return <Navigate to="/nicotech" replace />;
   const style = DOMAIN_STYLES[d];
 
   if (!entry || !ArticleBody || !meta) {
     return (
       <LearnLayout activeDomain={d} sidebar={<DomainNav domain={d} />}>
         <div className="breadcrumb">
-          <Link to="/learn">Learn</Link> / <Link to={`/learn/${d}`}>{style.label}</Link> / 見つかりません
+          <Link to="/nicotech">Learn</Link> / <Link to={`/nicotech/${d}`}>{style.label}</Link> / 見つかりません
         </div>
         <h1>記事が見つかりません</h1>
         <p style={{ color: "var(--color-text-secondary)" }}>
@@ -78,10 +78,10 @@ const LearnDetailPage = () => {
           左のナビ、または下のボタンから {style.label} コースの記事を探してください。
         </p>
         <p style={{ marginTop: 20 }}>
-          <Link to={`/learn/${d}`} className="btn-cta small">{style.label} コースの一覧へ</Link>
+          <Link to={`/nicotech/${d}`} className="btn-cta small">{style.label} コースの一覧へ</Link>
         </p>
         <p style={{ marginTop: 12 }}>
-          <Link to="/learn">← すべてのコースへ戻る</Link>
+          <Link to="/nicotech">← すべてのコースへ戻る</Link>
         </p>
       </LearnLayout>
     );
@@ -97,7 +97,7 @@ const LearnDetailPage = () => {
     >
       {/* パンくず */}
       <div className="breadcrumb">
-        <Link to="/learn">Learn</Link> / <Link to={`/learn/${d}`}>{style.label}</Link> / {meta.id}
+        <Link to="/nicotech">Learn</Link> / <Link to={`/nicotech/${d}`}>{style.label}</Link> / {meta.id}
       </div>
 
       {/* 記事ヘッダー */}

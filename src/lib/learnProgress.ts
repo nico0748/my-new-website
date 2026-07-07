@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import type { LearnDomain } from "./learnCategories";
 import { getEntriesByDomain } from "./learnRegistry";
 
-export const donePath = (domain: string, id: string) => `/learn/${domain}/${id}`;
+export const donePath = (domain: string, id: string) => `/nicotech/${domain}/${id}`;
 export const doneKey = (domain: string, id: string) => `nicotech:done:${donePath(domain, id)}`;
 
 export const isArticleDone = (domain: string, id: string): boolean => {

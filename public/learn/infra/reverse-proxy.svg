@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 324" font-family="'Inter','Noto Sans JP',sans-serif">
+  <defs>
+    <filter id="rp-sh" x="-6%" y="-6%" width="112%" height="116%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.08"/>
+    </filter>
+    <marker id="rp-gry" markerWidth="11" markerHeight="11" refX="8" refY="5" orient="auto">
+      <polygon points="0,1 10,5 0,9" fill="#94a3b8"/>
+    </marker>
+    <marker id="rp-grn" markerWidth="11" markerHeight="11" refX="8" refY="5" orient="auto">
+      <polygon points="0,1 10,5 0,9" fill="#22c55e"/>
+    </marker>
+    <marker id="rp-blue" markerWidth="11" markerHeight="11" refX="8" refY="5" orient="auto">
+      <polygon points="0,1 10,5 0,9" fill="#2496ed"/>
+    </marker>
+  </defs>
+
+  <!-- browser -->
+  <g filter="url(#rp-sh)">
+    <rect x="28" y="126" width="128" height="52" rx="26" fill="#6366f1"/>
+  </g>
+  <text x="92" y="150" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">ブラウザ</text>
+  <text x="92" y="168" text-anchor="middle" fill="#c7d2fe" font-size="10.5">アクセス</text>
+
+  <!-- browser -> nginx -->
+  <line x1="156" y1="152" x2="232" y2="152" stroke="#94a3b8" stroke-width="2.5" marker-end="url(#rp-gry)"/>
+  <text x="194" y="142" text-anchor="middle" font-family="ui-monospace,'SF Mono',Menlo,monospace" font-size="11" font-weight="700" fill="#2496ed">:80</text>
+
+  <!-- nginx -->
+  <g filter="url(#rp-sh)">
+    <rect x="238" y="120" width="172" height="64" rx="10" fill="#eff8ff" stroke="#2496ed" stroke-width="1.5"/>
+  </g>
+  <text x="324" y="148" text-anchor="middle" fill="#0b6cb3" font-size="15" font-weight="700">nginx</text>
+  <text x="324" y="168" text-anchor="middle" font-size="11"><tspan font-family="ui-monospace,'SF Mono',Menlo,monospace" font-weight="700" fill="#2496ed">:80</tspan><tspan fill="#2496ed"> ・ 1つの入口</tspan></text>
+
+  <!-- fan out -->
+  <line x1="410" y1="144" x2="498" y2="88" stroke="#22c55e" stroke-width="2.5" marker-end="url(#rp-grn)"/>
+  <line x1="410" y1="160" x2="498" y2="216" stroke="#2496ed" stroke-width="2.5" marker-end="url(#rp-blue)"/>
+  <text x="456" y="104" text-anchor="middle" font-family="ui-monospace,'SF Mono',Menlo,monospace" font-size="14" font-weight="700" fill="#22c55e">/</text>
+  <text x="454" y="196" text-anchor="middle" font-family="ui-monospace,'SF Mono',Menlo,monospace" font-size="12" font-weight="700" fill="#2496ed">/api</text>
+
+  <!-- frontend -->
+  <rect x="498" y="56" width="192" height="64" rx="10" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="594" y="84" text-anchor="middle" fill="#4f46e5" font-size="14" font-weight="700">frontend</text>
+  <text x="594" y="103" text-anchor="middle" fill="#6366f1" font-size="10.5">静的なUI（HTML/CSS/JS）</text>
+
+  <!-- backend -->
+  <rect x="498" y="184" width="192" height="64" rx="10" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="594" y="212" text-anchor="middle" fill="#15803d" font-size="14" font-weight="700">backend</text>
+  <text x="594" y="231" text-anchor="middle" fill="#16a34a" font-size="11">API サーバ</text>
+
+  <!-- caption -->
+  <text x="360" y="302" text-anchor="middle" fill="#1a1a2e" font-size="13">1つのポート(<tspan font-family="ui-monospace,'SF Mono',Menlo,monospace" font-weight="700" fill="#2496ed">:80</tspan>)で、<tspan font-weight="700" fill="#4f46e5">表(front)</tspan>と<tspan font-weight="700" fill="#15803d">裏(API)</tspan>を振り分ける</text>
+</svg>

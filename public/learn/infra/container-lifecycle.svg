@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 300" font-family="'Inter','Noto Sans JP',sans-serif">
+  <defs>
+    <filter id="cl" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.08"/>
+    </filter>
+    <marker id="clA" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <polygon points="0,1 9,5 0,9" fill="#94a3b8"/>
+    </marker>
+  </defs>
+
+  <!-- Image -->
+  <rect x="30" y="96" width="140" height="70" rx="10" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="100" y="128" text-anchor="middle" fill="#4f46e5" font-size="14" font-weight="700">イメージ</text>
+  <text x="100" y="148" text-anchor="middle" fill="#6366f1" font-size="11">docker images</text>
+
+  <!-- run arrow -->
+  <line x1="170" y1="131" x2="248" y2="131" stroke="#94a3b8" stroke-width="2" marker-end="url(#clA)"/>
+  <text x="209" y="121" text-anchor="middle" fill="#475569" font-size="12" font-weight="700">run</text>
+
+  <!-- Running -->
+  <g filter="url(#cl)">
+    <rect x="250" y="96" width="160" height="70" rx="10" fill="#22c55e"/>
+  </g>
+  <text x="330" y="128" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">Running</text>
+  <text x="330" y="148" text-anchor="middle" fill="#bbf7d0" font-size="11">起動中</text>
+
+  <!-- stop arrow (top) -->
+  <path d="M410 116 Q470 96 528 116" fill="none" stroke="#94a3b8" stroke-width="2" marker-end="url(#clA)"/>
+  <text x="469" y="92" text-anchor="middle" fill="#475569" font-size="12" font-weight="700">stop</text>
+
+  <!-- start arrow (bottom, back) -->
+  <path d="M528 150 Q470 172 412 150" fill="none" stroke="#94a3b8" stroke-width="2" marker-end="url(#clA)"/>
+  <text x="469" y="186" text-anchor="middle" fill="#475569" font-size="12" font-weight="700">start</text>
+
+  <!-- Stopped -->
+  <rect x="530" y="96" width="160" height="70" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+  <text x="610" y="128" text-anchor="middle" fill="#b45309" font-size="14" font-weight="700">Stopped</text>
+  <text x="610" y="148" text-anchor="middle" fill="#d97706" font-size="11">停止中</text>
+
+  <!-- rm arrow down -->
+  <line x1="610" y1="166" x2="610" y2="216" stroke="#dc2626" stroke-width="2" marker-end="url(#clA)"/>
+  <text x="650" y="195" text-anchor="middle" fill="#dc2626" font-size="12" font-weight="700">rm</text>
+
+  <!-- Gone -->
+  <rect x="530" y="220" width="160" height="50" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="610" y="251" text-anchor="middle" fill="#b91c1c" font-size="13" font-weight="700">消滅（書込層も消える）</text>
+
+  <text x="300" y="245" text-anchor="middle" fill="#5a5a7a" font-size="12">run / start / stop / rm がこの状態を行き来させる</text>
+</svg>

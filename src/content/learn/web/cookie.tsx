@@ -8,7 +8,7 @@ export const meta: LearnMeta = {
   description: "ブラウザに保存される小さなデータ Cookie の仕組み・属性・種類。ログイン維持やセキュリティ属性(HttpOnly/Secure/SameSite)まで。",
   domain: "web",
   section: "web-basics",
-  order: 6,
+  order: 5,
   level: "basic",
   tags: ["Cookie", "セッション", "Web"],
   updated: "2026-07-07",

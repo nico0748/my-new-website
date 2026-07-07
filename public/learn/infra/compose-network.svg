@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 344" font-family="'Inter','Noto Sans JP',sans-serif">
+  <defs>
+    <filter id="nw-sh" x="-6%" y="-6%" width="112%" height="116%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.08"/>
+    </filter>
+    <marker id="nw-blue" markerWidth="11" markerHeight="11" refX="8" refY="5" orient="auto">
+      <polygon points="0,1 10,5 0,9" fill="#2496ed"/>
+    </marker>
+  </defs>
+
+  <!-- network bus -->
+  <text x="360" y="126" text-anchor="middle" font-size="12" font-weight="700" fill="#0b6cb3"><tspan font-family="ui-monospace,'SF Mono',Menlo,monospace">myapp_default</tspan> ネットワーク<tspan font-weight="400" fill="#2496ed">（compose が自動作成）</tspan></text>
+  <line x1="44" y1="142" x2="676" y2="142" stroke="#2496ed" stroke-width="4"/>
+
+  <!-- stubs + dots -->
+  <line x1="104" y1="142" x2="104" y2="182" stroke="#2496ed" stroke-width="2"/>
+  <line x1="275" y1="142" x2="275" y2="182" stroke="#2496ed" stroke-width="2"/>
+  <line x1="446" y1="142" x2="446" y2="182" stroke="#2496ed" stroke-width="2"/>
+  <line x1="617" y1="142" x2="617" y2="182" stroke="#2496ed" stroke-width="2"/>
+  <circle cx="104" cy="142" r="4" fill="#2496ed"/>
+  <circle cx="275" cy="142" r="4" fill="#2496ed"/>
+  <circle cx="446" cy="142" r="4" fill="#2496ed"/>
+  <circle cx="617" cy="142" r="4" fill="#2496ed"/>
+
+  <!-- backend -->
+  <g filter="url(#nw-sh)">
+    <rect x="40" y="182" width="128" height="62" rx="10" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  </g>
+  <text x="104" y="208" text-anchor="middle" fill="#15803d" font-size="13" font-weight="700">backend</text>
+  <text x="104" y="229" text-anchor="middle" font-size="10"><tspan fill="#16a34a">host </tspan><tspan font-family="ui-monospace,'SF Mono',Menlo,monospace" fill="#15803d" font-weight="700">backend</tspan></text>
+
+  <!-- postgres -->
+  <g filter="url(#nw-sh)">
+    <rect x="211" y="182" width="128" height="62" rx="10" fill="#bfdbfe" stroke="#3b82f6" stroke-width="1.5"/>
+  </g>
+  <text x="275" y="208" text-anchor="middle" fill="#1e40af" font-size="13" font-weight="700">postgres</text>
+  <text x="275" y="229" text-anchor="middle" font-size="10"><tspan fill="#2563eb">host </tspan><tspan font-family="ui-monospace,'SF Mono',Menlo,monospace" fill="#1e40af" font-weight="700">postgres</tspan></text>
+
+  <!-- redis -->
+  <g filter="url(#nw-sh)">
+    <rect x="382" y="182" width="128" height="62" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+  </g>
+  <text x="446" y="208" text-anchor="middle" fill="#b91c1c" font-size="13" font-weight="700">redis</text>
+  <text x="446" y="229" text-anchor="middle" font-size="10"><tspan fill="#dc2626">host </tspan><tspan font-family="ui-monospace,'SF Mono',Menlo,monospace" fill="#b91c1c" font-weight="700">redis</tspan></text>
+
+  <!-- frontend -->
+  <g filter="url(#nw-sh)">
+    <rect x="553" y="182" width="128" height="62" rx="10" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/>
+  </g>
+  <text x="617" y="208" text-anchor="middle" fill="#4f46e5" font-size="13" font-weight="700">frontend</text>
+  <text x="617" y="229" text-anchor="middle" font-size="10"><tspan fill="#6366f1">host </tspan><tspan font-family="ui-monospace,'SF Mono',Menlo,monospace" fill="#4f46e5" font-weight="700">frontend</tspan></text>
+
+  <!-- backend -> postgres call -->
+  <path d="M104,244 C104,290 275,290 275,246" fill="none" stroke="#2496ed" stroke-width="2.5" marker-end="url(#nw-blue)"/>
+  <text x="190" y="308" text-anchor="middle" font-size="12"><tspan fill="#5a5a7a">接続先 </tspan><tspan font-family="ui-monospace,'SF Mono',Menlo,monospace" fill="#2496ed" font-weight="700">postgres:5432</tspan></text>
+
+  <!-- DNS callout -->
+  <rect x="372" y="260" width="264" height="52" rx="10" fill="#eff8ff" stroke="#2496ed" stroke-width="1.2"/>
+  <text x="386" y="284" font-size="11"><tspan fill="#0b6cb3" font-weight="700">Docker 内蔵DNS ： </tspan><tspan font-family="ui-monospace,'SF Mono',Menlo,monospace" fill="#2496ed" font-weight="700">127.0.0.11</tspan></text>
+  <text x="386" y="302" fill="#475569" font-size="11">サービス名 → IP を自動で解決</text>
+
+  <!-- caption -->
+  <text x="360" y="332" text-anchor="middle" fill="#1a1a2e" font-size="13">サービス名が、そのまま<tspan font-weight="700" fill="#2496ed">ホスト名</tspan>になる</text>
+</svg>

@@ -1,0 +1,7 @@
+<svg width="320" height="180" viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="モバイル コース">
+  <rect width="320" height="180" fill="#2A9E5A"/>
+  <rect x="132" y="40" width="56" height="104" rx="12" fill="#ffffff" fill-opacity="0.14" stroke="#ffffff" stroke-width="3.4"/>
+  <path d="M152 54 h16" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M144 76 h32 M144 90 h24" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round" stroke-opacity="0.85"/>
+  <path d="M150 130 h20" stroke="#ffffff" stroke-width="3.6" stroke-linecap="round"/>
+</svg>

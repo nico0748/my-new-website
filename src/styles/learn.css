@@ -137,8 +137,10 @@
 .learn-docs .sidebar-section-label:first-child { padding-top: 0; }
 
 /* ---- Main Content ---- */
-.learn-docs .main-content { margin-left: var(--sidebar-width); flex: 1; min-height: calc(100vh - var(--header-height)); }
-.learn-docs .content-wrapper { max-width: var(--content-max-width); margin: 0 auto; padding: 48px 40px 120px; }
+/* min-width:0 が無いと flex アイテムが内容の実寸未満に縮まず、
+   幅広の図解・表を含む記事（Web基礎）でページ全体が横にはみ出す。 */
+.learn-docs .main-content { margin-left: var(--sidebar-width); flex: 1; min-width: 0; min-height: calc(100vh - var(--header-height)); }
+.learn-docs .content-wrapper { max-width: var(--content-max-width); margin: 0 auto; padding: 48px 40px 120px; overflow-x: clip; }
 
 /* ---- Typography ---- */
 .learn-docs .section { margin-bottom: 64px; }
@@ -442,6 +444,12 @@
 .learn-docs .courses-section .cs-head { text-align: center; margin-bottom: 44px; }
 .learn-docs .courses-section .cs-head h2 { font-size: 30px; font-weight: 800; color: var(--color-navy); border: none; margin: 0 0 12px; padding: 0; }
 .learn-docs .courses-section .cs-head p { color: var(--color-text-secondary); font-size: 15px; max-width: 620px; margin: 0 auto; }
+.learn-docs .course-group-label {
+  font-size: 16px; font-weight: 700; color: var(--color-navy);
+  margin: 40px 0 16px; display: flex; align-items: center; gap: 12px;
+}
+.learn-docs .course-group-label::after { content: ""; flex: 1; height: 1px; background: var(--color-border); }
+.learn-docs .course-group-label:first-of-type { margin-top: 0; }
 
 .learn-docs .course-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; }
 .learn-docs .course-card {
@@ -506,8 +514,13 @@
    Header course nav / 章区切り / 読了チェックボックス
    ================================================================ */
 
-/* ---- Header: コースナビ ---- */
-.learn-docs .site-header .course-nav { display: flex; gap: 4px; margin-left: 22px; }
+/* ---- Header: コースナビ（コース増加に備え横スクロール可） ---- */
+.learn-docs .site-header .course-nav {
+  display: flex; gap: 4px; margin-left: 22px;
+  min-width: 0; overflow-x: auto; scrollbar-width: none;
+}
+.learn-docs .site-header .course-nav::-webkit-scrollbar { display: none; }
+.learn-docs .site-header .course-nav a { flex-shrink: 0; }
 .learn-docs .site-header .course-nav a {
   font-size: 14px; padding: 6px 12px; border-radius: 6px; text-decoration: none;
   color: var(--color-text-secondary); font-weight: 500; transition: all 0.15s ease; white-space: nowrap;
@@ -1052,4 +1065,80 @@
 
 @media (max-width: 640px) {
   .learn-docs .vdiff-cols { grid-template-columns: 1fr; gap: 18px; }
+}
+
+/* ================================================================
+   OnboardingGuide — 初回オンボーディング・ツアー（モーダル）
+   ================================================================ */
+.learn-docs .guide-overlay,
+.guide-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(20, 24, 30, 0.5); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+  animation: guideFade 0.18s ease;
+}
+@keyframes guideFade { from { opacity: 0; } to { opacity: 1; } }
+
+.guide-modal {
+  position: relative; width: 100%; max-width: 440px;
+  background: #fff; border: 1px solid var(--color-border); border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.28); padding: 32px 28px 24px; text-align: center;
+  font-family: var(--font-sans); color: var(--color-text);
+  animation: guidePop 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes guidePop { from { opacity: 0; transform: translateY(8px) scale(0.98); } to { opacity: 1; transform: none; } }
+
+.guide-close {
+  position: absolute; top: 12px; right: 12px; width: 30px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  background: none; border: none; border-radius: 8px; cursor: pointer; color: var(--color-text-secondary);
+}
+.guide-close:hover { background: var(--color-bg-secondary); color: var(--color-text); }
+.guide-close svg { width: 18px; height: 18px; }
+
+.guide-icon {
+  width: 60px; height: 60px; margin: 4px auto 16px; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--color-primary-light); color: var(--color-primary-dark);
+}
+.guide-icon svg { width: 30px; height: 30px; }
+.guide-step-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--color-primary); margin-bottom: 8px;
+}
+.guide-title { font-size: 21px; font-weight: 800; color: var(--color-navy); margin: 0 0 10px; letter-spacing: -0.01em; }
+.guide-body { font-size: 14.5px; line-height: 1.7; color: var(--color-text-secondary); margin: 0 auto 20px; max-width: 360px; }
+.guide-body strong { color: var(--color-text); font-weight: 600; }
+.guide-body kbd {
+  font-family: var(--font-mono); font-size: 11px; background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border); border-bottom-width: 2px; border-radius: 4px; padding: 1px 5px; margin: 0 1px; color: var(--color-text);
+}
+
+.guide-dots { display: flex; justify-content: center; gap: 6px; margin-bottom: 20px; }
+.guide-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--color-border); transition: all 0.2s ease; }
+.guide-dot.active { background: var(--color-primary); width: 20px; border-radius: 4px; }
+
+.guide-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.guide-skip { background: none; border: none; cursor: pointer; font-size: 13px; color: var(--color-text-secondary); padding: 8px 4px; min-width: 60px; text-align: left; }
+.guide-skip:hover { color: var(--color-text); }
+.guide-nav { display: flex; gap: 8px; }
+.guide-btn { font-family: var(--font-sans); font-size: 14px; font-weight: 700; padding: 9px 20px; border-radius: 8px; cursor: pointer; transition: all 0.15s ease; }
+.guide-btn.ghost { background: #fff; border: 1px solid var(--color-border); color: var(--color-text); }
+.guide-btn.ghost:hover { background: var(--color-bg-secondary); }
+.guide-btn.primary { background: var(--color-primary); border: 1px solid var(--color-primary); color: #fff; box-shadow: 0 3px 10px rgba(34,176,160,0.3); }
+.guide-btn.primary:hover { background: var(--color-primary-dark); }
+
+/* ヘッダーの「?」ヘルプボタン */
+.learn-docs .header-help {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; margin-left: 6px; border-radius: 8px;
+  background: none; border: 1px solid var(--color-border); color: var(--color-text-secondary); cursor: pointer;
+}
+.learn-docs .header-help:hover { background: var(--color-bg-secondary); color: var(--color-primary); border-color: var(--color-primary); }
+.learn-docs .header-help svg { width: 18px; height: 18px; }
+.learn-docs .landing-header .header-help { width: 36px; height: 36px; }
+
+@media (max-width: 640px) {
+  .guide-modal { padding: 28px 20px 20px; }
+  .guide-title { font-size: 19px; }
 }

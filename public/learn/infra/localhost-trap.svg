@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 320" font-family="'Inter','Noto Sans JP',sans-serif">
+  <defs>
+    <filter id="lt-sh" x="-6%" y="-6%" width="112%" height="116%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.08"/>
+    </filter>
+    <marker id="lt-red" markerWidth="11" markerHeight="11" refX="8" refY="5" orient="auto">
+      <polygon points="0,1 10,5 0,9" fill="#dc2626"/>
+    </marker>
+    <marker id="lt-grn" markerWidth="11" markerHeight="11" refX="8" refY="5" orient="auto">
+      <polygon points="0,1 10,5 0,9" fill="#22c55e"/>
+    </marker>
+  </defs>
+
+  <!-- divider -->
+  <line x1="362" y1="24" x2="362" y2="248" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="6 5"/>
+
+  <!-- ================= LEFT : × ================= -->
+  <text x="180" y="34" text-anchor="middle" fill="#dc2626" font-size="14" font-weight="700">× 自分自身に問い合わせてしまう</text>
+
+  <!-- backend container -->
+  <rect x="58" y="72" width="168" height="72" rx="12" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="142" y="98" text-anchor="middle" fill="#15803d" font-size="13" font-weight="700">backend コンテナ</text>
+  <text x="142" y="122" text-anchor="middle" font-family="ui-monospace,'SF Mono',Menlo,monospace" font-size="12.5"><tspan fill="#1a1a2e" font-weight="700">DB_HOST=</tspan><tspan fill="#dc2626" font-weight="700">localhost</tspan></text>
+
+  <!-- self loop (red) -->
+  <path d="M226 96 C 292 78 292 138 226 120" fill="none" stroke="#dc2626" stroke-width="2.5" marker-end="url(#lt-red)"/>
+  <text x="300" y="112" text-anchor="middle" fill="#dc2626" font-size="11" font-weight="700" transform="rotate(90 300 112)">自分に戻る</text>
+
+  <!-- red x -->
+  <circle cx="180" cy="188" r="15" fill="#dc2626"/>
+  <path d="M174 182 L186 194 M186 182 L174 194" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
+  <text x="180" y="228" text-anchor="middle" fill="#b91c1c" font-size="13" font-weight="700">connection refused</text>
+  <text x="180" y="246" text-anchor="middle" fill="#dc2626" font-size="11">localhost＝“このコンテナ自身”を指す</text>
+
+  <!-- ================= RIGHT : ○ ================= -->
+  <text x="540" y="34" text-anchor="middle" fill="#15803d" font-size="14" font-weight="700">○ サービス名で隣に届く</text>
+
+  <!-- backend container -->
+  <rect x="396" y="72" width="164" height="72" rx="12" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="478" y="98" text-anchor="middle" fill="#15803d" font-size="13" font-weight="700">backend コンテナ</text>
+  <text x="478" y="122" text-anchor="middle" font-family="ui-monospace,'SF Mono',Menlo,monospace" font-size="12.5"><tspan fill="#1a1a2e" font-weight="700">DB_HOST=</tspan><tspan fill="#3b82f6" font-weight="700">postgres</tspan></text>
+
+  <!-- arrow to postgres (green) -->
+  <line x1="560" y1="108" x2="596" y2="108" stroke="#22c55e" stroke-width="2.5" marker-end="url(#lt-grn)"/>
+
+  <!-- postgres container -->
+  <g filter="url(#lt-sh)">
+    <rect x="600" y="76" width="98" height="64" rx="12" fill="#bfdbfe" stroke="#3b82f6" stroke-width="1.5"/>
+  </g>
+  <text x="649" y="104" text-anchor="middle" fill="#1e40af" font-size="13" font-weight="700">postgres</text>
+  <text x="649" y="123" text-anchor="middle" fill="#2563eb" font-size="11">コンテナ</text>
+
+  <!-- green check -->
+  <circle cx="540" cy="188" r="15" fill="#22c55e"/>
+  <path d="M533 188 L538 194 L548 182" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="540" y="228" text-anchor="middle" fill="#15803d" font-size="13" font-weight="700">隣のコンテナに届く</text>
+  <text x="540" y="246" text-anchor="middle" fill="#16a34a" font-size="11">名前で名前解決 → 接続成功</text>
+
+  <!-- caption -->
+  <text x="360" y="298" text-anchor="middle" font-size="13" fill="#1a1a2e">コンテナの中の <tspan font-family="ui-monospace,'SF Mono',Menlo,monospace" font-weight="700" fill="#dc2626">localhost</tspan> は“自分”。隣のサービスは<tspan font-weight="700" fill="#15803d">“名前”</tspan>で呼ぶ</text>
+</svg>
