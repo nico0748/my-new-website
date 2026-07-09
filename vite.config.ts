@@ -40,6 +40,10 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2}'],
+        // Learn 教材（多数の TSX 記事 + highlight.js）でメイン JS が肥大し、
+        // 既定の precache 上限 2 MiB を超えてビルドが失敗するため引き上げる。
+        // ※ 恒久対策は Learn ルートのコード分割（React.lazy）でメインチャンクを縮小すること。
+        maximumFileSizeToCacheInBytes: 6 * 1024 * 1024, // 6 MiB
         runtimeCaching: [
           // Google Fonts
           {
@@ -77,6 +81,18 @@ export default defineConfig({
             options: {
               cacheName: 'markdown-cache',
               expiration: { maxEntries: 50, maxAgeSeconds: 60 * 60 * 24 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          // Topics / Study 記事本文（id ごとに内容不変 → CacheFirst で高速化・オフライン可）
+          // ※ 記事の「索引」は上の Google Sheets（NetworkFirst）が常に最新を取りにいくため、
+          //   新規記事は index 経由で即座に反映され、本文だけキャッシュされる。
+          {
+            urlPattern: /\/(topics|study)\/.*\.md$/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'article-md-cache',
+              expiration: { maxEntries: 300, maxAgeSeconds: 60 * 60 * 24 * 30 },
               cacheableResponse: { statuses: [0, 200] },
             },
           },
