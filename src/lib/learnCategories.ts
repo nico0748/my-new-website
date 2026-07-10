@@ -6,7 +6,7 @@
 /** 分野（大分類 / domain）。URL は /nicotech/<domain>。
  *  基礎コース（*）／応用コース（*-adv）／実践コース（プロジェクト型）。 */
 export type LearnDomain =
-  | "web" | "infra" | "security" | "mobile" | "dev" | "cs" | "ai"
+  | "web" | "infra" | "security" | "mobile" | "dev" | "cs" | "ai" | "stack"
   | "web-adv" | "infra-adv" | "security-adv" | "mobile-adv" | "dev-adv" | "cs-adv" | "ai-adv"
   | "react-practice" | "angular-practice" | "rag-practice"
   | "vuln-research" | "ai-agent-practice" | "devsecops-practice";
@@ -86,6 +86,12 @@ export const DOMAIN_STYLES: Record<LearnDomain, DomainStyle> = {
     accent: "#f97316",               // オレンジ
     cover: "/learn/covers/ai.svg",
     description: "機械学習・ディープラーニング・LLM/生成AI。AI を理解し使いこなすための基礎。",
+  },
+  stack: {
+    label: "技術スタック一覧",
+    accent: "#4f46e5",               // インディゴ
+    cover: "/learn/covers/stack.svg",
+    description: "Web・モバイル・デスクトップ・拡張機能から、フロント/バック/DB/コンテナ/クラウドまで。分野ごとに代表的な技術スタックを俯瞰し、何を選べばよいかの地図にします。",
   },
 
   // ── 応用コース（濃色サムネ）。基礎を終えた人向けの実践編。 ──
@@ -172,7 +178,7 @@ export const DOMAIN_STYLES: Record<LearnDomain, DomainStyle> = {
 };
 
 export const DOMAIN_ORDER: LearnDomain[] = [
-  "web", "infra", "security", "mobile", "dev", "cs", "ai",
+  "web", "infra", "security", "mobile", "dev", "cs", "ai", "stack",
   "web-adv", "infra-adv", "security-adv", "mobile-adv", "dev-adv", "cs-adv", "ai-adv",
   "react-practice", "angular-practice", "rag-practice",
   "vuln-research", "ai-agent-practice", "devsecops-practice",
@@ -220,6 +226,7 @@ export const DOMAIN_SECTIONS: Record<LearnDomain, SectionDef[]> = {
   ],
   dev: [
     { key: "dev-basics", label: "開発の基礎" },
+    { key: "claude-code", label: "Claude Code" },
     { key: "editor-git", label: "エディタ / Git" },
     { key: "testing", label: "テスト" },
     { key: "practices", label: "設計・プラクティス" },
@@ -236,6 +243,19 @@ export const DOMAIN_SECTIONS: Record<LearnDomain, SectionDef[]> = {
     { key: "deep-learning", label: "ディープラーニング" },
     { key: "llm", label: "LLM・生成AI" },
     { key: "ai-practice", label: "実践・応用" },
+  ],
+  stack: [
+    { key: "web-app", label: "Web アプリケーション開発" },
+    { key: "mobile-app", label: "モバイルアプリケーション開発" },
+    { key: "desktop-app", label: "デスクトップアプリ開発" },
+    { key: "extension", label: "拡張機能開発" },
+    { key: "frontend", label: "フロントエンド" },
+    { key: "backend", label: "バックエンド" },
+    { key: "database", label: "データベース" },
+    { key: "container", label: "Docker / コンテナ" },
+    { key: "cloud", label: "クラウド" },
+    { key: "ai-agent", label: "AIエージェント開発" },
+    { key: "machine-learning", label: "機械学習" },
   ],
 
   // ── 応用コースの章（実践編） ──
