@@ -1,0 +1,10 @@
+<svg width="320" height="180" viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="DevSecOps実践 コース">
+  <rect width="320" height="180" fill="#15803D"/>
+  <g stroke="#ffffff" stroke-width="4" fill="none" stroke-opacity="0.95">
+    <circle cx="139" cy="90" r="23"/>
+    <circle cx="181" cy="90" r="23"/>
+  </g>
+  <path d="M160 72 l13 5 v13 c0 9 -6 13 -13 16 c-7 -3 -13 -7 -13 -16 v-13 Z"
+        fill="#15803D" stroke="#ffffff" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M154 92 l4 4 8 -9" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

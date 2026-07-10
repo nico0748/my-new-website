@@ -10,6 +10,7 @@ import {
   DOMAIN_STYLES,
   DOMAIN_SECTIONS,
   isAdvancedDomain,
+  isPracticeDomain,
 } from "../lib/learnCategories";
 import type { LearnDomain } from "../lib/learnCategories";
 import { getDomainCount, getEntry } from "../lib/learnRegistry";
@@ -39,30 +40,34 @@ const LearnPage = () => {
   const last = getLastOpened();
   const lastEntry = last ? getEntry(last.domain, last.id) : undefined;
 
-  const basicDomains = DOMAIN_ORDER.filter((d) => !isAdvancedDomain(d));
+  const basicDomains = DOMAIN_ORDER.filter((d) => !isAdvancedDomain(d) && !isPracticeDomain(d));
   const advancedDomains = DOMAIN_ORDER.filter(isAdvancedDomain);
+  const practiceDomains = DOMAIN_ORDER.filter(isPracticeDomain);
 
   const renderCard = (domain: LearnDomain) => {
     const style = DOMAIN_STYLES[domain];
     const articles = getDomainCount(domain);
     const chapters = DOMAIN_SECTIONS[domain].length;
     const prog = getCourseProgress(domain);
+    const isWip = articles === 0;
     return (
       <Link
         key={domain}
         to={`/nicotech/${domain}`}
-        className="course-card"
+        className={`course-card${isWip ? " course-card--wip" : ""}`}
         style={{ "--cc-accent": style.accent } as CSSProperties}
+        aria-label={isWip ? `${style.label} コース（開発中）` : `${style.label} コース`}
       >
         <span className="cc-cover">
           <img src={style.cover} alt={`${style.label} コース`} loading="lazy" />
+          {isWip && <span className="cc-wip">開発中</span>}
         </span>
         <span className="cc-body">
           <span className="cc-title">{style.label}</span>
           <span className="cc-desc">{style.description}</span>
           <span className="cc-meta">
             <LessonIcon />
-            全{chapters}章 · {articles}記事
+            {isWip ? `全${chapters}章 · 準備中` : `全${chapters}章 · ${articles}記事`}
           </span>
           {prog.total > 0 && (
             <span className="cc-progress">
@@ -152,6 +157,11 @@ const LearnPage = () => {
           <h3 className="course-group-label">応用コース</h3>
           <div className="course-grid">
             {advancedDomains.map(renderCard)}
+          </div>
+
+          <h3 className="course-group-label">実践コース</h3>
+          <div className="course-grid">
+            {practiceDomains.map(renderCard)}
           </div>
         </section>
 

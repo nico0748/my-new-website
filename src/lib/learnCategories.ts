@@ -4,10 +4,12 @@
  *  分野・章を増やすときはここに追加する。 */
 
 /** 分野（大分類 / domain）。URL は /nicotech/<domain>。
- *  基礎コース（*）と、その応用コース（*-adv）。 */
+ *  基礎コース（*）／応用コース（*-adv）／実践コース（プロジェクト型）。 */
 export type LearnDomain =
   | "web" | "infra" | "security" | "mobile" | "dev" | "cs" | "ai"
-  | "web-adv" | "infra-adv" | "security-adv" | "mobile-adv" | "dev-adv" | "cs-adv" | "ai-adv";
+  | "web-adv" | "infra-adv" | "security-adv" | "mobile-adv" | "dev-adv" | "cs-adv" | "ai-adv"
+  | "react-practice" | "angular-practice" | "rag-practice"
+  | "vuln-research" | "ai-agent-practice" | "devsecops-practice";
 
 /** 難易度（体系順の補助）。 */
 export type LearnLevel = "intro" | "basic" | "practice";
@@ -129,11 +131,57 @@ export const DOMAIN_STYLES: Record<LearnDomain, DomainStyle> = {
     cover: "/learn/covers/ai-advanced.svg",
     description: "機械学習の実践・LLM アプリ開発・RAG・MLOps。AI をプロダクトに組み込む応用力を身につけます。",
   },
+
+  // ── 実践コース（プロジェクト型・特定テーマを手を動かして作る） ──
+  "react-practice": {
+    label: "React実践開発",
+    accent: "#0e7490",               // ディープシアン
+    cover: "/learn/covers/react-practice.svg",
+    description: "設計・コンポーネント分割・状態管理・データ取得・テスト・デプロイまで、React で実アプリを作り切る実践コース。",
+  },
+  "angular-practice": {
+    label: "Angular実践開発",
+    accent: "#b3122f",               // Angular レッド
+    cover: "/learn/covers/angular-practice.svg",
+    description: "コンポーネント・DI・RxJS・フォーム・HTTP・テストまで、Angular で本格的な SPA を構築する実践コース。",
+  },
+  "rag-practice": {
+    label: "RAG実践開発",
+    accent: "#4338ca",               // インディゴ
+    cover: "/learn/covers/rag-practice.svg",
+    description: "埋め込み・ベクトルDB・検索・再ランキング・生成・評価まで、RAG（検索拡張生成）を実装・運用する実践コース。",
+  },
+  "vuln-research": {
+    label: "脆弱性調査実践",
+    accent: "#9d174d",               // クリムゾン
+    cover: "/learn/covers/vuln-research.svg",
+    description: "許可された範囲で行う偵察・Web 脆弱性の調査・PoC 検証・報告・責任ある開示まで、脆弱性リサーチの実践。",
+  },
+  "ai-agent-practice": {
+    label: "AIエージェント開発実践",
+    accent: "#6d28d9",               // バイオレット
+    cover: "/learn/covers/ai-agent-practice.svg",
+    description: "LangChain / LangGraph を使い、ツール・メモリ・グラフでAIエージェントを設計・構築・評価する実践コース。",
+  },
+  "devsecops-practice": {
+    label: "DevSecOps実践",
+    accent: "#15803d",               // グリーン
+    cover: "/learn/covers/devsecops-practice.svg",
+    description: "CI/CD にセキュリティを組み込む実践。SAST/DAST・サプライチェーン・IaC セキュリティ・ランタイム監視まで。",
+  },
 };
 
 export const DOMAIN_ORDER: LearnDomain[] = [
   "web", "infra", "security", "mobile", "dev", "cs", "ai",
   "web-adv", "infra-adv", "security-adv", "mobile-adv", "dev-adv", "cs-adv", "ai-adv",
+  "react-practice", "angular-practice", "rag-practice",
+  "vuln-research", "ai-agent-practice", "devsecops-practice",
+];
+
+/** 実践コース（プロジェクト型）の一覧。 */
+export const PRACTICE_DOMAINS: LearnDomain[] = [
+  "react-practice", "angular-practice", "rag-practice",
+  "vuln-research", "ai-agent-practice", "devsecops-practice",
 ];
 
 export interface SectionDef {
@@ -236,6 +284,51 @@ export const DOMAIN_SECTIONS: Record<LearnDomain, SectionDef[]> = {
     { key: "rag", label: "RAG・検索拡張" },
     { key: "mlops", label: "MLOps" },
   ],
+
+  // ── 実践コース（プロジェクト型）の章 ──
+  "react-practice": [
+    { key: "setup", label: "環境構築とプロジェクト設計" },
+    { key: "components", label: "コンポーネント設計" },
+    { key: "state-routing", label: "状態管理とルーティング" },
+    { key: "data-fetching", label: "データ取得と API 連携" },
+    { key: "testing-deploy", label: "テストとデプロイ" },
+  ],
+  "angular-practice": [
+    { key: "setup", label: "環境構築とプロジェクト設計" },
+    { key: "components-di", label: "コンポーネントと DI" },
+    { key: "routing", label: "ルーティング" },
+    { key: "rxjs-state", label: "RxJS と状態管理" },
+    { key: "forms-http", label: "フォームと HTTP" },
+    { key: "testing-deploy", label: "テストとデプロイ" },
+  ],
+  "rag-practice": [
+    { key: "rag-basics", label: "RAG の仕組み" },
+    { key: "embeddings", label: "埋め込みとベクトルDB" },
+    { key: "retrieval", label: "検索と再ランキング" },
+    { key: "generation", label: "生成と評価" },
+    { key: "rag-ops", label: "運用・改善" },
+  ],
+  "vuln-research": [
+    { key: "recon", label: "偵察・情報収集" },
+    { key: "web-vuln-hunt", label: "Web 脆弱性の調査" },
+    { key: "poc", label: "PoC 検証" },
+    { key: "reporting", label: "報告・トリアージ" },
+    { key: "disclosure", label: "責任ある開示" },
+  ],
+  "ai-agent-practice": [
+    { key: "agent-basics", label: "エージェントの基礎" },
+    { key: "langchain", label: "LangChain" },
+    { key: "langgraph", label: "LangGraph" },
+    { key: "tools-memory", label: "ツールとメモリ" },
+    { key: "agent-ops", label: "評価・運用" },
+  ],
+  "devsecops-practice": [
+    { key: "secure-pipeline", label: "セキュアな CI/CD パイプライン" },
+    { key: "sast-dast", label: "SAST / DAST" },
+    { key: "supply-chain", label: "サプライチェーンセキュリティ" },
+    { key: "iac-security", label: "IaC セキュリティ" },
+    { key: "runtime", label: "ランタイム監視" },
+  ],
 };
 
 export interface LevelStyle {
@@ -255,6 +348,10 @@ export const isLearnDomain = (v: string | undefined): v is LearnDomain =>
 
 /** 応用コース（*-adv）かどうか。 */
 export const isAdvancedDomain = (d: LearnDomain): boolean => d.endsWith("-adv");
+
+/** 実践コース（プロジェクト型）かどうか。 */
+export const isPracticeDomain = (d: LearnDomain): boolean =>
+  (PRACTICE_DOMAINS as string[]).includes(d);
 
 /** 章キー → ラベル（未知はキーをそのまま返す）。 */
 export const getSectionLabel = (domain: LearnDomain, sectionKey: string): string =>
