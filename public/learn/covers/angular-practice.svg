@@ -1,0 +1,9 @@
+<svg width="320" height="180" viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Angular実践開発 コース">
+  <rect width="320" height="180" fill="#B3122F"/>
+  <path d="M160 40 L206 56 V96 C206 122 186 138 160 148 C134 138 114 122 114 96 V56 Z"
+        fill="#ffffff" fill-opacity="0.14" stroke="#ffffff" stroke-width="3.4" stroke-linejoin="round"/>
+  <g stroke="#ffffff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M148 118 L160 66 L172 118"/>
+    <path d="M152 100 H168"/>
+  </g>
+</svg>

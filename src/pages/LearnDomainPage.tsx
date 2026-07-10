@@ -51,9 +51,10 @@ const LearnDomainPage = () => {
   return (
     <LearnLayout activeDomain={domain} sidebar={<DomainNav domain={domain} />}>
       {/* Course hero */}
-      <div className="course-hero">
+      <div className={`course-hero${groups.length === 0 ? " course-hero--wip" : ""}`}>
         <div className="ch-cover" style={{ borderColor: style.accent }}>
           <img src={style.cover} alt={`${style.label} コース`} />
+          {groups.length === 0 && <span className="cc-wip">開発中</span>}
         </div>
         <div className="ch-info">
           <span className="section-number">Course</span>
@@ -116,8 +117,9 @@ const LearnDomainPage = () => {
           </div>
         ))
       ) : (
-        <div className="tip-box">
-          このコースの記事はまだありません。<code>src/content/learn/{domain}/&lt;id&gt;.tsx</code> を追加すると自動で表示されます。
+        <div className="wip-notice">
+          <span className="wip-notice-badge">開発中</span>
+          <p>このコースは現在準備中です。順次コンテンツを公開していきます。</p>
         </div>
       )}
     </LearnLayout>

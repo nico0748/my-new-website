@@ -1,0 +1,11 @@
+<svg width="320" height="180" viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="脆弱性調査実践 コース">
+  <rect width="320" height="180" fill="#9D174D"/>
+  <ellipse cx="160" cy="98" rx="20" ry="26" fill="#ffffff" fill-opacity="0.14" stroke="#ffffff" stroke-width="3.4"/>
+  <g stroke="#ffffff" stroke-width="3.2" stroke-linecap="round">
+    <path d="M160 72 v-14 M149 64 l-9 -9 M171 64 l9 -9"/>
+    <path d="M140 90 h-18 M138 106 h-20 M140 122 h-18"/>
+    <path d="M180 90 h18 M182 106 h20 M180 122 h18"/>
+  </g>
+  <circle cx="153" cy="90" r="3.4" fill="#ffffff"/>
+  <circle cx="167" cy="90" r="3.4" fill="#ffffff"/>
+</svg>
