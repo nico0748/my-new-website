@@ -1,5 +1,6 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
 import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
   id: "cloud-stack",
@@ -25,7 +26,7 @@ export default function Article() {
       <ComparisonTable
         headers={["区分", "借りるもの", "自分の管理範囲", "代表"]}
         rows={[
-          ["VPS", "1台の仮想サーバー", "OS から上ぜんぶ（自由・要運用）", "さくらVPS・ConoHa・Oracle Cloud"],
+          [<Tech id="vps">VPS</Tech>, "1台の仮想サーバー", "OS から上ぜんぶ（自由・要運用）", "さくらVPS・ConoHa・Oracle Cloud"],
           ["IaaS", "仮想マシン・ネットワーク", "OS から上", "EC2・Azure VM・Compute Engine"],
           ["PaaS", "実行環境まで", "アプリのコードだけ", "App Runner・App Service・Cloud Run"],
           ["サーバーレス（FaaS）", "関数の実行だけ", "関数のコードだけ（サーバー意識なし）", "Lambda・Azure Functions・Cloud Functions"],
@@ -52,10 +53,10 @@ export default function Article() {
       <ComparisonTable
         headers={["プロバイダ", "特徴・強み"]}
         rows={[
-          ["AWS", "サービス数・シェアが最大。情報も求人も豊富。迷ったら第一候補"],
-          ["Azure", "Microsoft 製品（Windows・AD・Office）との統合。企業導入に強い"],
-          ["GCP", "データ分析・ML（BigQuery 等）とコンテナ（GKE）に強み"],
-          ["VPS", "月額固定で分かりやすく安い。1台を自分で運用する学習に最適"],
+          [<Tech id="aws">AWS</Tech>, "サービス数・シェアが最大。情報も求人も豊富。迷ったら第一候補"],
+          [<Tech id="azure">Azure</Tech>, "Microsoft 製品（Windows・AD・Office）との統合。企業導入に強い"],
+          [<Tech id="gcp">GCP</Tech>, "データ分析・ML（BigQuery 等）とコンテナ（GKE）に強み"],
+          [<Tech id="vps">VPS</Tech>, "月額固定で分かりやすく安い。1台を自分で運用する学習に最適"],
         ]}
       />
 

@@ -1,5 +1,6 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
 import { Lead, Section, Callout, Cmd, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
   id: "container-stack",
@@ -25,9 +26,9 @@ export default function Article() {
       <ComparisonTable
         headers={["ツール", "役割"]}
         rows={[
-          ["Docker", "コンテナを作る・動かす標準ツール（イメージ / コンテナ / build）"],
+          [<Tech id="docker">Docker</Tech>, "コンテナを作る・動かす標準ツール（イメージ / コンテナ / build）"],
           ["containerd / runc", "Docker の下で実際にコンテナを動かす下位ランタイム"],
-          ["Podman", "デーモン不要・rootless が得意な Docker 互換ツール"],
+          [<Tech id="podman">Podman</Tech>, "デーモン不要・rootless が得意な Docker 互換ツール"],
           ["BuildKit / buildx", "高速・マルチプラットフォームなイメージビルド"],
         ]}
       />
@@ -39,8 +40,8 @@ export default function Article() {
       <ComparisonTable
         headers={["ツール", "規模", "特徴"]}
         rows={[
-          ["Docker Compose", "1台のサーバー", "複数コンテナを1枚の YAML で宣言的に束ねる。個人〜小規模の定番"],
-          ["Kubernetes (k8s)", "多数のサーバー", "大量のコンテナを自動でスケール・配置・自己修復。大規模向け"],
+          [<Tech id="compose">Docker Compose</Tech>, "1台のサーバー", "複数コンテナを1枚の YAML で宣言的に束ねる。個人〜小規模の定番"],
+          [<Tech id="kubernetes">Kubernetes (k8s)</Tech>, "多数のサーバー", "大量のコンテナを自動でスケール・配置・自己修復。大規模向け"],
           ["マネージド k8s / PaaS", "クラウド", "EKS・GKE・AKS や、より手軽な Cloud Run・ECS など"],
         ]}
       />
@@ -55,9 +56,9 @@ export default function Article() {
       <ComparisonTable
         headers={["イメージ", "役割"]}
         rows={[
-          ["nginx", "Web サーバー / リバースプロキシ（入口の振り分け役）"],
-          ["redis", "キャッシュ・セッション・カウンタ（高速なキーバリュー）"],
-          ["postgres / mysql", "リレーショナルデータベース（永続データ）"],
+          [<Tech id="nginx">nginx</Tech>, "Web サーバー / リバースプロキシ（入口の振り分け役）"],
+          [<Tech id="redis">redis</Tech>, "キャッシュ・セッション・カウンタ（高速なキーバリュー）"],
+          [<><Tech id="postgresql">postgres</Tech> / <Tech id="mysql">mysql</Tech></>, "リレーショナルデータベース（永続データ）"],
           ["node / python / golang", "アプリの実行環境ベース（自作イメージの土台）"],
           ["traefik / caddy", "自動 HTTPS 対応のリバースプロキシ"],
           ["grafana / prometheus", "監視・メトリクスの可視化"],

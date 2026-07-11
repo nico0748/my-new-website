@@ -1,5 +1,6 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
 import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
   id: "machine-learning-stack",
@@ -25,9 +26,9 @@ export default function Article() {
       <ComparisonTable
         headers={["役割", "代表", "何をするか"]}
         rows={[
-          ["言語", "Python（R・Julia）", "ML のデファクト。ライブラリが最も充実"],
-          ["数値計算", "NumPy", "多次元配列と高速な数値演算の土台"],
-          ["表形式データ", "pandas・Polars", "データの読み込み・整形・集計"],
+          ["言語", <><Tech id="python">Python</Tech>（R・Julia）</>, "ML のデファクト。ライブラリが最も充実"],
+          ["数値計算", <Tech id="numpy">NumPy</Tech>, "多次元配列と高速な数値演算の土台"],
+          ["表形式データ", <><Tech id="pandas">pandas</Tech>・Polars</>, "データの読み込み・整形・集計"],
           ["可視化", "Matplotlib・seaborn・Plotly", "データとモデル結果の可視化"],
         ]}
       />
@@ -36,10 +37,10 @@ export default function Article() {
       <ComparisonTable
         headers={["種類", "代表", "向いている場面"]}
         rows={[
-          ["古典的 ML", "scikit-learn", "回帰・分類・クラスタリングの基本。まずここから"],
-          ["勾配ブースティング", "XGBoost・LightGBM・CatBoost", "表形式データで非常に強い。実務の定番"],
-          ["深層学習", "PyTorch・TensorFlow/Keras・JAX", "画像・音声・言語などの複雑なデータ"],
-          ["事前学習モデル", "Hugging Face Transformers", "既存モデルを使う・微調整(ファインチューニング)"],
+          ["古典的 ML", <Tech id="scikit-learn">scikit-learn</Tech>, "回帰・分類・クラスタリングの基本。まずここから"],
+          ["勾配ブースティング", <><Tech id="xgboost">XGBoost・LightGBM</Tech>・CatBoost</>, "表形式データで非常に強い。実務の定番"],
+          ["深層学習", <><Tech id="pytorch">PyTorch</Tech>・TensorFlow/Keras・JAX</>, "画像・音声・言語などの複雑なデータ"],
+          ["事前学習モデル", <><Tech id="huggingface">Hugging Face</Tech> Transformers</>, "既存モデルを使う・微調整(ファインチューニング)"],
         ]}
       />
       <Callout variant="info" title="表データは勾配ブースティング、非構造データは深層学習">
@@ -61,7 +62,7 @@ export default function Article() {
       <ComparisonTable
         headers={["フェーズ", "代表", "役割"]}
         rows={[
-          ["実験管理", "MLflow・Weights & Biases", "パラメータ・精度・成果物を記録して比較"],
+          ["実験管理", <><Tech id="mlflow">MLflow・Weights & Biases</Tech></>, "パラメータ・精度・成果物を記録して比較"],
           ["パイプライン", "Kubeflow・Airflow・Metaflow", "前処理→学習→評価を自動化・再現"],
           ["モデル配信", "FastAPI・BentoML・TorchServe・Triton", "学習済みモデルを API として提供"],
           ["監視", "Evidently 等", "本番の精度劣化・データドリフトを検知"],

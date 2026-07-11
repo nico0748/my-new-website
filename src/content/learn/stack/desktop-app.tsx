@@ -1,5 +1,6 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
 import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
   id: "desktop-app-stack",
@@ -25,8 +26,8 @@ export default function Article() {
       <ComparisonTable
         headers={["フレームワーク", "言語", "実行の仕組み", "特徴"]}
         rows={[
-          ["Electron", "JavaScript / TypeScript", "Chromium + Node.js を同梱", "VS Code・Slack 等の実績多数。配布サイズは大きめ"],
-          ["Tauri", "Rust + Web フロント", "OS 標準の WebView を使う", "軽量・省メモリ。バイナリが小さくセキュア"],
+          [<Tech id="electron">Electron</Tech>, "JavaScript / TypeScript", "Chromium + Node.js を同梱", "VS Code・Slack 等の実績多数。配布サイズは大きめ"],
+          [<Tech id="tauri">Tauri</Tech>, "Rust + Web フロント", "OS 標準の WebView を使う", "軽量・省メモリ。バイナリが小さくセキュア"],
         ]}
       />
       <Callout variant="info" title="Electron と Tauri の分かれ目">
@@ -38,9 +39,9 @@ export default function Article() {
         headers={["技術", "言語", "対象", "特徴"]}
         rows={[
           [".NET (WPF / WinUI)", "C#", "Windows 中心", "Windows 業務アプリの定番"],
-          ["Qt", "C++（Python も可）", "Win/mac/Linux", "高性能・組込みでも使われる老舗 GUI"],
-          ["SwiftUI (macOS)", "Swift", "macOS", "Apple 純正。macOS らしい UI を作れる"],
-          ["Flutter Desktop", "Dart", "Win/mac/Linux", "モバイルと同じコードでデスクトップも"],
+          [<Tech id="qt">Qt</Tech>, "C++（Python も可）", "Win/mac/Linux", "高性能・組込みでも使われる老舗 GUI"],
+          ["SwiftUI (macOS)", <Tech id="swift">Swift</Tech>, "macOS", "Apple 純正。macOS らしい UI を作れる"],
+          [<><Tech id="flutter">Flutter</Tech> Desktop</>, "Dart", "Win/mac/Linux", "モバイルと同じコードでデスクトップも"],
         ]}
       />
 

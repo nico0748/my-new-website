@@ -1,5 +1,6 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
 import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
   id: "ai-agent-stack",
@@ -27,7 +28,7 @@ export default function Article() {
         rows={[
           ["API（クローズド）", "OpenAI (GPT)・Anthropic (Claude)・Google (Gemini)", "最高性能・すぐ使える。データは外部送信"],
           ["オープンウェイト", "Llama・Mistral・Qwen・Gemma", "自前ホスト可・カスタマイズしやすい"],
-          ["ローカル実行", "Ollama・LM Studio・vLLM", "手元/自社サーバーで動かす。機密データ向き"],
+          ["ローカル実行", <><Tech id="ollama">Ollama</Tech>・LM Studio・<Tech id="vllm">vLLM</Tech></>, "手元/自社サーバーで動かす。機密データ向き"],
         ]}
       />
       <Callout variant="info" title="まず API で作り、必要ならローカルへ">
@@ -38,9 +39,9 @@ export default function Article() {
       <ComparisonTable
         headers={["フレームワーク", "特徴"]}
         rows={[
-          ["LangChain", "最も普及。ツール・プロンプト・チェーンの部品が豊富"],
-          ["LangGraph", "エージェントを『グラフ（状態遷移）』で設計。分岐・ループ・人手介入に強い"],
-          ["LlamaIndex", "RAG（検索連携）に強み。データ取り込み〜検索が得意"],
+          [<Tech id="langchain">LangChain</Tech>, "最も普及。ツール・プロンプト・チェーンの部品が豊富"],
+          [<Tech id="langgraph">LangGraph</Tech>, "エージェントを『グラフ（状態遷移）』で設計。分岐・ループ・人手介入に強い"],
+          [<Tech id="llamaindex">LlamaIndex</Tech>, "RAG（検索連携）に強み。データ取り込み〜検索が得意"],
           ["OpenAI Agents SDK / Assistants", "OpenAI 純正のエージェント構築"],
           ["CrewAI・AutoGen", "複数エージェントの協調（マルチエージェント）"],
         ]}
@@ -50,9 +51,9 @@ export default function Article() {
       <ComparisonTable
         headers={["要素", "代表", "役割"]}
         rows={[
-          ["RAG（検索拡張生成）", "ベクトルDB(pgvector/Pinecone/Qdrant)＋埋め込み", "自社ドキュメントを根拠に回答させる"],
+          [<Tech id="rag">RAG（検索拡張生成）</Tech>, <>ベクトルDB(<Tech id="pgvector">pgvector</Tech>/Pinecone/Qdrant)＋埋め込み</>, "自社ドキュメントを根拠に回答させる"],
           ["ツール / 関数呼び出し", "Function calling・各種 API", "検索・計算・DB 操作などを実行させる"],
-          ["MCP（Model Context Protocol）", "MCP サーバー", "ツールやデータ源を標準化された形で接続"],
+          [<Tech id="mcp">MCP（Model Context Protocol）</Tech>, "MCP サーバー", "ツールやデータ源を標準化された形で接続"],
           ["ブラウザ / コード実行", "Playwright・サンドボックス", "Web 操作やコード実行をエージェントに委ねる"],
         ]}
       />
@@ -66,7 +67,7 @@ export default function Article() {
         rows={[
           ["短期/長期メモリ", "会話履歴・ベクトルメモリ", "過去のやりとりや知識を保持する"],
           ["評価（Eval）", "LangSmith・Ragas・独自テスト", "回答の正しさ・幻覚(hallucination)を測る"],
-          ["可観測性/トレース", "LangSmith・Langfuse・OpenTelemetry", "各ステップの入出力・コスト・遅延を追跡"],
+          ["可観測性/トレース", <><Tech id="langsmith">LangSmith・Langfuse</Tech>・OpenTelemetry</>, "各ステップの入出力・コスト・遅延を追跡"],
           ["ガードレール", "入出力フィルタ・スキーマ検証", "危険な出力や逸脱を抑える"],
         ]}
       />

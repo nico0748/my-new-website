@@ -498,6 +498,108 @@
   font-size: 13px; font-weight: 700; letter-spacing: 0.12em;
 }
 .learn-docs .wip-notice p { margin: 0; color: var(--color-text-secondary); font-size: 14.5px; }
+
+/* ============================================================
+   技術スタック解説（Tech インライン ＋ 右ドロワー）
+   「技術スタック一覧」コース専用。--tech-accent はインディゴ。
+   ============================================================ */
+.learn-docs { --tech-accent: #4f46e5; --tech-accent-soft: rgba(79, 70, 229, 0.10); }
+
+/* 自動リンクのラッパは非表示（レイアウトに影響させない） */
+.learn-docs .tech-scope { display: contents; }
+
+/* 本文中のクリック可能な技術名 */
+.learn-docs .tech-term {
+  display: inline-block; vertical-align: baseline; white-space: nowrap; font: inherit;
+  color: var(--tech-accent);
+  background: var(--tech-accent-soft); border: 0; border-bottom: 1px dashed rgba(79, 70, 229, 0.5);
+  border-radius: 4px; padding: 0 3px; margin: 0 1px; cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.learn-docs .tech-term:hover { background: rgba(79, 70, 229, 0.18); }
+.learn-docs .tech-term::after { content: "\2197"; font-size: 0.72em; margin-left: 1px; opacity: 0.65; vertical-align: super; }
+
+/* オーバーレイ */
+.learn-docs .tech-drawer-overlay {
+  position: fixed; inset: 0; z-index: 1400; background: rgba(15, 23, 42, 0.32);
+  animation: techFade 0.18s ease;
+}
+@keyframes techFade { from { opacity: 0; } to { opacity: 1; } }
+
+/* 右ドロワー本体 */
+.learn-docs .tech-drawer {
+  position: fixed; top: 0; right: 0; z-index: 1401; height: 100vh; width: 420px; max-width: 92vw;
+  background: var(--color-surface, #fff); border-left: 1px solid var(--color-border);
+  box-shadow: -12px 0 40px rgba(0, 0, 0, 0.16); display: flex; flex-direction: column;
+  animation: techSlide 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes techSlide { from { transform: translateX(24px); opacity: 0.6; } to { transform: translateX(0); opacity: 1; } }
+
+.learn-docs .tech-drawer-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px; border-bottom: 1px solid var(--color-border);
+}
+.learn-docs .tech-drawer-eyebrow {
+  font-size: 11.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--tech-accent);
+}
+.learn-docs .tech-drawer-close {
+  display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px;
+  border: 1px solid var(--color-border); border-radius: 8px; background: transparent;
+  color: var(--color-text-secondary); cursor: pointer;
+}
+.learn-docs .tech-drawer-close:hover { background: var(--color-border-light, #f1f5f9); color: var(--color-navy); }
+.learn-docs .tech-drawer-close svg { width: 16px; height: 16px; }
+
+.learn-docs .tech-drawer-body { padding: 20px 22px 40px; overflow-y: auto; }
+.learn-docs .tech-drawer-cat {
+  display: inline-block; font-size: 11.5px; font-weight: 700; color: var(--tech-accent);
+  background: var(--tech-accent-soft); padding: 3px 10px; border-radius: 99px;
+}
+.learn-docs .tech-drawer-name { margin: 12px 0 8px; font-size: 22px; font-weight: 800; color: var(--color-navy); }
+.learn-docs .tech-drawer-summary { margin: 0 0 20px; font-size: 14.5px; line-height: 1.75; color: var(--color-text); }
+
+.learn-docs .tech-drawer-section { margin-bottom: 20px; }
+.learn-docs .tech-drawer-section h4 {
+  margin: 0 0 10px; font-size: 13px; font-weight: 700; color: var(--color-navy);
+  padding-left: 9px; border-left: 3px solid var(--tech-accent);
+}
+.learn-docs .tech-drawer-section ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.learn-docs .tech-drawer-section > ul > li {
+  position: relative; padding-left: 18px; font-size: 13.5px; line-height: 1.65; color: var(--color-text-secondary);
+}
+.learn-docs .tech-drawer-section > ul > li::before {
+  content: ""; position: absolute; left: 3px; top: 8px; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--tech-accent);
+}
+
+/* 近い技術との比較 */
+.learn-docs .tech-related { gap: 12px !important; }
+.learn-docs .tech-related > li { padding-left: 0 !important; }
+.learn-docs .tech-related > li::before { display: none; }
+.learn-docs .tech-related-link {
+  display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; margin-bottom: 4px;
+  font: inherit; font-size: 13px; font-weight: 700; color: var(--tech-accent);
+  background: var(--tech-accent-soft); border: 0; border-radius: 99px; cursor: pointer;
+}
+.learn-docs .tech-related-link:hover { background: rgba(79, 70, 229, 0.18); }
+.learn-docs .tech-related-link svg { width: 13px; height: 13px; }
+.learn-docs .tech-related-name.plain {
+  display: inline-block; margin-bottom: 4px; font-size: 13px; font-weight: 700; color: var(--color-navy);
+}
+.learn-docs .tech-related-note { display: block; font-size: 13px; line-height: 1.6; color: var(--color-text-secondary); }
+
+/* 採用している有名プロダクト */
+.learn-docs .tech-usedby { display: flex; flex-wrap: wrap; gap: 6px; }
+.learn-docs .tech-usedby-chip {
+  font-size: 12.5px; font-weight: 600; color: var(--color-navy);
+  background: var(--color-border-light, #f1f5f9); border: 1px solid var(--color-border);
+  border-radius: 6px; padding: 3px 9px; white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .learn-docs .tech-drawer { width: 100%; max-width: 100%; }
+}
 .learn-docs .course-card .cc-body { padding: 18px 20px 20px; display: flex; flex-direction: column; flex: 1; }
 .learn-docs .course-card .cc-title { font-size: 18px; font-weight: 700; color: var(--color-navy); margin-bottom: 8px; }
 .learn-docs .course-card .cc-desc { font-size: 13.5px; color: var(--color-text-secondary); line-height: 1.6; flex: 1; margin-bottom: 16px; }

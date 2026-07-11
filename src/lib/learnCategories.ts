@@ -256,6 +256,18 @@ export const DOMAIN_SECTIONS: Record<LearnDomain, SectionDef[]> = {
     { key: "cloud", label: "クラウド" },
     { key: "ai-agent", label: "AIエージェント開発" },
     { key: "machine-learning", label: "機械学習" },
+    { key: "devtools", label: "開発ツール / バージョン管理" },
+    { key: "cicd", label: "CI/CD・IaC" },
+    { key: "testing", label: "テスト" },
+    { key: "auth", label: "認証・認可" },
+    { key: "observability", label: "監視・可観測性" },
+    { key: "hosting", label: "ホスティング / デプロイ先" },
+    { key: "baas-cms", label: "BaaS / ヘッドレスCMS" },
+    { key: "messaging", label: "メッセージング / リアルタイム" },
+    { key: "data-analytics", label: "データ分析 / データ基盤" },
+    { key: "game", label: "ゲーム開発" },
+    { key: "graphics", label: "3D / グラフィックス" },
+    { key: "payment", label: "決済" },
   ],
 
   // ── 応用コースの章（実践編） ──

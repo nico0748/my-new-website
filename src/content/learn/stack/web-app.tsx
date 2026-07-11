@@ -1,5 +1,6 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
 import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
   id: "web-app-stack",
@@ -38,12 +39,12 @@ export default function Article() {
       <ComparisonTable
         headers={["言語", "フルスタック/フレームワーク", "特徴"]}
         rows={[
-          ["JavaScript / TypeScript", "Next.js・Nuxt・SvelteKit・Remix", "フロントと同じ言語でサーバーも書ける。エコシステムが最大"],
-          ["Ruby", "Ruby on Rails", "規約優先で開発速度が速い。CRUD が得意"],
-          ["PHP", "Laravel", "レンタルサーバーとの相性・学習資料が豊富"],
-          ["Python", "Django・Flask・FastAPI", "データ/ML との親和性。Django は全部入り、FastAPI は API 向き"],
-          ["Go", "Echo・Gin・標準ライブラリ", "軽量・高速・単一バイナリで配布しやすい"],
-          ["Java / Kotlin", "Spring Boot", "大規模・堅牢。エンタープライズの定番"],
+          ["JavaScript / TypeScript", <><Tech id="nextjs">Next.js</Tech>・<Tech id="nuxt">Nuxt</Tech>・<Tech id="sveltekit">SvelteKit</Tech>・Remix</>, "フロントと同じ言語でサーバーも書ける。エコシステムが最大"],
+          ["Ruby", <Tech id="rails">Ruby on Rails</Tech>, "規約優先で開発速度が速い。CRUD が得意"],
+          ["PHP", <Tech id="laravel">Laravel</Tech>, "レンタルサーバーとの相性・学習資料が豊富"],
+          ["Python", <><Tech id="django">Django</Tech>・<Tech id="flask">Flask</Tech>・<Tech id="fastapi">FastAPI</Tech></>, "データ/ML との親和性。Django は全部入り、FastAPI は API 向き"],
+          ["Go", <Tech id="go">Go</Tech>, "軽量・高速・単一バイナリで配布しやすい"],
+          ["Java / Kotlin", <Tech id="spring-boot">Spring Boot</Tech>, "大規模・堅牢。エンタープライズの定番"],
         ]}
       />
 

@@ -1,5 +1,6 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
 import { Lead, Section, Callout, Cmd, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
   id: "extension-stack",
@@ -25,8 +26,8 @@ export default function Article() {
       <ComparisonTable
         headers={["対象", "言語", "配布先", "特徴"]}
         rows={[
-          ["ブラウザ拡張（Chrome/Edge/Firefox）", "HTML/CSS/JS(TS)", "各ブラウザのストア", "Web 技術で作れる。Manifest V3 が現行仕様"],
-          ["VS Code 拡張", "TypeScript", "Visual Studio Marketplace", "エディタ機能を追加。開発者向けツールの定番"],
+          [<Tech id="chrome-extension">ブラウザ拡張（Chrome/Edge/Firefox）</Tech>, "HTML/CSS/JS(TS)", "各ブラウザのストア", "Web 技術で作れる。Manifest V3 が現行仕様"],
+          [<Tech id="vscode-extension">VS Code 拡張</Tech>, "TypeScript", "Visual Studio Marketplace", "エディタ機能を追加。開発者向けツールの定番"],
           ["Figma プラグイン", "TypeScript + Web UI", "Figma Community", "デザイン作業の自動化"],
           ["Slack / Discord アプリ", "任意（API 経由）", "各プラットフォーム", "ボット・スラッシュコマンド・通知連携"],
           ["Raycast / Alfred", "TS / Script", "各ストア", "ランチャーにコマンドを追加（macOS）"],
