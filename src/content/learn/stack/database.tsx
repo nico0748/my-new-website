@@ -1,5 +1,6 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
 import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
   id: "database-stack",
@@ -37,9 +38,9 @@ export default function Article() {
       <ComparisonTable
         headers={["製品", "特徴"]}
         rows={[
-          ["PostgreSQL", "高機能で拡張性が高い。JSON・全文検索・地理情報・ベクトルまで対応"],
-          ["MySQL / MariaDB", "普及率が高く情報が豊富。Web の定番"],
-          ["SQLite", "ファイル1つで動く軽量DB。組込み・モバイル・小規模に最適"],
+          [<Tech id="postgresql">PostgreSQL</Tech>, "高機能で拡張性が高い。JSON・全文検索・地理情報・ベクトルまで対応"],
+          [<><Tech id="mysql">MySQL</Tech> / MariaDB</>, "普及率が高く情報が豊富。Web の定番"],
+          [<Tech id="sqlite">SQLite</Tech>, "ファイル1つで動く軽量DB。組込み・モバイル・小規模に最適"],
           ["クラウドマネージド", "Amazon RDS / Aurora・Cloud SQL など。運用を任せられる"],
         ]}
       />
@@ -48,12 +49,12 @@ export default function Article() {
       <ComparisonTable
         headers={["種類", "代表", "用途"]}
         rows={[
-          ["ドキュメント", "MongoDB・Firestore", "スキーマが変わりやすいデータ"],
-          ["キーバリュー / キャッシュ", "Redis・Memcached", "高速なキャッシュ・セッション・カウンタ"],
+          ["ドキュメント", <><Tech id="mongodb">MongoDB</Tech>・Firestore</>, "スキーマが変わりやすいデータ"],
+          ["キーバリュー / キャッシュ", <><Tech id="redis">Redis</Tech>・Memcached</>, "高速なキャッシュ・セッション・カウンタ"],
           ["ワイドカラム", "Cassandra・ScyllaDB", "大量書き込み・時系列"],
-          ["全文検索", "Elasticsearch・OpenSearch・Meilisearch", "テキスト検索・ログ分析"],
+          ["全文検索", <><Tech id="elasticsearch">Elasticsearch</Tech>・OpenSearch・Meilisearch</>, "テキスト検索・ログ分析"],
           ["グラフ", "Neo4j", "人間関係・推薦などつながりの探索"],
-          ["ベクトル", "pgvector・Pinecone・Qdrant", "AI/RAG の類似検索（埋め込み）"],
+          ["ベクトル", <><Tech id="pgvector">pgvector</Tech>・Pinecone・Qdrant</>, "AI/RAG の類似検索（埋め込み）"],
         ]}
       />
       <Callout variant="info" title="RDB と Redis は役割が違う">

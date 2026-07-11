@@ -1,5 +1,6 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
 import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
   id: "backend-stack",
@@ -25,14 +26,14 @@ export default function Article() {
       <ComparisonTable
         headers={["言語", "代表フレームワーク", "特徴"]}
         rows={[
-          ["JavaScript / TypeScript", "Express・NestJS・Fastify・Hono", "フロントと同じ言語。NestJS は構造化された大規模向け"],
-          ["Python", "Django・FastAPI・Flask", "Django は全部入り、FastAPI は型と非同期で API 向き"],
-          ["Ruby", "Ruby on Rails", "規約優先で開発が速い。スタートアップに人気"],
-          ["PHP", "Laravel", "学習資料が豊富。中小規模の Web に強い"],
-          ["Go", "Echo・Gin・chi", "軽量・高速・並行処理が得意。単一バイナリ配布"],
-          ["Java / Kotlin", "Spring Boot", "大規模・堅牢。企業システムの定番"],
-          ["C#", "ASP.NET Core", "高性能。Windows/クラウド(Azure)との親和性"],
-          ["Rust", "Axum・Actix", "高速・安全。パフォーマンス重視の新興"],
+          ["JavaScript / TypeScript", <><Tech id="express">Express</Tech>・<Tech id="nestjs">NestJS</Tech>・<Tech id="fastify">Fastify</Tech>・<Tech id="hono">Hono</Tech></>, "フロントと同じ言語。NestJS は構造化された大規模向け"],
+          ["Python", <><Tech id="django">Django</Tech>・<Tech id="fastapi">FastAPI</Tech>・<Tech id="flask">Flask</Tech></>, "Django は全部入り、FastAPI は型と非同期で API 向き"],
+          ["Ruby", <Tech id="rails">Ruby on Rails</Tech>, "規約優先で開発が速い。スタートアップに人気"],
+          ["PHP", <Tech id="laravel">Laravel</Tech>, "学習資料が豊富。中小規模の Web に強い"],
+          [<Tech id="go">Go</Tech>, "Echo・Gin・chi", "軽量・高速・並行処理が得意。単一バイナリ配布"],
+          ["Java / Kotlin", <Tech id="spring-boot">Spring Boot</Tech>, "大規模・堅牢。企業システムの定番"],
+          ["C#", <Tech id="aspnet">ASP.NET Core</Tech>, "高性能。Windows/クラウド(Azure)との親和性"],
+          [<Tech id="rust">Rust</Tech>, "Axum・Actix", "高速・安全。パフォーマンス重視の新興"],
         ]}
       />
 
@@ -40,9 +41,9 @@ export default function Article() {
       <ComparisonTable
         headers={["方式", "特徴", "向いている場面"]}
         rows={[
-          ["REST", "URL とHTTP メソッドで表現。最も普及", "汎用的な Web API の第一候補"],
-          ["GraphQL", "クライアントが必要なデータ形を指定", "画面ごとに取得項目が変わる複雑な UI"],
-          ["gRPC", "バイナリで高速。型定義(proto)ベース", "サービス間通信・マイクロサービス"],
+          [<Tech id="rest">REST</Tech>, "URL とHTTP メソッドで表現。最も普及", "汎用的な Web API の第一候補"],
+          [<Tech id="graphql">GraphQL</Tech>, "クライアントが必要なデータ形を指定", "画面ごとに取得項目が変わる複雑な UI"],
+          [<Tech id="grpc">gRPC</Tech>, "バイナリで高速。型定義(proto)ベース", "サービス間通信・マイクロサービス"],
         ]}
       />
       <Callout variant="info" title="まずは REST から">
@@ -56,8 +57,8 @@ export default function Article() {
           ["ORM / DB アクセス", "Prisma・TypeORM・SQLAlchemy・ActiveRecord", "SQL を書かずにコードで DB を操作"],
           ["認証 / 認可", "JWT・セッション・OAuth・Auth0/Clerk", "ログインとアクセス制御"],
           ["非同期処理 / ジョブ", "Celery・BullMQ・Sidekiq", "メール送信・重い処理をバックグラウンドで"],
-          ["キャッシュ", "Redis", "頻繁に読むデータを高速化"],
-          ["API 仕様", "OpenAPI (Swagger)", "API の仕様書を機械可読で共有"],
+          ["キャッシュ", <Tech id="redis">Redis</Tech>, "頻繁に読むデータを高速化"],
+          ["API 仕様", <Tech id="openapi">OpenAPI (Swagger)</Tech>, "API の仕様書を機械可読で共有"],
         ]}
       />
 

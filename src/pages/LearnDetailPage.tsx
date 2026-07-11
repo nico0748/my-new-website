@@ -3,6 +3,7 @@ import { useParams, Link, Navigate, useNavigate } from "react-router-dom";
 
 import LearnLayout from "../components/learn/LearnLayout";
 import DomainNav from "../components/learn/DomainNav";
+import { TechStackProvider } from "../components/learn/TechStackPanel";
 import {
   DOMAIN_STYLES,
   getSectionLabel,
@@ -126,12 +127,14 @@ const LearnDetailPage = () => {
 
       <hr />
 
-      {/* 本文（TSX） */}
-      <div className="prose ld-article">
-        <Suspense fallback={<Spinner />}>
-          <ArticleBody />
-        </Suspense>
-      </div>
+      {/* 本文（TSX）。技術スタックの解説ドロワーを提供（stack コースは技術名を自動リンク） */}
+      <TechStackProvider autoLink={d === "stack"}>
+        <div className="prose ld-article">
+          <Suspense fallback={<Spinner />}>
+            <ArticleBody />
+          </Suspense>
+        </div>
+      </TechStackProvider>
 
       {/* 前後ナビ */}
       {(prev || next) && (

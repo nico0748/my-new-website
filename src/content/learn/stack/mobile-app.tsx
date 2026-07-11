@@ -1,5 +1,6 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
 import { Lead, Section, Callout, Cmd, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
   id: "mobile-app-stack",
@@ -25,8 +26,8 @@ export default function Article() {
       <ComparisonTable
         headers={["OS", "言語", "UI フレームワーク", "特徴"]}
         rows={[
-          ["iOS", "Swift", "SwiftUI / UIKit", "最新 OS 機能をいち早く使える。Apple 公式で情報が安定"],
-          ["Android", "Kotlin（Java）", "Jetpack Compose / View", "端末・OS バージョンの多様性に対応する必要がある"],
+          ["iOS", <Tech id="swift">Swift</Tech>, "SwiftUI / UIKit", "最新 OS 機能をいち早く使える。Apple 公式で情報が安定"],
+          ["Android", <><Tech id="kotlin">Kotlin</Tech>（Java）</>, "Jetpack Compose / View", "端末・OS バージョンの多様性に対応する必要がある"],
         ]}
       />
       <Callout variant="info" title="ネイティブの強みと弱み">
@@ -37,8 +38,8 @@ export default function Article() {
       <ComparisonTable
         headers={["フレームワーク", "言語", "描画方式", "特徴"]}
         rows={[
-          ["Flutter", "Dart", "独自エンジンで描画", "iOS/Android/Web/デスクトップまで単一コード。UI が均一"],
-          ["React Native", "JavaScript / TypeScript", "ネイティブ UI を呼ぶ", "Web の React 知識を活かせる。エコシステムが広い"],
+          [<Tech id="flutter">Flutter</Tech>, "Dart", "独自エンジンで描画", "iOS/Android/Web/デスクトップまで単一コード。UI が均一"],
+          [<Tech id="react-native">React Native</Tech>, "JavaScript / TypeScript", "ネイティブ UI を呼ぶ", "Web の React 知識を活かせる。エコシステムが広い"],
           ["Kotlin Multiplatform", "Kotlin", "ロジック共有＋UIは各OS", "UI はネイティブのまま、ビジネスロジックだけ共有"],
           [".NET MAUI", "C#", "ネイティブ UI を呼ぶ", "C#/.NET 資産を活かせる。企業内アプリで採用"],
         ]}
