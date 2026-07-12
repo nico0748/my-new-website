@@ -30,9 +30,12 @@ export const initGA = () => {
   document.head.appendChild(script);
 
   window.dataLayer = window.dataLayer || [];
-  window.gtag = (...args: unknown[]) => {
-    window.dataLayer.push(args);
-  };
+  // gtag.js は「arguments オブジェクト」の push を前提とする（公式スニペットと同形にする）。
+  function gtag() {
+    // eslint-disable-next-line prefer-rest-params
+    window.dataLayer.push(arguments);
+  }
+  window.gtag = gtag as (...args: unknown[]) => void;
   window.gtag("js", new Date());
   // SPA: 自動 page_view を止め、ルート遷移ごとに手動送信する
   window.gtag("config", GA_ID, { send_page_view: false });
