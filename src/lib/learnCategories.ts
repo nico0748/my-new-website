@@ -6,7 +6,7 @@
 /** 分野（大分類 / domain）。URL は /nicotech/<domain>。
  *  基礎コース（*）／応用コース（*-adv）／実践コース（プロジェクト型）。 */
 export type LearnDomain =
-  | "web" | "infra" | "security" | "mobile" | "dev" | "cs" | "ai" | "stack"
+  | "web" | "infra" | "security" | "mobile" | "dev" | "cs" | "ai" | "stack" | "claude-code"
   | "web-adv" | "infra-adv" | "security-adv" | "mobile-adv" | "dev-adv" | "cs-adv" | "ai-adv"
   | "react-practice" | "angular-practice" | "rag-practice"
   | "vuln-research" | "ai-agent-practice" | "devsecops-practice";
@@ -93,6 +93,12 @@ export const DOMAIN_STYLES: Record<LearnDomain, DomainStyle> = {
     cover: "/learn/covers/stack.svg",
     description: "Web・モバイル・デスクトップ・拡張機能から、フロント/バック/DB/コンテナ/クラウドまで。分野ごとに代表的な技術スタックを俯瞰し、何を選べばよいかの地図にします。",
   },
+  "claude-code": {
+    label: "Claude Code基礎",
+    accent: "#d97757",               // クレイ（Anthropic 系）
+    cover: "/learn/covers/claude-code.svg",
+    description: "ターミナルで動くエージェント型 AI コーディングアシスタント Claude Code。仕組み・環境構築・実践ワークフローまでを段階的に学びます。",
+  },
 
   // ── 応用コース（濃色サムネ）。基礎を終えた人向けの実践編。 ──
   "web-adv": {
@@ -178,7 +184,7 @@ export const DOMAIN_STYLES: Record<LearnDomain, DomainStyle> = {
 };
 
 export const DOMAIN_ORDER: LearnDomain[] = [
-  "web", "infra", "security", "mobile", "dev", "cs", "ai", "stack",
+  "web", "infra", "security", "mobile", "dev", "claude-code", "cs", "ai", "stack",
   "web-adv", "infra-adv", "security-adv", "mobile-adv", "dev-adv", "cs-adv", "ai-adv",
   "react-practice", "angular-practice", "rag-practice",
   "vuln-research", "ai-agent-practice", "devsecops-practice",
@@ -226,10 +232,16 @@ export const DOMAIN_SECTIONS: Record<LearnDomain, SectionDef[]> = {
   ],
   dev: [
     { key: "dev-basics", label: "開発の基礎" },
-    { key: "claude-code", label: "Claude Code" },
     { key: "editor-git", label: "エディタ / Git" },
     { key: "testing", label: "テスト" },
     { key: "practices", label: "設計・プラクティス" },
+  ],
+  "claude-code": [
+    { key: "intro", label: "導入" },
+    { key: "setup", label: "セットアップ・基本操作" },
+    { key: "context", label: "コンテキスト管理" },
+    { key: "extend", label: "拡張機能" },
+    { key: "advanced", label: "応用ワークフロー" },
   ],
   cs: [
     { key: "algorithms", label: "アルゴリズムとデータ構造" },
