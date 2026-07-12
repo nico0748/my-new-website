@@ -71,7 +71,7 @@ const LearnDetailPage = () => {
     return (
       <LearnLayout activeDomain={d} sidebar={<DomainNav domain={d} />}>
         <div className="breadcrumb">
-          <Link to="/nicotech">Learn</Link> / <Link to={`/nicotech/${d}`}>{style.label}</Link> / 見つかりません
+          <Link to={`/nicotech/${d}`}>{style.label}</Link> / 見つかりません
         </div>
         <h1>記事が見つかりません</h1>
         <p style={{ color: "var(--color-text-secondary)" }}>
@@ -96,9 +96,9 @@ const LearnDetailPage = () => {
       sidebar={<DomainNav domain={d} activeId={meta.id} />}
       toc
     >
-      {/* パンくず */}
+      {/* パンくず（コースから開始） */}
       <div className="breadcrumb">
-        <Link to="/nicotech">Learn</Link> / <Link to={`/nicotech/${d}`}>{style.label}</Link> / {meta.id}
+        <Link to={`/nicotech/${d}`}>{style.label}</Link> / {meta.id}
       </div>
 
       {/* 記事ヘッダー */}
