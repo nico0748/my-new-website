@@ -42,6 +42,30 @@ export default function Article() {
         <li><strong>他の API を使う</strong> — 地図・決済・SNS・天気などを組み込む</li>
       </ul>
 
+      <Section>システム同士は「こうやって」会話している</Section>
+      <p>
+        抽象的な「窓口」の話を、実際の 1 往復で覗いてみましょう。あなたのアプリが天気 API に「東京の天気を教えて」と頼むとき、ネットワーク上を流れているのは、実は次のような<strong>ただのテキスト</strong>です。
+      </p>
+      <Code lang="http" filename="① クライアント → サーバー（リクエスト）">{`GET /v1/weather?city=Tokyo HTTP/1.1
+Host: api.example.com
+Authorization: Bearer abc123
+Accept: application/json`}</Code>
+      <Code lang="http" filename="② サーバー → クライアント（レスポンス）">{`HTTP/1.1 200 OK
+Content-Type: application/json
+
+{ "city": "Tokyo", "tempC": 28, "condition": "Sunny" }`}</Code>
+      <p>
+        構造はとてもシンプルです。リクエストは「<strong>動詞（GET）＋住所（パス）＋付帯情報（ヘッダ）</strong>」、レスポンスは「<strong>状態（200 OK）＋中身（JSON）</strong>」。人間同士の「〇〇をください」「はい、どうぞ」という会話と同じで、送る側が用件を、返す側が結果と「うまくいったか」を伝えます。この 1 往復こそが API の実体です。
+      </p>
+      <p>
+        この会話は特別な道具がなくても手元から再現できます。<Cmd>curl</Cmd> を使えば、ターミナルから 1 行で同じリクエストを送り、返ってきた中身をそのまま見られます。
+      </p>
+      <Code lang="bash" filename="手元から同じ会話をする">{`curl -H "Authorization: Bearer abc123" \\
+  "https://api.example.com/v1/weather?city=Tokyo"`}</Code>
+      <Callout variant="tip" title="流儀が違うだけで、やっていることは同じ">
+        REST も GraphQL も gRPC も、突き詰めれば「リクエストを送って、結果を受け取る」というこの往復です。違うのは<strong>話し方の流儀</strong>（URL の組み立て方・データ形式・使うプロトコル）だけ。まずこの 1 往復のイメージを持っておくと、どのスタイルも同じ骨格に見えてきます。
+      </Callout>
+
       <Bridge course="ソフトウェア工学 / インターフェースと抽象化">
         講義で習う「<strong>インターフェースは実装と分離せよ</strong>」「<strong>情報隠蔽（information hiding）</strong>」という原則が、Web ではそのまま API という形で現れます。関数のシグネチャ（引数と戻り値の型）を決めれば中身を差し替えても呼び出し側は壊れない — これと全く同じ発想で、API は「エンドポイント＋リクエスト／レスポンス形式」という契約だけを外に見せ、サーバ内部の実装は隠します。授業で `interface` と `class` を分けて設計した経験は、そのまま「API 仕様」と「サーバ実装」を分ける設計に対応します。
       </Bridge>

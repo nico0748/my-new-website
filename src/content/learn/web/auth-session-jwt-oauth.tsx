@@ -44,6 +44,27 @@ const ok = await bcrypt.compare(inputPassword, hash);`}</Code>
         パスワードハッシュは、暗号理論で学ぶ<strong>一方向性ハッシュ関数</strong>の応用です。「元に戻せない・衝突しにくい」性質を使い、漏洩しても平文が復元されないようにします。<strong>ソルト</strong>は同一パスワードを別ハッシュにしてレインボーテーブル攻撃を無効化し、<strong>ストレッチング（反復による意図的な低速化）</strong>は総当たりのコストを引き上げます。<Cmd>bcrypt.compare</Cmd> が定数時間比較で<strong>タイミング攻撃</strong>を避ける点も、講義のサイドチャネルの話に直結します。認証は「認証（誰か）と認可（何をしてよいか）を分ける」という<strong>脅威モデル</strong>の観点で設計するのが実務の基本です。
       </Bridge>
 
+      <Section>認証と認可を取り違えない — 401 と 403</Section>
+      <p>
+        ログイン周りで必ず出てくるのに、混同されがちなのが<strong>認証</strong>と<strong>認可</strong>です。空港で例えると分かりやすい。搭乗ゲートでパスポートを見せて「本人だと確認される」のが<strong>認証</strong>、搭乗券のクラスによって「ラウンジに入れる／入れない」が決まるのが<strong>認可</strong>です。順番も重要で、<strong>まず認証（誰か）→ 次に認可（何をしてよいか）</strong>の順に判定されます。
+      </p>
+      <ComparisonTable
+        headers={["観点", "認証（Authentication）", "認可（Authorization）"]}
+        rows={[
+          ["問い", "あなたは誰？", "その人に何をさせてよい？"],
+          ["確認するもの", "ID・パスワード・トークンなど本人性", "役割・権限・スコープ"],
+          ["順番", "先", "後（認証済みが前提）"],
+          ["失敗時の HTTP", <><Cmd>401 Unauthorized</Cmd></>, <><Cmd>403 Forbidden</Cmd></>],
+          ["例", "ログインする", "管理者だけが記事を削除できる"],
+        ]}
+      />
+      <Callout variant="warn" title="401 は実は「未認証」">
+        名前に反して <Cmd>401 Unauthorized</Cmd> は「<strong>認証できていない</strong>（誰か分からない）」を意味し、ログインを促す場面で返します。一方 <Cmd>403 Forbidden</Cmd> は「<strong>本人だと分かっているが権限がない</strong>」場合。トークンが切れたら 401、一般ユーザーが管理者専用 API を叩いたら 403、と覚えると迷いません。
+      </Callout>
+      <p>
+        認可の実装で代表的なのが<strong>ロールベースアクセス制御（RBAC）</strong>です。ユーザーに <Cmd>admin</Cmd> / <Cmd>editor</Cmd> / <Cmd>viewer</Cmd> といった役割を割り当て、「この操作はどの役割まで許すか」で判定します。JWT なら <Cmd>role</Cmd> クレーム、OAuth なら <Cmd>scope</Cmd>（<Cmd>read:posts</Cmd> のような許可範囲）がこの認可情報を運びます。<strong>認証は入口で 1 回、認可は操作のたびに毎回</strong>チェックされる、という点も押さえておきましょう。
+      </p>
+
       <Section>Session 認証</Section>
       <p>
         もっとも古典的で堅牢な方式。ログイン成功時に<strong>サーバ側でセッション情報を保持</strong>し、
