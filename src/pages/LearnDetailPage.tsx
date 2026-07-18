@@ -1,5 +1,5 @@
 import { Suspense, lazy, useEffect, useMemo } from "react";
-import { useParams, Link, Navigate, useNavigate } from "react-router-dom";
+import { useParams, Link, Navigate } from "react-router-dom";
 
 import LearnLayout from "../components/learn/LearnLayout";
 import DomainNav from "../components/learn/DomainNav";
@@ -27,7 +27,6 @@ const FooterLink = ({ meta, dir }: { meta: LearnMeta; dir: "prev" | "next" }) =>
 
 const LearnDetailPage = () => {
   const { domain, id } = useParams<{ domain: string; id: string }>();
-  const navigate = useNavigate();
   const entry = domain && id ? getEntry(domain, id) : undefined;
 
   const ArticleBody = useMemo(() => (entry ? lazy(entry.load) : null), [entry]);
@@ -50,19 +49,6 @@ const LearnDetailPage = () => {
   useEffect(() => {
     if (validDomain && meta) setLastOpened(d, meta.id);
   }, [validDomain, d, meta]);
-
-  // キーボード ←/→ で前後の記事へ移動（入力中は無効）
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.metaKey || e.ctrlKey || e.altKey) return;
-      const t = e.target as HTMLElement | null;
-      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
-      if (e.key === "ArrowLeft" && prev) navigate(`/nicotech/${prev.domain}/${prev.id}`);
-      else if (e.key === "ArrowRight" && next) navigate(`/nicotech/${next.domain}/${next.id}`);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [navigate, prev, next]);
 
   if (!validDomain) return <Navigate to="/nicotech" replace />;
   const style = DOMAIN_STYLES[d];
