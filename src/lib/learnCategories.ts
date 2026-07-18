@@ -6,7 +6,7 @@
 /** 分野（大分類 / domain）。URL は /nicotech/<domain>。
  *  基礎コース（*）／応用コース（*-adv）／実践コース（プロジェクト型）。 */
 export type LearnDomain =
-  | "web" | "infra" | "security" | "mobile" | "dev" | "cs" | "ai" | "stack" | "claude-code"
+  | "web" | "infra" | "security" | "mobile" | "dev" | "cs" | "ai" | "kyopro" | "stack" | "claude-code"
   | "web-adv" | "infra-adv" | "security-adv" | "mobile-adv" | "dev-adv" | "cs-adv" | "ai-adv"
   | "react-practice" | "angular-practice" | "rag-practice"
   | "vuln-research" | "ai-agent-practice" | "devsecops-practice";
@@ -86,6 +86,12 @@ export const DOMAIN_STYLES: Record<LearnDomain, DomainStyle> = {
     accent: "#f97316",               // オレンジ
     cover: "/learn/covers/ai.svg",
     description: "機械学習・ディープラーニング・LLM/生成AI。AI を理解し使いこなすための基礎。",
+  },
+  kyopro: {
+    label: "競技プログラミング",
+    accent: "#7c3aed",               // バイオレット
+    cover: "/learn/covers/kyopro.svg",
+    description: "Python での入出力から、探索・グラフ・最短経路・DP まで。競プロ/paiza の典型アルゴリズムを実装とともに体系的に。",
   },
   stack: {
     label: "技術スタック一覧",
@@ -184,7 +190,7 @@ export const DOMAIN_STYLES: Record<LearnDomain, DomainStyle> = {
 };
 
 export const DOMAIN_ORDER: LearnDomain[] = [
-  "web", "infra", "security", "mobile", "dev", "claude-code", "cs", "ai", "stack",
+  "web", "infra", "security", "mobile", "dev", "claude-code", "cs", "ai", "kyopro", "stack",
   "web-adv", "infra-adv", "security-adv", "mobile-adv", "dev-adv", "cs-adv", "ai-adv",
   "react-practice", "angular-practice", "rag-practice",
   "vuln-research", "ai-agent-practice", "devsecops-practice",
@@ -255,6 +261,13 @@ export const DOMAIN_SECTIONS: Record<LearnDomain, SectionDef[]> = {
     { key: "deep-learning", label: "ディープラーニング" },
     { key: "llm", label: "LLM・生成AI" },
     { key: "ai-practice", label: "実践・応用" },
+  ],
+  kyopro: [
+    { key: "cheatsheet", label: "Python / paiza チートシート" },
+    { key: "search-basics", label: "探索・データ構造・数論" },
+    { key: "graph", label: "グラフ" },
+    { key: "shortest-path", label: "最短経路" },
+    { key: "dp-flow", label: "DP・フロー" },
   ],
   stack: [
     { key: "web-app", label: "Web アプリケーション開発" },
