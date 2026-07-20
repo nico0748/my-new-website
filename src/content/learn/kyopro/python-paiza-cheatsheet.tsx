@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Section, SubSection, Code, ComparisonTable, Callout, Cmd } from "../../../components/learn/kit";
+import { Section, SubSection, Code, ComparisonTable, Callout, Cmd, Figure } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "python-paiza-cheatsheet",
@@ -918,6 +918,11 @@ dp[0] = 0                            #   答えは max(dp)`}</Code>
 
       {/* ── 14 ─────────────────────────────── */}
       <Section>14. エラーメッセージの読み方</Section>
+      <Figure
+        src="/learn/shots/kyopro/python-paiza-cheatsheet-02.svg"
+        alt="実行時に Traceback が表示された画面。エラーの型名・メッセージ・発生行が示されている"
+        caption="実行環境に出る Traceback。最終行の「型名: メッセージ」と、その上の行番号だけ見れば原因はほぼ絞れる"
+      />
       <ComparisonTable
         headers={["エラー", "意味 / 疑うところ"]}
         rows={[
@@ -1026,6 +1031,11 @@ print(parts)          # ← 実際にどう分かれているか確認`}</Code>
         <strong>提出前に必ず入力例1で検算する。</strong>{" "}
         手で計算した答えと一致するか確かめてから提出。
       </p>
+      <Figure
+        src="/learn/shots/kyopro/python-paiza-cheatsheet-01.svg"
+        alt="paiza の問題ページでコードを実行し、入力例1に対する自分の出力と期待される出力が並んで表示されている画面"
+        caption="入力例1で実行し、自分の出力と期待される出力を並べて突き合わせる"
+      />
     </>
   );
 }

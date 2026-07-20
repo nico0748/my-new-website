@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, KVList, KeyPoints, Bridge, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, KVList, KeyPoints, Bridge, Quiz, Figure, Divider } from "../../../components/learn/kit";
 import { SequenceDiagram } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -71,6 +71,11 @@ const created = await res.json();`}</Code>
   }
   return res.json();
 }`}</Code>
+      <Figure
+        src="/learn/shots/web/fetch-api-01.svg"
+        alt="Chrome DevTools の Network タブで 404 を返した fetch リクエストと、Console 側の表示"
+        caption="Network では赤く 404 と出ているのに、Console には例外が出ていない。これが「fetch は reject しない」の実物。"
+      />
       <Callout variant="warn" title="reject されるのは「通信できないとき」だけ">
         <Cmd>fetch</Cmd> が reject するのは、ネットワーク遮断・DNS 失敗・CORS 拒否など<strong>通信そのものが成立しない</strong>場合です。
         サーバーが 4xx / 5xx を返した場合は<strong>成功扱い</strong>なので、<Cmd>res.ok</Cmd> のチェックを必ず入れます。

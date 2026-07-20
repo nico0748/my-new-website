@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, ComparisonTable, KeyPoints, KVList, TipBox, Bridge, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, ComparisonTable, KeyPoints, KVList, TipBox, Bridge, Figure, Divider } from "../../../components/learn/kit";
 import { SequenceDiagram } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -88,6 +88,8 @@ export default function Article() {
         SSG/SSR は、サーバー側で「取得 → 実行 → 描画」を済ませてから<strong>完成 HTML を 1 往復で返す</strong>ため、ユーザーは最初のレスポンスで中身が読めます。
         往復回数（RTT の積み重なり）を減らすことが、初回表示を速くする鍵です。
       </p>
+
+      <Figure src="/learn/shots/web/rendering-patterns-01.svg" alt="CSR と SSR のページで「ページのソースを表示」した結果を並べた画面" caption="ソース表示で一目瞭然。CSR は空の器、SSR は最初から中身が入っている" />
       <Bridge course="コンピュータネットワーク（レイテンシ / RTT）">
         「帯域（bandwidth）は増やせても、レイテンシ（往復遅延・RTT）は光速と距離で下限が決まり、簡単には縮まない」— ネットワーク講義の重要な直観です。
         だからこそ Web 高速化の定石は「往復回数を減らす」「ユーザーに近い場所（CDN/エッジ）に置く」の 2 つ。SSG が速いのは往復が 1 回で済むから、CDN 配信が速いのは物理距離が短くレイテンシが小さいから。

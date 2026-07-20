@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider, Figure } from "../../../components/learn/kit";
 import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
@@ -70,6 +70,11 @@ export default function Article() {
           ["可観測性/トレース", <><Tech id="langsmith">LangSmith・Langfuse</Tech>・OpenTelemetry</>, "各ステップの入出力・コスト・遅延を追跡"],
           ["ガードレール", "入出力フィルタ・スキーマ検証", "危険な出力や逸脱を抑える"],
         ]}
+      />
+      <Figure
+        src="/learn/shots/stack/ai-agent-stack-01.svg"
+        alt="LangSmith のトレース画面で、エージェントの各ステップと所要時間・コストが並んでいる様子"
+        caption="トレースを見ると、エージェントが「何を考え、どの道具をいつ呼んだか」が1ステップずつ追える"
       />
 
       <Section>選び方の指針</Section>

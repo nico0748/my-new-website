@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Bridge, Code, Cmd, ComparisonTable, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Bridge, Code, Cmd, ComparisonTable, KVList, KeyPoints, Quiz, Divider, Figure } from "../../../components/learn/kit";
 import { SequenceDiagram } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -84,6 +84,7 @@ export default function Article() {
           [<Cmd>None</Cmd>, "常に付く（Secure 必須）", "クロスサイトで Cookie が必要な場合のみ。CSRF 耐性は別途必要"],
         ]}
       />
+      <Figure src="/learn/shots/security/csrf-01.svg" alt="ブラウザ DevTools の Application タブで Cookie 一覧を開き、SameSite 列と Secure 属性が表示されているスクリーンショット" caption="DevTools で自分のサイトの Cookie を確認する。SameSite が実際にどう設定されているかはここで見える" />
       <SubSection>併用したい対策</SubSection>
       <ul>
         <li><strong>Origin / Referer ヘッダの検証</strong> — リクエストの出所オリジンを確認する。</li>

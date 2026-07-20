@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KVList, KeyPoints, Bridge, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KVList, KeyPoints, Bridge, Quiz, Divider, Figure } from "../../../components/learn/kit";
 import { SequenceDiagram } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -178,6 +178,11 @@ export class TaskListComponent {
         コンポーネントは「何がほしいか（型）」を言うだけで、「どう作るか」「どこから持ってくるか」を知りません。
         この<strong>関心の分離</strong>によって、依存の差し替えが自由になります。
       </p>
+      <Figure
+        src="/learn/shots/angular-practice/dependency-injection-01.svg"
+        alt="Angular DevTools の Injector Tree タブ。TaskService が Root Injector に解決され、コンポーネントへ注入されている"
+        caption="Angular DevTools の Injector Tree なら、どのサービスがどの Injector で解決されたか実物で追える"
+      />
 
       <Section>テスト時にモックへ差し替えられる</Section>
       <p>

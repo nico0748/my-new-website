@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Bridge, Code, Cmd, ComparisonTable, KVList, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Bridge, Code, Cmd, ComparisonTable, KVList, KeyPoints, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "http-basics",
@@ -115,6 +115,11 @@ Content-Length: 1024
 # > Host: example.com
 # < HTTP/1.1 200 OK       ← 返ってきたレスポンス
 # < Content-Type: text/html`}</Code>
+      <Figure
+        src="/learn/shots/web/http-basics-01.svg"
+        alt="curl -v の実行結果で、送ったリクエスト行と返ってきたレスポンスヘッダが両方見えるターミナル"
+        caption="行頭の記号で向きが分かる。ここまで説明した4パート構造が、そのままテキストとして流れているのが見える。"
+      />
 
       <Section>ステータスコードの読み方</Section>
       <SubSection>百の位でカテゴリを掴む</SubSection>

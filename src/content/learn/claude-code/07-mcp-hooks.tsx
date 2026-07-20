@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, Code, Cmd, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, Code, Cmd, ComparisonTable, KeyPoints, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "claude-code-07-mcp-hooks",
@@ -57,6 +57,11 @@ claude mcp add slack
 /mcp
 # サーバーを削除
 claude mcp remove github`}</Code>
+      <Figure
+        src="/learn/shots/claude-code/claude-code-07-mcp-hooks-01.svg"
+        alt="/mcp を実行して MCP サーバーの接続状態が一覧表示された画面"
+        caption="/mcp の一覧。どのサーバーが接続済みか、認証が通っているかがここで分かる"
+      />
       <p>設定ファイル <Cmd>~/.claude.json</Cmd> に手動で書く方法もあります。</p>
 
       <Section>3. MCP の使用例（15分）</Section>
@@ -215,6 +220,11 @@ claude mcp remove github`}</Code>
   }
 }`}</Code>
       <p><Cmd>claude</Cmd> を起動して何度かファイル編集をし、<Cmd>cat ~/.claude-edit.log</Cmd> でログが数行たまっていることを確認しましょう。</p>
+      <Figure
+        src="/learn/shots/claude-code/claude-code-07-mcp-hooks-02.svg"
+        alt="cat ~/.claude-edit.log で Hook が書き出したログが並んでいる画面"
+        caption="編集のたびに1行ずつ追記されていれば、Hook は正しく発火している"
+      />
       <Callout variant="tip" title="課題4（任意）">
         「<Cmd>rm -rf</Cmd> を実行しようとしたらブロックする」Hook を作り、実際に Claude に <Cmd>rm -rf</Cmd> 系のコマンドを実行させようとしたときに<strong>ブロックされる</strong>ことを確認。
       </Callout>

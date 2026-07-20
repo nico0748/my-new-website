@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Bridge, Code, Cmd, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Bridge, Code, Cmd, ComparisonTable, KeyPoints, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "status-codes",
@@ -68,6 +68,8 @@ export default function Article() {
       <Callout variant="tip" title="迷ったら 2 段階で読む">
         ① 百の位で「呼び出し側か、サーバ側か」を判定 → ② 下 2 桁で「具体的に何か」を特定。この 2 段階なら、初見のコードでも対処の方向を外しません。
       </Callout>
+
+      <Figure src="/learn/shots/web/status-codes-01.svg" alt="DevTools の Network タブで各リクエストのステータスコードが並んだ画面" caption="実務でコードを読むのはこの画面。Status 列を眺めるだけで異常の当たりが付く" />
 
       <Section>401 と 403 の違い</Section>
       <p>

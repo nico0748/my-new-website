@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import type { CSSProperties } from "react";
-import NicoTechMark from "../components/learn/NicoTechMark";
+import NicoTechLogo from "../components/learn/NicoTechLogo";
+import NicoTechTabs from "../components/learn/NicoTechTabs";
 import OnboardingGuide from "../components/learn/OnboardingGuide";
 import "../styles/learn.css";
 
@@ -89,57 +90,50 @@ const LearnPage = () => {
       <div className="learn-landing">
         {/* Header */}
         <header className="landing-header">
-          <Link to="/nicotech" className="logo">
-            <NicoTechMark size={38} />
-            <span className="logo-text">nico<span className="accent">Tech</span></span>
-          </Link>
-          <div className="lh-right">
-            <button
-              className="header-help"
-              aria-label="使い方ガイドを開く"
-              onClick={() => window.dispatchEvent(new CustomEvent("nicotech:guide-open"))}
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="9" /><path d="M9.2 9.2a3 3 0 0 1 5.6 1c0 2-2.8 2.5-2.8 4" /><line x1="12" y1="17.5" x2="12" y2="17.51" />
-              </svg>
-            </button>
-            <a href="#courses" className="btn-cta small">コースを見る</a>
+          <div className="sh-main">
+            <NicoTechLogo />
+            <div className="lh-right">
+              <button
+                className="header-help"
+                aria-label="使い方ガイドを開く"
+                onClick={() => window.dispatchEvent(new CustomEvent("nicotech:guide-open"))}
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="9" /><path d="M9.2 9.2a3 3 0 0 1 5.6 1c0 2-2.8 2.5-2.8 4" /><line x1="12" y1="17.5" x2="12" y2="17.51" />
+                </svg>
+              </button>
+              <a href="#courses" className="btn-cta small">コースを見る</a>
+            </div>
           </div>
+          <NicoTechTabs />
         </header>
 
-        {/* Hero */}
+        {/* Hero: 左寄せ。右カラムは余白として空けておく */}
         <section className="hero">
-          <h1>体系立てて学ぶ、<br />Web・インフラ・CS・AI まで</h1>
-          <p className="hero-sub">
-            断片的な知識ではなく、章の順に積み上げて理解する教材ライブラリ。
-          </p>
-          <div className="hero-stats">
-            <span className="stat">
-              <span className="num">{DOMAIN_ORDER.length}</span>
-              <span className="lbl">コース</span>
-            </span>
-            <span className="stat">
-              <span className="num">{totalArticles}</span>
-              <span className="lbl">記事</span>
-            </span>
+          <div className="hero-copy">
+            <h1>読んで終わりに、<br />しない教材。</h1>
+            <p className="hero-sub">
+              各章にコードと図解、理解を確かめる問い。手を動かして、実務で使える形にして持ち帰ってください。
+            </p>
+            {/* 統計と「続きから読む」を同じ行に並べる */}
+            <div className="hero-stats">
+              <span className="stat">
+                <span className="num">{DOMAIN_ORDER.length}</span>
+                <span className="lbl">コース</span>
+              </span>
+              <span className="stat">
+                <span className="num">{totalArticles}</span>
+                <span className="lbl">記事</span>
+              </span>
+              {lastEntry && (
+                <Link to={`/nicotech/${lastEntry.meta.domain}/${lastEntry.meta.id}`} className="btn-resume">
+                  続きから読む
+                  <span className="br-title">{lastEntry.meta.title}</span>
+                </Link>
+              )}
+            </div>
           </div>
-          <div className="hero-cta-row">
-            <a href="#courses" className="btn-cta">まずはコースを見る</a>
-            {lastEntry && (
-              <Link to={`/nicotech/${lastEntry.meta.domain}/${lastEntry.meta.id}`} className="btn-resume">
-                続きから読む
-                <span className="br-title">{lastEntry.meta.title}</span>
-              </Link>
-            )}
-          </div>
-        </section>
 
-        {/* Mint band */}
-        <section className="mint-band">
-          <h2>初心者から、創れる人に</h2>
-          <p>
-            それぞれのコースは「入門 → 基礎 → 実践」の順に構成。手を動かしながら、実務で通用する土台を固めます。
-          </p>
         </section>
 
         {/* Courses */}

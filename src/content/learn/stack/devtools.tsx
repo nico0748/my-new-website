@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider, Figure } from "../../../components/learn/kit";
 import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
@@ -31,6 +31,11 @@ export default function Article() {
           [<Tech id="gitlab">GitLab</Tech>, "DevOps プラットフォーム", "自己ホスト・CI 統合に強い"],
         ]}
       />
+      <Figure
+        src="/learn/shots/stack/devtools-stack-01.svg"
+        alt="GitHub のプルリクエスト画面。変更差分とレビューコメント、CI のチェック結果が並んでいる"
+        caption="協業の中心はこの画面。差分・レビュー・自動テストが1か所に集まる"
+      />
 
       <Section>エディタ / IDE</Section>
       <ComparisonTable
@@ -39,6 +44,11 @@ export default function Article() {
           [<Tech id="vscode">VS Code</Tech>, "軽量・拡張豊富で最も普及。多言語・多用途に対応"],
           [<Tech id="jetbrains">JetBrains</Tech>, "言語特化の高機能 IDE 群（IntelliJ・PyCharm 等）"],
         ]}
+      />
+      <Figure
+        src="/learn/shots/stack/devtools-stack-02.svg"
+        alt="VS Code のエディタ画面。拡張機能パネルと、コードに表示された Lint の警告"
+        caption="エディタと拡張機能が組み合わさると、書いている最中に問題が指摘される"
       />
 
       <Section>Lint / フォーマッタ</Section>

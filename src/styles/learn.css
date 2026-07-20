@@ -40,7 +40,15 @@
   --color-success-border: #a7f3d0;
 
   --sidebar-width: 288px;
-  --header-height: 56px;
+  /* ヘッダーは 2 段。ティール帯＋タブの合計が本文のオフセットになる */
+  --band-height: 76px;
+  --tabs-height: 64px;
+  /* ティール帯とタブのあいだの余白（白地） */
+  --tabs-gap: 12px;
+  --header-height: calc(var(--band-height) + var(--tabs-gap) + var(--tabs-height));
+  /* ヘッダー帯（深いティール）。ロゴの四角囲みはこの色を抜き文字に使う。 */
+  --nt-header-bg: #00707d;
+  --nt-header-border: rgba(255,255,255,0.16);
   --content-max-width: 800px;
   --font-sans: 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', monospace;
@@ -59,38 +67,107 @@
 
 .learn-docs *, .learn-docs *::before, .learn-docs *::after { box-sizing: border-box; }
 
-/* ---- Header ---- */
+/* ---- Header（2段: ティール帯 + セクションタブ） ---- */
 .learn-docs .site-header {
   position: fixed;
   top: 0; left: 0; right: 0;
-  height: var(--header-height);
-  background: rgba(255,255,255,0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--color-border);
   z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: var(--tabs-gap);
+  /* 固定ヘッダーなので、帯とタブの隙間から本文が透けないよう地色を敷く */
+  background: var(--color-bg);
+}
+/* 1段目: ロゴ・検索を載せるティール帯 */
+.learn-docs .site-header .sh-main,
+.learn-docs .landing-header .sh-main {
+  height: var(--band-height);
+  background: var(--nt-header-bg);
   display: flex;
   align-items: center;
   padding: 0 24px;
 }
-.learn-docs .site-header .logo {
-  font-weight: 700; font-size: 18px; color: var(--color-text);
-  text-decoration: none; display: flex; align-items: center; gap: 10px;
+
+/* ---- Header 2段目: セクションタブ（フォルダ型・タブごとに色を持つ） ----
+   全タブを常に着色し、上端だけ角丸にする。選択中のタブは背を高くし、
+   下端の帯を同色にすることでタブと地続きに見せる。 */
+.learn-docs .nt-tabs {
+  display: flex; align-items: flex-end; gap: 3px;
+  height: var(--tabs-height);
+  background: var(--color-bg);
+  border-bottom: 4px solid var(--active-color);
+  padding: 0;
 }
-.learn-docs .site-header .logo .accent { color: var(--color-primary); }
+.learn-docs .nt-tab {
+  /* 項目が少ないので均等割りで全幅に広げる */
+  flex: 1 1 0; min-width: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 3px;
+  height: calc(100% - 6px);
+  background: var(--tab-color); color: #fff;
+  text-decoration: none; white-space: nowrap;
+  border-radius: 9px 9px 0 0;
+  transition: height 0.15s ease, filter 0.15s ease;
+}
+/* 英字は字間を大きく開けて幅を使う。text-indent は字間で生じる右余りの補正 */
+.learn-docs .nt-tab .nt-tab-en {
+  font-size: 14px; font-weight: 700;
+  letter-spacing: 0.34em; text-indent: 0.34em;
+}
+/* 日本語サブで英字だけでは伝わりにくい中身を補う */
+.learn-docs .nt-tab .nt-tab-ja {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.82);
+}
+.learn-docs .nt-tab:hover { text-decoration: none; color: #fff; filter: brightness(1.06); }
+/* 選択中はフルの高さまで伸びて手前に出る */
+.learn-docs .nt-tab.active {
+  height: 100%;
+  box-shadow: 0 -1px 3px rgba(0,0,0,0.12);
+}
+/* ---- ヘッダーロゴ（タグライン＋四角囲みの Tech） ---- */
+.learn-docs .nt-logo {
+  display: flex; flex-direction: column; gap: 5px;
+  text-decoration: none; min-width: 0; line-height: 1;
+}
+.learn-docs .nt-logo:hover { text-decoration: none; opacity: 0.92; }
+.learn-docs .nt-tagline {
+  font-family: var(--font-sans);
+  font-size: 11.5px; font-weight: 500; letter-spacing: 0.01em;
+  color: rgba(255,255,255,0.88); white-space: nowrap;
+}
+/* ロゴ本体は等幅（JetBrains Mono）。nico を中字、Tech を太字にしてコントラストを付ける */
+.learn-docs .nt-title { display: flex; align-items: baseline; font-family: var(--font-mono); }
+.learn-docs .nt-name {
+  font-size: 26px; font-weight: 500; letter-spacing: 0.01em; color: rgba(255,255,255,0.85);
+}
+.learn-docs .nt-tech {
+  font-size: 26px; font-weight: 700; letter-spacing: 0.01em; color: #fff;
+}
+/* 末尾のターミナル風カーソル（ブロック）。ゆっくり点滅させる */
+.learn-docs .nt-cursor {
+  width: 11px; height: 22px; margin-left: 5px; background: #fff;
+  display: inline-block; transform: translateY(2px);
+  animation: nt-blink 1.2s step-end infinite;
+}
+@keyframes nt-blink { 0%, 55% { opacity: 1; } 56%, 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .learn-docs .nt-cursor { animation: none; }
+}
+
 .learn-docs .site-header .chapter-label {
   margin-left: 16px; padding-left: 16px;
-  border-left: 1px solid var(--color-border);
-  font-size: 14px; color: var(--color-text-secondary); font-weight: 500;
+  border-left: 1px solid var(--nt-header-border);
+  font-size: 14px; color: rgba(255,255,255,0.85); font-weight: 500;
 }
 .learn-docs .site-header .back-link {
-  margin-left: auto; font-size: 13px; color: var(--color-text-secondary);
+  margin-left: auto; font-size: 13px; color: rgba(255,255,255,0.85);
   text-decoration: none; font-weight: 500;
 }
-.learn-docs .site-header .back-link:hover { color: var(--color-primary); }
+.learn-docs .site-header .back-link:hover { color: #fff; }
 .learn-docs .hamburger {
   display: none; background: none; border: none; cursor: pointer;
-  padding: 4px; margin-right: 12px; color: var(--color-text);
+  padding: 4px; margin-right: 12px; color: #fff;
 }
 .learn-docs .hamburger svg { width: 22px; height: 22px; }
 
@@ -402,16 +479,15 @@
 
 /* ---- Landing header ---- */
 .learn-docs .landing-header {
-  position: sticky; top: 0; z-index: 100; height: 68px;
-  display: flex; align-items: center; padding: 0 32px;
-  background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--color-border);
+  position: sticky; top: 0; z-index: 100;
+  display: flex; flex-direction: column;
+  gap: var(--tabs-gap);
+  background: var(--color-bg);
 }
-.learn-docs .landing-header .logo { display: inline-flex; align-items: center; gap: 11px; font-weight: 800; font-size: 22px; color: var(--color-navy); text-decoration: none; }
-.learn-docs .landing-header .logo .accent { color: var(--color-primary); }
+.learn-docs .landing-header .sh-main { padding: 0 32px; }
 .learn-docs .landing-header .lh-right { margin-left: auto; display: flex; align-items: center; gap: 20px; }
-.learn-docs .landing-header .lh-link { font-size: 14px; color: var(--color-text-secondary); text-decoration: none; font-weight: 500; }
-.learn-docs .landing-header .lh-link:hover { color: var(--color-primary); }
+.learn-docs .landing-header .lh-link { font-size: 14px; color: rgba(255,255,255,0.88); text-decoration: none; font-weight: 500; }
+.learn-docs .landing-header .lh-link:hover { color: #fff; }
 
 /* ---- Buttons ---- */
 .learn-docs .btn-cta {
@@ -423,21 +499,74 @@
 .learn-docs .btn-cta.small { padding: 9px 20px; font-size: 13.5px; box-shadow: none; }
 
 /* ---- Hero ---- */
-.learn-docs .hero { text-align: center; padding: 80px 24px 64px; }
-.learn-docs .hero h1 {
-  font-size: 44px; font-weight: 800; line-height: 1.35; color: var(--color-navy);
-  letter-spacing: 0.01em; margin: 0 auto 24px; max-width: 720px;
+/* 左に文言・右にターミナル面の 2 カラム。狭い画面では 1 カラムに落とす */
+.learn-docs .hero {
+  max-width: 1080px; margin: 0 auto; padding: 76px 32px 60px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 44px; align-items: center;
 }
-.learn-docs .hero .hero-sub { font-size: 17px; color: var(--color-text-secondary); margin-bottom: 28px; }
-.learn-docs .hero-stats { display: flex; justify-content: center; gap: 32px; margin-bottom: 36px; flex-wrap: wrap; }
+.learn-docs .hero .hero-copy { min-width: 0; }
+.learn-docs .hero h1 {
+  font-size: 40px; font-weight: 800; line-height: 1.35; color: var(--color-navy);
+  letter-spacing: 0.01em; margin: 0 0 20px;
+}
+.learn-docs .hero .hero-sub { font-size: 16px; line-height: 1.8; color: var(--color-text-secondary); margin-bottom: 26px; }
+/* 統計と「続きから読む」を同じ行に並べるので、縦位置を中央で揃える */
+.learn-docs .hero-stats { display: flex; align-items: center; gap: 28px; margin-bottom: 0; flex-wrap: wrap; }
+
+/* 右寄せ版（経験録）: 太字の見出しだけを右端に寄せ、説明・統計・CTA は左揃えのまま。
+   見出しがページ右端に届くよう、本文ブロックは 2 カラム分の幅を使う。 */
+.learn-docs .hero--right .hero-copy { grid-column: 1 / -1; }
+.learn-docs .hero--right h1 { text-align: right; }
+
+/* 狭い幅では余白カラムを畳む */
+@media (max-width: 900px) {
+  .learn-docs .hero { grid-template-columns: 1fr; gap: 30px; }
+}
 .learn-docs .hero-stats .stat { display: flex; align-items: baseline; gap: 8px; }
 .learn-docs .hero-stats .stat .num { font-size: 22px; font-weight: 800; color: var(--color-navy); }
 .learn-docs .hero-stats .stat .lbl { font-size: 13px; color: var(--color-text-secondary); }
 
-/* ---- Mint feature band ---- */
-.learn-docs .mint-band { background: var(--color-mint); padding: 56px 24px; text-align: center; }
-.learn-docs .mint-band h2 { color: var(--color-navy); font-size: 30px; font-weight: 800; border: none; margin: 0 0 12px; padding: 0; }
-.learn-docs .mint-band p { color: #2f6b60; font-size: 15px; max-width: 620px; margin: 0 auto; }
+/* ================================================================
+   経験録（/nicotech/experience）— 新しい順のフロー型
+   ================================================================ */
+.learn-docs .exp-section { max-width: 860px; margin: 0 auto; padding: 0 32px 88px; }
+.learn-docs .exp-empty { color: var(--color-text-secondary); font-size: 15px; }
+.learn-docs .exp-list { display: grid; gap: 14px; }
+
+.learn-docs .exp-card {
+  display: block; padding: 20px 22px; border: 1px solid var(--color-border);
+  border-radius: 12px; background: var(--color-bg); text-decoration: none;
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+.learn-docs .exp-card:hover {
+  border-color: var(--color-primary); transform: translateY(-2px);
+  box-shadow: var(--shadow-md); text-decoration: none;
+}
+.learn-docs .exp-card h2 {
+  font-size: 18px; font-weight: 700; color: var(--color-navy);
+  margin: 0 0 7px; border: none; padding: 0;
+}
+.learn-docs .exp-card p { font-size: 14px; line-height: 1.8; color: var(--color-text-secondary); margin: 0; }
+
+.learn-docs .exp-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+.learn-docs .exp-badge { font-size: 11.5px; font-weight: 700; padding: 3px 10px; border-radius: 4px; }
+.learn-docs .exp-date { font-size: 12px; color: var(--color-text-muted); }
+
+.learn-docs .exp-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+.learn-docs .exp-tag {
+  font-size: 11.5px; color: var(--color-text-secondary);
+  background: var(--color-bg-secondary); border: 1px solid var(--color-border);
+  border-radius: 4px; padding: 2px 8px;
+}
+
+/* 記事詳細は教材の本文幅に合わせる */
+.learn-docs .exp-detail { max-width: 780px; margin: 0 auto; padding: 48px 32px 96px; }
+.learn-docs .exp-detail h1 { font-size: 30px; font-weight: 800; color: var(--color-navy); margin: 0 0 12px; border: none; padding: 0; }
+
+@media (max-width: 640px) {
+  .learn-docs .exp-section { padding: 0 20px 64px; }
+  .learn-docs .exp-detail { padding: 32px 20px 64px; }
+}
 
 /* ---- Courses section ---- */
 .learn-docs .courses-section { max-width: 1080px; margin: 0 auto; padding: 72px 32px 96px; }
@@ -616,10 +745,11 @@
 }
 
 @media (max-width: 640px) {
-  .learn-docs .hero { padding: 56px 20px 40px; }
-  .learn-docs .hero h1 { font-size: 30px; }
+  .learn-docs .hero { grid-template-columns: 1fr; gap: 28px; padding: 48px 20px 40px; }
+  .learn-docs .hero h1 { font-size: 29px; }
   .learn-docs .courses-section { padding: 48px 20px 64px; }
-  .learn-docs .mint-band h2, .learn-docs .courses-section .cs-head h2 { font-size: 24px; }
+  .learn-docs .courses-section .cs-head h2 { font-size: 24px; }
+  /* 小画面でも 1 行を保てるよう説明文を少し詰める */
 }
 
 /* ---- Sidebar overlay (mobile) ---- */
@@ -651,20 +781,6 @@
    Header course nav / 章区切り / 読了チェックボックス
    ================================================================ */
 
-/* ---- Header: コースナビ（コース増加に備え横スクロール可） ---- */
-.learn-docs .site-header .course-nav {
-  display: flex; gap: 4px; margin-left: 22px;
-  min-width: 0; overflow-x: auto; scrollbar-width: none;
-}
-.learn-docs .site-header .course-nav::-webkit-scrollbar { display: none; }
-.learn-docs .site-header .course-nav a { flex-shrink: 0; }
-.learn-docs .site-header .course-nav a {
-  font-size: 14px; padding: 6px 12px; border-radius: 6px; text-decoration: none;
-  color: var(--color-text-secondary); font-weight: 500; transition: all 0.15s ease; white-space: nowrap;
-}
-.learn-docs .site-header .course-nav a:hover { color: var(--color-text); background: var(--color-bg-secondary); }
-.learn-docs .site-header .course-nav a.active { color: var(--color-primary); background: var(--color-primary-light); font-weight: 600; }
-
 /* ---- Sidebar: 章の区切りラベル（──── 章名 ────） ---- */
 .learn-docs .sidebar-chapter {
   display: flex; align-items: center; gap: 10px; margin: 22px 4px 10px;
@@ -675,6 +791,14 @@
   content: ""; flex: 1; height: 1px; background: var(--color-border);
 }
 .learn-docs .sidebar > nav > div:first-child .sidebar-chapter { margin-top: 6px; }
+
+/* ---- Sidebar: MECE 上位グループ見出し ---- */
+.learn-docs .sidebar-supergroup {
+  margin: 26px 4px 8px; font-size: 12px; font-weight: 800; letter-spacing: 0.02em;
+  color: var(--color-primary);
+}
+.learn-docs .sidebar > nav > div:first-child .sidebar-supergroup { margin-top: 6px; }
+.learn-docs .sidebar-supergroup + .sidebar-chapter { margin-top: 8px; }
 
 /* ---- 記事 h2: 読了チェックボックス ---- */
 .learn-docs h2.has-check { display: flex; align-items: center; gap: 12px; }
@@ -699,11 +823,19 @@
 
 /* ---- Header responsive ---- */
 @media (max-width: 640px) {
-  .learn-docs .site-header { padding: 0 12px; }
-  .learn-docs .site-header .logo .logo-text { display: none; }
-  .learn-docs .site-header .course-nav { margin-left: 10px; gap: 2px; }
-  .learn-docs .site-header .course-nav a { padding: 5px 8px; font-size: 12.5px; }
+  .learn-docs .site-header .sh-main { padding: 0 12px; }
+  /* 狭い画面は帯とタブを詰める（--header-height は calc で自動追従） */
+  .learn-docs { --band-height: 58px; --tabs-height: 56px; --tabs-gap: 8px; }
+  .learn-docs .nt-tab { border-radius: 8px 8px 0 0; }
+  /* 狭い画面は字間を詰めて折り返しを防ぐ */
+  .learn-docs .nt-tab .nt-tab-en { font-size: 12px; letter-spacing: 0.16em; text-indent: 0.16em; }
+  .learn-docs .nt-tab .nt-tab-ja { font-size: 10.5px; }
+  /* 狭い画面ではタグラインを畳み、ロゴを一回り小さく */
+  .learn-docs .nt-tagline { display: none; }
+  .learn-docs .nt-name, .learn-docs .nt-tech { font-size: 21px; }
+  .learn-docs .nt-cursor { width: 9px; height: 18px; margin-left: 4px; }
   .learn-docs .site-header .back-link { display: none; }
+  .learn-docs .landing-header .sh-main { padding: 0 16px; }
 }
 
 /* ================================================================
@@ -733,6 +865,12 @@
 /* ---- Learning path ---- */
 .learn-docs .path-group { margin-bottom: 36px; margin-top: 40px; }
 .learn-docs .path-chapter { margin: 0 0 16px; }
+/* MECE 上位グループ見出し（学習パス側） */
+.learn-docs .path-supergroup {
+  margin: 8px 0 22px; padding-bottom: 10px;
+  font-size: 19px; font-weight: 800; letter-spacing: 0.01em; color: var(--color-text);
+  border-bottom: 2px solid var(--color-primary);
+}
 .learn-docs .path-list { display: flex; flex-direction: column; gap: 12px; }
 .learn-docs .path-item {
   display: flex; align-items: center; gap: 16px; padding: 16px 18px;
@@ -919,7 +1057,7 @@
 /* ================================================================
    「続きから読む」ボタン（ランディング / コースページ）
    ================================================================ */
-.learn-docs .hero-cta-row { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; justify-content: center; }
+.learn-docs .hero-cta-row { display: flex; gap: 14px; margin-top: 26px; flex-wrap: wrap; align-items: center; justify-content: flex-start; }
 .learn-docs .btn-resume {
   display: inline-flex; flex-direction: column; align-items: flex-start;
   background: var(--color-surface); border: 1.5px solid var(--color-primary);
@@ -934,17 +1072,18 @@
 /* ================================================================
    検索パレット（LearnSearch）とヘッダー検索ボタン
    ================================================================ */
+/* ティール帯の上に置くため、検索ボタンは白の半透明で抜く */
 .learn-docs .header-search {
   display: inline-flex; align-items: center; gap: 7px; margin-left: auto;
-  background: var(--color-bg-secondary); border: 1px solid var(--color-border);
-  color: var(--color-text-secondary); border-radius: 8px; padding: 6px 10px;
+  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.92); border-radius: 8px; padding: 6px 10px;
   font-size: 13px; cursor: pointer; font-family: var(--font-sans); transition: all 0.15s ease;
 }
-.learn-docs .header-search:hover { border-color: var(--color-primary); color: var(--color-text); }
+.learn-docs .header-search:hover { background: rgba(255,255,255,0.2); border-color: #fff; color: #fff; }
 .learn-docs .header-search svg { width: 15px; height: 15px; }
 .learn-docs .header-search kbd {
-  font-family: var(--font-mono); font-size: 11px; background: var(--color-surface);
-  border: 1px solid var(--color-border); border-radius: 4px; padding: 1px 5px; color: var(--color-text-secondary);
+  font-family: var(--font-mono); font-size: 11px; background: rgba(255,255,255,0.16);
+  border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; padding: 1px 5px; color: rgba(255,255,255,0.92);
 }
 .learn-docs .back-link { margin-left: 14px; }
 
@@ -970,6 +1109,30 @@
   font-family: var(--font-mono); font-size: 11px; color: var(--color-text-secondary);
   border: 1px solid var(--color-border); border-radius: 4px; padding: 2px 6px;
 }
+/* ---- 検索: IT用語カード（見出し語＋意味をその場に表示） ---- */
+.learn-docs .search-terms {
+  padding: 8px 8px 10px; border-bottom: 1px solid var(--color-border);
+  max-height: 40vh; overflow-y: auto;
+}
+.learn-docs .search-terms-head {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--color-primary); padding: 4px 8px 6px;
+}
+.learn-docs .term-card {
+  width: 100%; display: flex; flex-direction: column; gap: 4px; padding: 10px 12px;
+  background: var(--color-primary-light); border: 1px solid var(--color-border);
+  border-radius: 8px; cursor: pointer; text-align: left; margin-bottom: 6px;
+  transition: border-color 0.15s ease;
+}
+.learn-docs .term-card:hover { border-color: var(--color-primary); }
+.learn-docs .term-card-head { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.learn-docs .term-card-term { font-size: 15px; font-weight: 700; color: var(--color-text); }
+.learn-docs .term-card-en {
+  font-family: var(--font-mono); font-size: 11px; color: var(--color-text-secondary);
+}
+.learn-docs .term-card-desc { font-size: 13px; line-height: 1.6; color: var(--color-text); }
+.learn-docs .term-card-meta { font-size: 11px; color: var(--color-text-secondary); }
+
 .learn-docs .search-results { list-style: none; margin: 0; padding: 6px; max-height: 52vh; overflow-y: auto; }
 .learn-docs .search-results li { margin: 0; }
 .learn-docs .search-empty { padding: 20px 12px; color: var(--color-text-secondary); font-size: 14px; text-align: center; }
@@ -1269,9 +1432,9 @@
 .learn-docs .header-help {
   display: inline-flex; align-items: center; justify-content: center;
   width: 34px; height: 34px; margin-left: 6px; border-radius: 8px;
-  background: none; border: 1px solid var(--color-border); color: var(--color-text-secondary); cursor: pointer;
+  background: none; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.92); cursor: pointer;
 }
-.learn-docs .header-help:hover { background: var(--color-bg-secondary); color: var(--color-primary); border-color: var(--color-primary); }
+.learn-docs .header-help:hover { background: rgba(255,255,255,0.18); color: #fff; border-color: #fff; }
 .learn-docs .header-help svg { width: 18px; height: 18px; }
 .learn-docs .landing-header .header-help { width: 36px; height: 36px; }
 

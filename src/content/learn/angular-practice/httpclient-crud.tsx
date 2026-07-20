@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, Code, Cmd, ComparisonTable, KeyPoints, Bridge, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, Code, Cmd, ComparisonTable, KeyPoints, Bridge, Quiz, Divider, Figure } from "../../../components/learn/kit";
 import { SequenceDiagram } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -194,6 +194,11 @@ export class TaskListComponent {
           { from: 1, to: 0, label: "created を emit", cta: true },
         ]}
         caption="GET で一覧を取得し、POST で作成する往復。応答は Observable 経由で流れてくる"
+      />
+      <Figure
+        src="/learn/shots/angular-practice/httpclient-crud-01.svg"
+        alt="DevTools の Network タブ。GET /api/tasks と POST /api/tasks がステータス 200 と 201 で並んでいる"
+        caption="Network タブで実際の往復を確認する。ここに何も出ないときは購読忘れを疑う"
       />
 
       <Section>エラーハンドリング（catchError）</Section>

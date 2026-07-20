@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, Code, Cmd, ComparisonTable, KVList, KeyPoints, Bridge, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, Code, Cmd, ComparisonTable, KVList, KeyPoints, Bridge, Quiz, Divider, Figure } from "../../../components/learn/kit";
 import type { CSSProperties } from "react";
 
 export const meta: LearnMeta = {
@@ -123,6 +123,11 @@ export function useTasks() {
   const { tasks, toggleTask } = useTasks();   // props 不要で直接取れる
   return <ul>{tasks.map((t) => /* ... */)}</ul>;
 }`}</Code>
+      <Figure
+        src="/learn/shots/react-practice/state-management-01.svg"
+        alt="React DevTools の Components タブで TaskProvider を選び、Context の値である tasks 配列を確認している画面"
+        caption="React DevTools の Components タブなら、Provider が配っている値を目で確認できる"
+      />
       <Callout variant="warn" title="Context の使いどころ">
         Context は「全体で共有する少数の状態（テーマ・ログインユーザー・カート）」に向きます。<strong>頻繁に変わる大きな状態</strong>を
         1 つの Context に詰めると、値が変わるたびに<strong>読んでいる全コンポーネントが再描画</strong>されます。分割するか、後述のライブラリを検討します。

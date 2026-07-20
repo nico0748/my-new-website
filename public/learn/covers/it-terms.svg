@@ -1,0 +1,20 @@
+<svg width="320" height="180" viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="IT用語解説 コース">
+  <rect width="320" height="180" fill="#10b981"/>
+  <!-- 用語カード（辞書ページ） -->
+  <rect x="70" y="40" width="128" height="100" rx="10" fill="#ffffff" fill-opacity="0.14" stroke="#ffffff" stroke-width="3"/>
+  <!-- 見出し語 + 語義の行 -->
+  <g stroke="#ffffff" stroke-linecap="round">
+    <path d="M86 62 h44" stroke-width="5"/>
+    <path d="M86 78 h84" stroke-width="3.2" stroke-opacity="0.8"/>
+    <path d="M86 92 h72" stroke-width="3.2" stroke-opacity="0.8"/>
+    <path d="M86 110 h40" stroke-width="5"/>
+    <path d="M86 124 h80" stroke-width="3.2" stroke-opacity="0.55"/>
+  </g>
+  <!-- 虫めがね（用語を引く） -->
+  <g stroke="#ffffff" stroke-width="6" fill="none" stroke-linecap="round">
+    <circle cx="206" cy="104" r="26" fill="#10b981"/>
+    <path d="M226 124 l18 18"/>
+  </g>
+  <!-- A→Z -->
+  <text x="206" y="112" font-family="'JetBrains Mono', monospace" font-size="22" font-weight="700" fill="#ffffff" text-anchor="middle">A</text>
+</svg>

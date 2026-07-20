@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider, Figure } from "../../../components/learn/kit";
 import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
@@ -60,6 +60,11 @@ export default function Article() {
           ["キャッシュ", <Tech id="redis">Redis</Tech>, "頻繁に読むデータを高速化"],
           ["API 仕様", <Tech id="openapi">OpenAPI (Swagger)</Tech>, "API の仕様書を機械可読で共有"],
         ]}
+      />
+      <Figure
+        src="/learn/shots/stack/backend-stack-01.svg"
+        alt="Swagger UI の画面。エンドポイント一覧を展開し、その場で API を実行した結果が表示されている"
+        caption="OpenAPI で書いた仕様は、こうしてブラウザで読めて試せる形になる"
       />
 
       <Section>選び方の指針</Section>

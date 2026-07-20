@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KeyPoints, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "claude-code-05-claude-md-plan",
@@ -57,6 +57,11 @@ export default function Article() {
       <p>
         プロジェクトディレクトリで <Cmd>claude</Cmd> を起動して <Cmd>/init</Cmd> を実行すると、Claude が現在のプロジェクト構造を分析して<strong>スターターファイル</strong>を生成します。これをベースに、自分のプロジェクトに合わせて編集していきます。
       </p>
+      <Figure
+        src="/learn/shots/claude-code/claude-code-05-claude-md-plan-01.svg"
+        alt="/init を実行して CLAUDE.md の雛形が生成されている画面"
+        caption="/init はプロジェクトを読んだうえで CLAUDE.md の雛形を書いてくれる"
+      />
       <ComparisonTable
         headers={["✅ 書くべきこと", "❌ 書かなくていいこと"]}
         rows={[
@@ -164,6 +169,11 @@ paths: src/api/**/*.ts
   6. テストケースを書く
 
 この計画で進めてよろしいですか？（y/n）`}</Code>
+      <Figure
+        src="/learn/shots/claude-code/claude-code-05-claude-md-plan-02.svg"
+        alt="Plan モードで計画が提示され、承認を求められている画面"
+        caption="Plan モードでは、この承認プロンプトが出るまで一切ファイルが変更されない"
+      />
 
       <Section>6. Plan モードを使うべきタイミング（10分）</Section>
       <p>毎回 Plan モードを使う必要はありません。判断基準を整理します。</p>

@@ -21,9 +21,9 @@ export default tseslint.config([
     },
   },
   {
-    // 教材記事は「meta（定数）＋ 本文（default component）」を同居させる設計のため、
-    // fast-refresh の only-export-components ルールを content/learn 配下では無効化する。
-    files: ['src/content/learn/**/*.tsx'],
+    // 教材・経験録の記事は「meta（定数）＋ 本文（default component）」を同居させる設計のため、
+    // fast-refresh の only-export-components ルールを content 配下では無効化する。
+    files: ['src/content/**/*.tsx'],
     rules: {
       'react-refresh/only-export-components': 'off',
     },

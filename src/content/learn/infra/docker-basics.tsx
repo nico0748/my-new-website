@@ -113,6 +113,11 @@ sudo apt update
 sudo apt install -y docker-ce docker-ce-cli containerd.io \\
   docker-buildx-plugin docker-compose-plugin
 sudo docker run hello-world`}</Code>
+      <Figure
+        src="/learn/shots/infra/docker-basics-01.svg"
+        alt="sudo docker run hello-world の実行結果。イメージの pull ログのあとに Hello from Docker! が表示されたターミナル"
+        caption="Hello from Docker! が出れば導入成功。pull → create → start が実際に走ったログも同時に読める。"
+      />
       <SubSection>deploy ユーザーを docker グループに入れる</SubSection>
       <Code lang="bash" filename="サーバー上で実行">{`sudo usermod -aG docker deploy   # sudo なしで docker を使えるように
 exit                             # グループ変更は再ログインで反映される

@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider, Figure } from "../../../components/learn/kit";
 import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
@@ -30,6 +30,11 @@ export default function Article() {
           [<Tech id="paypal">PayPal</Tech>, "Web 決済", "世界的に普及。個人間送金・買い手保護"],
           [<Tech id="revenuecat">RevenueCat</Tech>, "アプリ内課金", "iOS/Android のサブスクを横断管理・分析"],
         ]}
+      />
+      <Figure
+        src="/learn/shots/stack/payment-stack-01.svg"
+        alt="Stripe ダッシュボードの支払い一覧画面。決済のステータスとサブスクリプションが並んでいる"
+        caption="決済サービスに任せると、入金・返金・サブスクの管理までこの画面で完結する"
       />
       <Callout variant="info" title="Web か アプリ内課金か">
         Web サイト/SaaS の課金は <Tech id="stripe">Stripe</Tech> が定番。一方、モバイルアプリの<strong>アプリ内課金</strong>は各ストアの仕組みに従う必要があり、そこを横断管理するのが <Tech id="revenuecat">RevenueCat</Tech> です。

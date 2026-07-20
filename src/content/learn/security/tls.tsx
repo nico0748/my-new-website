@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Bridge, Code, Cmd, ComparisonTable, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Bridge, Code, Cmd, ComparisonTable, Figure, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
 import { SequenceDiagram } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -34,6 +34,8 @@ export default function Article() {
           { key: "サーバ認証", val: "接続先が本物か（なりすましでないか）を証明書で検証する" },
         ]}
       />
+
+      <Figure src="/learn/shots/security/tls-01.svg" alt="ブラウザの鍵アイコンから開いた証明書情報。発行者・有効期限・SAN" caption="鍵アイコンから証明書を開くと、ハンドシェイクでサーバが提示した証明書の中身をそのまま確認できる" />
 
       <Section>TLS ハンドシェイク — 暗号通信を始める儀式</Section>
       <p>
@@ -93,6 +95,8 @@ TLS_CHACHA20_POLY1305_SHA256
       <Callout variant="tip" title="設定は実測で確かめる">
         TLS は<strong>設定ミスで容易に脆弱化</strong>します（古いプロトコル・弱い暗号の有効化、証明書管理不備など）。<Cmd>testssl.sh</Cmd> / <Cmd>sslscan</Cmd> / Qualys SSL Labs といったツールで、自分のサーバに弱い暗号や古いプロトコルが残っていないかを実際にスキャンして確認しましょう。
       </Callout>
+
+      <Figure src="/learn/shots/security/tls-02.svg" alt="自分の検証サーバに testssl.sh を実行したターミナル出力" caption="実測すると、有効なプロトコルと暗号スイートが一覧で出る。古い TLS や弱い暗号が残っていないかをここで確かめる" />
 
       <Bridge course="ネットワーク（トランスポート層・プロトコル）/ 情報理論（暗号）">
         TLS は名前のとおり<strong>トランスポート層セキュリティ</strong>で、ネットワークの講義で習う<strong>プロトコルの状態遷移</strong>（ハンドシェイクの各段階）と、暗号理論で習う<strong>鍵交換・共通鍵・ハッシュ</strong>の合わせ技です。前章のハイブリッド方式——「公開鍵で鍵を配り、以降は速い対称鍵で暗号化する」——が、ここで実プロトコルとして立ち上がります。前方秘匿性は情報理論の観点では「過去の鍵と未来の鍵を独立にする」設計で、一つの鍵が漏れても他の通信の秘匿が崩れないよう<strong>被害を局所化</strong>する考え方です。座学のプロトコル状態機械と暗号アルゴリズムが、1 回の HTTPS 接続の冒頭数十ミリ秒に凝縮されています。

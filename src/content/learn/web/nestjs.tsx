@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, ComparisonTable, KVList, TipBox, KeyPoints, Bridge, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, ComparisonTable, KVList, TipBox, KeyPoints, Bridge, Figure, Divider } from "../../../components/learn/kit";
 import { FlowChain } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -55,6 +55,8 @@ export default function Article() {
           <Cmd>nest generate resource users</Cmd> で Module / Controller / Service と CRUD の雛形が一括で作られます。
         </Step>
       </Steps>
+
+      <Figure src="/learn/shots/web/nestjs-01.svg" alt="nest generate resource users の実行結果" caption="CLI 1 コマンドで Module / Controller / Service / DTO が一式生成される" />
 
       <Section>アーキテクチャ — Module / Controller / Provider</Section>
       <p>

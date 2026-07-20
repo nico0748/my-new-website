@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Cmd, Code, Steps, Step, KVList, TipBox, KeyPoints, ComparisonTable, Bridge, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Cmd, Code, Steps, Step, KVList, TipBox, KeyPoints, ComparisonTable, Bridge, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "chrome-extensions",
@@ -77,6 +77,11 @@ export default function Article() {
         フレームワーク（React / Vue / Next.js など）、CMS、解析ツール、ホスティングなどを一覧表示。
         競合調査や、参考実装の技術選定を知りたいときに使います。
       </p>
+      <Figure
+        src="/learn/shots/web/chrome-extensions-01.svg"
+        alt="Wappalyzer のポップアップで、開いているサイトの技術スタックが一覧表示された画面"
+        caption="ツールバーのアイコンを押すだけで、フレームワーク・CMS・解析ツール・ホスティングが並ぶ。"
+      />
       <TipBox>
         実務での使いどころ: 「このサイト、動きが速いけど何で作ってる？」を数秒で確認できます。技術選定の参考にしたり、
         面接前に応募先企業のプロダクトの構成を推測したりと、調査コストを大きく下げてくれます。
@@ -98,6 +103,11 @@ export default function Article() {
         React アプリの<strong>コンポーネントツリー</strong>を表示し、各コンポーネントの props / state / hooks を確認・編集できます。
         DevTools に <Cmd>Components</Cmd> / <Cmd>Profiler</Cmd> タブが追加され、再レンダリングの原因調査にも使えます。
       </p>
+      <Figure
+        src="/learn/shots/web/chrome-extensions-02.svg"
+        alt="React Developer Tools の Components タブでコンポーネントツリーと props / state を表示した画面"
+        caption="左にコンポーネントの木、右に選択中の props / state / hooks。値をその場で書き換えて挙動も試せる。"
+      />
       <SubSection>Vue.js devtools</SubSection>
       <p>
         Vue 向けの同種ツールです。コンポーネント階層・<strong>リアクティブな state</strong>・Pinia / Vuex ストア・イベントを可視化します。
@@ -144,6 +154,11 @@ export default function Article() {
         インストール時に「すべてのサイトのデータの読み取りと変更」と警告が出るのは、この <Cmd>host_permissions</Cmd> が広いためです。
         導入前に権限を吟味する習慣は、そのままセキュリティ講義の<strong>最小権限の原則（least privilege）</strong>の実践になります。
       </p>
+      <Figure
+        src="/learn/shots/web/chrome-extensions-03.svg"
+        alt="Chrome 拡張のインストール時に出る権限確認ダイアログ（全サイトのデータの読み取りと変更）"
+        caption="インストール前に出るこのダイアログが、その拡張に渡す権限の全て。読み飛ばさず吟味する。"
+      />
       <Steps>
         <Step title="1. 権限を確認する">
           「なぜこの拡張に全サイトのアクセスが必要？」を自問します。色抽出ツールに全サイト権限は不釣り合いかもしれません。

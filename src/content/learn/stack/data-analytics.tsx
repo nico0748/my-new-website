@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider, Figure } from "../../../components/learn/kit";
 import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
@@ -30,6 +30,11 @@ export default function Article() {
           [<Tech id="snowflake">Snowflake</Tech>, "マルチクラウドの DWH。計算とストレージを分離"],
         ]}
       />
+      <Figure
+        src="/learn/shots/stack/data-analytics-stack-01.svg"
+        alt="BigQuery コンソールのクエリエディタ。SQL の実行結果とスキャンしたデータ量が表示されている"
+        caption="DWH の操作は基本的に SQL。巨大なデータでも数秒で集計結果が返る"
+      />
 
       <Section>分析用データベース</Section>
       <ComparisonTable
@@ -51,6 +56,11 @@ export default function Article() {
           ["オーケストレーション", <Tech id="airflow">Airflow</Tech>, "取り込み〜変換のパイプラインを自動化"],
           ["BI / 可視化", <Tech id="metabase">Metabase</Tech>, "ダッシュボードで可視化（Tableau・Looker も同種）"],
         ]}
+      />
+      <Figure
+        src="/learn/shots/stack/data-analytics-stack-02.svg"
+        alt="Metabase のダッシュボード画面。グラフと数値カードが並んでいる"
+        caption="整えたデータの最終的な出口が、こうした BI ダッシュボード"
       />
 
       <Divider />

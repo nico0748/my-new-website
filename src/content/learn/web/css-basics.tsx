@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, KeyPoints, ComparisonTable, TipBox, KVList, Bridge, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, KeyPoints, ComparisonTable, TipBox, KVList, Bridge, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "css-basics",
@@ -102,6 +102,11 @@ nav a { text-decoration: none; }
   margin: 24px;       /* 他の要素との間の余白 */
 }`}</Code>
 
+      <Figure
+        src="/learn/shots/web/css-basics-01.svg"
+        alt="Chrome DevTools の Computed タブに出るボックスモデル図（margin / border / padding / content の数値）"
+        caption="DevTools の Computed タブには4層が入れ子の図で出る。実際に何 px 効いているかはここで読む。"
+      />
       <Callout variant="warn" title="width の落とし穴と box-sizing">
         デフォルト（<Cmd>content-box</Cmd>）では、<Cmd>width</Cmd> は content だけの幅を指し、padding と border はその外側に足されます。つまり指定より箱が大きくなります。
         <Cmd>box-sizing: border-box</Cmd> にすると、width が「border まで含めた幅」になり直感どおりになります。多くのプロジェクトが全要素にこれを適用します。
@@ -183,6 +188,12 @@ nav a { text-decoration: none; }
       <Code lang="css">{`p { color: gray; }        /* 詳細度: 弱 */
 .note { color: blue; }    /* 詳細度: 中（クラスが勝つ） */
 #lead { color: red; }     /* 詳細度: 強（id が最強） */`}</Code>
+
+      <Figure
+        src="/learn/shots/web/css-basics-02.svg"
+        alt="Chrome DevTools の Styles ペインで、詳細度に負けた宣言が取り消し線で表示されている状態"
+        caption="負けた宣言には取り消し線が入る。「書いたのに効かない」ときは、まずこの線を探す。"
+      />
 
       <SubSection>詳細度は 3 つ組で数える</SubSection>
       <p>

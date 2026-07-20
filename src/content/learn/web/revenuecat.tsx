@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, Steps, Step, KeyPoints, Bridge, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, Steps, Step, KeyPoints, Bridge, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "revenuecat",
@@ -45,6 +45,8 @@ export default function Article() {
         <li><strong>オファー / プロモーション</strong> — 割引・トライアル・プロモコードに対応</li>
         <li><strong>カスタマーサポート</strong> — 個別ユーザーの購入状況を確認・調整</li>
       </ul>
+
+      <Figure src="/learn/shots/web/revenuecat-01.svg" alt="RevenueCat のダッシュボードで MRR や継続率のグラフを表示した画面" caption="SDK を入れるだけで、売上・継続率・チャーンがここに集約される" />
 
       <Section>アーキテクチャ</Section>
       <p>

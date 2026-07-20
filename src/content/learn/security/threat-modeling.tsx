@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Bridge, Steps, Step, ComparisonTable, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Bridge, Steps, Step, ComparisonTable, Figure, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
 import { StepFlow } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -56,6 +56,8 @@ export default function Article() {
       <p>
         DFD で最も重要なのが<strong>トラストバウンダリ（信頼境界）</strong>です。これは「信頼度の異なる領域の境目」を表す線で、たとえば「インターネット（信頼できない）とサーバー内部（信頼できる）の境目」がそれにあたります。<strong>脅威は、このトラストバウンダリをまたぐところで最も生まれやすい</strong>——だから、境界をまたぐ各要素に重点的に STRIDE を当てるのがコツです。
       </p>
+      <Figure src="/learn/shots/security/threat-modeling-01.svg" alt="Microsoft Threat Modeling Tool で DFD とトラストバウンダリを描いた画面" caption="専用ツールで DFD を描くと、トラストバウンダリをまたぐ要素から STRIDE 脅威が自動で列挙される" />
+
       <Callout variant="warn" title="境界を越えるデータは疑う">
         トラストバウンダリを越えて入ってくるデータは、常に「攻撃者が作ったかもしれない」と疑うのが鉄則です。信頼できる領域の内側だけで完結する処理には脅威が少なく、境界をまたぐ入出力に脅威が集中します。DFD を描く目的の半分は、この「疑うべき境界」を可視化することにあります。
       </Callout>

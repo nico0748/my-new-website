@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KVList, KeyPoints, Bridge, TipBox, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KVList, KeyPoints, Bridge, TipBox, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "transaction",
@@ -112,6 +112,8 @@ COMMIT;`}</Code>
       <Callout variant="danger" title="デッドロック — お互いが相手のロック待ち">
         トランザクション X が行 A をロックして行 B を待ち、同時に Y が行 B をロックして行 A を待つと、<strong>両者が永遠に待ち合う</strong>のがデッドロックです。DB は検知して片方を強制的に <Cmd>ROLLBACK</Cmd> させます。予防策は「<strong>複数行を触る順番をアプリ全体で統一する</strong>」（常に id の小さい順にロックする、など）。
       </Callout>
+
+      <Figure src="/learn/shots/web/transaction-01.svg" alt="2 つの psql セッションでロック待ちとデッドロック検知エラーが発生した画面" caption="ロック待ちで固まる様子と、DB が片方を強制 ROLLBACK する瞬間" />
 
       <Section>実務の勘所</Section>
       <Callout variant="tip" title="トランザクションは短く保つ">

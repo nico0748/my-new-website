@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, Code, Cmd, ComparisonTable, KVList, KeyPoints, Bridge, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, Code, Cmd, ComparisonTable, KVList, KeyPoints, Bridge, Quiz, Divider, Figure } from "../../../components/learn/kit";
 import { FlowChain, StepFlow } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -184,6 +184,11 @@ readonly pendingCount$ = this.pending$.pipe(
   map((tasks) => tasks.length),
 );`}</Code>
       <p>テンプレートでは <Cmd>{"{{ pendingCount$ | async }} 件残り"}</Cmd> のように、これも async で表示できます。</p>
+      <Figure
+        src="/learn/shots/angular-practice/rxjs-and-state-01.svg"
+        alt="タスクを1件追加した直後の画面。一覧と残り件数の表示が同時に更新されている"
+        caption="next() で流れた新しい配列が、一覧と派生の残り件数へ同時に届く（単一情報源からの配信）"
+      />
 
       <Section>signals との対比 — もう一つの新方式</Section>
       <p>

@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Bridge, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Bridge, Figure, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
 import { SequenceDiagram } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -83,6 +83,8 @@ export default function Article() {
           { key: "MFA・SSO・条件付きアクセス", val: "アイデンティティ検証を強化する仕組み" },
         ]}
       />
+      <Figure src="/learn/shots/security/zero-trust-01.svg" alt="管理コンソールで条件付きアクセスポリシーを設定する画面" caption="条件付きアクセスは PDP の実体。利用者・デバイス・場所などの条件と、許可/ブロックの制御を画面上で組み立てる" />
+
       <SubSection>CISA ゼロトラスト成熟度モデルの 5 本柱</SubSection>
       <p>
         ゼロトラストは製品ではなく<strong>設計思想・戦略</strong>であり、一気に導入するものではなく段階的に成熟させていくものです。その指針が CISA の Zero Trust Maturity Model で、次の <strong>5 本柱</strong>で構成されます。

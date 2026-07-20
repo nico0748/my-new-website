@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KVList, KeyPoints, Bridge, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KVList, KeyPoints, Bridge, Quiz, Divider, Figure } from "../../../components/learn/kit";
 import type { CSSProperties } from "react";
 
 export const meta: LearnMeta = {
@@ -132,6 +132,11 @@ export function TaskListPage() {
     </div>
   );
 }`}</Code>
+      <Figure
+        src="/learn/shots/react-practice/component-design-01.svg"
+        alt="ブラウザに表示されたタスク一覧。2件のタスクが並び、片方のチェックボックスが完了になっている"
+        caption="親（TaskListPage）が状態を持ち、子（TaskItem）が表示する。チェックすると親の toggle が呼ばれる"
+      />
 
       <Section>状態はどこに置く？ — リフトアップ</Section>
       <p>

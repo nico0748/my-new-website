@@ -134,6 +134,11 @@ volumes:
   redis:
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]   # PONG が返れば健康`}</Code>
+      <Figure
+        src="/learn/shots/infra/compose-multi-service-01.svg"
+        alt="docker compose ps の実行結果。5サービスが Up で、postgres と redis の STATUS に healthy と付いている一覧"
+        caption="healthcheck を入れたあとの compose ps。DB とキャッシュに healthy が付き、その後で backend が立っている。"
+      />
       <Callout variant="info" title="本筋はアプリ側のリトライ">
         healthcheck は起動時の事故を減らしますが万能ではありません。運用中に DB が一瞬切れることもある。堅牢なアプリは<strong>「繋がらなければ少し待って何度か試す」を自分の中に持つ</strong>のが本筋（12-Factor App の考え方）。<Cmd>restart: unless-stopped</Cmd> と合わせると自己修復します。
       </Callout>
@@ -205,6 +210,11 @@ http {
         src="/learn/infra/final-architecture.svg"
         alt="nginx を入口に frontend/backend、その奥に postgres と redis が協調する完成構成図"
         caption="1枚の compose から生まれた5サービス。閲覧数は Redis、メッセージ本体は PostgreSQL に入り、この1画面の裏で協調している。"
+      />
+      <Figure
+        src="/learn/shots/infra/compose-multi-service-02.svg"
+        alt="完成した掲示板をブラウザで開いた画面。投稿フォームとメッセージ一覧、閲覧数が表示されている"
+        caption="ブラウザから見えるのはこの1画面だけ。その裏で nginx・frontend・backend・PostgreSQL・Redis が動いている。"
       />
 
       <Divider />

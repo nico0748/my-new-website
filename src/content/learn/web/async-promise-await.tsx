@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KVList, KeyPoints, Bridge, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KVList, KeyPoints, Bridge, Quiz, Figure, Divider } from "../../../components/learn/kit";
 import { StepFlow } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -59,6 +59,11 @@ export default function Article() {
       <Callout variant="warn" title="じわじわ遅いの正体はウォーターフォール">
         200ms かかる API を 3 回、<Cmd>await</Cmd> で直列に呼ぶと合計 600ms。でも 3 つが互いに独立なら、<strong>同時に投げれば約 200ms</strong>で済みます。「なんとなく遅い」の多くは、この<strong>直列の積み重ね（ウォーターフォール）</strong>が原因です（対策は後述の「複数の非同期をまとめて扱う」）。
       </Callout>
+      <Figure
+        src="/learn/shots/web/async-promise-await-01.svg"
+        alt="Chrome DevTools の Network タブで、直列に await した3本のリクエストが階段状に並ぶウォーターフォール"
+        caption="直列に await すると、リクエストが階段状にずれて並ぶ。この形が見えたら並行化の余地がある合図。"
+      />
 
       <Section>コールバックとその限界</Section>
       <p>

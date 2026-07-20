@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Bridge, Code, Cmd, ComparisonTable, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Bridge, Code, Cmd, ComparisonTable, Figure, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
 import { SequenceDiagram } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -52,6 +52,8 @@ export default function Article() {
         ]}
       />
       <Code lang="http" filename="Set-Cookie">{`Set-Cookie: session_id=9f2b...; HttpOnly; Secure; SameSite=Lax; Max-Age=3600`}</Code>
+      <Figure src="/learn/shots/security/session-management-01.svg" alt="DevTools の Application タブの Cookies 一覧。HttpOnly・Secure・SameSite の列" caption="属性が実際に効いているかは DevTools の Cookies 一覧で確認できる。チェックが抜けている列がそのまま弱点になる" />
+
       <Callout variant="tip" title="__Host- プレフィックスも有効">
         Cookie 名に <Cmd>__Host-</Cmd> プレフィックスを付けると、パス・ドメインが固定され、<strong>サブドメインからの上書き</strong>を禁止できます。
         セッション固定の植え付け経路を一つ潰せます。

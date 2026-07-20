@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, KeyPoints, ComparisonTable, KVList, TipBox, Bridge, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, KeyPoints, ComparisonTable, KVList, TipBox, Bridge, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "react-basics-01",
@@ -84,6 +84,8 @@ function increment() {
 cd my-app
 npm install
 npm run dev`}</Code>
+
+      <Figure src="/learn/shots/web/react-basics-01-01.svg" alt="Vite の開発サーバ起動ログとブラウザに表示された React の初期画面" caption="npm run dev で表示された URL を開くと、この初期画面が出れば準備完了" />
 
       <p>
         <Cmd>--template react-ts</Cmd> は「React + TypeScript」のテンプレートです。生成される
@@ -255,6 +257,8 @@ return (
         コンパイラ演習で AST を触ったことがあるなら、<Cmd>ASTExplorer</Cmd>（astexplorer.net）に JSX を貼ると、
         Babel が生成する AST と変換後コードをその場で観察できます。手を動かすと「トランスパイル」が具体になります。
       </TipBox>
+
+      <Figure src="/learn/shots/web/react-basics-01-02.svg" alt="astexplorer.net で JSX の AST と変換後コードを表示した画面" caption="JSX・AST・変換後の JS が同時に並ぶので、脱糖の過程がそのまま目で追える" />
 
       <Divider />
 

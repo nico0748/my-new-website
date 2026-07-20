@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, KVList, ComparisonTable, KeyPoints, Bridge, TipBox, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, KVList, ComparisonTable, KeyPoints, Bridge, TipBox, Figure, Divider } from "../../../components/learn/kit";
 import { FlowChain, VDomDiffFigure } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -79,6 +79,8 @@ const node = {
       </Callout>
 
       <VDomDiffFigure caption="① 新しい仮想DOMを再構築 → ② 前回とdiffして変更ノード（Fish→Bird）を検出 → ③ 実DOMはその 1 箇所だけを更新（Cat・Dog はスキップ）。" />
+
+      <Figure src="/learn/shots/web/react-virtual-dom-01.svg" alt="React DevTools の Highlight updates で再描画された箇所が枠で光っている画面" caption="Highlight updates を有効にすると、実際に更新された範囲だけが光る" />
 
       <Section>なぜ「速い」のか — 計算量の話</Section>
       <p>

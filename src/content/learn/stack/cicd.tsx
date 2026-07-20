@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider, Figure } from "../../../components/learn/kit";
 import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
@@ -31,6 +31,11 @@ export default function Article() {
           [<Tech id="circleci">CircleCI</Tech>, "独立系クラウド CI", "ホスティング非依存の CI"],
           [<Tech id="jenkins">Jenkins</Tech>, "自己ホスト・プラグイン豊富", "オンプレ・厳密な制御"],
         ]}
+      />
+      <Figure
+        src="/learn/shots/stack/cicd-stack-01.svg"
+        alt="GitHub Actions のワークフロー実行画面。ジョブが緑のチェックで並び、ステップのログが展開されている"
+        caption="push するたびにこの画面でテストとデプロイが自動で流れていく"
       />
       <Callout variant="tip" title="まず GitHub Actions">
         GitHub を使っているなら <Tech id="github-actions">GitHub Actions</Tech> が最も手軽です。<Tech id="jenkins">Jenkins</Tech> はオンプレや細かい制御が要る大規模組織で今も現役です。

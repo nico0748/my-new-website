@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, Code, Cmd, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, Code, Cmd, ComparisonTable, KeyPoints, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "claude-code-04-prompt-session",
@@ -85,6 +85,11 @@ claude --continue --fork-session`}</Code>
           [<Cmd>--fork-session</Cmd>, "セッションをコピーして別ブランチで続行", "「元の方向を残しつつ、別アプローチを試したい」"],
         ]}
       />
+      <Figure
+        src="/learn/shots/claude-code/claude-code-04-prompt-session-01.svg"
+        alt="claude --resume で過去のセッション一覧から選んでいる画面"
+        caption="claude --resume の一覧。日時と冒頭のやりとりを手がかりに、戻りたいセッションを選ぶ"
+      />
 
       <Section>4. コンテキストウィンドウの仕組み（15分）</Section>
       <p>
@@ -101,6 +106,11 @@ claude --continue --fork-session`}</Code>
           [<Cmd>/compact focus on X</Cmd>, "X に焦点を絞って圧縮", "「重要な部分は残してほしい」"],
           [<Cmd>/clear</Cmd>, "会話を完全リセット", "別のタスクに切り替えるとき"],
         ]}
+      />
+      <Figure
+        src="/learn/shots/claude-code/claude-code-04-prompt-session-02.svg"
+        alt="/context を実行してコンテキスト使用状況が表示された画面"
+        caption="/context の表示。何がどれだけ容量を使っているかが内訳で分かる"
       />
 
       <Section>5. /clear と --continue の使い分け（10分）</Section>

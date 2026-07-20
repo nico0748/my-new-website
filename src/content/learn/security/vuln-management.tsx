@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Bridge, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Bridge, Figure, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
 import { StepFlow, FlowChain } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -65,6 +65,8 @@ export default function Article() {
           { key: "自環境の重要度", val: "その資産がインターネットに露出しているか、機密データを扱うか、代替がきくか。同じ CVE でも自組織での重みは変わる。" },
         ]}
       />
+      <Figure src="/learn/shots/security/vuln-management-01.svg" alt="CISA の KEV カタログの Web 画面。CVE 一覧と是正期限" caption="KEV カタログは公開されている。実悪用が確認された CVE と是正期限が一覧で参照できる" />
+
       <Callout variant="warn" title="「KEV に無い = 安全」ではない">
         KEV は網羅的なリストではありません。CISA が悪用を確認・公表したものだけが載ります。「KEV に載っていない＝悪用されていない」とは限らないので、EPSS や CVSS、自環境の露出状況を合わせて判断します。逆に、古い CVE が新たに悪用確認されて追加されることもあるため、番号の西暦に惑わされず随時取り込みます。
       </Callout>

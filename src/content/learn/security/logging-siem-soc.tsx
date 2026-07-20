@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Bridge, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Bridge, KVList, KeyPoints, Quiz, Divider, Figure } from "../../../components/learn/kit";
 import { FlowChain, StepFlow } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -59,6 +59,7 @@ export default function Article() {
 
       </p>
 
+      <Figure src="/learn/shots/security/logging-siem-soc-01.svg" alt="SIEM のダッシュボードで、ログイン失敗の多発から成功、権限昇格までを時系列に並べた相関アラートの詳細画面のスクリーンショット" caption="SIEM の相関アラート。バラバラのログが 1 本の攻撃シナリオとして並ぶ" />
       <Section>SIEM と SOAR は相補的</Section>
       <p>
         SIEM は「気づく」仕組みですが、それだけでは対応まで手が回りません。そこで<strong>SOAR（Security Orchestration, Automation and Response）</strong>と組み合わせます。両者は役割が分かれています。

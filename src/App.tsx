@@ -18,6 +18,8 @@ import StudyDetailPage from './pages/StudyDetailPage.tsx';
 import LearnPage from './pages/LearnPage.tsx';
 import LearnDomainPage from './pages/LearnDomainPage.tsx';
 import LearnDetailPage from './pages/LearnDetailPage.tsx';
+import ExperiencePage from './pages/ExperiencePage.tsx';
+import ExperienceDetailPage from './pages/ExperienceDetailPage.tsx';
 
 /** 旧 /learn/... を新 /nicotech/... へ置き換えてリダイレクト（クエリ・ハッシュ保持）。 */
 function LearnRedirect() {
@@ -45,6 +47,9 @@ export default function App() {
         <Route path="/study" element={<StudyPage />} />
         <Route path="/study/:id" element={<StudyDetailPage />} />
         <Route path="/nicotech" element={<LearnPage />} />
+        {/* 経験録は :domain より先に置き、静的セグメントを優先させる */}
+        <Route path="/nicotech/experience" element={<ExperiencePage />} />
+        <Route path="/nicotech/experience/:id" element={<ExperienceDetailPage />} />
         <Route path="/nicotech/:domain" element={<LearnDomainPage />} />
         <Route path="/nicotech/:domain/:id" element={<LearnDetailPage />} />
         {/* 旧 /learn/* は /nicotech/* へリダイレクト（ブックマーク互換） */}

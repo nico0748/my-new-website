@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Cmd, Code, Steps, Step, KVList, TipBox, KeyPoints, ComparisonTable, Bridge, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Cmd, Code, Steps, Step, KVList, TipBox, KeyPoints, ComparisonTable, Bridge, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "web-dev-saas-tools",
@@ -80,6 +80,8 @@ export default function Article() {
         ]}
       />
 
+      <Figure src="/learn/shots/web/web-dev-saas-tools-01.svg" alt="MakeSwift の編集画面で React コンポーネントを配置している様子" caption="エンジニアが作った部品を、非エンジニアがこの画面で並べ替えられる" />
+
       <Section>バックエンド</Section>
       <SubSection>BuildShip</SubSection>
       <p>
@@ -122,6 +124,8 @@ function Presence() {
         自作なら数百〜数千行になりうる同期基盤が、<Cmd>RoomProvider</Cmd> と数個のフックに置き換わります。
         これが「差別化にならない難所を Buy する」ことの具体的な効果です。
       </TipBox>
+
+      <Figure src="/learn/shots/web/web-dev-saas-tools-02.svg" alt="LiveBlocks による複数ユーザーのカーソルが同時表示された画面" caption="上のコードだけで、この共同編集の見た目と同期が手に入る" />
 
       <Section>UX 設計</Section>
       <SubSection>FlowMapp</SubSection>

@@ -1,0 +1,15 @@
+<svg width="1200" height="675" viewBox="0 0 1200 675" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="スクリーンショット差し込み予定: routerLink をクリックして詳細へ遷移した直後のブラウザ。アドレスバーが /tasks/1 に変わり router-outlet の中身だけ差し替わった状態">
+  <rect width="1200" height="675" fill="#f4f7f8"/>
+  <rect x="10" y="10" width="1180" height="655" fill="none" stroke="#22b0a0" stroke-width="3" stroke-dasharray="14 10" rx="10"/>
+
+  <rect x="450" y="188" width="300" height="46" rx="23" fill="#22b0a0" opacity="0.14"/>
+  <text x="600" y="219" text-anchor="middle" font-family="Inter, sans-serif" font-size="21" font-weight="700" letter-spacing="3" fill="#0f6e56">SCREENSHOT</text>
+
+  <text x="600" y="288" text-anchor="middle" font-family="Inter, 'Noto Sans JP', sans-serif" font-size="21" fill="#7b8794">ここに実際のキャプチャを入れる</text>
+
+  <text x="600" y="330" text-anchor="middle" font-family="Inter, 'Noto Sans JP', sans-serif" font-size="30" fill="#34495e">routerLink をクリックして詳細へ遷移した直後のブラ</text>
+  <text x="600" y="372" text-anchor="middle" font-family="Inter, 'Noto Sans JP', sans-serif" font-size="30" fill="#34495e">ウザ。アドレスバーが /tasks/1 に変わり route</text>
+  <text x="600" y="414" text-anchor="middle" font-family="Inter, 'Noto Sans JP', sans-serif" font-size="30" fill="#34495e">r-outlet の中身だけ差し替わった状態</text>
+
+  <text x="600" y="619" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="20" fill="#7b8794">angular-router-basics-01.svg</text>
+</svg>

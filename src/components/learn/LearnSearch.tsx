@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { LEARN_ENTRIES } from "../../lib/learnRegistry";
 import { DOMAIN_STYLES, getSectionLabel } from "../../lib/learnCategories";
 import type { LearnDomain } from "../../lib/learnCategories";
+import { IT_TERMS } from "../../lib/itTerms";
+import type { ItTerm } from "../../lib/itTerms";
 
 interface Indexed {
   domain: LearnDomain;
@@ -16,6 +18,43 @@ interface Indexed {
   section: string;
   tags: string[];
   hay: string;
+}
+
+/** IT用語の検索結果（見出し語＋意味をその場に表示する） */
+interface TermHit extends ItTerm {
+  /** 遷移先の記事 id（it-terms の章キーに対応する記事） */
+  articleId: string;
+}
+
+/** it-terms の章キー → 記事 id の対応（用語カードのリンク先） */
+const TERM_ARTICLE_BY_SECTION: Record<string, string> = Object.fromEntries(
+  LEARN_ENTRIES.filter((e) => e.meta.domain === "it-terms").map((e) => [e.meta.section, e.meta.id])
+);
+
+const TERM_INDEX: TermHit[] = IT_TERMS.map((t) => ({
+  ...t,
+  articleId: TERM_ARTICLE_BY_SECTION[t.section] ?? "it-intro",
+}));
+
+/** 用語検索：見出し語の一致を最優先し、英語表記・意味も対象にする */
+function runTermSearch(q: string): TermHit[] {
+  const query = q.trim().toLowerCase();
+  if (!query) return [];
+  const scored: { it: TermHit; score: number }[] = [];
+  for (const it of TERM_INDEX) {
+    const term = it.term.toLowerCase();
+    const en = it.en.toLowerCase();
+    let score = 0;
+    if (term === query) score = 100;
+    else if (term.startsWith(query)) score = 60;
+    else if (term.includes(query)) score = 40;
+    else if (en && (en === query || en.startsWith(query))) score = 35;
+    else if (en.includes(query)) score = 20;
+    else if (it.desc.toLowerCase().includes(query)) score = 8;
+    if (score > 0) scored.push({ it, score });
+  }
+  scored.sort((a, b) => b.score - a.score || a.it.term.localeCompare(b.it.term, "ja"));
+  return scored.slice(0, 6).map((s) => s.it);
 }
 
 const INDEX: Indexed[] = LEARN_ENTRIES.map((e) => ({
@@ -57,6 +96,7 @@ const LearnSearch = () => {
   const navigate = useNavigate();
 
   const results = useMemo(() => runSearch(query), [query]);
+  const terms = useMemo(() => runTermSearch(query), [query]);
 
   // 開閉ショートカット（Cmd/Ctrl+K）とヘッダーボタンからのイベント
   useEffect(() => {
@@ -111,15 +151,38 @@ const LearnSearch = () => {
           <input
             ref={inputRef}
             className="search-input"
-            placeholder="記事を検索（タイトル・タグ・説明）"
+            placeholder="記事・IT用語を検索（例: API を叩く / ランサムウェア）"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={onInputKey}
           />
           <kbd className="search-esc">Esc</kbd>
         </div>
+
+        {terms.length > 0 && (
+          <div className="search-terms">
+            <div className="search-terms-head">IT用語</div>
+            {terms.map((t) => (
+              <button
+                key={`${t.section}/${t.term}`}
+                className="term-card"
+                onClick={() => { setOpen(false); navigate(`/nicotech/it-terms/${t.articleId}`); }}
+              >
+                <span className="term-card-head">
+                  <span className="term-card-term">{t.term}</span>
+                  {t.en && <span className="term-card-en">{t.en}</span>}
+                </span>
+                <span className="term-card-desc">{t.desc}</span>
+                <span className="term-card-meta">{getSectionLabel("it-terms", t.section)}</span>
+              </button>
+            ))}
+          </div>
+        )}
+
         <ul className="search-results">
-          {results.length === 0 && <li className="search-empty">「{query}」に一致する記事はありません</li>}
+          {results.length === 0 && terms.length === 0 && (
+            <li className="search-empty">「{query}」に一致する記事・用語はありません</li>
+          )}
           {results.map((it, i) => (
             <li key={`${it.domain}/${it.id}`}>
               <button

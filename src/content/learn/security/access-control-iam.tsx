@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Bridge, Code, Cmd, ComparisonTable, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Bridge, Code, Cmd, ComparisonTable, KVList, KeyPoints, Quiz, Divider, Figure } from "../../../components/learn/kit";
 import { FlowChain } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -100,6 +100,7 @@ if (!order) return res.sendStatus(404);`}</Code>
         <li><strong>AssumeRole の連鎖</strong> — ロール A を引き受けられる主体が、A からロール B、B から C…と<strong>連鎖的に昇格</strong>できてしまう経路</li>
         <li><strong><Cmd>iam:PassRole</Cmd> の濫用</strong> — サービスに強い権限のロールを渡せると、それ経由で昇格される</li>
       </ul>
+      <Figure src="/learn/shots/security/access-control-iam-01.svg" alt="AWS IAM のポリシー編集画面で、ワイルドカードを含む過剰なポリシーと最小権限に絞ったポリシーを比較したスクリーンショット" caption="IAM ポリシーの実物。ワイルドカード 1 文字で権限範囲がどれだけ広がるかを画面で確かめる" />
       <Callout variant="danger" title="過剰権限は「見えにくい昇格経路」を作る">
         個々の権限は問題なく見えても、<strong>ロールの引き受け（AssumeRole）を辿ると管理者相当に到達できる</strong>——
         という連鎖は、権限を広く付けるほど生まれやすくなります。付与時に最小権限を徹底し、

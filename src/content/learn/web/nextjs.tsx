@@ -13,6 +13,7 @@ import {
   ComparisonTable,
   KVList,
   TipBox,
+  Figure,
   Divider,
 } from "../../../components/learn/kit";
 import { FlowChain } from "../../../components/learn/diagrams";
@@ -163,6 +164,8 @@ export function LikeButton() {
           ["CSR", "ブラウザで実行時", "静的殻はキャッシュ可", "管理画面・対話中心のダッシュボード"],
         ]}
       />
+      <Figure src="/learn/shots/web/nextjs-01.svg" alt="next build の出力でルートごとのレンダリング方式が表示された画面" caption="next build の出力を読むと、どのページが静的化され、どれが都度生成かが一目で分かる" />
+
       <Bridge course="ネットワーク / OS（キャッシュ）">
         SSG/ISR で HTML を CDN にキャッシュするのは、ネットワークで習う「エッジキャッシュでオリジンへの往復を減らし、レイテンシを下げる」話そのもの。ISR の <Cmd>revalidate</Cmd>（期限が切れたら再生成）は、キャッシュの<strong>TTL（Time To Live）</strong>と<strong>キャッシュ無効化（invalidation）</strong>の実装例です。「キャッシュ無効化はコンピュータサイエンスの二大難問の一つ」という格言が、なぜレンダリング方式選びが悩ましいのかを言い当てています。<Cmd>stale-while-revalidate</Cmd>（古い値を返しつつ裏で更新）という HTTP キャッシュ戦略まで、そのまま ISR の挙動と対応します。
       </Bridge>
@@ -252,6 +255,8 @@ export default function TodoPage() {
           ブランチへの push ごとにプレビュー環境が作られ、本番反映まで CI/CD が回る。
         </Step>
       </Steps>
+
+      <Figure src="/learn/shots/web/nextjs-02.svg" alt="Vercel のデプロイ画面とビルドログ" caption="リポジトリを繋ぐだけで、ビルドからプレビュー URL の発行までが自動で進む" />
       <TipBox>
         Vercel 以外（自前サーバ・Docker・各種クラウド）でも <Cmd>next build</Cmd> + <Cmd>next start</Cmd> や静的書き出しで動かせます。Vercel は最適化が効くだけで、必須ではありません。
       </TipBox>

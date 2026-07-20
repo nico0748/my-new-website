@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Bridge, Cmd, ComparisonTable, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Bridge, Cmd, ComparisonTable, Figure, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
 import { LayerStack } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -57,6 +57,8 @@ export default function Article() {
         ]}
       />
 
+      <Figure src="/learn/shots/security/passwords-mfa-01.svg" alt="認証アプリ(TOTP)の登録画面。QR コードと確認コードの入力欄" caption="TOTP の登録画面。QR コードで共有鍵を認証アプリに渡し、生成された 6 桁コードで登録を確定する" />
+
       <SubSection>なぜ SMS は格下げされたのか</SubSection>
       <p>
         SMS はもっとも普及した手法ですが、<strong>SIM スワップ</strong>（攻撃者が携帯番号を自分の SIM に移し替える）や、
@@ -89,6 +91,8 @@ export default function Article() {
         第二に、認証時にサーバから送られたチャレンジへ署名しますが、その署名が<strong>アクセス中のドメインに結び付く</strong>ため、
         偽サイト（別ドメイン）では正しい署名が作れず、認証が成立しません。これが「<strong>フィッシング耐性（phishing-resistant）</strong>」の意味です。
       </p>
+
+      <Figure src="/learn/shots/security/passwords-mfa-02.svg" alt="ブラウザのパスキー登録ダイアログと生体認証のプロンプト" caption="パスキー登録時のダイアログ。鍵の生成と署名は端末側で完結し、秘密鍵はブラウザにもサーバにも渡らない" />
 
       <Callout variant="tip" title="パスキーはパスワードの置き換えを目指す">
         パスキーは公開鍵暗号を使ったログイン資格情報で、覚える必要がなく、フィッシングにも強いため、

@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, ComparisonTable, KVList, KeyPoints, Bridge, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, ComparisonTable, KVList, KeyPoints, Bridge, Quiz, Figure, Divider } from "../../../components/learn/kit";
 import { SequenceDiagram } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -95,6 +95,11 @@ SflKxwRJ...   ← 署名（改ざん検知用）`}</Code>
         items={[
           { key: "身近な例", val: "新規サービスで「このアプリがあなたの Google カレンダーにアクセスします。許可しますか？」の同意画面。写真アプリの『写真へのアクセスを許可』や、外部ツールと『GitHub と連携』するときの承認ボタンで触れている" },
         ]}
+      />
+      <Figure
+        src="/learn/shots/web/how-login-works-01.svg"
+        alt="「Google でログイン」を押したときに表示される Google の同意画面"
+        caption="この同意画面こそが OAuth の本体。「何を許可するか」がここに列挙され、押した瞬間に権限が委譲される。"
       />
       <Callout variant="info" title="OAuth は本来『認可』のための仕組み">
         OAuth が渡すのは「<strong>何にアクセスしてよいか</strong>」という<strong>権限</strong>であって、「<strong>あなたが誰か</strong>」を確かめる認証は本来の目的ではありません。

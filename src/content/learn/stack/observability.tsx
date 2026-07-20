@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider, Figure } from "../../../components/learn/kit";
 import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
@@ -42,6 +42,16 @@ export default function Article() {
           [<><Tech id="prometheus">Prometheus</Tech> + <Tech id="grafana">Grafana</Tech></>, "OSS", "メトリクス収集(Prometheus)＋可視化(Grafana)"],
           [<Tech id="opentelemetry">OpenTelemetry</Tech>, "標準規格", "ベンダー中立な計装。収集先を選べる"],
         ]}
+      />
+      <Figure
+        src="/learn/shots/stack/observability-stack-01.svg"
+        alt="Grafana のダッシュボード。Prometheus のメトリクスが折れ線グラフで並んでいる"
+        caption="メトリクスを見るとは、実際にはこうしたグラフの壁を眺めること"
+      />
+      <Figure
+        src="/learn/shots/stack/observability-stack-02.svg"
+        alt="Sentry のエラー詳細画面。スタックトレースと発生回数・影響ユーザー数が表示されている"
+        caption="エラー追跡ツールは「どのコード行で・何人に」起きたかまで教えてくれる"
       />
       <Callout variant="info" title="OpenTelemetry でロックインを避ける">
         <Tech id="opentelemetry">OpenTelemetry</Tech> で標準的に計装しておくと、収集先（Datadog など）を後から乗り換えても計装コードを再利用できます。特定ツールへの依存を避けたいときに有効です。

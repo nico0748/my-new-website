@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, Code, Cmd, KVList, KeyPoints, Bridge, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, Code, Cmd, KVList, KeyPoints, Bridge, Quiz, Divider, Figure } from "../../../components/learn/kit";
 import { StepFlow, SequenceDiagram } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -142,6 +142,12 @@ export class AppComponent {}`}</Code>
           { key: "[routerLink]=\"['/tasks', id]\"", val: "動的パス。角括弧でバインドし、配列でセグメントを組む（/tasks/1 になる）" },
           { key: "<a href>", val: "使わない。サーバーへリクエスト＋全体再読み込みが起きる（SPA が台無し）" },
         ]}
+      />
+
+      <Figure
+        src="/learn/shots/angular-practice/angular-router-basics-01.svg"
+        alt="routerLink をクリックして詳細へ遷移した直後のブラウザ。アドレスバーが /tasks/1 に変わり、router-outlet の位置だけが差し替わっている"
+        caption="ヘッダーはそのまま、router-outlet の中身だけが差し替わる。アドレスバーは /tasks/1 に変わる"
       />
 
       <Section>URL からパラメータを取り出す — ActivatedRoute</Section>

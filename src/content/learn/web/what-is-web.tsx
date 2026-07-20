@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Bridge, Code, Cmd, Steps, Step, ComparisonTable, KVList, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Bridge, Code, Cmd, Steps, Step, ComparisonTable, KVList, KeyPoints, Figure, Divider } from "../../../components/learn/kit";
 import { LayerStack } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -144,6 +144,8 @@ scheme     host        port   path     query   fragment
 # → HTTP/1.1 200 OK が返れば「Web も動いている」`}</Code>
         </Step>
       </Steps>
+
+      <Figure src="/learn/shots/web/what-is-web-01.svg" alt="ターミナルで ping と curl -I を続けて実行した結果" caption="同じホストでも、返ってくる情報の層がまったく違うことが見比べられる" />
       <Callout variant="tip" title="この 2 つが別レイヤーだと分かると障害切り分けが速い">
         実務でサイトが開けないとき、まず <Cmd>ping</Cmd> が通るか（ネットワークの問題か）、<Cmd>curl</Cmd> が応答するか（Web サーバー側の問題か）を分けて確認します。層を分けて考える習慣が、そのまま障害切り分けの手順になります。
       </Callout>

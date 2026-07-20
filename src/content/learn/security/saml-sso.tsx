@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Bridge, Cmd, ComparisonTable, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Bridge, Cmd, ComparisonTable, Figure, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
 import { SequenceDiagram } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -58,6 +58,8 @@ export default function Article() {
         <strong>Profiles</strong>（具体的なユースケース。最重要が <Cmd>Web Browser SSO Profile</Cmd>）、
         そして <strong>Metadata</strong>（IdP/SP のエンドポイントや証明書を XML で交換し相互接続を容易にする）です。
       </Callout>
+
+      <Figure src="/learn/shots/security/saml-sso-01.svg" alt="IdP 管理コンソールの SAML アプリ設定画面" caption="IdP 側の SAML アプリ設定。SSO URL・エンティティ ID・署名証明書を SP と交換して信頼関係を結ぶ" />
 
       <Section>Web ブラウザ SSO の流れ</Section>
       <p>

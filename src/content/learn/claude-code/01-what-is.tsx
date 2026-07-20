@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, ComparisonTable, KeyPoints, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "claude-code-01-what-is",
@@ -41,6 +41,11 @@ export default function Article() {
           ["できること", "チャットで質問・文章生成・コード生成", "依頼するとPCのファイルを読み書きしたりコマンドを実行したりする"],
           ["特徴", "テキストの「やりとり」が中心。実際にPCで実行はできず、コピペは自分でやる", "テキストを返すだけでなく「行動」できる（＝エージェント型）"],
         ]}
+      />
+      <Figure
+        src="/learn/shots/claude-code/claude-code-01-what-is-01.svg"
+        alt="ターミナルで claude を起動した直後の REPL 画面"
+        caption="Claude Code はターミナルの中で動く。起動するとこの対話画面（REPL）が立ち上がる"
       />
 
       <SubSection>なぜ「エージェント型」が画期的なのか</SubSection>

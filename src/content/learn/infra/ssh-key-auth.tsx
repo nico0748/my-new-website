@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KeyPoints, Quiz, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "ssh-key-auth",
@@ -47,6 +47,11 @@ ssh -i ~/.ssh/oracle-vps-tmp.key ubuntu@<パブリックIP>`}</Code>
       <p>
         初回接続で「このサーバーを信頼しますか？」というフィンガープリント確認が出ます。これは中間者攻撃（MITM）を防ぐ仕組みで、<Cmd>yes</Cmd> と答えます。
       </p>
+      <Figure
+        src="/learn/shots/infra/ssh-key-auth-01.svg"
+        alt="初回 ssh 接続でフィンガープリントの確認を求められ、yes と答えてログインが成功しウェルカム表示が出たターミナル"
+        caption="フィンガープリント確認に yes と答えるとログイン完了。プロンプトが ubuntu@... に変わればサーバーの中にいる。"
+      />
 
       <Section>自分の ed25519 鍵を作る</Section>
       <p>

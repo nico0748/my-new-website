@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Cmd, Code, Steps, Step, KVList, TipBox, KeyPoints, ComparisonTable, Bridge, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Cmd, Code, Steps, Step, KVList, TipBox, KeyPoints, ComparisonTable, Bridge, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "browser-devtools",
@@ -50,6 +50,11 @@ export default function Article() {
           { key: "状態の固定", val: ":hov で :hover / :focus 状態を強制表示し、動的なスタイルを検証" },
         ]}
       />
+      <Figure
+        src="/learn/shots/web/browser-devtools-01.svg"
+        alt="Chrome DevTools の Elements パネルで要素を選択し、右の Styles ペインが表示された状態"
+        caption="左が DOM ツリー、右が選択要素に効いている CSS。ここで値を書き換えると即座に画面へ反映される。"
+      />
       <TipBox>
         使う場面: 「レイアウトが崩れる」「余白や色が思った通りにならない」ときの一次調査。値を試行錯誤してから、確定した値をコードに反映します。
       </TipBox>
@@ -94,6 +99,11 @@ export default function Article() {
           { key: "スロットリング", val: "Fast/Slow 3G などに絞り、低速回線での挙動を再現" },
           { key: "キャッシュ", val: "Disable cache でキャッシュを無効化し、常に最新を取得して検証" },
         ]}
+      />
+      <Figure
+        src="/learn/shots/web/browser-devtools-02.svg"
+        alt="Chrome DevTools の Network タブでリクエストを1本選び、Headers タブを開いた状態"
+        caption="通信一覧から1本選ぶと、送ったヘッダと返ってきたヘッダが並ぶ。API 調査の起点はここ。"
       />
       <TipBox>
         使う場面: 「ページが重い」「API が 404 / 500 を返す」「送っているパラメータを確認したい」。Fetch/XHR でフィルタすると API 通信だけに絞れます。
@@ -170,6 +180,12 @@ curl 'https://api.example.com/v1/users/42' \\
           { key: "Long Task", val: "メインスレッドを長く占有する重い処理を洗い出す" },
           { key: "Flame Chart", val: "関数の呼び出し階層と各処理の所要時間を積み上げて表示" },
         ]}
+      />
+
+      <Figure
+        src="/learn/shots/web/browser-devtools-03.svg"
+        alt="Chrome DevTools の Performance パネルで録画後の Flame Chart と Long Task の印が見える状態"
+        caption="横幅がそのまま所要時間。幅の広いブロックと Long Task の印が、最初に手を付けるべき場所。"
       />
 
       <SubSection>計測 → ボトルネック特定 → 改善（プロファイリングの型）</SubSection>

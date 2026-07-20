@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, ComparisonTable, KVList, KeyPoints, Bridge, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, ComparisonTable, KVList, KeyPoints, Bridge, Figure, Divider } from "../../../components/learn/kit";
 import { FlowChain } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -113,6 +113,11 @@ git merge [branch]              # ブランチを統合`}</Code>
       <p>
         各コミットは<strong>「親コミット」への参照</strong>を持っています。最初のコミットだけ親がなく、通常のコミットは親 1 つ、マージコミットは親 2 つ（以上）を持ちます。この「コミットがノード・親への参照が辺」という構造は、まさに<strong>有向非巡回グラフ（DAG: Directed Acyclic Graph）</strong>です。矢印は必ず過去（親）へ向き、巡回（ループ）しません。
       </p>
+      <Figure
+        src="/learn/shots/dev/git-and-github-01.svg"
+        alt="git log --oneline --graph --all の実行結果。左側にアスタリスクと線で分岐と合流の枝が描かれたターミナル"
+        caption="左端に描かれる線がそのまま DAG の形。枝分かれと、マージで合流する点が目で追える。"
+      />
       <Bridge course="離散数学 / グラフ理論">
         <Cmd>git log --graph</Cmd> で表示される履歴は、講義で扱う<strong>有向非巡回グラフ（DAG）</strong>そのものです。「マージの共通の起点（マージベース）を探す」処理は、2 つのコミットの<strong>最も近い共通祖先（LCA: Lowest Common Ancestor）</strong>を求める問題に対応します。<Cmd>git merge</Cmd> は内部でこの共通祖先を見つけ、そこからの差分を三方向で突き合わせています。トポロジカルソート・到達可能性・祖先関係といったグラフの概念が、Git の履歴操作の裏側で実際に動いていると考えると理解が深まります。
       </Bridge>
@@ -157,6 +162,11 @@ node_modules/`}</Code>
         <li><strong>Actions</strong> — CI/CD の自動化</li>
         <li><strong>Projects / Wiki</strong> — 進捗管理とドキュメント</li>
       </ul>
+      <Figure
+        src="/learn/shots/dev/git-and-github-02.svg"
+        alt="GitHub の Pull Request 画面。Conversation と Files changed のタブ、差分とレビューコメントが表示されている"
+        caption="Pull Request の画面。差分・レビューコメント・CI の結果が1か所に集まるのが GitHub の中心的な価値。"
+      />
 
       <Callout variant="tip" title="困ったときのリカバリ">
         直前のコミットを取り消したいとき、変更を残すなら <Cmd>git reset --soft HEAD^</Cmd>、完全に破棄するなら <Cmd>git reset --hard HEAD^</Cmd>。作業を一時退避したいときは <Cmd>git stash</Cmd> <span aria-hidden="true">→</span> <Cmd>git stash pop</Cmd> が便利です。「操作をやりすぎて履歴が壊れた」ときは <Cmd>git reflog</Cmd> で過去の <Cmd>HEAD</Cmd> の移動履歴を辿れば、消したはずのコミットにも戻れます。

@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Bridge, Code, Cmd, ComparisonTable, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Bridge, Code, Cmd, ComparisonTable, Figure, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
 import { LayerStack } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -56,6 +56,7 @@ export default function Article() {
         ]}
         caption="OWASP Top 10 (2021)。上ほど頻度・影響が大きい"
       />
+      <Figure src="/learn/shots/security/owasp-top10-01.svg" alt="OWASP 公式サイトの Top 10 (2021) 一覧ページ" caption="一次情報は owasp.org。順位や分類は改訂で動くので、必ず公式ページで最新版を確認する" />
 
       <Section>本コースでの深掘り対応表</Section>
       <p>

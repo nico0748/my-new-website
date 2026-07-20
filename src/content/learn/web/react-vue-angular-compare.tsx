@@ -13,6 +13,7 @@ import {
   ComparisonTable,
   KVList,
   TipBox,
+  Figure,
   Divider,
 } from "../../../components/learn/kit";
 
@@ -219,6 +220,8 @@ export class CounterComponent {
       <TipBox>
         バンドルサイズや起動速度が最重要なら、事前計測（Lighthouse 等）で判断すること。フレームワーク名だけで速い/遅いを決めない。
       </TipBox>
+
+      <Figure src="/learn/shots/web/react-vue-angular-compare-01.svg" alt="Lighthouse の計測レポート画面" caption="速い/遅いはフレームワーク名ではなく、こうした実測値で判断する" />
 
       <Divider />
 

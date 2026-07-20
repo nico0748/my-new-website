@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Bridge, Code, Cmd, ComparisonTable, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Bridge, Code, Cmd, ComparisonTable, KVList, KeyPoints, Quiz, Divider, Figure } from "../../../components/learn/kit";
 import { FlowChain } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -52,6 +52,7 @@ export default function Article() {
         ECB モードは各ブロックを独立に暗号化するため、<strong>同じ平文ブロックが同じ暗号文ブロック</strong>になります。画像を ECB で暗号化すると元の輪郭がうっすら見えてしまうほどで、パターンが漏れます。対称暗号は認証付き暗号（AEAD）である <strong>AES-GCM</strong> や ChaCha20-Poly1305 を使ってください。
       </Callout>
 
+      <Figure src="/learn/shots/security/crypto-pitfalls-01.svg" alt="同じ画像を AES-ECB と AES-GCM で暗号化した結果を並べ、ECB 側だけ元画像の輪郭が透けて見える比較のスクリーンショット" caption="ECB と GCM の比較。ECB では元画像の輪郭がそのまま残ってしまう" />
       <Section>正しいアルゴリズムでも「使い方」で破れる</Section>
       <SubSection>固定 IV・nonce 再利用</SubSection>
       <p>

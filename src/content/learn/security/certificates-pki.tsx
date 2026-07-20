@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, Bridge, Code, Cmd, ComparisonTable, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, Bridge, Code, Cmd, ComparisonTable, KVList, KeyPoints, Quiz, Divider, Figure } from "../../../components/learn/kit";
 import { FlowChain, SequenceDiagram } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -71,6 +71,7 @@ export default function Article() {
       <p>
         検証する側（ブラウザ）は、サーバ証明書から順にこの鎖をたどり、最終的に<strong>OS やブラウザにあらかじめ組み込まれた信頼できるルート CA</strong>に到達できれば「本物」と判断します。信頼の起点（トラストアンカー）はルート CA で、そこから下へ署名で信頼が伝わっていく構造です。TLS のサーバ証明書はまさにこの仕組みで動いています。
       </p>
+      <Figure src="/learn/shots/security/certificates-pki-01.svg" alt="ブラウザの証明書ビューアで、サーバ証明書から中間 CA、ルート CA へと続く証明書チェーンが表示されているスクリーンショット" caption="ブラウザの証明書ビューア。図で見たチェーンが実際に階層として表示される" />
       <Code lang="bash" filename="terminal">{`# サーバが提示する証明書チェーンを見る
 openssl s_client -connect example.com:443 -showcerts
 # → サーバ証明書 → 中間CA → （ルートは端末が保持）の順で提示される`}</Code>
@@ -79,6 +80,7 @@ openssl s_client -connect example.com:443 -showcerts
       <p>
         このチェーンの検証を<strong>省くと</strong>何が起きるでしょうか。答えは<strong>中間者攻撃（MITM）</strong>です。攻撃者が通信の間に割り込み、偽の証明書を差し出したとき、クライアントが「証明書を検証しない」「エラーを無視する」実装だと、偽物をそのまま信じてしまいます。
       </p>
+      <Figure src="/learn/shots/security/certificates-pki-02.svg" alt="自己署名証明書のサーバへアクセスした際にブラウザが表示する証明書エラー警告画面のスクリーンショット" caption="検証に失敗したときブラウザが出す警告。これを「面倒だから」と無視する実装が証明書検証不備になる" />
       <Callout variant="danger" title="証明書検証を無効化しない">
         開発中に「証明書エラーが面倒だから」と検証を無効化（<Cmd>verify=False</Cmd>・自己署名を無条件許可など）したまま本番に残すのは、典型的な<strong>証明書検証不備</strong>です。これは中間者攻撃を招き、TLS の暗号化そのものを無意味にします。エラーは握りつぶさず、正しく検証してください。
       </Callout>

@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider, Figure } from "../../../components/learn/kit";
 import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
@@ -47,6 +47,11 @@ export default function Article() {
           ["マネージド RDB", "RDS / Aurora", "Azure SQL", "Cloud SQL"],
           ["CDN", "CloudFront", "Front Door / CDN", "Cloud CDN"],
         ]}
+      />
+      <Figure
+        src="/learn/shots/stack/cloud-stack-01.svg"
+        alt="AWS マネジメントコンソールのトップ画面。サービス検索欄と EC2 などのサービス一覧が見えている"
+        caption="表に並ぶサービス名は、実際にはこうしたコンソールから選んで使う"
       />
 
       <Section>それぞれの持ち味</Section>

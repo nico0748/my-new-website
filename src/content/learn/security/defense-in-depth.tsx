@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Bridge, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Bridge, KVList, KeyPoints, Quiz, Divider, Figure } from "../../../components/learn/kit";
 import { LayerStack, StepFlow } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -79,6 +79,7 @@ export default function Article() {
       <p>
         攻撃者が使う技術・戦術を体系的に整理したフレームワークが <strong>MITRE ATT&CK</strong> です。実際に観測された攻撃手法を「戦術（何のために）」と「技術（どうやって）」でカタログ化しており、防御側の検知ルール設計や、攻撃シナリオを語る共通言語として世界中で使われています。攻撃ライフサイクルの各段に、ATT&CK の具体的な技術がひもづく、と捉えるとよいでしょう。
       </p>
+      <Figure src="/learn/shots/security/defense-in-depth-01.svg" alt="MITRE ATT&amp;CK Enterprise マトリクスの公開ページで、戦術が列、技術が行として一覧表示されているスクリーンショット" caption="MITRE ATT&amp;CK のマトリクス。攻撃ライフサイクルの各段に具体的な技術がひもづいている" />
       <p>
         脆弱性を探す側の視点では、この攻撃ライフサイクルの「どこで効くか」が脆弱性の価値を左右します。<strong>認証前に単独で悪用でき（初期侵入）、権限昇格やコード実行につながる脆弱性ほど、深刻度が高く評価されます。</strong>攻撃の流れを知ることは、守る目と同時に、価値ある脆弱性を見極める目も養うのです。
       </p>

@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, ComparisonTable, KVList, TipBox, KeyPoints, Bridge, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, ComparisonTable, KVList, TipBox, KeyPoints, Bridge, Figure, Divider } from "../../../components/learn/kit";
 import { FlowChain } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -157,6 +157,12 @@ app.use(logger);          // 全ルートに適用
 app.get("/private", auth, (req, res) => {  // このルートだけ auth
   res.json({ secret: "ok" });
 });`}</Code>
+
+      <Figure
+        src="/learn/shots/web/express-01.svg"
+        alt="node app.js を起動したターミナルに、logger ミドルウェアのアクセスログが流れている様子"
+        caption="ブラウザでアクセスするたび、logger が出したメソッドとパスがターミナルに流れる。通っている証拠が目で見える。"
+      />
 
       <Callout variant="tip" title="express.json() もミドルウェア">
         <Cmd>app.use(express.json())</Cmd> は「リクエストボディの JSON を解析して <Cmd>req.body</Cmd> に入れる」組み込みミドルウェアです。<strong>これをルート定義より前に置かないと <Cmd>req.body</Cmd> が undefined になります</strong>。順序が意味を持つ好例です。

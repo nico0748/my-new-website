@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider, Figure } from "../../../components/learn/kit";
 import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
@@ -31,6 +31,11 @@ export default function Article() {
           [<Tech id="appwrite">Appwrite</Tech>, "内蔵", "自己ホスト可能な OSS BaaS"],
         ]}
       />
+      <Figure
+        src="/learn/shots/stack/baas-cms-stack-01.svg"
+        alt="Supabase ダッシュボードの Table Editor で、Postgres のテーブルを表形式で編集している画面"
+        caption="BaaS ではブラウザの管理画面から直接テーブルを作り、データを覗ける"
+      />
       <Callout variant="tip" title="SQL を使いたいなら Supabase">
         <Tech id="firebase">Firebase</Tech> は NoSQL 中心、<Tech id="supabase">Supabase</Tech> は <Tech id="postgresql">PostgreSQL</Tech> ベース。リレーショナルなデータや SQL を使いたいなら Supabase が有力です。
       </Callout>
@@ -48,6 +53,11 @@ export default function Article() {
           [<Tech id="microcms">microCMS</Tech>, "日本製で導入しやすい"],
           [<Tech id="wordpress">WordPress</Tech>, "従来型 CMS（ヘッドレス利用も可）"],
         ]}
+      />
+      <Figure
+        src="/learn/shots/stack/baas-cms-stack-02.svg"
+        alt="microCMS の管理画面で、定義した項目に沿って記事コンテンツを入力している様子"
+        caption="ヘッドレス CMS の管理画面。ここで入れた内容が API 経由でフロントに届く"
       />
 
       <Divider />

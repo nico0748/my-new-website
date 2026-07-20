@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Bridge, Code, Cmd, Steps, Step, ComparisonTable, KVList, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Bridge, Code, Cmd, Steps, Step, ComparisonTable, KVList, KeyPoints, Figure, Divider } from "../../../components/learn/kit";
 import { SequenceDiagram, DomTreeFigure } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -131,6 +131,12 @@ Content-Type: text/html; charset=utf-8
           ["サーバー処理", "100〜500ms"],
           ["合計", "数百 ms 〜 数秒"],
         ]}
+      />
+
+      <Figure
+        src="/learn/shots/web/how-web-page-loads-01.svg"
+        alt="Chrome DevTools の Network で1本のリクエストの Timing タブを開き、DNS・接続・SSL・TTFB の内訳が並んだ状態"
+        caption="ここまでの各ステップが、実際に何ミリ秒かかったかを内訳で確認できる。遅さの原因を工程単位で切り分けられる。"
       />
 
       <Callout variant="tip" title="2 回目以降が速い理由">

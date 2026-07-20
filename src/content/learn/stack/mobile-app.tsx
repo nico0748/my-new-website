@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, Cmd, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, Cmd, ComparisonTable, KeyPoints, Divider, Figure } from "../../../components/learn/kit";
 import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
@@ -52,6 +52,11 @@ export default function Article() {
         <li><strong>Web で React を使っている</strong> → React Native で知識を再利用</li>
         <li><strong>UI はネイティブ品質を保ちつつロジックだけ共有</strong> → Kotlin Multiplatform</li>
       </ul>
+      <Figure
+        src="/learn/shots/stack/mobile-app-stack-01.svg"
+        alt="App Store Connect のアプリ提出画面。ビルドのアップロードと審査ステータスが表示されている"
+        caption="コードが完成した後に待つのがこの工程。審査を通って初めてユーザーに届く"
+      />
       <Callout variant="warn" title="配信・審査という共通のハードル">
         どのスタックでも、<Cmd>App Store</Cmd> / <Cmd>Google Play</Cmd> への審査・署名・ストア掲載という工程は共通で必要です。技術選定だけでなく、<strong>配信と運用</strong>まで含めて計画しましょう。
       </Callout>

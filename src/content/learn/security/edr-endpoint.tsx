@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Bridge, ComparisonTable, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Bridge, ComparisonTable, KVList, KeyPoints, Quiz, Divider, Figure } from "../../../components/learn/kit";
 import { FlowChain } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -60,6 +60,7 @@ export default function Article() {
           { key: "④ 対応（Response）", val: "端末のネットワーク隔離、プロセスの強制終了、ファイルの削除・ロールバックを行う。" },
         ]}
       />
+      <Figure src="/learn/shots/security/edr-endpoint-01.svg" alt="EDR コンソールの検知詳細画面で、プロセス系統樹とコマンドライン、ATT&amp;CK の技術 ID が表示されているスクリーンショット" caption="EDR の調査画面。プロセス系統樹で「どこから入り何をしたか」を再構成する" />
       <SubSection>MITRE ATT&CK へのマッピング</SubSection>
       <p>
         EDR の検知は、<strong>MITRE ATT&CK</strong>——攻撃者の戦術・技術を体系化したフレームワーク——にマッピングして整理するのが一般的です。「この挙動は、攻撃ライフサイクルのどの段階（初期侵入・権限昇格・横展開など）に相当するか」を共通言語で表せるため、検知の抜け漏れを俯瞰しやすく、SOC アナリスト間の意思疎通もスムーズになります。EDR のテレメトリは、前章の SIEM や、次に述べる XDR で相関する中核データ源にもなります。

@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, Bridge, Code, Cmd, ComparisonTable, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, Bridge, Code, Cmd, ComparisonTable, Figure, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
 import { StepFlow } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -43,6 +43,8 @@ export default function Article() {
           [<Cmd>Permissions-Policy</Cmd>, "camera/mic/geolocation 等の機能を無効化", "未使用機能を () で無効化"],
         ]}
       />
+      <Figure src="/learn/shots/security/security-headers-01.svg" alt="DevTools の Network タブで開いたレスポンスヘッダ" caption="実際に何が返っているかは DevTools の Network タブで確認できる。まず現状のヘッダを見るところから始める" />
+
       <Callout variant="warn" title="X-XSS-Protection は使わない">
         古い <Cmd>X-XSS-Protection</Cmd> は現代ブラウザでは非推奨で、無効化が推奨されています。XSS 対策は<strong>出力エスケープと CSP に集約</strong>してください。
       </Callout>
@@ -67,6 +69,8 @@ export default function Article() {
   base-uri 'none';
   form-action 'self';
   report-to csp-endpoint`}</Code>
+      <Figure src="/learn/shots/security/security-headers-02.svg" alt="DevTools の Console に表示された CSP Report-Only の違反メッセージ" caption="Report-Only 中は違反が Console に出るだけでブロックされない。ここで正規リソースを洗い出してポリシーへ反映する" />
+
       <Callout variant="danger" title="'unsafe-inline' は CSP を無力化する">
         インラインスクリプトを許すために <Cmd>'unsafe-inline'</Cmd> を常用すると、CSP の XSS 低減効果がほぼ失われます。インラインは <strong>nonce / hash + <Cmd>strict-dynamic</Cmd></strong> へ移行してください。
       </Callout>
@@ -103,6 +107,8 @@ export default function Article() {
           { key: "証明書", val: "有効期限・CN/SAN 一致・チェーン完全性を確認（中間証明書欠落に注意）" },
         ]}
       />
+      <Figure src="/learn/shots/security/security-headers-03.svg" alt="securityheaders.com で自サイトを計測したレポート画面" caption="外部の計測サービスでベースラインを取り、設定変更のたびに再計測して差分を確かめる" />
+
       <Callout variant="tip" title="計測 → 設定 → 再計測を反復する">
         SSL Labs・Mozilla Observatory・securityheaders でベースラインを取り、設定変更のたびに再計測します。<strong>改善は計測と再計測の反復</strong>で進め、本番投入前に必ず差分を確認します。互換要件がなければ Modern 設定も検討します。
       </Callout>

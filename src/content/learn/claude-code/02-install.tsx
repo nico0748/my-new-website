@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, ComparisonTable, KeyPoints, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "claude-code-02-install",
@@ -90,6 +90,11 @@ irm https://claude.ai/install.ps1 | iex`}</Code>
       <p>
         バージョン番号が表示されたら成功です。もし <Cmd>command not found</Cmd> と出たら、ターミナルを一度閉じて開き直してください。
       </p>
+      <Figure
+        src="/learn/shots/claude-code/claude-code-02-install-01.svg"
+        alt="claude --version を実行しバージョン番号が表示されたターミナル"
+        caption="この形でバージョン番号が表示されればインストール成功"
+      />
       <Callout variant="tip" title="claude doctor で詳しく診断">
         <Cmd>claude doctor</Cmd> は認証状態・PATH・設定・MCP サーバー等を一気にチェックしてくれます。<strong>何かおかしいと感じたら、まずこれを実行する</strong>癖をつけておきましょう。
       </Callout>
@@ -98,6 +103,11 @@ irm https://claude.ai/install.ps1 | iex`}</Code>
       <p>
         インストールが終わったら、Anthropic のアカウントでログインします。任意のディレクトリで <Cmd>claude</Cmd> を実行すると、初回起動時にブラウザが自動で開いて Anthropic のログイン画面が表示されます。<strong>契約しているアカウント</strong>でログインしてください。認証が完了すると、ターミナルに Claude Code の対話画面（REPL）が表示されます。これで準備完了です。
       </p>
+      <Figure
+        src="/learn/shots/claude-code/claude-code-02-install-02.svg"
+        alt="初回起動時に表示されるログイン方法の選択画面"
+        caption="初回起動時のログイン方法の選択。契約しているアカウントの種類に合わせて選ぶ"
+      />
       <Code lang="text" filename="動作テスト">{`> Hello! Claude Code が動いているか確認したい。簡単な挨拶をして。`}</Code>
       <p>Claude が返事を返してくれたら成功です。セッションを終了するには <Cmd>/exit</Cmd> か <Cmd>Ctrl + C</Cmd> を2回押します。</p>
 
@@ -158,6 +168,11 @@ echo "# Claude Code 練習プロジェクト" > README.md`}</Code>
       <Section>6. 課題（10分）</Section>
       <Code lang="bash" filename="課題1: インストール完了の確認">{`claude --version
 claude doctor`}</Code>
+      <Figure
+        src="/learn/shots/claude-code/claude-code-02-install-03.svg"
+        alt="claude doctor の診断結果が一覧表示されたターミナル"
+        caption="claude doctor の出力。認証状態・PATH・設定・MCP サーバーの状態がまとめて確認できる"
+      />
       <Code lang="text" filename="課題2: 最初のセッション（claude-practice で）">{`> 今日の日付を README.md に追記してから、その内容を表示して。`}</Code>
       <p>
         <strong>課題3: Claude にコードを書かせて実行させる</strong> ── <Cmd>claude-practice</Cmd> ディレクトリで下記のように依頼し、Claude が作ったファイルが実際に動くところまで確認しましょう。

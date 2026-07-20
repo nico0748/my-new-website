@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, Code, Cmd, KVList, ComparisonTable, KeyPoints, Bridge, TipBox, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, Code, Cmd, KVList, ComparisonTable, KeyPoints, Bridge, TipBox, Figure, Divider } from "../../../components/learn/kit";
 import { FlowChain } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -114,6 +114,8 @@ function next(fiber) {
         <Cmd>stateNode</Cmd> は「実体」への橋渡しです。DOM 要素の Fiber なら対応する実 DOM ノードを、
         クラスコンポーネントの Fiber ならそのインスタンスを指します。この参照があるからこそ、差分検出の結果を実際の画面へ反映できます。
       </p>
+
+      <Figure src="/learn/shots/web/react-fiber-node-01.svg" alt="React DevTools の Components タブでコンポーネントツリーとノードの詳細を表示した画面" caption="DevTools に見えている木が、内部では Fiber ノードのつながりそのもの" />
 
       <Section>作業単位としての Fiber と協調的スケジューリング</Section>
       <p>

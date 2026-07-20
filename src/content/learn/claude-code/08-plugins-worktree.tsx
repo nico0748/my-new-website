@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, Code, Cmd, ComparisonTable, Steps, Step, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, Code, Cmd, ComparisonTable, Steps, Step, KeyPoints, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "claude-code-08-plugins-worktree",
@@ -144,6 +144,11 @@ git worktree remove --force ../project-feature-a
 
 # 古い参照をクリーンアップ
 git worktree prune`}</Code>
+      <Figure
+        src="/learn/shots/claude-code/claude-code-08-plugins-worktree-01.svg"
+        alt="git worktree list を実行し、worktree が2つ以上並んで表示された画面"
+        caption="git worktree list の出力。パスとブランチが別々に並んでいれば分離できている"
+      />
 
       <Section>5. 実践パターン: Writer / Reviewer（15分）</Section>
       <p>
@@ -162,6 +167,11 @@ claude`}</Code>
       <Code lang="text">{`> レビューフィードバック：[レビュー結果をここに貼り付け]
 > これらの問題に対処して。`}</Code>
 
+      <Figure
+        src="/learn/shots/claude-code/claude-code-08-plugins-worktree-02.svg"
+        alt="2つのターミナルを並べ、片方で実装・もう片方でレビューを走らせている画面"
+        caption="Writer と Reviewer を左右に並べる。別 worktree なので互いのファイルを壊さない"
+      />
       <p><strong>その他の実践パターン</strong></p>
       <Code lang="bash" filename="並列バグ修正 / 機能実装とリリース準備の並列化">{`# 複数のバグを同時に修正
 git worktree add ../fix-auth-timeout -b fix/auth-timeout

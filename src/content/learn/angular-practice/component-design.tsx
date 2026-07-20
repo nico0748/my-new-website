@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KVList, KeyPoints, Bridge, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KVList, KeyPoints, Bridge, Quiz, Divider, Figure } from "../../../components/learn/kit";
 import type { CSSProperties } from "react";
 
 export const meta: LearnMeta = {
@@ -204,6 +204,11 @@ export class TaskListComponent {
     );
   }
 }`}</Code>
+      <Figure
+        src="/learn/shots/angular-practice/component-design-01.svg"
+        alt="ブラウザに表示された Angular のタスク一覧。2件が並び、片方のチェックボックスが完了になっている"
+        caption="親（TaskList）が状態を持ち、子（TaskItem）が表示する。チェックすると @Output が親へ emit される"
+      />
       <Callout variant="warn" title="@for の track は必須（React の key に相当）">
         <Cmd>@for</Cmd> には <Cmd>track</Cmd> が<strong>必須</strong>です。<Cmd>track task.id</Cmd> のように
         <strong>安定した一意の値</strong>を指定すると、Angular は再描画時に「どの要素が同じか」を対応づけ、

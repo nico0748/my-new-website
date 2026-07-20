@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, KVList, ComparisonTable, KeyPoints, Bridge, TipBox, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, KVList, ComparisonTable, KeyPoints, Bridge, TipBox, Figure, Divider } from "../../../components/learn/kit";
 import { StepFlow } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -90,6 +90,8 @@ export default function Article() {
         ]}
         caption="コミットフェーズの流れ"
       />
+
+      <Figure src="/learn/shots/web/react-commit-phase-01.svg" alt="React DevTools の Profiler タブでコミットのバーを選択した画面" caption="Profiler では 1 本のバーが 1 コミット。実際に反映が起きた単位を目で確認できる" />
 
       <Section>current の切り替え</Section>
       <p>

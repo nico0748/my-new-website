@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KeyPoints, KVList, TipBox, Bridge, Steps, Step, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KeyPoints, KVList, TipBox, Bridge, Steps, Step, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "api-testing",
@@ -85,6 +85,12 @@ curl -X POST https://api.example.com/users \\
         ベース URL やトークンを<strong>環境変数</strong>にしておくと、開発・ステージング・本番を切り替えるだけで同じリクエストを使い回せます。URL に <Cmd>{"{{baseUrl}}"}</Cmd> と書けば、選択中の環境の値に展開されます。
       </p>
 
+      <Figure
+        src="/learn/shots/web/api-testing-01.svg"
+        alt="Postman でコレクションを開き、右上の環境切り替えドロップダウンが見えている画面"
+        caption="左のコレクションでリクエストを整理し、右上の環境を切り替えるだけで開発・本番を行き来できる。"
+      />
+
       <Callout variant="warn" title="秘密情報の共有に注意">
         API キーやトークンをコレクションに直書きして公開共有すると漏洩します。秘密値は個人環境の変数や Secret として扱い、コレクションの export に含めないようにしましょう。
       </Callout>
@@ -93,6 +99,11 @@ curl -X POST https://api.example.com/users \\
       <p>
         <strong>Thunder Client</strong> は VS Code の拡張として動く軽量な API クライアントです。エディタを離れずにリクエストを送れるのが最大の利点で、コードを書きながらそのまま動作確認できます。リクエストをファイルとして保存できるため、Git でリポジトリと一緒に管理しやすい点も実務向きです。
       </p>
+      <Figure
+        src="/learn/shots/web/api-testing-02.svg"
+        alt="VS Code の Thunder Client でリクエストを送信し、レスポンスが右ペインに表示された画面"
+        caption="エディタを離れずにリクエストと結果を並べて確認できる。実装しながらの動作確認はこれが速い。"
+      />
 
       <Section>ツールの使い分け</Section>
       <ComparisonTable

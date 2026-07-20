@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Cmd, Code, KVList, TipBox, KeyPoints, ComparisonTable, Bridge, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Cmd, Code, KVList, TipBox, KeyPoints, ComparisonTable, Bridge, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "editor-extensions",
@@ -83,6 +83,11 @@ export default function Article() {
         エラーや警告を、<strong>該当行のすぐ横にインラインで表示</strong>します。
         マウスを乗せて確認する手間がなくなり、問題の位置と内容が一目で分かります。
       </p>
+      <Figure
+        src="/learn/shots/web/editor-extensions-01.svg"
+        alt="VS Code で ESLint の波線と Error Lens のインライン表示が同時に出ている画面"
+        caption="ESLint が波線で指摘し、Error Lens がその行の右に内容を出す。マウスを乗せずに原因が読める。"
+      />
       <Callout variant="tip" title="保存時オートフォーマットを設定">
         Prettier / ESLint は保存時に自動適用させるのが快適です。設定例を <Cmd>settings.json</Cmd> に追加します。
       </Callout>
@@ -105,6 +110,12 @@ export default function Article() {
         各行に<strong>「誰がいつ変更したか（blame）」</strong>を表示し、コミット履歴・差分・ブランチ操作をエディタ内で辿れます。
         「このコードなぜこうなってる？」を書いた本人・経緯まで遡れるため、既存コードの理解が速くなります。
       </p>
+
+      <Figure
+        src="/learn/shots/web/editor-extensions-02.svg"
+        alt="VS Code の GitLens が行末に「誰がいつ変更したか」を薄く表示している画面"
+        caption="カーソルのある行の末尾に、その行を最後に変更した人・時期・コミットが薄字で出る。"
+      />
 
       <Section>すぐ確認する — プレビュー</Section>
       <SubSection>Live Server</SubSection>

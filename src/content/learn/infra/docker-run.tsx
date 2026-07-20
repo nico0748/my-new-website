@@ -34,6 +34,11 @@ export default function Article() {
 docker run -d --name web -p 8080:80 nginx
 docker ps                         # 起動中のコンテナを確認
 curl http://localhost:8080/       # サーバー内部からアクセス（成功）`}</Code>
+      <Figure
+        src="/learn/shots/infra/docker-run-01.svg"
+        alt="docker ps の実行結果。CONTAINER ID・IMAGE・STATUS・PORTS・NAMES の列が表形式で並んだターミナル"
+        caption="docker ps の出力。PORTS 列の 0.0.0.0:8080 の表記で、どのポートがどこにつながっているか読み取れる。"
+      />
       <KVList
         items={[
           { key: <Cmd>-d</Cmd>, val: "デタッチド（バックグラウンド実行）" },
