@@ -9,6 +9,7 @@ import {
   getSectionGroup,
   getLevelStyle,
   isLearnDomain,
+  isDomainVisible,
 } from "../lib/learnCategories";
 import { getSectionedEntries, getEntry } from "../lib/learnRegistry";
 import {
@@ -36,6 +37,8 @@ const LearnDomainPage = () => {
   }, [domain]);
 
   if (!isLearnDomain(domain)) return <Navigate to="/nicotech" replace />;
+  // 本番で未公開のコースは直リンクでも開かせない
+  if (!isDomainVisible(domain)) return <Navigate to="/nicotech" replace />;
 
   const style = DOMAIN_STYLES[domain];
   const groups = getSectionedEntries(domain);

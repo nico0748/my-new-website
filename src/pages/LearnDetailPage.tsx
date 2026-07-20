@@ -9,6 +9,7 @@ import {
   getSectionLabel,
   getLevelStyle,
   isLearnDomain,
+  isDomainVisible,
 } from "../lib/learnCategories";
 import type { LearnDomain, LearnMeta } from "../lib/learnCategories";
 import { getEntry, getAdjacent } from "../lib/learnRegistry";
@@ -51,6 +52,8 @@ const LearnDetailPage = () => {
   }, [validDomain, d, meta]);
 
   if (!validDomain) return <Navigate to="/nicotech" replace />;
+  // 本番で未公開のコースの記事は直リンクでも開かせない
+  if (!isDomainVisible(d)) return <Navigate to="/nicotech" replace />;
   const style = DOMAIN_STYLES[d];
 
   if (!entry || !ArticleBody || !meta) {
