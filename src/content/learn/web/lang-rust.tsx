@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KVList, Bridge, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KVList, Bridge, KeyPoints, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "lang-rust",
@@ -133,6 +133,8 @@ println!("{} / {}", s2, s3);`}</Code>
 }                          // → 解放済みへの参照を返そうとしている
 
 // 借用チェッカが「戻り値の参照は関数を超えて生き残れない」と検出する`}</Code>
+
+      <Figure src="/learn/shots/web/lang-rust-01.svg" alt="cargo build で借用チェッカのエラーが表示されたターミナル" caption="借用エラーは「バグ」ではなく証明の失敗。cargo が該当行と理由まで示してくれる" />
 
       <Bridge course="コンパイラ / プログラム解析">
         借用チェッカは、コンパイラ講義で学ぶ<strong>静的解析・データフロー解析・生存区間（liveness）解析</strong>の応用です。レジスタ割り当てで使う「変数がどこからどこまで生きているか」の解析と、Rust のライフタイム推論は同じ土俵にあります。「型検査＝プログラムの正しさをコンパイル時に証明する」というコンパイラの役割が、Rust では<strong>メモリ安全性の証明</strong>にまで拡張されている——コンパイラの原理を知っていると、借用エラーは「バグではなく証明の失敗を教えてくれている」と読めるようになります。

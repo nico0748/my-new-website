@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, KeyPoints, ComparisonTable, KVList, TipBox, Bridge, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, KeyPoints, ComparisonTable, KVList, TipBox, Bridge, Figure, Divider } from "../../../components/learn/kit";
 import { LayerStack } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -73,6 +73,11 @@ ng serve   # http://localhost:4200 で開発サーバ起動`}</Code>
 ng g service user                 # サービスを生成`}</Code>
         </Step>
       </Steps>
+      <Figure
+        src="/learn/shots/web/angular-01-01.svg"
+        alt="ng serve で起動した開発サーバに localhost:4200 でアクセスした Angular の初期画面"
+        caption="ng serve が通れば localhost:4200 にこの初期画面が出る。ここが Angular 開発のスタート地点。"
+      />
       <TipBox>
         <Cmd>ng generate</Cmd> はファイルを作るだけでなく、テストの雛形や周辺ファイルも一緒に生成し、命名規約（ケバブケースのファイル名・PascalCase のクラス名）を自動で守らせます。手作業のブレを減らせるのが CLI の狙いです。
       </TipBox>

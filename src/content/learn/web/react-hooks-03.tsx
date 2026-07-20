@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, KeyPoints, ComparisonTable, KVList, TipBox, Bridge, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, KeyPoints, ComparisonTable, KVList, TipBox, Bridge, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "react-hooks-03",
@@ -195,6 +195,8 @@ useEffect(() => { /* ... */ }, [id]);`}</Code>
         コールバックが古い値を参照し続ける（stale closure）バグになります。ESLint の
         <Cmd>react-hooks/exhaustive-deps</Cmd> が警告してくれます。
       </Callout>
+
+      <Figure src="/learn/shots/web/react-hooks-03-01.svg" alt="エディタ上で exhaustive-deps の警告が表示されている様子" caption="依存の入れ忘れはエディタ上で警告される。何を足すべきかまで提示される" />
 
       <SubSection>クリーンアップ関数</SubSection>
       <p>

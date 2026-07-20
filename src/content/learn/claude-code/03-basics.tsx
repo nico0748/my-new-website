@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KeyPoints, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "claude-code-03-basics",
@@ -59,6 +59,11 @@ claude            # Claude Code を起動`}</Code>
           ["Plan mode", "読み取り専用。計画を立てて承認後に実行", "大きな変更の前に、まず計画だけ作りたいとき"],
         ]}
       />
+      <Figure
+        src="/learn/shots/claude-code/claude-code-03-basics-01.svg"
+        alt="Shift+Tab で権限モードが切り替わり、画面隅にモード名が表示されている状態"
+        caption="今どのモードなのかは画面の隅に出る。Shift+Tab を押すたびにここの表示が変わる"
+      />
       <Code lang="text" filename="各モードの体感の違い">{`# Default モード
 > hello.py を作って
 [Claude] hello.py を以下の内容で作成します。よろしいですか？(y/n)
@@ -94,6 +99,11 @@ claude            # Claude Code を起動`}</Code>
   2. 10分前 - README.md を編集
   3. 15分前 - セッション開始時
 どこまで戻しますか？`}</Code>
+      <Figure
+        src="/learn/shots/claude-code/claude-code-03-basics-03.svg"
+        alt="/rewind を実行して巻き戻しポイントを選択している画面"
+        caption="/rewind はどの時点まで戻すかをリストから選べる"
+      />
       <Callout variant="tip" title="大事なポイント">
         チェックポイントがあるから「<strong>試しにやらせてみる</strong>」ができます。怖がらず手を動かしましょう。
       </Callout>
@@ -114,6 +124,11 @@ claude            # Claude Code を起動`}</Code>
           [<Cmd>/agents</Cmd>, "Subagent の管理（後の章で）"],
           [<Cmd>/exit</Cmd>, "セッションを終了"],
         ]}
+      />
+      <Figure
+        src="/learn/shots/claude-code/claude-code-03-basics-02.svg"
+        alt="スラッシュを押したときに表示されるコマンド候補の一覧"
+        caption="スラッシュを押すと候補が一覧で出る。覚えていなくてもここから探せる"
       />
       <p>
         <strong>Tab 補完</strong>: <Cmd>/</Cmd> の後、コマンド名の途中で <Cmd>Tab</Cmd> を押すと自動補完。<Cmd>/co</Cmd> まで打って Tab で <Cmd>/compact</Cmd> や <Cmd>/context</Cmd> の候補が出ます。

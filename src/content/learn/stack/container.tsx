@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, Cmd, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, Cmd, ComparisonTable, KeyPoints, Divider, Figure } from "../../../components/learn/kit";
 import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
@@ -72,6 +72,11 @@ export default function Article() {
         <li><strong>データ</strong>：PostgreSQL（永続）＋ Redis（キャッシュ）</li>
         <li>これらを <Cmd>docker compose up</Cmd> 一発で束ねて起動する</li>
       </ul>
+      <Figure
+        src="/learn/shots/stack/container-stack-01.svg"
+        alt="docker compose ps の実行結果。nginx・アプリ・postgres・redis のコンテナが同時に動いている一覧"
+        caption="コマンド一発で、入口・アプリ・DB・キャッシュが揃って立ち上がる"
+      />
       <Callout variant="info" title="詳しくはインフラ基礎コースへ">
         Docker のイメージ/コンテナの仕組み、Dockerfile、compose での複数サービス構築は、本サイトの<strong>インフラ基礎コース「コンテナ」章</strong>で手を動かしながら学べます。ここではスタックの地図として俯瞰しました。
       </Callout>

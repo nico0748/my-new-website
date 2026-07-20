@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, KVList, KeyPoints, Bridge, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, KVList, KeyPoints, Bridge, Quiz, Divider, Figure } from "../../../components/learn/kit";
 import { FlowChain } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -105,6 +105,11 @@ Done. Now run:
         <strong>Framework → React</strong>、<strong>Variant → TypeScript</strong> を矢印キーで選んで Enter します。
         上のように <Cmd>--template react-ts</Cmd> を付けておけば、この質問はスキップされます。
       </Callout>
+      <Figure
+        src="/learn/shots/react-practice/app-and-vite-setup-01.svg"
+        alt="create-vite の対話画面で Framework に React、Variant に TypeScript を選んでいるターミナル"
+        caption="テンプレートを省くと対話で聞かれる。Framework は React、Variant は TypeScript を選ぶ"
+      />
 
       <Section>手順2 — 依存パッケージをインストールする</Section>
       <p>生成されたフォルダに入り、必要なパッケージを入れます。</p>
@@ -131,6 +136,11 @@ found 0 vulnerabilities`}</Code>
         表示された <Cmd>http://localhost:5173/</Cmd> をブラウザで開くと、<strong>Vite + React のロゴと「count is 0」ボタン</strong>のある初期画面が出ます。
         ボタンを押すたびに数字が増えれば、React が正しく動いています。ここまで来ればセットアップは成功です。
       </p>
+      <Figure
+        src="/learn/shots/react-practice/app-and-vite-setup-02.svg"
+        alt="localhost:5173 に表示された Vite と React のロゴ、count is 0 ボタンのある初期画面"
+        caption="この初期画面が出れば成功。ボタンを押すと数字が増える"
+      />
       <Callout variant="warn" title="よくあるつまずき">
         <ul>
           <li><strong>ポートが使用中</strong>：<Cmd>Port 5173 is in use, trying another one...</Cmd> と出て <Cmd>5174</Cmd> 等で起動します。表示された URL を開けば OK。</li>

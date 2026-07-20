@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, Code, Cmd, Steps, Step, KVList, KeyPoints, Bridge, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, Code, Cmd, Steps, Step, KVList, KeyPoints, Bridge, Quiz, Figure, Divider } from "../../../components/learn/kit";
 import { StepFlow } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -94,6 +94,11 @@ git add src/greet.js
 
 # 5. コミットしてマージを完了
 git commit          # マージ用のメッセージが自動で用意される`}</Code>
+      <Figure
+        src="/learn/shots/dev/resolving-merge-conflicts-01.svg"
+        alt="コンフリクト発生後の git status の実行結果。Unmerged paths の下に both modified のファイルが並んでいる"
+        caption="まず git status。Unmerged paths に出ているファイルが、手で直すべき対象のすべて。"
+      />
       <Callout variant="info" title="rebase 中のコンフリクトは進め方が違う">
         <Cmd>git rebase</Cmd> 中に衝突したら、解決して <Cmd>git add</Cmd> したあとは <Cmd>git commit</Cmd> ではなく
         <Cmd>git rebase --continue</Cmd> で次のコミットへ進みます。複数コミットで連続して衝突することもあります。
@@ -123,6 +128,11 @@ git commit          # マージ用のメッセージが自動で用意される`
           { key: "git diff", val: "解決前後の差分を確認。取りこぼしがないか点検できる" },
           { key: "git log --oneline --graph", val: "分岐と合流を可視化して、何と何がぶつかったかを把握" },
         ]}
+      />
+      <Figure
+        src="/learn/shots/dev/resolving-merge-conflicts-02.svg"
+        alt="VS Code のマージエディタ。Current と Incoming の2ペインと、下に統合結果の Result ペインが並んでいる画面"
+        caption="VS Code のマージエディタ。自分側・相手側を見比べながら、下の Result に最終形を組み立てられる。"
       />
       <p>迷ったら <Cmd>--abort</Cmd> で安全に元に戻せます。「壊したら戻せない」ものではないので、落ち着いて対処できます。</p>
 

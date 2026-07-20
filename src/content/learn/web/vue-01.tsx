@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, KeyPoints, ComparisonTable, KVList, TipBox, Bridge, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, KeyPoints, ComparisonTable, KVList, TipBox, Bridge, Figure, Divider } from "../../../components/learn/kit";
 import { FlowChain } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -433,6 +433,8 @@ const decrement = () => { if (count.value > 0) count.value-- }
         コンポーネント外で作った値は追跡対象外です。リアクティビティは魔法ではなく、
         <strong>get/set を横取りできる経路の上でだけ</strong>成立する、と理解すればバグの見通しが一気に良くなります。
       </Callout>
+
+      <Figure src="/learn/shots/web/vue-01-01.svg" alt="Vue DevTools でコンポーネントのリアクティブな状態を一覧表示した画面" caption="追跡されている値かどうかは Vue DevTools で確認できる。ここに出なければ追跡は切れている" />
 
       <KeyPoints
         items={[

@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, Code, Cmd, ComparisonTable, KeyPoints, Bridge, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, Code, Cmd, ComparisonTable, KeyPoints, Bridge, Quiz, Divider, Figure } from "../../../components/learn/kit";
 import { FlowChain } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -109,6 +109,11 @@ form = this.fb.group({
   <!-- 無効なら送信ボタンを無効化 -->
   <button type="submit" [disabled]="form.invalid">追加</button>
 </form>`}</Code>
+      <Figure
+        src="/learn/shots/angular-practice/reactive-forms-01.svg"
+        alt="タイトル欄を空のまま離れたフォーム画面。タイトルは必須ですのエラーが赤字で表示され、追加ボタンが無効になっている"
+        caption="入力欄に触れて離れると（touched）エラーが出て、無効な間は追加ボタンが押せない"
+      />
       <Callout variant="warn" title="touched を条件に入れる理由">
         <Cmd>form.get('title')?.invalid</Cmd> だけを条件にすると、<strong>初期表示の時点でエラーが出っぱなし</strong>になります。
         <Cmd>touched</Cmd>（ユーザーが一度その欄にフォーカスして離れた）を組み合わせることで、<strong>操作した後にだけ</strong>エラーを見せられます。
@@ -159,6 +164,11 @@ ngOnInit() {
       console.log("入力中:", title);   // 例: 下書き保存・候補検索など
     });
 }`}</Code>
+      <Figure
+        src="/learn/shots/angular-practice/reactive-forms-02.svg"
+        alt="DevTools の Console タブ。debounceTime により入力が落ち着いたタイミングだけログが出力されている"
+        caption="Console で見ると、1 文字ごとではなく入力が止まってからログが出るのが分かる"
+      />
       <Callout variant="info" title="フォームと HTTP が同じ流儀でつながる">
         <Cmd>valueChanges</Cmd> が Observable なので、前章の HttpClient とシームレスにつながります。たとえば
         <Cmd>valueChanges.pipe(debounceTime(300), switchMap(q =&gt; api.search(q)))</Cmd> と書けば「入力するたびに検索 API を叩き、

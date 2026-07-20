@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KeyPoints, KVList, TipBox, Bridge, Steps, Step, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KeyPoints, KVList, TipBox, Bridge, Steps, Step, Figure, Divider } from "../../../components/learn/kit";
 import { SequenceDiagram } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -173,6 +173,12 @@ protoc --go_out=. --go-grpc_out=. user.proto`}</Code>
       <Callout variant="warn" title="デバッグしにくさが落とし穴">
         バイナリなので <Cmd>curl</Cmd> で覗いても中身が読めず、パケットキャプチャも解読しづらいのが難点です。<Cmd>grpcurl</Cmd> や <Cmd>buf curl</Cmd>、<Cmd>Postman</Cmd> の gRPC 対応など、専用ツールを前提に運用します。「速い・小さい」の代償として「人間が読めない」点は最初に押さえておきましょう。
       </Callout>
+
+      <Figure
+        src="/learn/shots/web/grpc-01.svg"
+        alt="grpcurl でサービスのメソッドを呼び出し、レスポンスが JSON で表示されたターミナル"
+        caption="バイナリで直接は読めないため、grpcurl のような専用ツールで JSON に起こして中身を確認する。"
+      />
 
       <Divider />
 

@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, ComparisonTable, KVList, KeyPoints, Bridge, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, ComparisonTable, KVList, KeyPoints, Bridge, Figure, Divider } from "../../../components/learn/kit";
 import { SequenceDiagram } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -86,6 +86,12 @@ Cookie: session_id=abc123`}</Code>
           { key: "HttpOnly", val: "JavaScript からアクセス不可にする" },
           { key: "SameSite", val: "クロスサイト送信を制御（Lax / Strict / None）" },
         ]}
+      />
+
+      <Figure
+        src="/learn/shots/web/cookie-01.svg"
+        alt="Chrome DevTools の Application タブで Cookies を開き、HttpOnly / Secure / SameSite の列が見える状態"
+        caption="実際に発行された Cookie は Application タブで一覧できる。属性が意図どおり付いているかはここで確認する。"
       />
 
       <Section>Cookie の種類</Section>

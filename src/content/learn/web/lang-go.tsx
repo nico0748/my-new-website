@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, KVList, KeyPoints, ComparisonTable, Bridge, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, KVList, KeyPoints, ComparisonTable, Bridge, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "lang-go",
@@ -144,6 +144,12 @@ func main() {
           <li><strong>共有変数への競合</strong>：channel を使わず素の変数を複数 goroutine で書くと競合します。<Cmd>go run -race</Cmd> の<strong>レースディテクタ</strong>で検出しましょう。</li>
         </ul>
       </Callout>
+
+      <Figure
+        src="/learn/shots/web/lang-go-01.svg"
+        alt="go run -race を実行し、DATA RACE が検出されたときのターミナル出力"
+        caption="レースディテクタは「どの goroutine がどの行で同じ変数を触ったか」まで出す。競合は勘ではなく計測で見つける。"
+      />
 
       <Section>ネットワークサーバーとしての Go</Section>
       <p>

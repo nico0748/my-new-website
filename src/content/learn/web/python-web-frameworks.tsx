@@ -11,6 +11,7 @@ import {
   KVList,
   TipBox,
   Bridge,
+  Figure,
   Divider,
 } from "../../../components/learn/kit";
 
@@ -156,6 +157,8 @@ def post_list(request):
         <Cmd> admin.site.register(Post)</Cmd> するだけで、データの追加・編集・削除ができる管理画面が自動で手に入ります。運用面での時短が大きい特徴です。
       </Callout>
 
+      <Figure src="/learn/shots/web/python-web-frameworks-01.svg" alt="Django が自動生成した管理画面（admin）" caption="モデルを登録するだけで、この管理画面が丸ごと生成される" />
+
       <TipBox>
         API を作るなら <Cmd>Django REST Framework（DRF）</Cmd> を組み合わせるのが定番。シリアライザとビューセットで REST API を素早く構築できます。
       </TipBox>
@@ -201,6 +204,8 @@ async def create_user(user: User):
       <Callout variant="info" title="/docs を開くだけ">
         起動後に <Cmd>http://127.0.0.1:8000/docs</Cmd> にアクセスすると、そのまま試せる対話的な API ドキュメント（Swagger UI）が表示されます。手で書かなくてもエンドポイント一覧・入出力スキーマが揃うのが FastAPI 最大の魅力です。
       </Callout>
+
+      <Figure src="/learn/shots/web/python-web-frameworks-02.svg" alt="FastAPI の /docs に自動生成された Swagger UI" caption="型ヒントを書いただけで、この対話的ドキュメントが自動で立ち上がる" />
 
       <Bridge course="プログラミング言語論 / 型理論">
         FastAPI は「型は<strong>実行時の値を保証しない</strong>ヒント」という Python の建前を逆手に取り、型ヒントを<strong>ランタイム検証・スキーマ生成の仕様</strong>として使います。<Cmd>user: User</Cmd> と書くと、Pydantic がその型を<strong>述語（この形に合致するか）</strong>として受信データを検証し、外部からの入力を型が保証された値に絞り込みます。これは型理論でいう「<strong>パースして検証する（parse, don&apos;t validate）</strong>」——信頼できない <Cmd>dict</Cmd> を、型が付いた安全なオブジェクトへ一度で変換する考え方の実践例です。境界で型を作り込めば、内側のコードは常に正しい形のデータだけを扱えます。

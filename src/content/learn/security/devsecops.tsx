@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Bridge, ComparisonTable, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Bridge, ComparisonTable, KVList, KeyPoints, Quiz, Divider, Figure } from "../../../components/learn/kit";
 import { StepFlow } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -62,6 +62,7 @@ export default function Article() {
           { key: "秘密スキャン", val: "API キー・トークン・パスワードのハードコードを検出。露出した秘密は即ローテーションする。" },
         ]}
       />
+      <Figure src="/learn/shots/security/devsecops-01.svg" alt="GitHub リポジトリの Dependabot alerts 画面で、依存パッケージの既知脆弱性が深刻度付きで一覧表示されているスクリーンショット" caption="SCA の実際の見え方。依存に潜む既知脆弱性がリポジトリ上でそのまま通知される" />
       <Callout variant="tip" title="いきなり全部止めない — 段階導入">
         セキュリティチェックを最初から「検出したらすべてビルド失敗」に設定すると、誤検知の山でパイプラインが止まり、開発者がチェック自体を無効化してしまいます。導入は<strong>「可視化のみ → ノイズを整理 → 高リスクのみ失敗扱いに昇格」</strong>と段階的に進めるのが定石です。誤検知はルール ID 単位で管理します。
       </Callout>

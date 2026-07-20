@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, KeyPoints, ComparisonTable, KVList, Bridge, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, KeyPoints, ComparisonTable, KVList, Bridge, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "lang-ruby-on-rails",
@@ -28,6 +28,11 @@ export default function Article() {
       <Callout variant="tip" title="Scaffold / Generator で骨組みを自動生成">
         <Cmd>rails generate scaffold Post title:string body:text</Cmd> のようなコマンドで、モデル・ビュー・コントローラ・マイグレーションを一気に生成できます。CRUD の雛形が数秒で立ち上がります。
       </Callout>
+      <Figure
+        src="/learn/shots/web/lang-ruby-on-rails-01.svg"
+        alt="rails generate scaffold を実行し、生成されたファイル一覧が並ぶターミナル"
+        caption="1コマンドでモデル・ビュー・コントローラ・マイグレーションが一気に生成される。この量が CoC の恩恵。"
+      />
 
       <p>
         なぜ「設定を書かなくても動く」のか。Rails は<strong>命名規約から関係を推論</strong>しているからです。クラス名 <Cmd>Post</Cmd>（単数・キャメルケース）を見れば、対応テーブルは <Cmd>posts</Cmd>（複数・スネークケース）だと機械的に導けます。この規約を実装で担っているのが Ruby の<strong>メタプログラミング</strong>——実行時にクラスやメソッドを動的に定義・呼び出しする仕組みです。<Cmd>find_by_title</Cmd> のようなメソッドは事前定義されておらず、呼ばれた瞬間にカラム名から生成されています。
@@ -104,6 +109,12 @@ end`}</Code>
       <Callout variant="warn" title="よくある落とし穴 — N+1 問題">
         ORM が SQL を隠すため、一覧表示で「投稿 100 件それぞれの著者を取りに行く」と、<strong>1 + 100 回</strong>のクエリが飛ぶことがあります（N+1 問題）。<Cmd>Post.includes(:user)</Cmd> のように<strong>事前読み込み（eager loading）</strong>すれば数本の JOIN にまとめられます。ORM の便利さの裏で「実際に発行される SQL」を読める必要がある、という DB 知識が効く典型例です。
       </Callout>
+
+      <Figure
+        src="/learn/shots/web/lang-ruby-on-rails-02.svg"
+        alt="rails server のログに、N+1 で同じ形の SELECT が何度も並んでいる様子"
+        caption="開発サーバのログを見ると、同じ形の SELECT がずらりと並ぶ。N+1 はここで気づくのが一番早い。"
+      />
 
       <SubSection>他フレームワークとの位置づけ</SubSection>
       <ComparisonTable

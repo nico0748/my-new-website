@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, KVList, ComparisonTable, KeyPoints, Bridge, TipBox, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, KVList, ComparisonTable, KeyPoints, Bridge, TipBox, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "typescript",
@@ -37,6 +37,8 @@ age = "25"; // ← 型エラー（number に string は代入不可）
 
 // 最新 JS 機能（Optional Chaining ＋ Nullish 合体）
 const name = user?.profile?.name ?? "Guest";`}</Code>
+
+      <Figure src="/learn/shots/web/typescript-01.svg" alt="エディタで型エラーの赤波線とツールチップが表示されている様子" caption="実行するまでもなく、書いた瞬間にエディタが誤りを指摘してくれる" />
 
       <Section>JavaScript との違い</Section>
       <p>

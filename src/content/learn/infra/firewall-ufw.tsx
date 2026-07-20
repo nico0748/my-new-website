@@ -70,6 +70,11 @@ sudo ufw allow 443/tcp           # HTTPS
 # 有効化（SSH を許可済みなので切断されない）
 sudo ufw enable
 sudo ufw status verbose`}</Code>
+      <Figure
+        src="/learn/shots/infra/firewall-ufw-01.svg"
+        alt="sudo ufw status verbose の実行結果。デフォルトが deny(incoming) で 22/80/443 だけが ALLOW になっている"
+        caption="有効化後の ufw status verbose。Default が deny (incoming) で、明示的に許可した3つだけが ALLOW に並ぶ。"
+      />
       <Callout variant="info" title="RHEL 系は firewalld">
         UFW は Debian 系専用です。RHEL 系ではゾーンベースの <Cmd>firewalld</Cmd> を使います（<Cmd>firewall-cmd --add-service=http</Cmd> のように）。
       </Callout>

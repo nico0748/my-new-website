@@ -60,6 +60,11 @@ export default function Article() {
           ["SSH 鍵", "キー・ペアの自動生成", "秘密鍵を必ずダウンロードする"],
         ]}
       />
+      <Figure
+        src="/learn/shots/infra/vps-basics-01.svg"
+        alt="Oracle Cloud のインスタンス作成画面で、イメージに Ubuntu 24.04、Shape に VM.Standard.E2.1.Micro を選んだ状態"
+        caption="インスタンスの作成画面。イメージとシェイプをこの組み合わせにすると Always Free の対象になる。"
+      />
       <Callout variant="danger" title="秘密鍵のダウンロードは作成時の1回だけ">
         「キー・ペアの自動生成」を選んだ場合、秘密鍵をダウンロードできるのは作成画面の <strong>1回だけ</strong>です。この画面を閉じると二度と取得できません。安全な場所に保存してください。
       </Callout>
@@ -74,11 +79,21 @@ export default function Article() {
         <Step title="Username"><Cmd>ubuntu</Cmd>（Ubuntu イメージのデフォルトユーザー）。</Step>
         <Step title="State"><Cmd>Running</Cmd> であること。</Step>
       </Steps>
+      <Figure
+        src="/learn/shots/infra/vps-basics-02.svg"
+        alt="作成後のインスタンス詳細ページで Public IP・Username・State が表示されている画面"
+        caption="インスタンス詳細ページ。この3点（Public IP / Username / State）が次の SSH ログインで必要になる。"
+      />
 
       <Section>クラウド側ファイアウォール — セキュリティリスト</Section>
       <p>
         Oracle Cloud には <strong>セキュリティリスト</strong>という「クラウドレベルのファイアウォール」があります。デフォルトでは SSH（ポート22）だけが許可されています。「ネットワーキング → 仮想クラウド・ネットワーク → サブネット → セキュリティリスト」を開き、受信ルール（Ingress）に <Cmd>0.0.0.0/0 : TCP / 22</Cmd> があることを確認します。HTTP(80) / HTTPS(443) は後で追加します。
       </p>
+      <Figure
+        src="/learn/shots/infra/vps-basics-03.svg"
+        alt="セキュリティリストの受信ルール一覧に 0.0.0.0/0 TCP 22 の行が表示されている画面"
+        caption="セキュリティリストの受信ルール。初期状態では SSH（22）だけが全世界から許可されている。"
+      />
       <Callout variant="info" title="0.0.0.0/0 とは？（CIDR 表記）">
         <Cmd>0.0.0.0/0</Cmd> は「すべての IP アドレス＝全世界」を意味します。<Cmd>/0</Cmd> は CIDR というネットワーク範囲の書き方で、範囲制限なしを表します。特定の IP だけに絞るなら <Cmd>203.0.113.50/32</Cmd>（1つの IP）のように書きます。この <Cmd>/32</Cmd> は後の章で「自分の IP だけ許可する」ときに何度も使います。
       </Callout>

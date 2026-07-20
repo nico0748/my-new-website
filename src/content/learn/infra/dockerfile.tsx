@@ -43,6 +43,11 @@ docker run -d --name my-site -p 8080:80 my-site:1.0`}</Code>
           { key: <Cmd>CMD</Cmd>, val: "コンテナ起動時に実行する既定コマンド" },
         ]}
       />
+      <Figure
+        src="/learn/shots/infra/dockerfile-01.svg"
+        alt="docker build を2回目に実行したログ。各ステップに CACHED と表示され、ビルドが数秒で終わっている"
+        caption="2回目のビルド。変更のないステップに CACHED が付き、そこは再実行されないのでビルドが一気に速くなる。"
+      />
       <Callout variant="tip" title="レイヤーキャッシュを効かせる COPY の順序">
         各命令が1レイヤーになり、Docker は変わっていないレイヤーをキャッシュして再利用します。だから「変わりにくいもの → 変わりやすいもの」の順に書くとビルドが速くなります。Node アプリなら <Cmd>COPY package*.json ./</Cmd> → <Cmd>RUN npm ci</Cmd>（依存は滅多に変わらない）を先に、<Cmd>COPY . .</Cmd>（ソースは頻繁に変わる）を後に。
       </Callout>
@@ -125,6 +130,11 @@ RUN addgroup -S app && adduser -S app -G app
 USER app
 EXPOSE 3000
 CMD ["node", "dist/server.js"]`}</Code>
+      <Figure
+        src="/learn/shots/infra/dockerfile-02.svg"
+        alt="docker images の実行結果。1段ビルドのイメージとマルチステージのイメージが並び SIZE の桁が違う"
+        caption="同じアプリを1段ビルドとマルチステージで作った結果。SIZE 列を並べると削減幅がそのまま数字で見える。"
+      />
       <Callout variant="info" title="なぜ install を2回やるのか">
         builder 側の <Cmd>node_modules</Cmd> には開発用依存が混ざっています。それを本番に持ち込みたくないので、builder の node_modules は捨て、runner で <Cmd>--omit=dev</Cmd> して本番依存だけ入れ直します。builder からコピーするのは<strong>ビルド結果（dist/）だけ</strong>。サイズが 1/9 になることもよくあります。
       </Callout>

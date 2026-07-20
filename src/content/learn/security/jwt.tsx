@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, Bridge, Code, Cmd, ComparisonTable, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, Bridge, Code, Cmd, ComparisonTable, KVList, KeyPoints, Quiz, Divider, Figure } from "../../../components/learn/kit";
 import { FlowChain } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -51,6 +51,7 @@ SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQ  ← signature（改ざん検知用）`}<
         ]}
       />
 
+      <Figure src="/learn/shots/security/jwt-01.svg" alt="JWT デコーダにトークンを貼り付け、header と payload の JSON が平文で読める状態になっているスクリーンショット" caption="デコーダに貼るだけで中身が読める。JWS の Payload は暗号化されていないことが一目で分かる" />
       <Callout variant="warn" title="Payload は「暗号化」されていない — 誰でも読める">
         JWS の Payload は Base64URL でエンコードされているだけで、<strong>暗号化ではありません</strong>。
         誰でもデコードして中身を読めます。署名が保証するのは<strong>改ざん検知（完全性・真正性）</strong>であって、機密性ではありません。

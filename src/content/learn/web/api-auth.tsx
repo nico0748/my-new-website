@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, ComparisonTable, KeyPoints, KVList, Bridge, TipBox, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, ComparisonTable, KeyPoints, KVList, Bridge, TipBox, Figure, Divider } from "../../../components/learn/kit";
 import { SequenceDiagram } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -67,6 +67,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0MiJ9.abc`}</Code>
   "iat": 1751875200,     // 発行時刻
   "exp": 1751878800      // 有効期限（これを過ぎたら無効）
 }`}</Code>
+      <Figure
+        src="/learn/shots/web/api-auth-01.svg"
+        alt="jwt.io にトークンを貼り付け、ヘッダ・ペイロード・署名の3部がデコード表示された画面"
+        caption="ペイロードは Base64 なので、貼り付けるだけで誰でも中身が読める。機密情報を入れてはいけない理由が一目で分かる。"
+      />
       <Callout variant="danger" title="検証で必ず見る 3 点">
         (1) <Cmd>alg</Cmd> が想定通りか（<Cmd>none</Cmd> を拒否する）、(2) 署名が発行者の鍵で正しく検証できるか、(3) <Cmd>exp</Cmd> が切れていないか。ペイロードは Base64 なので<strong>誰でも読める</strong>ことを忘れず、機微情報を入れないこと。
       </Callout>

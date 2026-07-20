@@ -103,6 +103,11 @@ ports:
 docker compose ps          # コンテナ一覧
 docker compose logs -f web # web のログを追う
 docker compose down        # 停止＋コンテナ・ネットワーク削除`}</Code>
+      <Figure
+        src="/learn/shots/infra/docker-compose-01.svg"
+        alt="docker compose up -d の実行結果。Network Created と Container Created / Started の行が順に表示されている"
+        caption="up -d の出力。ネットワークが自動作成され、続いてコンテナが Created から Started へ進むのが読み取れる。"
+      />
       <Callout variant="info" title="docker compose（スペース）が正">
         古い記事の <Cmd>docker-compose</Cmd>（ハイフン）は旧 v1（別インストール）。現在は Docker 本体にプラグイン統合された <Cmd>docker compose</Cmd>（スペース）が正しい形です。
       </Callout>

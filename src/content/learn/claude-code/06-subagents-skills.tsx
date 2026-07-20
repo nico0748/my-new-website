@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KeyPoints, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "claude-code-06-subagents-skills",
@@ -56,6 +56,11 @@ export default function Article() {
       <p>
         <Cmd>/agents</Cmd> コマンドで作成できます。Claude が対話形式で ①名前 ②説明 ③使えるツール ④使うモデル を聞いてきて、雛形を作ってくれます。<Cmd>.claude/agents/&lt;name&gt;.md</Cmd> に保存されます。
       </p>
+      <Figure
+        src="/learn/shots/claude-code/claude-code-06-subagents-skills-01.svg"
+        alt="/agents の Subagent 作成メニューが表示された画面"
+        caption="/agents のメニュー。既存の Subagent の確認と、新規作成をここから行う"
+      />
       <Code lang="markdown" filename=".claude/agents/code-reviewer.md（例）">{`---
 name: code-reviewer
 description: コードレビュー専門。プルリクエストやファイル変更を、ベストプラクティス・セキュリティ・可読性の観点でレビューする
@@ -236,6 +241,11 @@ feat(auth): OAuth2 ログインを追加
 passport-oauth2 を使った OAuth2 認証フローを実装。
 Google・GitHub プロバイダに対応。`}</Code>
       <p>ターミナルで何か小さい変更を加えて <Cmd>git add</Cmd> しておき、<Cmd>claude</Cmd> を起動して「コミットメッセージ作って」と依頼。Skill が呼び出され Conventional Commits 形式のメッセージが提案されることを確認しましょう。</p>
+      <Figure
+        src="/learn/shots/claude-code/claude-code-06-subagents-skills-02.svg"
+        alt="自作の Skill が呼び出されてコミットメッセージを提案している画面"
+        caption="Skill が呼び出されると、その名前が画面に出る。定義したとおりの手順で動いているか確認する"
+      />
       <p><strong>課題3: Output Style を試す</strong> ── <Cmd>/output-style explanatory</Cmd> に切替 → 簡単なコード生成を依頼（例:「フィボナッチ数列を返す関数を Python で書いて」）→ <strong>Insights</strong>（説明）が含まれることを確認 → <Cmd>/output-style default</Cmd> で戻す。</p>
       <Callout variant="tip" title="課題4（任意）">
         <strong>Code Reviewer Subagent</strong> を作る。① <Cmd>/agents</Cmd> で対話的に作成 ② コードファイルを指定してレビューを依頼 ③ Claude が Subagent コンテキストでレビューし、メインに結果を返すか確認。

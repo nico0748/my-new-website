@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider, Figure } from "../../../components/learn/kit";
 import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
@@ -43,6 +43,11 @@ export default function Article() {
           [<Tech id="keycloak">Keycloak</Tech>, "自己ホスト OSS", "企業内 SSO・ID 連携"],
           [<Tech id="nextauth">NextAuth (Auth.js)</Tech>, "ライブラリ", "外部サービスに頼らず自前実装"],
         ]}
+      />
+      <Figure
+        src="/learn/shots/stack/auth-stack-01.svg"
+        alt="Clerk の埋め込みサインイン UI。メール入力欄と外部サービスのログインボタンが並んでいる"
+        caption="「UI コンポーネント込み」とは、このログイン画面ごと配置できるということ"
       />
       <Callout variant="tip" title="選び方">
         素早く UI 込みで入れるなら <Tech id="clerk">Clerk</Tech>、汎用・実績重視なら <Tech id="auth0">Auth0</Tech>、自己ホスト要件なら <Tech id="keycloak">Keycloak</Tech>、外部依存を避けたい Next.js なら <Tech id="nextauth">NextAuth</Tech> が目安です。

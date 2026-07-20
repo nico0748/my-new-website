@@ -6,6 +6,7 @@ import DomainNav from "../components/learn/DomainNav";
 import {
   DOMAIN_STYLES,
   getSectionLabel,
+  getSectionGroup,
   getLevelStyle,
   isLearnDomain,
 } from "../lib/learnCategories";
@@ -47,6 +48,7 @@ const LearnDomainPage = () => {
   const resume = lastEntry ?? firstEntry;
 
   let counter = 0;
+  let lastGroup: string | undefined;
 
   return (
     <LearnLayout activeDomain={domain} sidebar={<DomainNav domain={domain} />}>
@@ -83,8 +85,13 @@ const LearnDomainPage = () => {
 
       {/* Learning path */}
       {groups.length > 0 ? (
-        groups.map((g) => (
+        groups.map((g) => {
+          const group = getSectionGroup(domain, g.section);
+          const showGroup = group && group !== lastGroup;
+          if (group) lastGroup = group;
+          return (
           <div className="path-group" key={g.section}>
+            {showGroup && <div className="path-supergroup">{group}</div>}
             <div className="sidebar-chapter path-chapter">{getSectionLabel(domain, g.section)}</div>
             <div className="path-list">
               {g.entries.map((e) => {
@@ -115,7 +122,8 @@ const LearnDomainPage = () => {
               })}
             </div>
           </div>
-        ))
+          );
+        })
       ) : (
         <div className="wip-notice">
           <span className="wip-notice-badge">開発中</span>

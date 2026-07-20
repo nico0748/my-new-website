@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, KVList, KeyPoints, Bridge, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, KVList, KeyPoints, Bridge, Quiz, Divider, Figure } from "../../../components/learn/kit";
 import { SequenceDiagram } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -53,6 +53,16 @@ export default function Article() {
           読み書きなら <Cmd>https://www.googleapis.com/auth/tasks</Cmd>、読み取りだけなら <Cmd>.../auth/tasks.readonly</Cmd>。
         </Step>
       </Steps>
+      <Figure
+        src="/learn/shots/react-practice/google-calendar-api-01.svg"
+        alt="Google Cloud Console のライブラリ画面で Google Tasks API を有効化しようとしている状態"
+        caption="手順1: ライブラリから Google Tasks API を探し、有効化する"
+      />
+      <Figure
+        src="/learn/shots/react-practice/google-calendar-api-02.svg"
+        alt="OAuth 2.0 クライアント ID の作成画面。承認済みの JavaScript 生成元に localhost:5173 を入力している"
+        caption="手順2: 承認済みの JavaScript 生成元に開発サーバーの URL を登録する。ここが抜けると認可が弾かれる"
+      />
       <Callout variant="tip" title="クライアント ID は .env に">
         クライアント ID は <Cmd>.env</Cmd> に置き、<Cmd>import.meta.env.VITE_GOOGLE_CLIENT_ID</Cmd> で読み込みます
         （Vite では <Cmd>VITE_</Cmd> 始まりの変数だけがフロントに露出します）。
@@ -182,6 +192,11 @@ export function GoogleTasksPage() {
     </div>
   );
 }`}</Code>
+      <Figure
+        src="/learn/shots/react-practice/google-calendar-api-03.svg"
+        alt="Google と連携ボタンを押したときに表示される Google の同意ダイアログ。タスクの表示と編集の権限を求めている"
+        caption="連携ボタンを押すと、要求した scope の内容がこの同意ダイアログに提示される"
+      />
       <Callout variant="info" title="CORS と本番運用">
         Google の API はブラウザからの呼び出し（CORS）に対応していますが、多くの外部 API はそうではありません。その場合は
         <strong>自前のバックエンドを経由</strong>させます。また、トークンの更新（refresh）・秘密情報の保管・レート制限対応は

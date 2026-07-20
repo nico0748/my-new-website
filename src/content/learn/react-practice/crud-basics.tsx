@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, Code, Cmd, ComparisonTable, KeyPoints, Bridge, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, Code, Cmd, ComparisonTable, KeyPoints, Bridge, Quiz, Divider, Figure } from "../../../components/learn/kit";
 import { FlowChain } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -127,6 +127,11 @@ const onDelete = async (id: string) => {
   await deleteTask(id);
   setTasks((prev) => prev.filter((t) => t.id !== id));  // 画面からも消す
 };`}</Code>
+      <Figure
+        src="/learn/shots/react-practice/crud-basics-01.svg"
+        alt="DevTools の Network タブに POST・PATCH・DELETE のリクエストとステータスコードが並んでいる画面"
+        caption="Network タブを開いて操作すると、CRUD がそのままメソッドとして飛んでいるのが見える"
+      />
       <Callout variant="info" title="再取得 or ローカル更新、そして楽観的更新">
         更新後の画面反映は 2 通り。(1) もう一度 <Cmd>getTasks()</Cmd> して<strong>作り直す</strong>（確実・やや遅い）、
         (2) 返ってきた結果で<strong>ローカルの配列を更新</strong>する（速い・上のコード）。さらに、サーバー応答を待たず先に画面を更新し、

@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KeyPoints, KVList, TipBox, Bridge, Steps, Step, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KeyPoints, KVList, TipBox, Bridge, Steps, Step, Figure, Divider } from "../../../components/learn/kit";
 import { SequenceDiagram } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -175,6 +175,8 @@ app.post(
       <TipBox>
         ローカル開発では、公開 URL が無いと Webhook を受け取れません。<Cmd>ngrok</Cmd> でローカルサーバをトンネル公開するか、多くのサービスが提供する「テストイベント送信」ボタンで動作確認するのが定番です。
       </TipBox>
+
+      <Figure src="/learn/shots/web/webhook-01.svg" alt="webhook.site で受信した Webhook のヘッダとボディを表示した画面" caption="署名ヘッダとイベント ID が実際にどう届くかは、この画面で確かめられる" />
 
       <Divider />
 

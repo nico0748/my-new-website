@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KeyPoints, KVList, TipBox, Bridge, Steps, Step, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KeyPoints, KVList, TipBox, Bridge, Steps, Step, Figure, Divider } from "../../../components/learn/kit";
 import { FlowChain } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -117,6 +117,12 @@ type Mutation {
     }
   }
 }`}</Code>
+
+      <Figure
+        src="/learn/shots/web/graphql-01.svg"
+        alt="GraphiQL でクエリを書いて実行し、右に結果 JSON・右端にスキーマのドキュメントが表示された画面"
+        caption="左でクエリを書くと補完が効き、右に結果が出る。スキーマがそのままドキュメントとして引ける。"
+      />
 
       <Section>Resolver — フィールドを値に解決する</Section>
       <p>

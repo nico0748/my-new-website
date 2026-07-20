@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KeyPoints, KVList, TipBox, Bridge, Steps, Step, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KeyPoints, KVList, TipBox, Bridge, Steps, Step, Figure, Divider } from "../../../components/learn/kit";
 import { FlowChain } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -93,6 +93,8 @@ components:
       <p>
         <strong>Swagger UI</strong> は、OpenAPI ファイルを読み込んでインタラクティブなドキュメント画面を自動生成するツールです。エンドポイント一覧・パラメータ・レスポンス例が表示され、ブラウザ上で <Cmd>Try it out</Cmd> から実際に API を叩いて確認できます。同系統に、より軽量な <Cmd>Redoc</Cmd> や <Cmd>Scalar</Cmd> もあります。
       </p>
+
+      <Figure src="/learn/shots/web/openapi-swagger-01.svg" alt="Swagger UI でエンドポイントを展開し Try it out を実行した画面" caption="YAML を書くだけで、その場で叩けるドキュメント画面が手に入る" />
 
       <Callout variant="tip" title="コードから自動生成もできる">
         FastAPI（Python）や NestJS（TypeScript）などは、実装のコードから OpenAPI 仕様を自動出力します。仕様と実装が乖離しにくく、まず試したい構成です。

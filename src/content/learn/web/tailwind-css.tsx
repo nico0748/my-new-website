@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, KeyPoints, ComparisonTable, TipBox, KVList, Bridge, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, KeyPoints, ComparisonTable, TipBox, KVList, Bridge, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "tailwind-css",
@@ -117,6 +117,8 @@ npx tailwindcss init -p`}</Code>
       <TipBox>
         色は <Cmd>text-*</Cmd>（文字）/ <Cmd>bg-*</Cmd>（背景）/ <Cmd>border-*</Cmd>（枠）に、色名と濃さ（<Cmd>50〜950</Cmd>）を組み合わせます。例: <Cmd>bg-teal-500</Cmd>。
       </TipBox>
+
+      <Figure src="/learn/shots/web/tailwind-css-01.svg" alt="エディタで Tailwind CSS IntelliSense がクラス名を補完している様子" caption="語彙を暗記しなくても、補完と CSS プレビューで書きながら覚えられる" />
 
       <Section>レスポンシブ接頭辞</Section>
       <p>

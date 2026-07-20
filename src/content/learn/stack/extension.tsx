@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, Cmd, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, Cmd, ComparisonTable, KeyPoints, Divider, Figure } from "../../../components/learn/kit";
 import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
@@ -43,6 +43,11 @@ export default function Article() {
           ["Content Script", "開いている Web ページに JS を注入して DOM を操作"],
           ["Popup / Options", "ツールバーアイコンの UI・設定画面"],
         ]}
+      />
+      <Figure
+        src="/learn/shots/stack/extension-stack-01.svg"
+        alt="Chrome の拡張機能管理画面。デベロッパーモードを ON にして、未パッケージの拡張機能を読み込んだ状態"
+        caption="開発中の拡張は、この画面からフォルダを指定して読み込んで動かす"
       />
       <Callout variant="warn" title="権限は最小限に">
         拡張機能は「閲覧中のページの内容を読む」など強い権限を要求できます。ユーザーの信頼とストア審査の観点から、<Cmd>permissions</Cmd> は<strong>本当に必要なものだけ</strong>宣言するのが鉄則です。過剰な権限は審査で弾かれる原因にもなります。

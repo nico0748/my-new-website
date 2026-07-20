@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, KVList, KeyPoints, Bridge, Quiz, Divider, ComparisonTable } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, KVList, KeyPoints, Bridge, Quiz, Divider, ComparisonTable, Figure } from "../../../components/learn/kit";
 import { FlowChain } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -135,6 +135,11 @@ Package Manager: npm 10.2.4`}</Code>
 
 ? Do you want to enable Server-Side Rendering (SSR) ... ? (y/N)
   → N（今回は SPA として作るので No。そのまま Enter）`}</Code>
+      <Figure
+        src="/learn/shots/angular-practice/app-and-angular-cli-setup-01.svg"
+        alt="ng new taskflow の対話画面。stylesheet format のリストから CSS を矢印キーで選んでいるターミナル"
+        caption="ng new は対話で聞いてくる。スタイル形式は CSS、SSR は No を選ぶ"
+      />
       <Callout variant="info" title="ルーティングは自動で入る">
         Angular の新しい CLI は<strong>ルーティングを既定で有効化</strong>し、<Cmd>app.routes.ts</Cmd> を最初から生成します
         （以前は「Add routing? (y/N)」と聞かれました）。もし聞かれたら <strong>Yes</strong> を選んでください。
@@ -178,6 +183,11 @@ Watch mode enabled. Watching for file changes...
         表示された <Cmd>http://localhost:4200/</Cmd> をブラウザで開くと、<strong>Angular のロゴと「Hello, taskflow」のウェルカム画面</strong>が出ます。
         ここまで来ればセットアップは成功です。ファイルを保存すると自動で再ビルドされ、ブラウザに反映されます（HMR）。
       </p>
+      <Figure
+        src="/learn/shots/angular-practice/app-and-angular-cli-setup-02.svg"
+        alt="localhost:4200 に表示された Angular の初期ウェルカム画面。ロゴと Hello, taskflow が並んでいる"
+        caption="この初期画面が出れば成功。Vite の 5173 に対し、Angular の既定は 4200"
+      />
       <Callout variant="warn" title="よくあるつまずき">
         <ul>
           <li><strong>ポート 4200 が使用中</strong>：<Cmd>Port 4200 is already in use.</Cmd> と出ます。別ポートで起動するには <Cmd>ng serve --port 4300</Cmd> のように指定します。</li>

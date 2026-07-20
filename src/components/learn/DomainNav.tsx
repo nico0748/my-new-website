@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import type { LearnDomain } from "../../lib/learnCategories";
-import { getSectionLabel } from "../../lib/learnCategories";
+import { getSectionLabel, getSectionGroup } from "../../lib/learnCategories";
 import { getSectionedEntries } from "../../lib/learnRegistry";
 import { isArticleDone, useProgressTick } from "../../lib/learnProgress";
 
@@ -23,10 +23,17 @@ const DomainNav = ({ domain, activeId }: Props) => {
   const groups = getSectionedEntries(domain);
   useProgressTick(); // 進捗変化で再描画
 
+  let lastGroup: string | undefined;
+
   return (
     <nav aria-label="教材ナビゲーション">
-      {groups.map((g) => (
+      {groups.map((g) => {
+        const group = getSectionGroup(domain, g.section);
+        const showGroup = group && group !== lastGroup;
+        if (group) lastGroup = group;
+        return (
         <div key={g.section}>
+          {showGroup && <div className="sidebar-supergroup">{group}</div>}
           <div className="sidebar-chapter">{getSectionLabel(domain, g.section)}</div>
           <ul className="sidebar-nav">
             {g.entries.map((e) => {
@@ -45,7 +52,8 @@ const DomainNav = ({ domain, activeId }: Props) => {
             })}
           </ul>
         </div>
-      ))}
+        );
+      })}
     </nav>
   );
 };

@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, Code, Cmd, KVList, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, Code, Cmd, KVList, KeyPoints, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "fail2ban",
@@ -54,6 +54,11 @@ findtime  = 600`}</Code>
 sudo fail2ban-client status           # 有効な jail 一覧
 sudo fail2ban-client status sshd      # BAN 中の IP を確認
 # sudo fail2ban-client set sshd unbanip <IP>   # 手動で解除`}</Code>
+      <Figure
+        src="/learn/shots/infra/fail2ban-01.svg"
+        alt="sudo fail2ban-client status sshd の実行結果。Currently banned と Banned IP list に IP が並んでいる"
+        caption="実際に BAN されている IP の一覧。Total failed / Total banned の数字が、攻撃を止めた実績になる。"
+      />
 
       <Section>鍵認証でも fail2ban を入れる理由</Section>
       <p>鍵認証ならパスワード突破はされません。それでも導入する価値があります。</p>

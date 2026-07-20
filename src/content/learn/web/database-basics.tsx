@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, Code, Cmd, ComparisonTable, KVList, KeyPoints, Bridge, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, Code, Cmd, ComparisonTable, KVList, KeyPoints, Bridge, Quiz, Figure, Divider } from "../../../components/learn/kit";
 import { FlowChain } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -116,6 +116,11 @@ JOIN users ON posts.user_id = users.id;`}</Code>
       </p>
       <Code lang="sql" filename="index.sql">{`-- email で頻繁に検索するなら索引を作る
 CREATE INDEX idx_users_email ON users(email);`}</Code>
+      <Figure
+        src="/learn/shots/web/database-basics-01.svg"
+        alt="同じ検索を EXPLAIN ANALYZE で実行し、インデックス作成前後の実行計画と所要時間を並べた結果"
+        caption="EXPLAIN ANALYZE を前後で比べると、全件走査が索引探索に変わり所要時間が桁で縮むのが数字で見える。"
+      />
 
       <Bridge course="データベース論 / アルゴリズムとデータ構造">
         テーブルと主キー・外部キー・JOIN は、講義で学ぶ<strong>関係モデル（relational model）</strong>そのもの。SQL の <Cmd>SELECT</Cmd> は

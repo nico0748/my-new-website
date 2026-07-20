@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, ComparisonTable, KVList, KeyPoints, Bridge, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, ComparisonTable, KVList, KeyPoints, Bridge, Figure, Divider } from "../../../components/learn/kit";
 import { SequenceDiagram } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -127,6 +127,8 @@ app.use(session({
           { key: "ヘッダー", val: "API / SPA でよく使う（Authorization 等）" },
         ]}
       />
+
+      <Figure src="/learn/shots/web/web-session-01.svg" alt="DevTools の Application タブでセッション Cookie とその属性を表示した画面" caption="実際のセッション ID と HttpOnly / Secure / SameSite の設定はここで確認できる" />
 
       <Section>ライフサイクルとタイムアウト</Section>
       <p>

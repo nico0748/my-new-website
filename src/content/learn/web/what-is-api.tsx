@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KeyPoints, KVList, Bridge, TipBox, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KeyPoints, KVList, Bridge, TipBox, Figure, Divider } from "../../../components/learn/kit";
 import { FlowChain, LayerStack } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -62,6 +62,8 @@ Content-Type: application/json
       </p>
       <Code lang="bash" filename="手元から同じ会話をする">{`curl -H "Authorization: Bearer abc123" \\
   "https://api.example.com/v1/weather?city=Tokyo"`}</Code>
+
+      <Figure src="/learn/shots/web/what-is-api-01.svg" alt="ターミナルで curl を実行し JSON レスポンスが返ってきた画面" caption="ブラウザもアプリも介さず、ターミナル 1 行で API の往復をそのまま覗ける" />
       <Callout variant="tip" title="流儀が違うだけで、やっていることは同じ">
         REST も GraphQL も gRPC も、突き詰めれば「リクエストを送って、結果を受け取る」というこの往復です。違うのは<strong>話し方の流儀</strong>（URL の組み立て方・データ形式・使うプロトコル）だけ。まずこの 1 往復のイメージを持っておくと、どのスタイルも同じ骨格に見えてきます。
       </Callout>

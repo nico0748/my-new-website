@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider, Figure } from "../../../components/learn/kit";
 import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
@@ -30,6 +30,11 @@ export default function Article() {
           [<Tech id="netlify">Netlify</Tech>, "静的サイト/Jamstack の定番。ビルド・関数・フォーム"],
           [<Tech id="cloudflare">Cloudflare</Tech>, "エッジ配信・Workers・DDoS 対策。低遅延なグローバル配信"],
         ]}
+      />
+      <Figure
+        src="/learn/shots/stack/hosting-stack-01.svg"
+        alt="Vercel のプロジェクト画面。push ごとのデプロイ履歴とプレビュー URL が並んでいる"
+        caption="「git push で自動デプロイ」の実体は、この履歴が1件ずつ増えていくこと"
       />
 
       <Section>汎用 PaaS（バックエンド込み）</Section>

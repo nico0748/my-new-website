@@ -1,0 +1,16 @@
+<svg width="320" height="180" viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="API実践開発 コース">
+  <rect width="320" height="180" fill="#00ADD8"/>
+  <g stroke="#ffffff" stroke-width="3.4" fill="none" stroke-opacity="0.95">
+    <!-- データベース（シリンダー） -->
+    <ellipse cx="96" cy="66" rx="30" ry="11"/>
+    <path d="M66 66 v34 a30 11 0 0 0 60 0 v-34"/>
+    <path d="M66 83 a30 11 0 0 0 60 0"/>
+    <!-- 接続線（API） -->
+    <path d="M126 90 h44" stroke-dasharray="6 6"/>
+    <!-- 中括弧 { } = JSON レスポンス -->
+    <path d="M210 60 q-12 0 -12 15 q0 15 -12 15 q12 0 12 15 q0 15 12 15"/>
+    <path d="M246 60 q12 0 12 15 q0 15 12 15 q-12 0 -12 15 q0 15 -12 15"/>
+  </g>
+  <circle cx="170" cy="90" r="5.5" fill="#ffffff"/>
+  <text x="228" y="98" font-family="'JetBrains Mono', monospace" font-size="15" fill="#ffffff" text-anchor="middle" font-weight="700">API</text>
+</svg>

@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider, Figure } from "../../../components/learn/kit";
 import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
@@ -30,6 +30,11 @@ export default function Article() {
           [<Tech id="unreal">Unreal Engine</Tech>, "C++ / Blueprint", "高品質3D・AAA・映像制作", "売上に応じたロイヤリティ"],
           [<Tech id="godot">Godot</Tech>, "GDScript / C#", "軽量・2D/3D・個人開発", "完全 OSS・無料"],
         ]}
+      />
+      <Figure
+        src="/learn/shots/stack/game-stack-01.svg"
+        alt="Unity エディタの画面。シーンビュー・ヒエラルキー・インスペクターが並ぶ標準レイアウト"
+        caption="ゲームエンジンは「コードを書く道具」というより、この統合開発環境そのもの"
       />
       <Callout variant="info" title="得意分野で選ぶ">
         モバイルやインディー、幅広いプラットフォームなら <Tech id="unity">Unity</Tech>、フォトリアルな高品質3Dなら <Tech id="unreal">Unreal Engine</Tech>、軽量で完全 OSS がよければ <Tech id="godot">Godot</Tech> が目安です。

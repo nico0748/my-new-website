@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Bridge, Cmd, Steps, Step, ComparisonTable, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Bridge, Cmd, Steps, Step, ComparisonTable, KVList, KeyPoints, Quiz, Divider, Figure } from "../../../components/learn/kit";
 import { SequenceDiagram } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -72,6 +72,7 @@ export default function Article() {
         caption="OAuth 2.0 認可コードフロー。トークンはブラウザを経由せず、サーバ間で受け渡す"
       />
 
+      <Figure src="/learn/shots/security/oauth2-01.svg" alt="検証用アプリで表示させた OAuth の同意画面で、要求スコープの一覧と許可・拒否のボタンが表示されているスクリーンショット" caption="同意画面はフローの第 2 ステップそのもの。ここで表示されるスコープが委譲される権限の範囲になる" />
       <Section>そのほかのグラントタイプ</Section>
       <ComparisonTable
         headers={["グラント", "用途", "現在の位置づけ"]}

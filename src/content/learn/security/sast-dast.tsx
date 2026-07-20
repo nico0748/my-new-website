@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Bridge, Cmd, ComparisonTable, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Bridge, Cmd, ComparisonTable, Figure, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
 import { FlowChain } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -44,6 +44,8 @@ export default function Article() {
           { key: "Semgrep", val: "軽量で、部分的なコードでも動く。パターンマッチ中心で CI 導入が容易。完全ビルドの可否で CodeQL と使い分ける。" },
         ]}
       />
+      <Figure src="/learn/shots/security/sast-dast-01.svg" alt="CI 上に表示された SAST のアラート一覧" caption="SAST は CI に組み込むと、コミット単位で該当ファイルと行番号つきのアラートが返る" />
+
       <Callout variant="warn" title="SAST は誤検知が多い">
         SAST は実行時の防御策（WAF・入力検証）や到達不能なコードを考慮できないため、<strong>誤検知（False Positive）が多い</strong>傾向があります。ビジネスロジックの欠陥や認証・認可の設計不備も苦手です。「アラートが出た＝脆弱」ではなく、人が一件ずつ本当に悪用可能かを確認する前提で使います。
       </Callout>
@@ -61,6 +63,8 @@ export default function Article() {
           { key: "Burp Suite", val: "プロ診断のデファクト。傍受（Proxy）・手動改変（Repeater）・総当たり（Intruder）を備え、手動と自動を両立する。" },
         ]}
       />
+      <Figure src="/learn/shots/security/sast-dast-02.svg" alt="OWASP ZAP のスキャン結果画面。アラートのツリーと詳細" caption="DAST は外から投げたリクエストと応答を根拠にアラートを出す。原因のコード行までは示さない" />
+
       <Callout variant="danger" title="DAST の最大のリスクはスコープ事故">
         能動スキャンや Intruder は<strong>実際にリクエストを投げます</strong>。本番の状態変更 URL（削除・送金など）を対象に含めると、実データを壊しかねません。スコープを厳密に定義し、本番の破壊的エンドポイントは必ず除外します。
       </Callout>

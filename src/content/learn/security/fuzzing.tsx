@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Bridge, Cmd, ComparisonTable, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Bridge, Cmd, ComparisonTable, KVList, KeyPoints, Quiz, Divider, Figure } from "../../../components/learn/kit";
 import { StepFlow, FlowChain } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -61,6 +61,7 @@ export default function Article() {
         ]}
       />
 
+      <Figure src="/learn/shots/security/fuzzing-01.svg" alt="AFL++ を実行中のターミナル画面で、実行速度・発見したパス数・クラッシュ件数のカウンタが並んでいるスクリーンショット" caption="AFL++ の実行画面。カバレッジが広がりクラッシュが積み上がる様子がリアルタイムに見える" />
       <Section>ハーネス設計が成果を左右する</Section>
       <p>
         ファジングの成果の大半は<strong>ハーネス（harness）</strong>——対象 API を呼び出す薄いラッパー——の設計で決まります。どれだけ強力なファザーを使っても、ハーネスが浅い場所しか叩かなければ、深い脆弱性には届きません。要点は次のとおりです。

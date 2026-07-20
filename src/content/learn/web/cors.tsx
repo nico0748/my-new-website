@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, ComparisonTable, KeyPoints, KVList, Bridge, TipBox, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, Steps, Step, ComparisonTable, KeyPoints, KVList, Bridge, TipBox, Figure, Divider } from "../../../components/learn/kit";
 import { SequenceDiagram } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -20,6 +20,12 @@ export default function Article() {
       <Lead>
         フロントエンドから API を叩いたら「CORS policy によりブロックされました」というエラーに出くわす — Web 開発の通過儀礼です。CORS は<strong>ブラウザの安全機構</strong>であって API のバグではありません。仕組みを理解すれば怖くありません。
       </Lead>
+
+      <Figure
+        src="/learn/shots/web/cors-01.svg"
+        alt="Chrome DevTools の Console に赤字で出た CORS policy によるブロックのエラーメッセージ"
+        caption="この赤字を初めて見て焦る人は多い。ブラウザが止めているだけで、API 自体は動いていることが多い。"
+      />
 
       <Section>同一オリジンポリシー</Section>
       <p>
@@ -95,6 +101,11 @@ Access-Control-Allow-Origin: https://app.example.com
 Access-Control-Allow-Methods: GET, POST, PATCH, DELETE
 Access-Control-Allow-Headers: Content-Type, Authorization
 Access-Control-Max-Age: 600`}</Code>
+      <Figure
+        src="/learn/shots/web/cors-02.svg"
+        alt="Chrome DevTools の Network タブで OPTIONS プリフライトを選び Access-Control-Allow-* ヘッダを表示した状態"
+        caption="Network に OPTIONS が1本挟まっているのがプリフライト。許可ヘッダが返っているかをここで確かめる。"
+      />
       <Callout variant="tip" title="プリフライトを減らす">
         <Cmd>Access-Control-Max-Age</Cmd> を返すと、その秒数だけブラウザがプリフライト結果をキャッシュし、毎回の <Cmd>OPTIONS</Cmd> を省けます。
       </Callout>

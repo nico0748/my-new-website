@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Bridge, Cmd, ComparisonTable, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Bridge, Cmd, ComparisonTable, KVList, KeyPoints, Quiz, Divider, Figure } from "../../../components/learn/kit";
 import { StepFlow } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -36,6 +36,7 @@ export default function Article() {
           { key: "③ 実悪用の信頼できる証拠がある", val: "許可なく攻撃者が悪意あるコードを実行した、という信頼できる証拠があること" },
         ]}
       />
+      <Figure src="/learn/shots/security/kev-epss-ghsa-01.svg" alt="CISA の KEV カタログ公開ページで、CVE ID・製品名・追加日・是正期限が一覧表示されているスクリーンショット" caption="KEV カタログの実物。是正期限まで明記されているのが特徴" />
       <Callout variant="warn" title="PoC 公開やスキャン試行だけでは載らない">
         「active exploitation（活発な悪用）」とは、システム所有者の許可なく攻撃者が悪意あるコードを実行した証拠がある状態を指します。実証コード（PoC）が公開されただけ、攻撃らしいスキャンが観測されただけでは掲載されません。KEV は「実際に悪用された」という重い事実だけを集めた、ハードルの高いカタログなのです。
       </Callout>

@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider, Figure } from "../../../components/learn/kit";
 import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
@@ -44,6 +44,11 @@ export default function Article() {
           ["Java / JVM", <Tech id="junit">JUnit</Tech>, <Tech id="selenium">Selenium</Tech>],
         ]}
       />
+      <Figure
+        src="/learn/shots/stack/testing-stack-01.svg"
+        alt="Playwright のテスト実行レポート。失敗したテストのスクリーンショットとトレースが表示されている"
+        caption="E2E が落ちたとき、レポートには「どの画面で止まったか」が画像で残る"
+      />
       <Callout variant="info" title="Vitest は Jest の高速な後継的存在">
         <Tech id="jest">Jest</Tech> が長らく定番でしたが、Vite ベースのプロジェクトでは <Tech id="vitest">Vitest</Tech> が高速で相性が良いです。E2E は <Tech id="playwright">Playwright</Tech> が複数ブラウザ対応で人気です。
       </Callout>
@@ -52,6 +57,11 @@ export default function Article() {
       <p>
         <Tech id="storybook">Storybook</Tech> は UI コンポーネントを単体で開発・カタログ化するツールで、テスト（振る舞い確認）とデザイン共有の両面で役立ちます。
       </p>
+      <Figure
+        src="/learn/shots/stack/testing-stack-02.svg"
+        alt="Storybook の画面。サイドバーで選んだ UI コンポーネントが単体で表示されている"
+        caption="アプリを起動しなくても、部品ごとに見た目と振る舞いを確認できる"
+      />
 
       <Divider />
 

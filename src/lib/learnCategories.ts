@@ -6,9 +6,9 @@
 /** 分野（大分類 / domain）。URL は /nicotech/<domain>。
  *  基礎コース（*）／応用コース（*-adv）／実践コース（プロジェクト型）。 */
 export type LearnDomain =
-  | "web" | "infra" | "security" | "mobile" | "dev" | "cs" | "ai" | "kyopro" | "stack" | "claude-code"
-  | "web-adv" | "infra-adv" | "security-adv" | "mobile-adv" | "dev-adv" | "cs-adv" | "ai-adv"
-  | "react-practice" | "angular-practice" | "rag-practice"
+  | "web" | "infra" | "security" | "mobile" | "dev" | "ai" | "kyopro" | "stack" | "claude-code" | "it-terms"
+  | "web-adv" | "infra-adv" | "security-adv" | "mobile-adv" | "dev-adv" | "ai-adv"
+  | "react-practice" | "angular-practice" | "api-practice" | "rag-practice"
   | "vuln-research" | "ai-agent-practice" | "devsecops-practice";
 
 /** 難易度（体系順の補助）。 */
@@ -75,12 +75,6 @@ export const DOMAIN_STYLES: Record<LearnDomain, DomainStyle> = {
     cover: "/learn/covers/dev.svg",
     description: "Git・エディタ・テスト・設計・チーム開発。開発を支える基礎スキルとプラクティス。",
   },
-  cs: {
-    label: "CS基礎",
-    accent: "#0ea5e9",               // スカイ
-    cover: "/learn/covers/cs.svg",
-    description: "アルゴリズム・OS・ネットワーク・データベース・計算理論。情報科学の土台を体系的に。",
-  },
   ai: {
     label: "AI基礎",
     accent: "#f97316",               // オレンジ
@@ -104,6 +98,12 @@ export const DOMAIN_STYLES: Record<LearnDomain, DomainStyle> = {
     accent: "#d97757",               // クレイ（Anthropic 系）
     cover: "/learn/covers/claude-code.svg",
     description: "ターミナルで動くエージェント型 AI コーディングアシスタント Claude Code。仕組み・環境構築・実践ワークフローまでを段階的に学びます。",
+  },
+  "it-terms": {
+    label: "IT用語解説",
+    accent: "#10b981",               // エメラルド
+    cover: "/learn/covers/it-terms.svg",
+    description: "「APIを叩く」「プロセスをキルする」などの現場の言い回しから、開発・Web・ネットワーク・インフラ・データ・セキュリティの基本用語まで。分からない言葉を引くための IT 用語辞典。",
   },
 
   // ── 応用コース（濃色サムネ）。基礎を終えた人向けの実践編。 ──
@@ -137,12 +137,6 @@ export const DOMAIN_STYLES: Record<LearnDomain, DomainStyle> = {
     cover: "/learn/covers/dev-advanced.svg",
     description: "アーキテクチャ設計・CI/CD・リファクタリング・チーム開発。プロダクトを継続的に届ける実践。",
   },
-  "cs-adv": {
-    label: "CS応用",
-    accent: "#4c5a70",               // 濃グレーブルー
-    cover: "/learn/covers/cs-advanced.svg",
-    description: "高度なアルゴリズム・分散システム・コンパイラ・DB 内部。情報科学を一段深く掘り下げます。",
-  },
   "ai-adv": {
     label: "AI応用",
     accent: "#6435c4",               // 濃バイオレット
@@ -162,6 +156,12 @@ export const DOMAIN_STYLES: Record<LearnDomain, DomainStyle> = {
     accent: "#b3122f",               // Angular レッド
     cover: "/learn/covers/angular-practice.svg",
     description: "コンポーネント・DI・RxJS・フォーム・HTTP・テストまで、Angular で本格的な SPA を構築する実践コース。",
+  },
+  "api-practice": {
+    label: "API実践開発",
+    accent: "#00add8",               // Go シアン
+    cover: "/learn/covers/api-practice.svg",
+    description: "Go の net/http と database/sql で、キャラクターデータを返す REST API をゼロから実装。DB 構築・エンドポイント・検索・テスト・PostgreSQL 移行まで作り切る実践コース。",
   },
   "rag-practice": {
     label: "RAG実践開発",
@@ -190,21 +190,23 @@ export const DOMAIN_STYLES: Record<LearnDomain, DomainStyle> = {
 };
 
 export const DOMAIN_ORDER: LearnDomain[] = [
-  "web", "infra", "security", "mobile", "dev", "claude-code", "cs", "ai", "kyopro", "stack",
-  "web-adv", "infra-adv", "security-adv", "mobile-adv", "dev-adv", "cs-adv", "ai-adv",
-  "react-practice", "angular-practice", "rag-practice",
+  "web", "infra", "security", "mobile", "dev", "claude-code", "it-terms", "ai", "kyopro", "stack",
+  "web-adv", "infra-adv", "security-adv", "mobile-adv", "dev-adv", "ai-adv",
+  "react-practice", "angular-practice", "api-practice", "rag-practice",
   "vuln-research", "ai-agent-practice", "devsecops-practice",
 ];
 
 /** 実践コース（プロジェクト型）の一覧。 */
 export const PRACTICE_DOMAINS: LearnDomain[] = [
-  "react-practice", "angular-practice", "rag-practice",
+  "react-practice", "angular-practice", "api-practice", "rag-practice",
   "vuln-research", "ai-agent-practice", "devsecops-practice",
 ];
 
 export interface SectionDef {
   key: string;
   label: string;
+  /** MECE 上位グループ（任意）。同一 group の章はまとめて見出し表示される。 */
+  group?: string;
 }
 
 /** 章（中分類 / section）。配列順がそのまま表示順。 */
@@ -249,12 +251,17 @@ export const DOMAIN_SECTIONS: Record<LearnDomain, SectionDef[]> = {
     { key: "extend", label: "拡張機能" },
     { key: "advanced", label: "応用ワークフロー" },
   ],
-  cs: [
-    { key: "algorithms", label: "アルゴリズムとデータ構造" },
-    { key: "os", label: "オペレーティングシステム" },
-    { key: "network-cs", label: "ネットワーク" },
-    { key: "database", label: "データベース" },
-    { key: "theory", label: "計算理論" },
+  "it-terms": [
+    { key: "intro", label: "はじめに・基本のキ" },
+    { key: "jargon", label: "現場の言い回し・スラング" },
+    { key: "dev", label: "開発・プログラミング用語" },
+    { key: "frontend", label: "フロントエンド・UI用語" },
+    { key: "web-net", label: "Web・ネットワーク用語" },
+    { key: "infra", label: "インフラ・クラウド・仮想化用語" },
+    { key: "data", label: "データ・データベース用語" },
+    { key: "algorithm", label: "アルゴリズム・データ構造用語" },
+    { key: "ai", label: "AI・機械学習・エージェント用語" },
+    { key: "security", label: "セキュリティ用語" },
   ],
   ai: [
     { key: "ai-basics", label: "AI / 機械学習の基礎" },
@@ -269,30 +276,37 @@ export const DOMAIN_SECTIONS: Record<LearnDomain, SectionDef[]> = {
     { key: "shortest-path", label: "最短経路" },
     { key: "dp-flow", label: "DP・フロー" },
   ],
+  // MECE で6グループに整理（分類軸を「何を作る→構成層→組み込む機能→データ/AI→動かす基盤→開発運用」に統一）
   stack: [
-    { key: "web-app", label: "Web アプリケーション開発" },
-    { key: "mobile-app", label: "モバイルアプリケーション開発" },
-    { key: "desktop-app", label: "デスクトップアプリ開発" },
-    { key: "extension", label: "拡張機能開発" },
-    { key: "frontend", label: "フロントエンド" },
-    { key: "backend", label: "バックエンド" },
-    { key: "database", label: "データベース" },
-    { key: "container", label: "Docker / コンテナ" },
-    { key: "cloud", label: "クラウド" },
-    { key: "ai-agent", label: "AIエージェント開発" },
-    { key: "machine-learning", label: "機械学習" },
-    { key: "devtools", label: "開発ツール / バージョン管理" },
-    { key: "cicd", label: "CI/CD・IaC" },
-    { key: "testing", label: "テスト" },
-    { key: "auth", label: "認証・認可" },
-    { key: "observability", label: "監視・可観測性" },
-    { key: "hosting", label: "ホスティング / デプロイ先" },
-    { key: "baas-cms", label: "BaaS / ヘッドレスCMS" },
-    { key: "messaging", label: "メッセージング / リアルタイム" },
-    { key: "data-analytics", label: "データ分析 / データ基盤" },
-    { key: "game", label: "ゲーム開発" },
-    { key: "graphics", label: "3D / グラフィックス" },
-    { key: "payment", label: "決済" },
+    // 1. 何を作るか（アプリの形態）
+    { key: "web-app", label: "Web アプリ", group: "1. 何を作るか（アプリの形態）" },
+    { key: "mobile-app", label: "モバイルアプリ", group: "1. 何を作るか（アプリの形態）" },
+    { key: "desktop-app", label: "デスクトップアプリ", group: "1. 何を作るか（アプリの形態）" },
+    { key: "extension", label: "拡張機能", group: "1. 何を作るか（アプリの形態）" },
+    { key: "game", label: "ゲーム", group: "1. 何を作るか（アプリの形態）" },
+    // 2. アプリを構成する層
+    { key: "frontend", label: "フロントエンド", group: "2. アプリを構成する層" },
+    { key: "backend", label: "バックエンド", group: "2. アプリを構成する層" },
+    { key: "database", label: "データベース", group: "2. アプリを構成する層" },
+    // 3. 組み込む機能（横断的関心事）
+    { key: "auth", label: "認証・認可", group: "3. 組み込む機能" },
+    { key: "payment", label: "決済", group: "3. 組み込む機能" },
+    { key: "messaging", label: "メッセージング / リアルタイム", group: "3. 組み込む機能" },
+    { key: "graphics", label: "3D / グラフィックス", group: "3. 組み込む機能" },
+    // 4. データ・AI
+    { key: "data-analytics", label: "データ分析 / データ基盤", group: "4. データ・AI" },
+    { key: "machine-learning", label: "機械学習", group: "4. データ・AI" },
+    { key: "ai-agent", label: "AI エージェント開発", group: "4. データ・AI" },
+    // 5. 動かす基盤（インフラ / 実行環境）
+    { key: "container", label: "コンテナ（Docker）", group: "5. 動かす基盤" },
+    { key: "cloud", label: "クラウド（AWS / Azure / GCP）", group: "5. 動かす基盤" },
+    { key: "hosting", label: "ホスティング（Vercel / Render 等）", group: "5. 動かす基盤" },
+    { key: "baas-cms", label: "BaaS / ヘッドレス CMS", group: "5. 動かす基盤" },
+    // 6. 開発・運用を支える
+    { key: "devtools", label: "開発ツール / バージョン管理", group: "6. 開発・運用を支える" },
+    { key: "testing", label: "テスト", group: "6. 開発・運用を支える" },
+    { key: "cicd", label: "CI/CD・IaC", group: "6. 開発・運用を支える" },
+    { key: "observability", label: "監視・可観測性", group: "6. 開発・運用を支える" },
   ],
 
   // ── 応用コースの章（実践編） ──
@@ -329,12 +343,6 @@ export const DOMAIN_SECTIONS: Record<LearnDomain, SectionDef[]> = {
     { key: "refactoring", label: "リファクタリング" },
     { key: "team-dev", label: "チーム開発" },
   ],
-  "cs-adv": [
-    { key: "advanced-algorithms", label: "高度なアルゴリズム" },
-    { key: "distributed-systems", label: "分散システム" },
-    { key: "compilers", label: "コンパイラ" },
-    { key: "db-internals", label: "データベース内部" },
-  ],
   "ai-adv": [
     { key: "ml-practice", label: "機械学習の実践" },
     { key: "llm-app", label: "LLM アプリ開発" },
@@ -357,6 +365,13 @@ export const DOMAIN_SECTIONS: Record<LearnDomain, SectionDef[]> = {
     { key: "rxjs-state", label: "RxJS と状態管理" },
     { key: "forms-http", label: "フォームと HTTP" },
     { key: "testing-deploy", label: "テストとデプロイ" },
+  ],
+  "api-practice": [
+    { key: "setup", label: "環境構築とプロジェクト設計" },
+    { key: "database", label: "データベース構築" },
+    { key: "server", label: "HTTP サーバと DB 接続" },
+    { key: "endpoints", label: "API エンドポイント実装" },
+    { key: "quality", label: "品質・運用・デプロイ" },
   ],
   "rag-practice": [
     { key: "rag-basics", label: "RAG の仕組み" },
@@ -413,6 +428,10 @@ export const isPracticeDomain = (d: LearnDomain): boolean =>
 /** 章キー → ラベル（未知はキーをそのまま返す）。 */
 export const getSectionLabel = (domain: LearnDomain, sectionKey: string): string =>
   DOMAIN_SECTIONS[domain]?.find((s) => s.key === sectionKey)?.label ?? sectionKey;
+
+/** 章キー → MECE 上位グループ名（未設定は undefined）。 */
+export const getSectionGroup = (domain: LearnDomain, sectionKey: string): string | undefined =>
+  DOMAIN_SECTIONS[domain]?.find((s) => s.key === sectionKey)?.group;
 
 /** 章キー → 章の並び順（未定義章は末尾）。 */
 export const getSectionOrder = (domain: LearnDomain, sectionKey: string): number => {

@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, Code, Cmd, KVList, KeyPoints, Bridge, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, Code, Cmd, KVList, KeyPoints, Bridge, Quiz, Divider, Figure } from "../../../components/learn/kit";
 import { StepFlow, SequenceDiagram } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -102,6 +102,11 @@ export default function App() {
 
 <Link to={\`/tasks/\${task.id}\`}>詳細を見る</Link>
 <Link to="/tasks/new">新規作成</Link>`}</Code>
+      <Figure
+        src="/learn/shots/react-practice/react-router-basics-01.svg"
+        alt="一覧画面から詳細へ遷移した直後のブラウザ。アドレスバーが /tasks/1 に変わり、表示も詳細に切り替わっている"
+        caption="Link を押すとアドレスバーが /tasks/1 に変わり、表示だけが差し替わる（再読み込みは起きない）"
+      />
 
       <Section>URL からパラメータを取り出す — useParams</Section>
       <p>詳細ページでは、URL の <Cmd>:id</Cmd> 部分を <Cmd>useParams</Cmd> で受け取ります。</p>
@@ -137,6 +142,11 @@ export function NewTaskPage() {
           { title: "一致した element を描画", desc: "画面のうち必要な部分だけ差し替わる" },
         ]}
         caption="SPA ルーティングの一巡"
+      />
+      <Figure
+        src="/learn/shots/react-practice/react-router-basics-02.svg"
+        alt="DevTools の Network タブ。画面遷移しても HTML ドキュメントの再取得リクエストが記録されていない"
+        caption="Network タブで確認すると、遷移しても HTML の再取得は発生していない ─ これが SPA の速さの正体"
       />
 
       <Bridge course="ネットワーク / 状態機械 / グラフ理論">

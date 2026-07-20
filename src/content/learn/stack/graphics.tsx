@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider, Figure } from "../../../components/learn/kit";
 import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
@@ -30,6 +30,11 @@ export default function Article() {
           [<Tech id="webgpu">WebGPU</Tech>, "低レベル API", "WebGL の後継。高性能で GPU 計算にも使える"],
           [<Tech id="threejs">Three.js</Tech>, "ライブラリ", "WebGL を扱いやすくラップ。3D 表現の定番"],
         ]}
+      />
+      <Figure
+        src="/learn/shots/stack/graphics-stack-01.svg"
+        alt="Three.js 公式サンプルの表示結果。ブラウザ上に 3D モデルが描画されている"
+        caption="ライブラリを使うと、この程度の 3D 表現がブラウザだけで動く"
       />
       <Callout variant="info" title="まずは Three.js から">
         <Tech id="webgl">WebGL</Tech> を直接書くのは大変なので、多くの場合 <Tech id="threejs">Three.js</Tech> から入ります。より高い性能や GPU 計算が必要になったら <Tech id="webgpu">WebGPU</Tech> を検討します。

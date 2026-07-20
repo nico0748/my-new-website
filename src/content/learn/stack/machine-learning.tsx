@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, ComparisonTable, KeyPoints, Divider, Figure } from "../../../components/learn/kit";
 import { Tech } from "../../../components/learn/TechStackPanel";
 
 export const meta: LearnMeta = {
@@ -68,6 +68,11 @@ export default function Article() {
           ["監視", "Evidently 等", "本番の精度劣化・データドリフトを検知"],
           ["基盤", "Docker・クラウド(SageMaker/Vertex AI)・GPU", "学習・推論の実行環境"],
         ]}
+      />
+      <Figure
+        src="/learn/shots/stack/machine-learning-stack-01.svg"
+        alt="MLflow の実験一覧画面。ハイパーパラメータと精度が run ごとに並んでいる"
+        caption="実験管理ツールを入れると、試した条件と結果が自動で1つの表に積み上がる"
       />
       <Callout variant="tip" title="モデル作りは全体の一部">
         「精度の高いモデルを作る」のは工程の一部にすぎません。実務では<strong>データ整備・再現性・デプロイ・監視</strong>までを含めた MLOps が成否を分けます。コンテナ(Docker)やクラウドといったインフラの知識がそのまま効いてきます。

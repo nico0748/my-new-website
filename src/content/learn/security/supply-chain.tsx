@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Bridge, Cmd, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Bridge, Cmd, Figure, KVList, KeyPoints, Quiz, Divider } from "../../../components/learn/kit";
 import { StepFlow } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -79,6 +79,8 @@ export default function Article() {
       <p>
         これらの中でも起点になるのが <strong>SBOM</strong> と <strong>SCA</strong> です。そもそも「自分が何に依存しているか」を把握できていなければ、危険な依存が紛れ込んでも気づけません。SBOM で依存を棚卸しし、SCA でそれを既知脆弱性と突き合わせて監視する——この「見える化と照合」が、サプライチェーン防御のあらゆる出発点になります。前の章で学んだ GHSA/Dependabot も、まさにこの SCA の一形態です。
       </p>
+      <Figure src="/learn/shots/security/supply-chain-01.svg" alt="GitHub リポジトリの Dependabot alerts 画面" caption="SCA の身近な例。依存グラフを既知脆弱性データベースと突き合わせ、危険な依存を継続的に知らせてくれる" />
+
       <Callout variant="tip" title="ゼロトラストの発想を供給網にも">
         サプライチェーン防御は、供給網に対するゼロトラストと言えます。「信頼できる発行元だから」と無条件に受け入れるのではなく、署名を検証し、ハッシュを確認し、ビルドの由来（provenance）を辿る。CI の権限を最小化し、横展開を抑える。前の章までに学んだ最小権限・ゼロトラスト・多層防御の考え方が、そのままソフトウェアの供給経路にも当てはまるのです。
       </Callout>
