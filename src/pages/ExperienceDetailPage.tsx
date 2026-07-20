@@ -1,7 +1,6 @@
 import { Suspense, lazy, useEffect, useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 import NicoTechLogo from "../components/learn/NicoTechLogo";
-import NicoTechTabs from "../components/learn/NicoTechTabs";
 import "../styles/learn.css";
 
 import { getExperienceEntry, getExperienceAdjacent } from "../lib/experienceRegistry";
@@ -46,7 +45,6 @@ const ExperienceDetailPage = () => {
           <div className="sh-main">
             <NicoTechLogo />
           </div>
-          <NicoTechTabs />
         </header>
 
         <main className="exp-detail">

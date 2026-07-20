@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useLocation } from "react-router-dom";
 import NicoTechLogo from "./NicoTechLogo";
-import NicoTechTabs from "./NicoTechTabs";
 import LearnSearch from "./LearnSearch";
 import OnboardingGuide from "./OnboardingGuide";
 import type { LearnDomain } from "../../lib/learnCategories";
@@ -131,8 +130,9 @@ const LearnLayout = ({ sidebar, children, toc = false }: Props) => {
   }, [toc, tocItems.length, readCount]);
 
   return (
-    <div className="learn-docs">
-      {/* Header: 1段目=ティール帯（ロゴ・検索）／2段目=セクションタブ */}
+    /* タブ（教材／経験録の切替）は最上位の2ページだけに置くため、記事側は no-tabs */
+    <div className="learn-docs no-tabs">
+      {/* Header: ティール帯（ロゴ・検索）のみ */}
       <header className="site-header">
         <div className="sh-main">
           <button
@@ -169,7 +169,6 @@ const LearnLayout = ({ sidebar, children, toc = false }: Props) => {
             </svg>
           </button>
         </div>
-        <NicoTechTabs />
       </header>
 
       <LearnSearch />

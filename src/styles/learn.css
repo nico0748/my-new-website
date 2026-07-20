@@ -67,6 +67,10 @@
 
 .learn-docs *, .learn-docs *::before, .learn-docs *::after { box-sizing: border-box; }
 
+/* タブ無しページ（コース・記事・経験録詳細）はヘッダーがティール帯だけ。
+   本文オフセットからタブ分の高さを外す。 */
+.learn-docs.no-tabs { --header-height: var(--band-height); }
+
 /* ---- Header（2段: ティール帯 + セクションタブ） ---- */
 .learn-docs .site-header {
   position: fixed;
