@@ -209,6 +209,7 @@ export const PRACTICE_DOMAINS: LearnDomain[] = [
  *  コースが完成したらこの配列に追加して develop → main へリリースする。 */
 export const PUBLISHED_DOMAINS: LearnDomain[] = [
   "web", "security", "it-terms", "dev", "react-practice",
+  "claude-code", "kyopro", "stack", "angular-practice",
 ];
 
 /** 本番ドメインかどうか（Preview の *.vercel.app / localhost は false）。 */
