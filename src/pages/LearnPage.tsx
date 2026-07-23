@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import type { CSSProperties } from "react";
 import NicoTechLogo from "../components/learn/NicoTechLogo";
@@ -7,15 +7,16 @@ import OnboardingGuide from "../components/learn/OnboardingGuide";
 import "../styles/learn.css";
 
 import {
-  getVisibleDomains,
+  DOMAIN_ORDER,
   isDomainVisible,
+  isDomainLocked,
   DOMAIN_STYLES,
   DOMAIN_SECTIONS,
   isAdvancedDomain,
   isPracticeDomain,
 } from "../lib/learnCategories";
 import type { LearnDomain } from "../lib/learnCategories";
-import { getDomainCount, getEntry, isDomainAccessible } from "../lib/learnRegistry";
+import { getDomainCount, getEntry } from "../lib/learnRegistry";
 import { getCourseProgress, getLastOpened, useProgressTick } from "../lib/learnProgress";
 
 const LessonIcon = () => (
@@ -27,6 +28,9 @@ const LessonIcon = () => (
 
 const LearnPage = () => {
   useProgressTick();
+  // 「開発中」ポップアップに出すコース名（null で非表示）
+  const [wipCourse, setWipCourse] = useState<string | null>(null);
+
   // ポートフォリオのダーク body を隠して白背景に
   useEffect(() => {
     const prev = document.body.style.background;
@@ -38,44 +42,43 @@ const LearnPage = () => {
     };
   }, []);
 
-  // 本番では公開コースのみ表示し、さらに開発中（記事0本）のコースも除く。
-  // dev / Preview は全コースを表示（執筆・確認用）。
-  const visibleDomains = getVisibleDomains().filter(isDomainAccessible);
+  // カードは全コースを表示する。本番では公開リスト外を「開発中」ロック（クリックでポップアップ）。
+  // dev / Preview はロックされず、どのコースも自由に開ける。
+  const shownDomains = DOMAIN_ORDER;
+  // 統計は実際に開けるコースだけを数える（本番は公開 5 コース、dev は全部）
+  const accessibleDomains = shownDomains.filter((d) => !isDomainLocked(d));
 
-  const totalArticles = visibleDomains.reduce((n, d) => n + getDomainCount(d), 0);
+  const totalArticles = accessibleDomains.reduce((n, d) => n + getDomainCount(d), 0);
   const last = getLastOpened();
   const lastEntry = last && isDomainVisible(last.domain) ? getEntry(last.domain, last.id) : undefined;
 
-  const basicDomains = visibleDomains.filter((d) => !isAdvancedDomain(d) && !isPracticeDomain(d));
-  const advancedDomains = visibleDomains.filter(isAdvancedDomain);
-  const practiceDomains = visibleDomains.filter(isPracticeDomain);
+  const basicDomains = shownDomains.filter((d) => !isAdvancedDomain(d) && !isPracticeDomain(d));
+  const advancedDomains = shownDomains.filter(isAdvancedDomain);
+  const practiceDomains = shownDomains.filter(isPracticeDomain);
 
   const renderCard = (domain: LearnDomain) => {
     const style = DOMAIN_STYLES[domain];
     const articles = getDomainCount(domain);
     const chapters = DOMAIN_SECTIONS[domain].length;
     const prog = getCourseProgress(domain);
-    const isWip = articles === 0;
-    return (
-      <Link
-        key={domain}
-        to={`/nicotech/${domain}`}
-        className={`course-card${isWip ? " course-card--wip" : ""}`}
-        style={{ "--cc-accent": style.accent } as CSSProperties}
-        aria-label={isWip ? `${style.label} コース（開発中）` : `${style.label} コース`}
-      >
+    // 本番の未公開コース or 記事0本のコースは「開発中」表示にする
+    const locked = isDomainLocked(domain);
+    const wip = locked || articles === 0;
+
+    const inner = (
+      <>
         <span className="cc-cover">
           <img src={style.cover} alt={`${style.label} コース`} loading="lazy" />
-          {isWip && <span className="cc-wip">開発中</span>}
+          {wip && <span className="cc-wip">開発中</span>}
         </span>
         <span className="cc-body">
           <span className="cc-title">{style.label}</span>
           <span className="cc-desc">{style.description}</span>
           <span className="cc-meta">
             <LessonIcon />
-            {isWip ? `全${chapters}章 · 準備中` : `全${chapters}章 · ${articles}記事`}
+            {wip ? `全${chapters}章 · 準備中` : `全${chapters}章 · ${articles}記事`}
           </span>
-          {prog.total > 0 && (
+          {!locked && prog.total > 0 && (
             <span className="cc-progress">
               <span className="cc-progress-bar">
                 <span className="cc-progress-fill" style={{ width: `${prog.percent}%` }} />
@@ -86,6 +89,37 @@ const LearnPage = () => {
             </span>
           )}
         </span>
+      </>
+    );
+
+    const cls = `course-card${wip ? " course-card--wip" : ""}`;
+
+    // 開発中（ロック）: 遷移せず、クリックでポップアップを出す
+    if (locked) {
+      return (
+        <button
+          key={domain}
+          type="button"
+          className={`${cls} course-card--locked`}
+          style={{ "--cc-accent": style.accent } as CSSProperties}
+          aria-label={`${style.label} コース（開発中）`}
+          onClick={() => setWipCourse(style.label)}
+        >
+          {inner}
+        </button>
+      );
+    }
+
+    // 通常: 記事へ遷移する
+    return (
+      <Link
+        key={domain}
+        to={`/nicotech/${domain}`}
+        className={cls}
+        style={{ "--cc-accent": style.accent } as CSSProperties}
+        aria-label={wip ? `${style.label} コース（開発中）` : `${style.label} コース`}
+      >
+        {inner}
       </Link>
     );
   };
@@ -123,7 +157,7 @@ const LearnPage = () => {
             {/* 統計と「続きから読む」を同じ行に並べる */}
             <div className="hero-stats">
               <span className="stat">
-                <span className="num">{visibleDomains.length}</span>
+                <span className="num">{accessibleDomains.length}</span>
                 <span className="lbl">コース</span>
               </span>
               <span className="stat">
@@ -177,6 +211,29 @@ const LearnPage = () => {
         </footer>
       </div>
       <OnboardingGuide />
+
+      {/* 開発中コースをクリックしたときのポップアップ */}
+      {wipCourse && (
+        <div className="wip-modal-overlay" onClick={() => setWipCourse(null)}>
+          <div
+            className="wip-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label="開発中のお知らせ"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <span className="wip-modal-badge">開発中</span>
+            <h2 className="wip-modal-title">{wipCourse}</h2>
+            <p className="wip-modal-text">
+              このコースは現在開発中です。<br />
+              公開までもうしばらくお待ちください。
+            </p>
+            <button type="button" className="wip-modal-close" onClick={() => setWipCourse(null)}>
+              閉じる
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
