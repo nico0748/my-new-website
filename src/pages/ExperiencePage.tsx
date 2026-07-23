@@ -1,16 +1,21 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import NicoTechLogo from "../components/learn/NicoTechLogo";
 import NicoTechTabs from "../components/learn/NicoTechTabs";
 import "../styles/learn.css";
 
 import { EXPERIENCE_ENTRIES } from "../lib/experienceRegistry";
 import { getExperienceCategoryStyle } from "../lib/experienceCategories";
+import { isExperienceAccessible } from "../lib/learnRegistry";
 
 /** 経験録の一覧ページ。教材が体系順なのに対し、こちらは新しい順のフロー型。 */
 const ExperiencePage = () => {
+  // 本番では経験録を非公開にする（dev / Preview では表示）。hooks を条件分岐させないため定数で持つ
+  const blocked = !isExperienceAccessible();
+
   // ポートフォリオのダーク body を隠して白背景に
   useEffect(() => {
+    if (blocked) return;
     const prev = document.body.style.background;
     document.body.style.background = "#ffffff";
     document.title = "経験録 | nicoTech";
@@ -18,7 +23,9 @@ const ExperiencePage = () => {
       document.body.style.background = prev;
       document.title = "nicoTech";
     };
-  }, []);
+  }, [blocked]);
+
+  if (blocked) return <Navigate to="/nicotech" replace />;
 
   return (
     <div className="learn-docs">

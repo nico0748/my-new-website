@@ -173,11 +173,23 @@ export function TaskItem({ task, onToggle }: Props) { // ③ export + 宣言 + p
           checked={task.done}                         // ⑤ {} は式。値を属性へ渡す
           onChange={() => onToggle(task.id)}          // ⑥ イベントに関数を渡す（呼ばない）
         />
-        {task.title}                                  // ⑦ {} で値を画面に埋め込む
+        {/* ⑦ 下の行のように {} で値を画面に埋め込む */}
+        {task.title}
       </label>
     </li>
   );
 }`}</Code>
+      <Callout variant="warn" title="JSX のコメントは 2 種類ある — ここを間違えると画面に文字が出る">
+        上のコードで、属性の位置（<Cmd>type="checkbox"</Cmd> の右など）は <Cmd>{"//"}</Cmd> で書けるのに、
+        ⑦ だけ <Cmd>{"{/* ... */}"}</Cmd> になっているのに気づいたでしょうか。これは<strong>書ける場所が違う</strong>からです。
+        <ul>
+          <li><strong>タグの中（属性を並べる位置）</strong>… JavaScript として読まれるので <Cmd>{"//"}</Cmd> がコメントになる</li>
+          <li><strong>タグの外側（子要素の位置）</strong>… ここは<strong>表示するテキスト</strong>なので、<Cmd>{"//"}</Cmd> は<strong>そのまま画面に出る</strong></li>
+        </ul>
+        子要素の位置でコメントを書きたいときは、必ず <Cmd>{"{/* ... */}"}</Cmd> で囲みます。
+        <Cmd>{"{}"}</Cmd> で JavaScript の世界に入ってから、その中にコメントを書く、という仕組みです。
+        型エラーにならず画面にだけ出るので、原因に気づきにくいつまずきです。
+      </Callout>
       <p>
         まず骨格から。② <Cmd>interface Props</Cmd> は「何を渡すか」を決める型で、<Cmd>{"onToggle: (id: string) => void"}</Cmd> のように
         <strong>関数も型で受け取れます</strong>。③ <Cmd>{"export function TaskItem({ task, onToggle }: Props)"}</Cmd> は「公開する関数コンポーネント」の宣言で、
@@ -236,6 +248,26 @@ export default function App() { /* ... */ }
           { key: "task={task} は props", val: "属性のように書くと、子コンポーネントに値が渡る" },
         ]}
       />
+
+      <Section>この時点ではまだ画面に出ない（正常です）</Section>
+      <p>
+        ここまでで <Cmd>TaskListPage</Cmd> を作りましたが、ブラウザを見ても<strong>まだ Vite の初期画面のまま</strong>のはずです。
+        作ったページを画面に出すには、<Cmd>App.tsx</Cmd> から呼び出す必要があるためです。
+      </p>
+      <p>
+        この配線は<strong>次章「React Router でルーティング」</strong>で行います。そこで <Cmd>App.tsx</Cmd> を書き換え、
+        <Cmd>/</Cmd> に <Cmd>TaskListPage</Cmd> を割り当てた時点で、ここで作った一覧が画面に現れます。
+        「作ったのに出ない」と不安にならなくて大丈夫です。
+      </p>
+      <Callout variant="tip" title="今すぐ表示を確認したい場合">
+        次章を待たずに見たいときは、<Cmd>src/App.tsx</Cmd> の中身を次の 4 行に置き換えれば表示できます
+        （次章でルーティング版に書き直すので、あくまで動作確認用です）。
+        <Code lang="tsx" filename="src/App.tsx（一時的な確認用）">{`import { TaskListPage } from "./pages/TaskListPage";
+
+export default function App() {
+  return <TaskListPage />;
+}`}</Code>
+      </Callout>
 
       <Bridge course="ソフトウェア工学（コンポーネント指向・単一責任）">
         コンポーネント分割は、講義で学ぶ<strong>単一責任の原則</strong>と<strong>モジュール分割</strong>の実践そのもの。「表示する子」と「状態を持つ親」に分けるのは

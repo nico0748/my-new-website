@@ -49,6 +49,14 @@ export default function Article() {
         Angular（standalone 構成）では「どの URL でどのコンポーネントを出すか」を <Cmd>Routes</Cmd> 配列に書きます。
         React の <Cmd>{"<Routes>/<Route>"}</Cmd> に相当しますが、Angular は<strong>ただの配列データ</strong>で宣言する点が特徴です。
       </p>
+      <Callout variant="warn" title="先に画面コンポーネントを作っておく">
+        <Cmd>app.routes.ts</Cmd> は 4 つの画面を <Cmd>import</Cmd> します。<strong>存在しないまま書くとコンパイルエラー</strong>になるので、
+        先に CLI で 4 つとも生成しておきましょう（<Cmd>404</Cmd> 用の <Cmd>not-found</Cmd> も忘れずに）。
+      </Callout>
+      <Code lang="bash" filename="ターミナル">{`ng generate component pages/task-list
+ng generate component pages/task-detail
+ng generate component pages/new-task
+ng generate component pages/not-found`}</Code>
       <Code lang="ts" filename="src/app/app.routes.ts">{`import { Routes } from '@angular/router';
 import { TaskListComponent } from './pages/task-list.component';
 import { TaskDetailComponent } from './pages/task-detail.component';

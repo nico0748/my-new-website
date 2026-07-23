@@ -7,14 +7,15 @@ import OnboardingGuide from "../components/learn/OnboardingGuide";
 import "../styles/learn.css";
 
 import {
-  DOMAIN_ORDER,
+  getVisibleDomains,
+  isDomainVisible,
   DOMAIN_STYLES,
   DOMAIN_SECTIONS,
   isAdvancedDomain,
   isPracticeDomain,
 } from "../lib/learnCategories";
 import type { LearnDomain } from "../lib/learnCategories";
-import { getDomainCount, getEntry } from "../lib/learnRegistry";
+import { getDomainCount, getEntry, isDomainAccessible } from "../lib/learnRegistry";
 import { getCourseProgress, getLastOpened, useProgressTick } from "../lib/learnProgress";
 
 const LessonIcon = () => (
@@ -37,13 +38,17 @@ const LearnPage = () => {
     };
   }, []);
 
-  const totalArticles = DOMAIN_ORDER.reduce((n, d) => n + getDomainCount(d), 0);
-  const last = getLastOpened();
-  const lastEntry = last ? getEntry(last.domain, last.id) : undefined;
+  // 本番では公開コースのみ表示し、さらに開発中（記事0本）のコースも除く。
+  // dev / Preview は全コースを表示（執筆・確認用）。
+  const visibleDomains = getVisibleDomains().filter(isDomainAccessible);
 
-  const basicDomains = DOMAIN_ORDER.filter((d) => !isAdvancedDomain(d) && !isPracticeDomain(d));
-  const advancedDomains = DOMAIN_ORDER.filter(isAdvancedDomain);
-  const practiceDomains = DOMAIN_ORDER.filter(isPracticeDomain);
+  const totalArticles = visibleDomains.reduce((n, d) => n + getDomainCount(d), 0);
+  const last = getLastOpened();
+  const lastEntry = last && isDomainVisible(last.domain) ? getEntry(last.domain, last.id) : undefined;
+
+  const basicDomains = visibleDomains.filter((d) => !isAdvancedDomain(d) && !isPracticeDomain(d));
+  const advancedDomains = visibleDomains.filter(isAdvancedDomain);
+  const practiceDomains = visibleDomains.filter(isPracticeDomain);
 
   const renderCard = (domain: LearnDomain) => {
     const style = DOMAIN_STYLES[domain];
@@ -118,7 +123,7 @@ const LearnPage = () => {
             {/* 統計と「続きから読む」を同じ行に並べる */}
             <div className="hero-stats">
               <span className="stat">
-                <span className="num">{DOMAIN_ORDER.length}</span>
+                <span className="num">{visibleDomains.length}</span>
                 <span className="lbl">コース</span>
               </span>
               <span className="stat">
@@ -143,20 +148,27 @@ const LearnPage = () => {
             <p>まずは「基礎」で土台を固め、「応用」で実務レベルへ。学びたい分野を選んでください。</p>
           </div>
 
-          <h3 className="course-group-label">基礎コース</h3>
-          <div className="course-grid">
-            {basicDomains.map(renderCard)}
-          </div>
+          {/* 本番では未公開コースが除かれるため、空のグループは見出しごと出さない */}
+          {basicDomains.length > 0 && (
+            <>
+              <h3 className="course-group-label">基礎コース</h3>
+              <div className="course-grid">{basicDomains.map(renderCard)}</div>
+            </>
+          )}
 
-          <h3 className="course-group-label">応用コース</h3>
-          <div className="course-grid">
-            {advancedDomains.map(renderCard)}
-          </div>
+          {advancedDomains.length > 0 && (
+            <>
+              <h3 className="course-group-label">応用コース</h3>
+              <div className="course-grid">{advancedDomains.map(renderCard)}</div>
+            </>
+          )}
 
-          <h3 className="course-group-label">実践コース</h3>
-          <div className="course-grid">
-            {practiceDomains.map(renderCard)}
-          </div>
+          {practiceDomains.length > 0 && (
+            <>
+              <h3 className="course-group-label">実践コース</h3>
+              <div className="course-grid">{practiceDomains.map(renderCard)}</div>
+            </>
+          )}
         </section>
 
         {/* Footer */}

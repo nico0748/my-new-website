@@ -202,6 +202,26 @@ export const PRACTICE_DOMAINS: LearnDomain[] = [
   "vuln-research", "ai-agent-practice", "devsecops-practice",
 ];
 
+/** 本番サイト（nico-labo748.dev）で公開するコース。
+ *  ここに無いコースは本番では一覧・検索・直リンクすべて非表示になる。
+ *  ⚠️ dev サーバーと Vercel の Preview では全コースが見える（執筆中の確認用）。
+ *  コースが完成したらこの配列に追加して develop → main へリリースする。 */
+export const PUBLISHED_DOMAINS: LearnDomain[] = [
+  "web", "security", "it-terms", "dev", "react-practice",
+];
+
+/** 本番ドメインかどうか（Preview の *.vercel.app / localhost は false）。 */
+const PROD_HOSTS = ["www.nico-labo748.dev", "nico-labo748.dev"];
+export const isPublicSite = (): boolean =>
+  typeof window !== "undefined" && PROD_HOSTS.includes(window.location.hostname);
+
+/** そのコースを表示してよいか。本番では公開リストのみ、それ以外は全部見せる。 */
+export const isDomainVisible = (d: LearnDomain): boolean =>
+  !isPublicSite() || PUBLISHED_DOMAINS.includes(d);
+
+/** 表示対象のコース一覧（体系順）。 */
+export const getVisibleDomains = (): LearnDomain[] => DOMAIN_ORDER.filter(isDomainVisible);
+
 export interface SectionDef {
   key: string;
   label: string;

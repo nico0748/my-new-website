@@ -101,12 +101,18 @@ createRoot(document.getElementById("root")!).render(
 ├─ components/           ← 再利用するUI部品
 │  ├─ TaskItem.tsx
 │  └─ TaskForm.tsx
-├─ hooks/                ← カスタムフック（ロジックの再利用）
-│  └─ useTasks.ts
+├─ context/              ← アプリ全体で共有する状態
+│  └─ TaskContext.tsx    （Provider と useTasks をここに置く）
 ├─ lib/                  ← API通信・ユーティリティ
 │  └─ api.ts
 └─ types/                ← 型定義
    └─ task.ts`}</Code>
+      <Callout variant="info" title="カスタムフックの置き場所について">
+        「ロジックの再利用」を担う<strong>カスタムフック</strong>は <Cmd>hooks/</Cmd> にまとめる流儀もあります。
+        このコースでは、状態を配る <Cmd>TaskProvider</Cmd> と、それを受け取る <Cmd>useTasks</Cmd> は
+        <strong>セットで読んだほうが分かりやすい</strong>ため、同じ <Cmd>context/TaskContext.tsx</Cmd> に置きます。
+        フックが増えてきたら <Cmd>hooks/</Cmd> を作って切り出す、という順番で構いません。
+      </Callout>
       <KVList
         items={[
           { key: "pages/", val: "URL に対応する「画面」。ルーティングの行き先になる" },

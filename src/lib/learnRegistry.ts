@@ -6,7 +6,7 @@
 
 import type { ComponentType } from "react";
 import type { LearnDomain, LearnMeta } from "./learnCategories";
-import { getSectionOrder } from "./learnCategories";
+import { getSectionOrder, isDomainVisible, isPublicSite } from "./learnCategories";
 
 // メタは eager（一覧・分野ページで即使うため）
 const metaModules = import.meta.glob<LearnMeta>("../content/learn/**/*.tsx", {
@@ -92,3 +92,15 @@ export const getAdjacent = (
 /** 分野ごとの記事数。トップの分野カード用。 */
 export const getDomainCount = (domain: LearnDomain): number =>
   LEARN_ENTRIES.filter((e) => e.meta.domain === domain).length;
+
+/** 記事が1本も無い＝「開発中」コースか。 */
+export const isDomainWip = (domain: LearnDomain): boolean => getDomainCount(domain) === 0;
+
+/** そのコースにアクセスしてよいか。
+ *  本番サイトでは「未公開コース（PUBLISHED_DOMAINS 外）」と「開発中コース（記事0本）」を遮断する。
+ *  dev / Vercel Preview では従来どおり全コースにアクセスできる（執筆・確認用）。 */
+export const isDomainAccessible = (domain: LearnDomain): boolean =>
+  isDomainVisible(domain) && !(isPublicSite() && isDomainWip(domain));
+
+/** 本番サイトで経験録（/nicotech/experience）を出すか。本番では非表示。 */
+export const isExperienceAccessible = (): boolean => !isPublicSite();

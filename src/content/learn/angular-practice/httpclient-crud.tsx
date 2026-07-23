@@ -179,6 +179,51 @@ export class TaskListComponent {
         逆に複数回 subscribe すると<strong>その回数だけ</strong>リクエストが飛びます。
       </Callout>
 
+      <Section>手を動かす前に — 通信相手の API を用意する</Section>
+      <p>
+        ここまでのコードは <Cmd>/api/tasks</Cmd> に対して通信します。しかし<strong>その API がまだ存在しない</strong>ので、
+        このまま <Cmd>ng serve</Cmd> しても一覧は空のまま、コンソールに <Cmd>404</Cmd> が並ぶだけです。
+        実際に動かすには、<strong>返事をしてくれる相手</strong>が要ります。もっとも手軽なのが <strong>json-server</strong> です。
+      </p>
+      <Code lang="bash" filename="① モック API を立てる（別ターミナル）">{`# プロジェクト直下に db.json を作る
+cat > db.json <<'EOF'
+{
+  "tasks": [
+    { "id": "1", "title": "牛乳を買う", "done": false },
+    { "id": "2", "title": "Angular を学ぶ", "done": true }
+  ]
+}
+EOF
+
+# 3000 番でモック API を起動（このターミナルは開いたままにする）
+npx json-server db.json --port 3000`}</Code>
+      <p>
+        これで <Cmd>http://localhost:3000/tasks</Cmd> が GET/POST/PATCH/DELETE に応答するようになります。
+        ただしアプリは <Cmd>4200</Cmd>、API は <Cmd>3000</Cmd> と<strong>ポートが違う＝別オリジン</strong>なので、
+        そのまま呼ぶと <strong>CORS</strong> で弾かれます。開発中は <strong>プロキシ</strong>で回避するのが定石です。
+      </p>
+      <Code lang="json" filename="② proxy.conf.json（プロジェクト直下に作成）">{`{
+  "/api": {
+    "target": "http://localhost:3000",
+    "secure": false,
+    "pathRewrite": { "^/api": "" }
+  }
+}`}</Code>
+      <p>
+        <Cmd>/api/tasks</Cmd> 宛ての通信を <Cmd>http://localhost:3000/tasks</Cmd> に転送する設定です
+        （<Cmd>pathRewrite</Cmd> が先頭の <Cmd>/api</Cmd> を削っています）。最後に、この設定を使って開発サーバーを起動します。
+      </p>
+      <Code lang="bash" filename="③ プロキシ付きで起動">{`ng serve --proxy-config proxy.conf.json`}</Code>
+      <Callout variant="tip" title="毎回フラグを書かずに済ませる">
+        <Cmd>angular.json</Cmd> の <Cmd>serve</Cmd> → <Cmd>options</Cmd> に
+        <Cmd>"proxyConfig": "proxy.conf.json"</Cmd> を書いておけば、以後は <Cmd>ng serve</Cmd> だけでプロキシが効きます。
+      </Callout>
+      <Callout variant="info" title="API を用意せずに進めたい場合">
+        本章の目的が「HttpClient の書き方を知ること」であれば、API を立てずに<strong>前章の
+        <Cmd>BehaviorSubject</Cmd> ストアのまま進めても構いません</strong>。実務では最終的にこの HTTP 版へ置き換わる、
+        という道筋だけ掴んでおけば十分です。
+      </Callout>
+
       <Section>ブラウザと API の往復</Section>
       <p>一覧取得（GET）と新規作成（POST）で、ブラウザ・HttpClient・API サーバーの間を何が行き交うかを見ます。</p>
       <SequenceDiagram
