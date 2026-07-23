@@ -164,6 +164,26 @@ CREATE taskflow/src/app/app.routes.ts (77 bytes)
         <strong>生成と依存インストールまでを一括</strong>で行い、テスト設定やルーティングの雛形も同時に用意します。これが「全部入り CLI」の実感です。
       </Callout>
 
+      <SubSection>生成先フォルダと、対話を省略するフラグ</SubSection>
+      <p>
+        <Cmd>ng new taskflow</Cmd> は<strong>カレントディレクトリに <Cmd>taskflow/</Cmd> という子フォルダを作り</strong>、その中に一式を展開します。
+        すでに作業用フォルダを用意していて<strong>その直下に直接置きたい</strong>場合は、<Cmd>--directory .</Cmd> を付けます。
+      </p>
+      <Code lang="bash" filename="ターミナル">{`# 例) sample-angular-app/ の直下に直接生成する
+cd sample-angular-app
+ng new taskflow --directory .`}</Code>
+      <p>
+        また、対話をすべて飛ばしたいときはフラグで先に答えられます。CI や、手順を再現したいときに便利です。
+      </p>
+      <Code lang="bash" filename="ターミナル">{`ng new taskflow --style=css --ssr=false --defaults`}</Code>
+
+      <Callout variant="warn" title="CLI のバージョンで生成されるファイル名が変わる">
+        本コースのコード例は <Cmd>app.component.ts</Cmd> / <Cmd>AppComponent</Cmd> という
+        <strong>CLI 18 系の命名</strong>で書いています。<strong>CLI 20 以降（検証は 22.0.7）では
+        <Cmd>app.ts</Cmd> / クラス <Cmd>App</Cmd> のように「.component」やクラスの接尾辞が付かなくなりました</strong>。
+        新しい CLI を使う場合は、次章の対応表で読み替えてください。中身の考え方は変わりません。
+      </Callout>
+
       <Section>手順2 — 開発サーバーを起動する</Section>
       <p>生成されたフォルダに入り、開発サーバーを起動します。</p>
       <Code lang="bash" filename="ターミナル">{`cd taskflow

@@ -80,6 +80,33 @@ export class TaskService {
         ロジック層</strong>に近い役割ですが、Angular ではそれが DI で配られる<strong>クラス</strong>になります。
       </Callout>
 
+      <SubSection>ng generate service で作るときの注意（CLI v20 以降）</SubSection>
+      <p>
+        サービスも CLI で雛形を作れます。ただし新しい CLI では<strong>生成される名前とデコレータが本文の例と違う</strong>ので、
+        実際に打つ前に押さえておきましょう。
+      </p>
+      <Code lang="bash" filename="ターミナル">{`ng generate service services/task`}</Code>
+      <Code lang="ts" filename="生成される services/task.ts（CLI 22）">{`import { Service } from '@angular/core';
+
+@Service()                    // ← @Injectable({ providedIn: 'root' }) ではない
+export class Task {}          // ← TaskService ではなく Task`}</Code>
+      <p>
+        <Cmd>@Service()</Cmd> は Angular 20 以降で追加されたデコレータで、
+        <strong>「DI に自動登録されるサービス」</strong>を意味します。実質
+        <Cmd>@Injectable(&#123; providedIn: 'root' &#125;)</Cmd> と同じ働きで、自動登録したくないときは
+        <Cmd>@Service(&#123; autoProvided: false &#125;)</Cmd> と書きます。<strong>従来の <Cmd>@Injectable</Cmd> もそのまま使えます</strong>。
+      </p>
+      <Callout variant="danger" title="型名の衝突に注意 — 生成されたクラス名が Task になる">
+        接尾辞が付かなくなったため、<Cmd>ng g service services/task</Cmd> のクラス名は <strong><Cmd>Task</Cmd></strong> になります。
+        ところがこのコースでは<strong>モデルの <Cmd>interface Task</Cmd></strong> を既に定義しているため、
+        同じ名前が2つできて<strong>import で衝突</strong>します。対処は次のいずれかです。
+        <ul>
+          <li><strong>サービス名を変える</strong>: <Cmd>ng g service services/task-store</Cmd>（→ クラス <Cmd>TaskStore</Cmd>）</li>
+          <li><strong>従来の命名に寄せる</strong>: ファイルを <Cmd>task.service.ts</Cmd>、クラスを <Cmd>TaskService</Cmd> にする（本コースはこちら）</li>
+          <li><strong>import で別名にする</strong>: <Cmd>import &#123; Task as TaskModel &#125; from './models/task.model';</Cmd></li>
+        </ul>
+      </Callout>
+
       <Section>注入する — 2 つの受け取り方</Section>
       <p>
         コンポーネントは <Cmd>TaskService</Cmd> を「使いたい」と宣言するだけで受け取れます。受け取り方は 2 通りあります。

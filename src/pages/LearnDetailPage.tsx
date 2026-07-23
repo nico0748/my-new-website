@@ -11,7 +11,7 @@ import {
   isLearnDomain,
 } from "../lib/learnCategories";
 import type { LearnDomain, LearnMeta } from "../lib/learnCategories";
-import { getEntry, getAdjacent } from "../lib/learnRegistry";
+import { getEntry, getAdjacent, isDomainAccessible } from "../lib/learnRegistry";
 import { setLastOpened } from "../lib/learnProgress";
 
 const Spinner = () => (
@@ -51,6 +51,8 @@ const LearnDetailPage = () => {
   }, [validDomain, d, meta]);
 
   if (!validDomain) return <Navigate to="/nicotech" replace />;
+  // 本番では未公開・開発中のコースの記事は直リンクでも開かせない
+  if (!isDomainAccessible(d)) return <Navigate to="/nicotech" replace />;
   const style = DOMAIN_STYLES[d];
 
   if (!entry || !ArticleBody || !meta) {

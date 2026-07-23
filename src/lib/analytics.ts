@@ -1,6 +1,8 @@
 /** Google Analytics 4（GA4）計測ヘルパー。
  *  - Measurement ID は env `VITE_GA_MEASUREMENT_ID`（例: G-XXXXXXXXXX）で設定
- *  - 本番ビルド（import.meta.env.PROD）かつ ID がある時のみ有効。dev では無効
+ *  - 本番ビルド（import.meta.env.PROD）かつ ID があり、かつ本番ドメインの時のみ有効
+ *    ※ Vercel の Preview デプロイも本番ビルドのため、ホスト名で本番だけに絞る
+ *      （develop の確認用プレビューが計測に混ざるのを防ぐ）
  *  - SPA なので `send_page_view:false` にして、ルート遷移ごとに手動で page_view 送信
  *    （初回ロードも useAnalytics の効果で送信される）
  */
@@ -16,7 +18,13 @@ declare global {
 }
 
 const GA_ID = import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined;
-const enabled = !!GA_ID && import.meta.env.PROD;
+
+/** 計測対象の本番ホスト。Vercel の Preview（*.vercel.app）や localhost は除外する。 */
+const PROD_HOSTS = ["www.nico-labo748.dev", "nico-labo748.dev"];
+const isProdHost =
+  typeof window !== "undefined" && PROD_HOSTS.includes(window.location.hostname);
+
+const enabled = !!GA_ID && import.meta.env.PROD && isProdHost;
 let started = false;
 
 /** gtag.js を読み込み、GA4 を初期化する（1 回だけ）。 */

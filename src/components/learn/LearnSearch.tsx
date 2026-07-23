@@ -6,7 +6,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LEARN_ENTRIES } from "../../lib/learnRegistry";
-import { DOMAIN_STYLES, getSectionLabel } from "../../lib/learnCategories";
+import { DOMAIN_STYLES, getSectionLabel, isDomainVisible } from "../../lib/learnCategories";
 import type { LearnDomain } from "../../lib/learnCategories";
 import { IT_TERMS } from "../../lib/itTerms";
 import type { ItTerm } from "../../lib/itTerms";
@@ -31,10 +31,12 @@ const TERM_ARTICLE_BY_SECTION: Record<string, string> = Object.fromEntries(
   LEARN_ENTRIES.filter((e) => e.meta.domain === "it-terms").map((e) => [e.meta.section, e.meta.id])
 );
 
-const TERM_INDEX: TermHit[] = IT_TERMS.map((t) => ({
-  ...t,
-  articleId: TERM_ARTICLE_BY_SECTION[t.section] ?? "it-intro",
-}));
+const TERM_INDEX: TermHit[] = isDomainVisible("it-terms")
+  ? IT_TERMS.map((t) => ({
+      ...t,
+      articleId: TERM_ARTICLE_BY_SECTION[t.section] ?? "it-intro",
+    }))
+  : [];
 
 /** 用語検索：見出し語の一致を最優先し、英語表記・意味も対象にする */
 function runTermSearch(q: string): TermHit[] {
@@ -57,7 +59,8 @@ function runTermSearch(q: string): TermHit[] {
   return scored.slice(0, 6).map((s) => s.it);
 }
 
-const INDEX: Indexed[] = LEARN_ENTRIES.map((e) => ({
+// 本番で未公開のコースは検索結果にも出さない
+const INDEX: Indexed[] = LEARN_ENTRIES.filter((e) => isDomainVisible(e.meta.domain)).map((e) => ({
   domain: e.meta.domain,
   id: e.meta.id,
   title: e.meta.title,

@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, KVList, KeyPoints, Bridge, Quiz, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, KVList, KeyPoints, Bridge, Quiz, Divider, ComparisonTable } from "../../../components/learn/kit";
 import { StepFlow } from "../../../components/learn/diagrams";
 
 export const meta: LearnMeta = {
@@ -155,6 +155,32 @@ export class AppComponent {
         各コンポーネントが自分で宣言）、<Cmd>templateUrl</Cmd> / <Cmd>styleUrl</Cmd> が見た目とスタイルの参照先です。
         テンプレート内の <Cmd>&lt;router-outlet&gt;</Cmd>（<Cmd>RouterOutlet</Cmd>）に、ルーティングで選ばれた画面が差し込まれます。
       </p>
+
+      <Section>⚠️ CLI のバージョンで名前が変わる — 読み替え表</Section>
+      <p>
+        Angular CLI は <strong>v20 以降でファイル名・クラス名の既定が変わりました</strong>。
+        「<Cmd>.component</Cmd> を付けない」「クラス名に <Cmd>Component</Cmd> / <Cmd>Service</Cmd> の接尾辞を付けない」方針になっています。
+        本コースのコード例は v18 系の命名で書いてあるので、新しい CLI（検証は <strong>22.0.7</strong>）を使っている場合は次の表で読み替えてください。
+      </p>
+      <ComparisonTable
+        headers={["対象", "本コースの記述（v18 系）", "CLI v20 以降の実際"]}
+        rows={[
+          ["ルートの部品", "app.component.ts / .html / .css", "app.ts / app.html / app.css"],
+          ["ルートのクラス名", "AppComponent", "App"],
+          ["画面の部品", "task-list.component.ts", "task-list.ts"],
+          ["画面のクラス名", "TaskListComponent", "TaskList"],
+          ["サービス", "task.service.ts / TaskService", "task.ts / クラス Task"],
+          ["サービスのデコレータ", "@Injectable({ providedIn: 'root' })", "@Service()（雛形の既定）"],
+          [<><Cmd>standalone: true</Cmd> の記述</>, "明示的に書く", "既定なので書かれない（v19+ で standalone が既定）"],
+          ["app.config.ts の providers", "provideRouter(routes) のみ", "provideBrowserGlobalErrorListeners() が既定で追加される"],
+        ]}
+      />
+      <Callout variant="info" title="どちらの書き方でも動く">
+        <Cmd>@Injectable(&#123; providedIn: 'root' &#125;)</Cmd> も <Cmd>standalone: true</Cmd> の明記も、
+        新しい CLI で<strong>そのまま有効</strong>です（非推奨になったわけではありません）。変わったのは
+        <strong>雛形が生成する名前と既定値</strong>だけなので、本コースのコードをそのまま書いても動きます。
+        チーム内では<strong>どちらかに揃える</strong>ことのほうが大事です。
+      </Callout>
 
       <Section>実践向けのディレクトリ構成</Section>
       <p>

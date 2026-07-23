@@ -6,6 +6,12 @@
 
 import React, { useEffect, useMemo, useState, type ReactNode } from "react";
 import { highlightCode } from "../../lib/highlight";
+import { isPublicSite } from "../../lib/learnCategories";
+
+/** スクショが「未差し替えのモック（プレースホルダ）」か。
+ *  実写は PNG/JPG などの raster で差し込む想定。shots 配下の .svg はプレースホルダとみなす。 */
+const isMockShot = (src: string): boolean =>
+  /\/learn\/shots\/.*\.svg(\?.*)?$/.test(src);
 
 /* ── リード文 ─────────────────────────── */
 export const Lead: React.FC<{ children: ReactNode }> = ({ children }) => (
@@ -253,12 +259,17 @@ export const Figure: React.FC<{ src: string; alt: string; caption?: string }> = 
   src,
   alt,
   caption,
-}) => (
-  <figure>
-    <img src={src} alt={alt} />
-    {caption && <figcaption>{caption}</figcaption>}
-  </figure>
-);
+}) => {
+  // 本番サイトでは、まだ実写に差し替えていないモック画像は丸ごと隠す。
+  // dev / Vercel Preview ではプレースホルダを表示する（差し込み位置の確認用）。
+  if (isMockShot(src) && isPublicSite()) return null;
+  return (
+    <figure>
+      <img src={src} alt={alt} />
+      {caption && <figcaption>{caption}</figcaption>}
+    </figure>
+  );
+};
 
 /* ── 理解度チェック（選択式クイズ・答え開閉） ── */
 export const Quiz: React.FC<{
