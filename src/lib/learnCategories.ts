@@ -203,8 +203,9 @@ export const PRACTICE_DOMAINS: LearnDomain[] = [
 ];
 
 /** 本番サイト（nico-labo748.dev）で公開するコース。
- *  ここに無いコースは本番では一覧・検索・直リンクすべて非表示になる。
- *  ⚠️ dev サーバーと Vercel の Preview では全コースが見える（執筆中の確認用）。
+ *  一覧では全コースを出すが、ここに無いコースは本番で「開発中」ロック（カードはクリックで
+ *  ポップアップを出し、記事本文へは進めない）＋検索・直リンクで遮断される。
+ *  ⚠️ dev サーバーと Vercel の Preview では全コースが自由に開ける（執筆中の確認用）。
  *  コースが完成したらこの配列に追加して develop → main へリリースする。 */
 export const PUBLISHED_DOMAINS: LearnDomain[] = [
   "web", "security", "it-terms", "dev", "react-practice",
@@ -215,11 +216,19 @@ const PROD_HOSTS = ["www.nico-labo748.dev", "nico-labo748.dev"];
 export const isPublicSite = (): boolean =>
   typeof window !== "undefined" && PROD_HOSTS.includes(window.location.hostname);
 
-/** そのコースを表示してよいか。本番では公開リストのみ、それ以外は全部見せる。 */
+/** そのコースが公開済み（PUBLISHED_DOMAINS に含まれる）か。 */
+export const isDomainPublished = (d: LearnDomain): boolean => PUBLISHED_DOMAINS.includes(d);
+
+/** 本番で「開発中」としてロックするコースか（公開リスト外）。
+ *  ロック時はカードをクリックしてもポップアップを出すだけで、記事へは進めない。
+ *  dev / Preview では常に false（＝どのコースも自由に開ける）。 */
+export const isDomainLocked = (d: LearnDomain): boolean => isPublicSite() && !isDomainPublished(d);
+
+/** 記事本文・検索・直リンクで到達してよいコースか。本番では公開リストのみ。 */
 export const isDomainVisible = (d: LearnDomain): boolean =>
   !isPublicSite() || PUBLISHED_DOMAINS.includes(d);
 
-/** 表示対象のコース一覧（体系順）。 */
+/** 記事に到達できるコース一覧（体系順）。※ 一覧カードの表示可否とは別（カードは全コース出す）。 */
 export const getVisibleDomains = (): LearnDomain[] => DOMAIN_ORDER.filter(isDomainVisible);
 
 export interface SectionDef {
