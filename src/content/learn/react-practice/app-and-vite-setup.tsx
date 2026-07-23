@@ -66,9 +66,16 @@ export default function Article() {
       />
       <p>
         Vite が速いのは、<strong>開発時と本番時で仕組みを分けている</strong>からです。開発時はブラウザ標準の <strong>ES Modules</strong> をそのまま使い、
-        画面が要求したファイルだけを <Cmd>esbuild</Cmd>（Go 製の高速変換器）で都度変換します（全体を事前にまとめないので一瞬で起動）。
-        本番は <Cmd>Rollup</Cmd> で全体をまとめ、不要コード除去・圧縮まで最適化します。
+        画面が要求したファイルだけを都度変換します（全体を事前にまとめないので一瞬で起動）。
+        本番はバンドラで全体をまとめ、不要コード除去・圧縮まで最適化します。
       </p>
+      <Callout variant="info" title="内部のバンドラは世代で変わっている">
+        この「都度変換」と「バンドル」を担う部品は、Vite のバージョンによって入れ替わっています。
+        <Cmd>Vite 6</Cmd> までは開発時が <Cmd>esbuild</Cmd>（Go 製）、本番が <Cmd>Rollup</Cmd> でした。
+        <Cmd>Vite 7</Cmd> 以降は <Cmd>Rolldown</Cmd>（Rust 製）へ統合が進んでいます。
+        <strong>役割の分担は同じ</strong>なので、名前が違っても考え方はそのまま通用します。
+        自分の環境がどれかは <Cmd>npx vite --version</Cmd> で確認できます。
+      </Callout>
 
       <Section>手順0 — Node.js が入っているか確認する</Section>
       <p>まず、ターミナルを開いて次の 2 つを実行します。バージョンが表示されれば OK です。</p>
@@ -141,6 +148,18 @@ found 0 vulnerabilities`}</Code>
         alt="localhost:5173 に表示された Vite と React のロゴ、count is 0 ボタンのある初期画面"
         caption="この初期画面が出れば成功。ボタンを押すと数字が増える"
       />
+      <Callout variant="info" title="表示や数値は「例」です — テンプレートは更新され続ける">
+        この記事に載せた出力はある時点の実行例です。<Cmd>create-vite</Cmd> や Vite の版が上がると、
+        次のように<strong>見た目や数値が変わります</strong>。手順そのものは変わらないので、違っていても問題ありません。
+        <ul>
+          <li><strong>パッケージ数</strong>… <Cmd>added 275 packages</Cmd> の数字は版によって大きく変わります（数十件になることもあります）</li>
+          <li><strong>バージョン表記</strong>… <Cmd>VITE v6.0.0</Cmd> の部分は使っている版が出ます</li>
+          <li><strong>生成物の中身</strong>… 初期画面のデザインや、同梱される lint の種類（<Cmd>ESLint</Cmd> か <Cmd>oxlint</Cmd> か）が変わることがあります。
+            <Cmd>package.json</Cmd> の <Cmd>scripts</Cmd> を見れば、自分の環境で何が使われているか分かります</li>
+          <li><strong>対話画面の見た目</strong>… 枠線付きの選択 UI に変わっている場合があります。選ぶ項目は同じです</li>
+        </ul>
+        大事なのは<strong>「開発サーバーが起動し、ブラウザに初期画面が出る」</strong>という結果です。そこに到達していれば先へ進めます。
+      </Callout>
       <Callout variant="warn" title="よくあるつまずき">
         <ul>
           <li><strong>ポートが使用中</strong>：<Cmd>Port 5173 is in use, trying another one...</Cmd> と出て <Cmd>5174</Cmd> 等で起動します。表示された URL を開けば OK。</li>

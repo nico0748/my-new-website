@@ -1,9 +1,10 @@
 import { Suspense, lazy, useEffect, useMemo } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import NicoTechLogo from "../components/learn/NicoTechLogo";
 import "../styles/learn.css";
 
 import { getExperienceEntry, getExperienceAdjacent } from "../lib/experienceRegistry";
+import { isExperienceAccessible } from "../lib/learnRegistry";
 import { getExperienceCategoryStyle } from "../lib/experienceCategories";
 import type { ExperienceMeta } from "../lib/experienceCategories";
 
@@ -37,6 +38,9 @@ const ExperienceDetailPage = () => {
       document.title = "nicoTech";
     };
   }, [meta]);
+
+  // 本番では経験録を非公開にする（dev / Preview では表示）
+  if (!isExperienceAccessible()) return <Navigate to="/nicotech" replace />;
 
   return (
     <div className="learn-docs">

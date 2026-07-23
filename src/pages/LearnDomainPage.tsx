@@ -9,9 +9,8 @@ import {
   getSectionGroup,
   getLevelStyle,
   isLearnDomain,
-  isDomainVisible,
 } from "../lib/learnCategories";
-import { getSectionedEntries, getEntry } from "../lib/learnRegistry";
+import { getSectionedEntries, getEntry, isDomainAccessible } from "../lib/learnRegistry";
 import {
   getCourseProgress,
   getLastOpenedInDomain,
@@ -37,8 +36,8 @@ const LearnDomainPage = () => {
   }, [domain]);
 
   if (!isLearnDomain(domain)) return <Navigate to="/nicotech" replace />;
-  // 本番で未公開のコースは直リンクでも開かせない
-  if (!isDomainVisible(domain)) return <Navigate to="/nicotech" replace />;
+  // 本番では未公開・開発中（記事0本）のコースは直リンクでも開かせない
+  if (!isDomainAccessible(domain)) return <Navigate to="/nicotech" replace />;
 
   const style = DOMAIN_STYLES[domain];
   const groups = getSectionedEntries(domain);

@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import type { CSSProperties } from "react";
+import { isExperienceAccessible } from "../../lib/learnRegistry";
 
 /** ヘッダー2段目のタブ。セクション（教材／経験録）ごとにページを切り替える。 */
 interface TabDef {
@@ -29,8 +30,11 @@ const isTabActive = (pathname: string, path: string) => {
 
 const NicoTechTabs = () => {
   const { pathname } = useLocation();
+  // 本番では経験録タブを隠す（教材のみ）。タブが1つだけになるので nav 自体を出さない
+  const tabs = isExperienceAccessible() ? NT_TABS : NT_TABS.filter((t) => t.path !== EXPERIENCE_PREFIX);
+  if (tabs.length <= 1) return null;
   // 下の帯は選択中タブと同じ色にして、タブと地続きに見せる
-  const activeTab = NT_TABS.find((t) => isTabActive(pathname, t.path)) ?? NT_TABS[0];
+  const activeTab = tabs.find((t) => isTabActive(pathname, t.path)) ?? tabs[0];
 
   return (
     <nav
@@ -38,7 +42,7 @@ const NicoTechTabs = () => {
       aria-label="セクション"
       style={{ "--active-color": activeTab.color } as CSSProperties}
     >
-      {NT_TABS.map((t) => {
+      {tabs.map((t) => {
         const active = isTabActive(pathname, t.path);
         return (
           <Link

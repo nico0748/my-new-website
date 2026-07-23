@@ -15,7 +15,7 @@ import {
   isPracticeDomain,
 } from "../lib/learnCategories";
 import type { LearnDomain } from "../lib/learnCategories";
-import { getDomainCount, getEntry } from "../lib/learnRegistry";
+import { getDomainCount, getEntry, isDomainAccessible } from "../lib/learnRegistry";
 import { getCourseProgress, getLastOpened, useProgressTick } from "../lib/learnProgress";
 
 const LessonIcon = () => (
@@ -38,8 +38,9 @@ const LearnPage = () => {
     };
   }, []);
 
-  // 本番では公開コースのみ（dev / Preview は全コース表示）
-  const visibleDomains = getVisibleDomains();
+  // 本番では公開コースのみ表示し、さらに開発中（記事0本）のコースも除く。
+  // dev / Preview は全コースを表示（執筆・確認用）。
+  const visibleDomains = getVisibleDomains().filter(isDomainAccessible);
 
   const totalArticles = visibleDomains.reduce((n, d) => n + getDomainCount(d), 0);
   const last = getLastOpened();

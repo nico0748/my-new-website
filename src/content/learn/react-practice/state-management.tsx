@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, Code, Cmd, ComparisonTable, KVList, KeyPoints, Bridge, Quiz, Divider, Figure } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KVList, KeyPoints, Bridge, Quiz, Divider, Figure } from "../../../components/learn/kit";
 import type { CSSProperties } from "react";
 
 export const meta: LearnMeta = {
@@ -121,7 +121,13 @@ export function useTasks() {
       <p>あとは <Cmd>App</Cmd> を <Cmd>{"<TaskProvider>"}</Cmd> で包み、どの子孫からでも <Cmd>useTasks()</Cmd> で読めます。</p>
       <Code lang="tsx" filename="使う側（どの深さでもOK）">{`function TaskList() {
   const { tasks, toggleTask } = useTasks();   // props 不要で直接取れる
-  return <ul>{tasks.map((t) => /* ... */)}</ul>;
+  return (
+    <ul>
+      {tasks.map((t) => (
+        <TaskItem key={t.id} task={t} onToggle={toggleTask} />
+      ))}
+    </ul>
+  );
 }`}</Code>
       <Figure
         src="/learn/shots/react-practice/state-management-01.svg"
@@ -131,6 +137,102 @@ export function useTasks() {
       <Callout variant="warn" title="Context の使いどころ">
         Context は「全体で共有する少数の状態（テーマ・ログインユーザー・カート）」に向きます。<strong>頻繁に変わる大きな状態</strong>を
         1 つの Context に詰めると、値が変わるたびに<strong>読んでいる全コンポーネントが再描画</strong>されます。分割するか、後述のライブラリを検討します。
+      </Callout>
+
+      <Section>アプリに組み込む — ここまでを実際に動かす</Section>
+      <p>
+        ファイルを作っただけでは<strong>画面は何も変わりません</strong>。<Cmd>TaskContext.tsx</Cmd> はまだどこからも読み込まれていないからです。
+        ここで 2 つのファイルを書き換えて、実際に Context 経由でタスクが表示される状態にします。
+      </p>
+
+      <SubSection>① main.tsx を TaskProvider で包む</SubSection>
+      <p>
+        <Cmd>BrowserRouter</Cmd> の<strong>内側</strong>に置きます。こうするとルーティングで切り替わるどの画面からも
+        <Cmd>useTasks()</Cmd> が使えます。
+      </p>
+      <Code lang="tsx" filename="src/main.tsx">{`import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import { TaskProvider } from "./context/TaskContext";   // ← 追加
+import App from "./App";
+import "./index.css";
+
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <BrowserRouter>
+      <TaskProvider>        {/* ← 追加: この内側なら全画面から useTasks() が使える */}
+        <App />
+      </TaskProvider>
+    </BrowserRouter>
+  </StrictMode>
+);`}</Code>
+
+      <SubSection>② TaskListPage を useTasks() 版に書き換える</SubSection>
+      <p>
+        前章まで <Cmd>TaskListPage</Cmd> は自分で <Cmd>useState</Cmd> を持っていました。これを Context から受け取る形に変えます。
+        <strong>自前の state が消えて、代わりに 1 行で共有状態を取れる</strong>のがポイントです。追加フォームも付けて、書き込み側も試します。
+      </p>
+      <Code lang="tsx" filename="src/pages/TaskListPage.tsx">{`import { useState } from "react";
+import { useTasks } from "../context/TaskContext";
+import { TaskItem } from "../components/TaskItem";
+
+export function TaskListPage() {
+  // タスク本体は Context から。useState<Task[]> はもう要らない
+  const { tasks, addTask, toggleTask } = useTasks();
+  // 入力欄の文字だけは、この画面ローカルの state で持つ
+  const [title, setTitle] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!title.trim()) return;   // 空文字は追加しない
+    addTask(title);              // Context の関数を呼ぶ
+    setTitle("");                // 入力欄を空に戻す
+  };
+
+  return (
+    <div>
+      <h1>タスク一覧</h1>
+
+      <form onSubmit={handleSubmit}>
+        <input
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="やることを入力"
+        />
+        <button type="submit">追加</button>
+      </form>
+
+      <ul>
+        {tasks.map((task) => (
+          <TaskItem key={task.id} task={task} onToggle={toggleTask} />
+        ))}
+      </ul>
+    </div>
+  );
+}`}</Code>
+
+      <SubSection>③ 動作を確認する</SubSection>
+      <p>
+        <Cmd>npm run dev</Cmd> で開発サーバーを起動し、<Cmd>http://localhost:5173</Cmd> を開きます。次の 3 つが確認できれば成功です。
+      </p>
+      <KVList
+        items={[
+          { key: "追加できる", val: "入力欄に文字を入れて「追加」を押すと、一覧に増える" },
+          { key: "切り替えられる", val: "チェックボックスを押すと完了状態が変わる" },
+          { key: "state が消えていない", val: "TaskListPage に useState<Task[]> が無いのに一覧が保持される（＝Context が効いている）" },
+        ]}
+      />
+      <Callout variant="info" title="最初は空で正しい">
+        <Cmd>TaskProvider</Cmd> の初期値は <Cmd>useState&lt;Task[]&gt;([])</Cmd>、つまり<strong>空の配列</strong>です。
+        起動直後に一覧が空なのは正常で、「追加」を押して初めて表示されます。最初から数件入れておきたい場合は、
+        この初期値に配列リテラルを書けば構いません（データを取得して埋めるのは次章の「CRUD」で扱います）。
+      </Callout>
+      <Callout variant="warn" title="lint の警告が 1 件出ることがある">
+        <Cmd>TaskContext.tsx</Cmd> はコンポーネント（<Cmd>TaskProvider</Cmd>）とフック（<Cmd>useTasks</Cmd>）を
+        同じファイルから export しているため、テンプレート同梱の lint が
+        <Cmd>Fast refresh only works when a file only exports components</Cmd> という警告を出します。
+        <strong>動作に問題はありません</strong>。気になる場合は <Cmd>useTasks</Cmd> を別ファイル
+        （例: <Cmd>src/hooks/useTasks.ts</Cmd>）に切り出すと消えます。
       </Callout>
 
       <Section>useReducer で CRUD をまとめる</Section>
