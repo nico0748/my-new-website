@@ -618,6 +618,43 @@
 .learn-docs .course-card--wip .cc-title { color: var(--color-text-secondary); }
 .learn-docs .course-card--wip:hover { transform: none; box-shadow: none; border-color: var(--color-border); }
 
+/* ---- 開発中でロックされたカード（<button> 版）。ボタン既定のスタイルを打ち消す ---- */
+.learn-docs button.course-card--locked {
+  font: inherit; text-align: left; width: 100%; padding: 0; margin: 0;
+  cursor: pointer; -webkit-appearance: none; appearance: none;
+}
+.learn-docs .course-card--locked .cc-title { color: var(--color-text-secondary); }
+.learn-docs .course-card--locked:hover {
+  transform: none; box-shadow: 0 6px 18px rgba(0,0,0,0.08); border-color: var(--color-border);
+}
+
+/* ---- 開発中ポップアップ ---- */
+.learn-docs .wip-modal-overlay {
+  position: fixed; inset: 0; z-index: 200; background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+  animation: wip-fade 0.14s ease;
+}
+@keyframes wip-fade { from { opacity: 0; } to { opacity: 1; } }
+.learn-docs .wip-modal {
+  width: 100%; max-width: 380px; background: var(--color-surface);
+  border: 1px solid var(--color-border); border-radius: 16px; padding: 30px 28px;
+  text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.28);
+}
+.learn-docs .wip-modal-badge {
+  display: inline-block; padding: 5px 16px; border-radius: 99px;
+  background: rgba(31, 41, 55, 0.9); color: #fff;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.14em;
+}
+.learn-docs .wip-modal-title { margin: 16px 0 10px; font-size: 20px; font-weight: 800; color: var(--color-text); }
+.learn-docs .wip-modal-text { margin: 0 0 24px; font-size: 14px; line-height: 1.8; color: var(--color-text-secondary); }
+.learn-docs .wip-modal-close {
+  font: inherit; font-weight: 700; font-size: 14px; cursor: pointer;
+  padding: 10px 28px; border-radius: 10px; border: none;
+  background: var(--color-primary); color: #fff; transition: filter 0.15s ease;
+}
+.learn-docs .wip-modal-close:hover { filter: brightness(0.94); }
+
 /* コース詳細ページのヒーローカバーにも重ねる */
 .learn-docs .course-hero .ch-cover { position: relative; }
 .learn-docs .course-hero--wip .ch-cover img { filter: grayscale(0.7); opacity: 0.6; }
