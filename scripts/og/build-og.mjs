@@ -3,9 +3,10 @@
  *
  *  1. src/content/learn の各記事 TSX から meta を抽出
  *  2. コースサムネと同モチーフの OG 画像（1200x630 PNG）を satori + resvg で生成
- *     → dist/learn/og/<domain>/<id>.png / dist/learn/og/<domain>.png / dist/learn/og/learn.png
+ *     → dist/nicotech/og/<domain>/<id>.png / dist/nicotech/og/<domain>.png / dist/nicotech/og/nicotech.png
  *  3. meta（title / description / og:*）を差し替えた index.html を各ルートに出力
- *     → dist/learn/index.html / dist/learn/<domain>/index.html / dist/learn/<domain>/<id>/index.html
+ *     → dist/nicotech/index.html / dist/nicotech/<domain>/index.html / dist/nicotech/<domain>/<id>/index.html
+ *  ※ 公開コース（PUBLISHED_DOMAINS）のみ生成する
  *
  * Vercel は rewrite より実ファイルを優先するため、クローラーにはこの静的 HTML が返る。
  * 環境変数: OG_ROOT（リポジトリルート）/ OG_DIST（出力先）でテスト時に上書き可能。
@@ -21,6 +22,8 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = process.env.OG_ROOT ?? join(HERE, "..", "..");
 const DIST = process.env.OG_DIST ?? join(ROOT, "dist");
 const SITE = "https://nico-labo748.dev";
+// ルートの起点。サイトは /learn から /nicotech へリブランド済みなので出力先・URL とも /nicotech に合わせる
+const BASE = "nicotech";
 const BRAND = "nicoTech Learn";
 const LANDING_TITLE = "nicoTech Learn — Web・インフラ・セキュリティの教材";
 const LANDING_DESC =
@@ -33,10 +36,16 @@ const field = (src, key) => {
   return m ? m[1].replace(/\\"/g, '"') : undefined;
 };
 
+// 本番で公開しているコースだけ OGP を生成する（PUBLISHED_DOMAINS を learnCategories から読む）
+const publishedSrc = readFileSync(join(ROOT, "src", "lib", "learnCategories.ts"), "utf8");
+const publishedBlock = publishedSrc.match(/PUBLISHED_DOMAINS[^=]*=\s*\[([\s\S]*?)\]/)?.[1] ?? "";
+const PUBLISHED = new Set([...publishedBlock.matchAll(/"([^"]+)"/g)].map((m) => m[1]));
+
 const contentDir = join(ROOT, "src", "content", "learn");
 const domains = readdirSync(contentDir, { withFileTypes: true })
   .filter((d) => d.isDirectory())
-  .map((d) => d.name);
+  .map((d) => d.name)
+  .filter((d) => PUBLISHED.has(d));
 
 const articles = [];
 for (const domain of domains) {
@@ -247,10 +256,10 @@ const buildHtml = ({ title, desc, url, image, type }) => {
 
 const emit = (relDir, png, html) => {
   if (png) {
-    mkdirSync(dirname(join(DIST, "learn", "og", relDir + ".png")), { recursive: true });
-    writeFileSync(join(DIST, "learn", "og", relDir + ".png"), png);
+    mkdirSync(dirname(join(DIST, BASE, "og", relDir + ".png")), { recursive: true });
+    writeFileSync(join(DIST, BASE, "og", relDir + ".png"), png);
   }
-  const htmlDir = relDir === "learn" ? join(DIST, "learn") : join(DIST, "learn", relDir);
+  const htmlDir = join(DIST, BASE, relDir);
   mkdirSync(htmlDir, { recursive: true });
   writeFileSync(join(htmlDir, "index.html"), html);
 };
@@ -259,14 +268,14 @@ const emit = (relDir, png, html) => {
 
 let count = 0;
 
-// /learn ランディング
+// /nicotech ランディング
 {
   const png = await ogImage({ accent: "#26313f", kicker: "Learn", title: "IT 教材ライブラリ", sub: LANDING_DESC, iconDomain: null });
-  const html = buildHtml({ title: LANDING_TITLE, desc: LANDING_DESC, url: `${SITE}/learn`, image: `${SITE}/learn/og/learn.png`, type: "website" });
-  mkdirSync(join(DIST, "learn", "og"), { recursive: true });
-  writeFileSync(join(DIST, "learn", "og", "learn.png"), png);
-  mkdirSync(join(DIST, "learn"), { recursive: true });
-  writeFileSync(join(DIST, "learn", "index.html"), html);
+  const html = buildHtml({ title: LANDING_TITLE, desc: LANDING_DESC, url: `${SITE}/${BASE}`, image: `${SITE}/${BASE}/og/${BASE}.png`, type: "website" });
+  mkdirSync(join(DIST, BASE, "og"), { recursive: true });
+  writeFileSync(join(DIST, BASE, "og", `${BASE}.png`), png);
+  mkdirSync(join(DIST, BASE), { recursive: true });
+  writeFileSync(join(DIST, BASE, "index.html"), html);
   count++;
 }
 
@@ -278,8 +287,8 @@ for (const domain of domains) {
   emit(domain, coursePng, buildHtml({
     title: courseTitle,
     desc: style.description || LANDING_DESC,
-    url: `${SITE}/learn/${domain}`,
-    image: `${SITE}/learn/og/${domain}.png`,
+    url: `${SITE}/${BASE}/${domain}`,
+    image: `${SITE}/${BASE}/og/${domain}.png`,
     type: "website",
   }));
   count++;
@@ -296,12 +305,12 @@ for (const domain of domains) {
     emit(`${domain}/${a.id}`, png, buildHtml({
       title: `${a.title} | ${BRAND}`,
       desc: a.description || style.description || LANDING_DESC,
-      url: `${SITE}/learn/${domain}/${a.id}`,
-      image: `${SITE}/learn/og/${domain}/${a.id}.png`,
+      url: `${SITE}/${BASE}/${domain}/${a.id}`,
+      image: `${SITE}/${BASE}/og/${domain}/${a.id}.png`,
       type: "article",
     }));
     count++;
   }
 }
 
-console.log(`✅ OGP 生成完了: ${count} ページ（記事 ${articles.length} 本 + コース ${domains.length} + ランディング）→ dist/learn/`);
+console.log(`✅ OGP 生成完了: ${count} ページ（記事 ${articles.length} 本 + コース ${domains.length} + ランディング）→ dist/${BASE}/`);
