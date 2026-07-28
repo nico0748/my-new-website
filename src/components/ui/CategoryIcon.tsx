@@ -6,7 +6,7 @@ import type { CSSProperties, ReactNode } from "react";
 
 export type CategoryIconName =
   | "newspaper" | "shield" | "alert" | "puzzle" | "terminal"
-  | "palette" | "settings" | "cpu" | "pin"
+  | "palette" | "layout" | "settings" | "cpu" | "pin"
   | "pencil" | "blocks" | "brain" | "cloud" | "book";
 
 const PATHS: Record<CategoryIconName, ReactNode> = {
@@ -41,6 +41,14 @@ const PATHS: Record<CategoryIconName, ReactNode> = {
       <circle cx="8.5" cy="7.5" r="1.5" />
       <circle cx="6.5" cy="12.5" r="1.5" />
       <path d="M12 2a10 10 0 1 0 0 20 2 2 0 0 0 0-4 6 6 0 0 1 0-12 4 4 0 0 0 4-4 2 2 0 0 0-4 0z" />
+    </>
+  ),
+  // frontend: ブラウザ/UI レイアウト（上バー + 左サイドバー）
+  layout: (
+    <>
+      <rect x="3" y="3" width="18" height="18" rx="2" />
+      <line x1="3" y1="9" x2="21" y2="9" />
+      <line x1="9" y1="21" x2="9" y2="9" />
     </>
   ),
   settings: (

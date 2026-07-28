@@ -16,7 +16,7 @@ const CATEGORY_STYLES: Record<string, TopicCategoryStyle> = {
   vuln:      { label: "脆弱性",   color: "#ffb454", icon: "alert" },     // アンバー
   daily:     { label: "1日1題",   color: "#5ad17e", icon: "puzzle" },    // グリーン
   it:        { label: "IT",       color: "#5c9dff", icon: "terminal" },  // ブルー
-  frontend:  { label: "Frontend", color: "#00e5cc", icon: "palette" },   // シアン
+  frontend:  { label: "Frontend", color: "#00e5cc", icon: "layout" },    // シアン
   backend:   { label: "Backend",  color: "#ffb454", icon: "settings" },  // アンバー
   ai:        { label: "AI",       color: "#a78bfa", icon: "cpu" },       // パープル
   other:     { label: "Other",    color: "#8a96a3", icon: "pin" },       // グレー
