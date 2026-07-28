@@ -6,6 +6,7 @@ import remarkGfm from "remark-gfm";
 
 import TerminalBackground from "../components/ui/TerminalBackground";
 import CornerMarks from "../components/ui/CornerMarks";
+import CategoryIcon from "../components/ui/CategoryIcon";
 import { getStudyCategoryStyle } from "../lib/studyCategories";
 import { fetchSheetData } from "../lib/googleSheets";
 import { mapStudyData } from "../lib/dataMapper";
@@ -118,7 +119,7 @@ const StudyDetailPage = () => {
                     fontFamily: "'JetBrains Mono', monospace",
                   }}
                 >
-                  <span aria-hidden>{cat.emoji}</span>
+                  <CategoryIcon name={cat.icon} size={14} />
                   {cat.label}
                 </span>
                 {study.date && (
