@@ -4,6 +4,7 @@ import { getTopicCategoryStyle } from '../../lib/topicCategories';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import CornerMarks from './CornerMarks';
+import CategoryIcon from './CategoryIcon';
 
 interface Props {
   item: TopicItem;
@@ -68,7 +69,7 @@ const TopicCard: React.FC<Props> = ({ item }) => {
               fontFamily: "'JetBrains Mono', monospace",
             }}
           >
-            <span aria-hidden>{cat.emoji}</span>
+            <CategoryIcon name={cat.icon} />
             {cat.label}
           </span>
           {item.date && (

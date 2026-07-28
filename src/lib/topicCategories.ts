@@ -1,22 +1,25 @@
-/** Topics カテゴリの表示ラベル・アクセント色・絵文字。
- *  ダーク・ターミナルテーマのパレットに準拠。未知カテゴリは other にフォールバック。 */
+/** Topics カテゴリの表示ラベル・アクセント色・アイコン。
+ *  ダーク・ターミナルテーマのパレットに準拠。未知カテゴリは other にフォールバック。
+ *  ⚠️ 絵文字は使わない。記号は CategoryIcon のピクトグラムで表す。 */
+
+import type { CategoryIconName } from "../components/ui/CategoryIcon";
 
 export interface TopicCategoryStyle {
   label: string;
   color: string;
-  emoji: string;
+  icon: CategoryIconName;
 }
 
 const CATEGORY_STYLES: Record<string, TopicCategoryStyle> = {
-  news:  { label: "News",   color: "#00e5cc", emoji: "📰" }, // シアン（メインアクセント）
-  cve:   { label: "CVE",    color: "#ff5c8a", emoji: "🛡️" }, // マゼンタ
-  vuln:  { label: "脆弱性", color: "#ffb454", emoji: "⚠️" }, // アンバー
-  daily: { label: "1日1題", color: "#5ad17e", emoji: "🧩" }, // グリーン
-  it:    { label: "IT",     color: "#5c9dff", emoji: "💻" }, // ブルー
-  frontend: { label: "Frontend", color: "#00e5cc", emoji: "🎨" }, // シアン
-  backend:  { label: "Backend",  color: "#ffb454", emoji: "⚙️" }, // アンバー
-  ai:       { label: "AI",       color: "#a78bfa", emoji: "🤖" }, // パープル
-  other: { label: "Other",  color: "#8a96a3", emoji: "📌" }, // グレー
+  news:      { label: "News",     color: "#00e5cc", icon: "newspaper" }, // シアン（メインアクセント）
+  cve:       { label: "CVE",      color: "#ff5c8a", icon: "shield" },    // マゼンタ
+  vuln:      { label: "脆弱性",   color: "#ffb454", icon: "alert" },     // アンバー
+  daily:     { label: "1日1題",   color: "#5ad17e", icon: "puzzle" },    // グリーン
+  it:        { label: "IT",       color: "#5c9dff", icon: "terminal" },  // ブルー
+  frontend:  { label: "Frontend", color: "#00e5cc", icon: "palette" },   // シアン
+  backend:   { label: "Backend",  color: "#ffb454", icon: "settings" },  // アンバー
+  ai:        { label: "AI",       color: "#a78bfa", icon: "cpu" },       // パープル
+  other:     { label: "Other",    color: "#8a96a3", icon: "pin" },       // グレー
 };
 
 /** カテゴリ文字列から表示スタイルを返す。未知なら other スタイル＋原文ラベル。 */
