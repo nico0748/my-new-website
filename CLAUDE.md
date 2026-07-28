@@ -126,7 +126,7 @@ style={{
   - ヘッダー列: `id, title, description, category, date, tags, thumbnail, author, markdownFile, externalUrl, source`
   - 型・マッパーは `src/lib/dataMapper.ts` の `TopicItem` / `mapTopicData`（新しい順にソート）
 - 記事本文は `public/topics/<id>.md` に置くと `/topics/:id` で自動表示（`.prose-custom`）。md が無い場合は `description` ＋ `externalUrl` にフォールバック
-- **カテゴリ**: `news` / `cve` / `vuln` / `daily` / `it` / `other`（自由文字列・未知は other 扱い）。色・ラベル・絵文字は `src/lib/topicCategories.ts` の `getTopicCategoryStyle` で一元管理。新カテゴリはここに追加する
+- **カテゴリ**: `news` / `cve` / `vuln` / `daily` / `it` / `other`（自由文字列・未知は other 扱い）。色・ラベル・アイコンは `src/lib/topicCategories.ts` の `getTopicCategoryStyle` で一元管理（アイコンは `src/components/ui/CategoryIcon.tsx` のピクトグラム）。新カテゴリはここに追加する
 - 一覧 `TopicsPage` / 詳細 `TopicDetailPage` / カード `TopicCard`。トップページ（`portfolioPage.tsx`）にも最新3件の抜粋セクション（`id="topics"`）あり
 - `source = "auto"` / `externalUrl` は将来の自動取り込み（CVE/ニュースフィード）用に予約済み
 
@@ -139,7 +139,7 @@ style={{
 - データソースは Google Sheets の **「Study」シート**（ヘッダー列は Topics と同一）
   - 型・マッパーは `src/lib/dataMapper.ts` の `StudyItem` / `mapStudyData`（新しい順にソート）
 - 記事本文は `public/study/<id>.md` に置くと `/study/:id` で自動表示。md が無い場合は `description` ＋ `externalUrl` にフォールバック
-- **カテゴリ**: `language` / `framework` / `cs` / `security` / `infra` / `book` / `other`（自由文字列・未知は other）。色・ラベル・絵文字は `src/lib/studyCategories.ts` の `getStudyCategoryStyle` で一元管理
+- **カテゴリ**: `language` / `framework` / `cs` / `security` / `infra` / `book` / `other`（自由文字列・未知は other）。色・ラベル・アイコンは `src/lib/studyCategories.ts` の `getStudyCategoryStyle` で一元管理（アイコンは `src/components/ui/CategoryIcon.tsx` のピクトグラム）
 - 一覧 `StudyPage` / 詳細 `StudyDetailPage` / カード `StudyCard`。トップにも最新3件の抜粋セクション（`id="study"`）あり
 - **GAS（`scripts/gas/`）は Topics/Study 兼用**: `append-topic.gs` は `sheet` パラメータで追記先を切替（許可リスト `['Topics','Study']`）、`notify-topics.gs` は両シートの onChange を1トリガーで Slack 通知（シートごとに最終通知行を管理）
 
@@ -256,6 +256,7 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
 - 見出し・ロゴは等幅（`JetBrains Mono`）、和文本文はゴシック（`Noto Sans JP`）を使う。明朝体・手書き体（`Klee One`）は新規採用しない
 - ハードコードされたデータを `src/` 以下に置かない（Google Sheets に移行済み）。※例外は Learn 教材のみ（`src/content/learn/` の TSX 記事。詳細は「Learn コンテンツ」節）
 - **Learn（`/learn`）UI で絵文字（emoji / ピクトグラム）を使わない**。コース・カテゴリのアイコンは `public/learn/covers/` のカバー画像か SVG アイコンで表現する（矢印記号 `←`/`→` は可）
+- **絵文字（emoji / ピクトグラム文字）をサイト全体で使わない**。カテゴリ・状態の記号は `src/components/ui/CategoryIcon.tsx` のピクトグラム（Lucide 相当の 24 viewBox / stroke 2）で表す。矢印記号 `←`/`→`/`↗`/`❯`/`▸` は可
 - Learn のデザインにポートフォリオのダーク・ターミナル調（`TerminalBackground`・`--accent` 等の portfolio 変数）を持ち込まない。Learn は `.learn-docs` スコープの専用スタイル（`src/styles/learn.css`・Progate 系ライトテーマ）で統一する
 - ハードコードされた色（`#xxxxxx`）を直接書かず、CSS 変数（`var(--accent)` 等）経由で参照する
 - 未使用の `console.log` をコミットしない

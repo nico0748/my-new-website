@@ -102,6 +102,63 @@ const ICONS = {
     <path d="M90 72 h140" stroke="#fff" stroke-width="3"/>
     <circle cx="104" cy="62" r="3.2" fill="#fff"/><circle cx="116" cy="62" r="3.2" fill="#fff"/><circle cx="128" cy="62" r="3.2" fill="#fff"/>
     <path d="M104 88 h64 M104 102 h84 M104 116 h48" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-opacity="0.92"/>`,
+  // Claude Code: ターミナルウィンドウ（信号機ドット）＋ >_ プロンプト ＋ AI スパーク（カバーと同モチーフ）
+  "claude-code": () => `
+    <rect x="96" y="50" width="120" height="92" rx="11" fill="#fff" fill-opacity="0.14" stroke="#fff" stroke-width="3"/>
+    <path d="M96 70 h120" stroke="#fff" stroke-width="3"/>
+    <circle cx="110" cy="60" r="3.1" fill="#fff"/><circle cx="121" cy="60" r="3.1" fill="#fff"/><circle cx="132" cy="60" r="3.1" fill="#fff"/>
+    <path d="M112 88 l14 12 l-14 12" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M134 112 h30" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-opacity="0.9"/>
+    <path d="M208 50 l3.4 9 l9 3.4 l-9 3.4 l-3.4 9 l-3.4 -9 l-9 -3.4 l9 -3.4 z" fill="#fff"/>
+    <path d="M224 88 l2 5.2 l5.2 2 l-5.2 2 l-2 5.2 l-2 -5.2 l-5.2 -2 l5.2 -2 z" fill="#fff" fill-opacity="0.85"/>`,
+  // IT用語解説: 辞書カード（見出し語＋語義）＋ 虫めがね
+  "it-terms": (accent) => `
+    <rect x="96" y="46" width="104" height="94" rx="10" fill="#fff" fill-opacity="0.14" stroke="#fff" stroke-width="3"/>
+    <g stroke="#fff" stroke-linecap="round">
+      <path d="M112 66 h40" stroke-width="4.6"/>
+      <path d="M112 82 h68" stroke-width="3" stroke-opacity="0.8"/>
+      <path d="M112 96 h58" stroke-width="3" stroke-opacity="0.8"/>
+      <path d="M112 112 h34" stroke-width="4.6"/>
+    </g>
+    <g stroke="#fff" stroke-width="5.4" fill="none" stroke-linecap="round">
+      <circle cx="196" cy="116" r="22" fill="${accent}"/>
+      <path d="M213 133 l16 16"/>
+    </g>`,
+  // React実践: React アトム（3 楕円＋中心）
+  "react-practice": () => `
+    <g stroke="#fff" stroke-width="3.4" fill="none" stroke-opacity="0.95">
+      <ellipse cx="160" cy="92" rx="50" ry="19"/>
+      <ellipse cx="160" cy="92" rx="50" ry="19" transform="rotate(60 160 92)"/>
+      <ellipse cx="160" cy="92" rx="50" ry="19" transform="rotate(120 160 92)"/>
+    </g>
+    <circle cx="160" cy="92" r="9" fill="#fff"/>`,
+  // 競技プログラミング: グラフ（頂点＋辺）
+  "kyopro": (accent) => `
+    <g stroke="#fff" stroke-width="3" fill="none" stroke-opacity="0.9">
+      <line x1="104" y1="122" x2="142" y2="70"/>
+      <line x1="142" y1="70" x2="182" y2="106"/>
+      <line x1="182" y1="106" x2="220" y2="62"/>
+    </g>
+    <g fill="${accent}" stroke="#fff" stroke-width="3">
+      <circle cx="104" cy="122" r="10"/><circle cx="142" cy="70" r="10"/><circle cx="182" cy="106" r="10"/><circle cx="220" cy="62" r="10"/>
+    </g>
+    <g fill="#fff" fill-opacity="0.16">
+      <circle cx="104" cy="122" r="10"/><circle cx="142" cy="70" r="10"/><circle cx="182" cy="106" r="10"/><circle cx="220" cy="62" r="10"/>
+    </g>`,
+  // 技術スタック一覧: タイルのグリッド（3x3）
+  "stack": () => `
+    <g fill="#fff" fill-opacity="0.14" stroke="#fff" stroke-width="2.8">
+      <rect x="103" y="38" width="34" height="34" rx="7"/><rect x="145" y="38" width="34" height="34" rx="7"/><rect x="187" y="38" width="34" height="34" rx="7"/>
+      <rect x="103" y="80" width="34" height="34" rx="7"/><rect x="145" y="80" width="34" height="34" rx="7"/><rect x="187" y="80" width="34" height="34" rx="7"/>
+      <rect x="103" y="122" width="34" height="34" rx="7"/><rect x="145" y="122" width="34" height="34" rx="7"/><rect x="187" y="122" width="34" height="34" rx="7"/>
+    </g>`,
+  // Angular実践: シールド＋A
+  "angular-practice": () => `
+    <path d="M160 40 L206 56 V96 C206 122 186 138 160 148 C134 138 114 122 114 96 V56 Z" fill="#fff" fill-opacity="0.14" stroke="#fff" stroke-width="3.4" stroke-linejoin="round"/>
+    <g stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <path d="M148 118 L160 66 L172 118"/>
+      <path d="M152 100 H168"/>
+    </g>`,
   infra: () => `
     <g stroke="#fff" stroke-width="3">
       <rect x="112" y="50" width="96" height="26" rx="6" fill="#fff" fill-opacity="0.14"/>
