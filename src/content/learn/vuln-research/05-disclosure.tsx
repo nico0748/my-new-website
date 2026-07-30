@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, Callout, Code, Cmd, ComparisonTable, KVList, Steps, Step, KeyPoints, Bridge, Divider } from "../../../components/learn/kit";
+import { Lead, Section, Callout, Code, Cmd, ComparisonTable, KVList, Steps, Step, KeyPoints, Bridge, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "disclosure",
@@ -36,6 +36,17 @@ export default function Article() {
           修正によって<strong>別の問題が出ていないか</strong>（デグレ・新たな露出）も併せて確認する。
         </Step>
       </Steps>
+      <p>
+        報告書の締めには、<strong>総括と改善ロードマップ</strong>を置きます。個別の指摘を「即時 / 短期 / 中期 / 計画的」の時間軸で<strong>フェーズに整理</strong>し、最後に<strong>再診断（リテスト）の推奨</strong>で締めることで、クライアントが「何から・いつまでに直し、いつ確認するか」を実行に移せるようにします。下は実際の報告書の該当ページです。
+      </p>
+      <Callout variant="warn" title="掲載について（合意のうえで公開）">
+        以下の報告書画像は、実際に作成した脆弱性調査報告書の一部です。掲載にあたっては<strong>依頼主の合意を得たうえで公開</strong>しています。機微情報はマスキングしています。
+      </Callout>
+      <Figure
+        src="/learn/shots/vuln-research/report-07-summary-roadmap.png"
+        alt="報告書の『5. 総括と改善ロードマップ』ページ。総括の本文、フェーズ別（第1〜第4段階＋継続）の改善ロードマップ表、再診断（リテスト）の推奨"
+        caption="総括と改善ロードマップの実例。指摘を時間軸のフェーズに整理し、最後にリテストの推奨で締めている（依頼主の合意のもと掲載・マスキング済み）"
+      />
 
       <Section>個人リサーチ — 責任ある開示とは</Section>
       <p>

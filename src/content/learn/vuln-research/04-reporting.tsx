@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, ComparisonTable, KVList, KeyPoints, TipBox, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, ComparisonTable, KVList, KeyPoints, TipBox, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "reporting",
@@ -20,10 +20,6 @@ export default function Article() {
       <Lead>
         各種ツールで脆弱性を見つけただけでは、脆弱性診断は<strong>完了していません</strong>。発見した脆弱性を<strong>分析し、整理し、診断報告書としてまとめて報告するところまで</strong>が脆弱性診断です。この章では、報告書に<strong>何を・どの粒度で書くか</strong>を、記載事項ごとに具体的に定義します。
       </Lead>
-
-      <Callout variant="info" title="参考文献">
-        本章の報告書構成は、書籍<strong>『Web セキュリティ担当者のための脆弱性診断スタートガイド 第2版 ― 上野宣が教える新しい情報漏洩を防ぐ技術』</strong>で示される「診断報告書の記載事項」を土台に、実務の報告テンプレートへ落とし込んだものです。
-      </Callout>
 
       <Section>報告書は誰が・何のために使うか</Section>
       <p>
@@ -74,6 +70,20 @@ export default function Article() {
         ]}
       />
 
+      <Callout variant="warn" title="以降の報告書画像について（合意のうえで公開）">
+        本ページに掲載している報告書の画像は、実際に作成した脆弱性調査報告書の一部です。掲載にあたっては<strong>依頼主の合意を得たうえで公開</strong>しています。機微情報はマスキングしています。
+      </Callout>
+      <Figure
+        src="/learn/shots/vuln-research/report-01-cover.png"
+        alt="脆弱性調査報告書の表紙。タイトル『Web サイト脆弱性調査報告書』、対象ドメイン、報告書バージョン・発行日・診断実施期間・提出先・作成担当が並ぶ。機密区分は社外秘"
+        caption="表紙の実例。タイトル・対象・版数・発行日・提出先/発行元・機密区分（社外秘）を明記している"
+      />
+      <Figure
+        src="/learn/shots/vuln-research/report-02-toc.png"
+        alt="脆弱性調査報告書の目次。エグゼクティブサマリ・調査概要・発見事項一覧・脆弱性の詳細・総括と改善ロードマップ・付録の各章とページ番号が並ぶ"
+        caption="目次の実例。エグゼクティブサマリ（非技術者向け）と脆弱性の詳細（開発者向け）が分かれている構成が読み取れる"
+      />
+
       <Section>1. イントロダクション</Section>
       <p>
         報告書の<strong>前提</strong>を明示するパートです。「何を・どんな約束の下で・どんな制約で診断したか」を書き、後の指摘の読み方を規定します。
@@ -121,10 +131,23 @@ export default function Article() {
 | 警告   | 4.0 – 6.9    |  3   |
 | 注意   | 0.1 – 3.9    |  2   |
 | なし   | 0            |  0   |`}</Code>
+      <Figure
+        src="/learn/shots/vuln-research/report-03-exec-summary.png"
+        alt="報告書のエグゼクティブサマリ。深刻度別発見件数の表（緊急/高/中/低）と件数帯グラフ、『特に注意すべき発見(最優先の3件)』、時間軸別の推奨対応優先順位の表"
+        caption="エグゼクティブサマリの実例。件数内訳・最優先3件・時間軸（即時/短期/中期/計画的）の推奨アクションを、非技術者にも伝わる言葉でまとめている"
+      />
 
       <Section>3.2 個別の脆弱性の報告</Section>
       <p>
-        発見した脆弱性・セキュリティ機能不足<strong>ごとに1項目</strong>を立て、次の記載事項をまとめます（前章の指摘個票がそのまま入ります）。
+        個別の詳細に入る前に、発見した脆弱性を<strong>一覧（サマリ）</strong>で見せると読み手が全体を把握しやすくなります。下は実際の報告書の「発見事項一覧」で、ID・脆弱性名・深刻度・CVSS・対象ルートを並べ、さらに<strong>「どの立場から発見・悪用できるか」</strong>を利用者視点別マトリクスで整理しています。
+      </p>
+      <Figure
+        src="/learn/shots/vuln-research/report-05-findings.png"
+        alt="報告書の発見事項一覧。全12件の脆弱性サマリ表（ID・脆弱性名・深刻度・CVSS・主な対象ルート）と、利用者視点別マトリクス（一般訪問者/WP管理者/サイト管理者）"
+        caption="発見事項一覧の実例。全件を深刻度順にサマリし、利用者視点別マトリクスで『どの立場から悪用できるか』を可視化している（依頼主の合意のもと掲載・マスキング済み）"
+      />
+      <p>
+        続いて、発見した脆弱性・セキュリティ機能不足<strong>ごとに1項目</strong>を立て、次の記載事項をまとめます（前章の指摘個票がそのまま入ります）。
       </p>
       <ComparisonTable
         headers={["記載事項", "内容"]}
@@ -156,6 +179,14 @@ export default function Article() {
 【脆弱性の解説】XSS の一般的な仕組み＋本件の成立条件
 【影響/脅威】技術的（セッション奪取等）＋事業的（なりすまし・情報漏えい）
 【対策】恒久: 出力時の文脈別エスケープ／短期: CSP・WAF ルール`}</Code>
+      <p>
+        下は実際の報告書の個別指摘（LFJ-006 ユーザー名の列挙）です。上の記載事項が<strong>1件のページにどう配置されるか</strong>を確認してください。深刻度・CVSS ベクタ・CWE・OWASP Top 10・対象 URL・再現性を表にまとめ、<strong>「平易な説明（非エンジニア向け）」</strong>と<strong>「技術的な詳細と再現手順」</strong>を併記し、想定影響・推奨対応（短期/恒久）・参考情報まで1件で完結させています。
+      </p>
+      <Figure
+        src="/learn/shots/vuln-research/report-06-finding-detail.png"
+        alt="報告書の個別脆弱性ページ（LFJ-006 ユーザー名の列挙）。深刻度/CVSS/CWE/OWASP/対象URL/再現性の表、平易な説明、技術的詳細と再現手順、想定影響、推奨対応、参考情報"
+        caption="個別の脆弱性の報告の実例（LFJ-006）。非エンジニア向けの平易な説明と、開発者向けの再現手順・対策を1ページに収めている（依頼主の合意のもと掲載・マスキング済み）"
+      />
 
       <Section>リスク評価 — CVSS v3 で一貫させる</Section>
       <p>
@@ -182,6 +213,14 @@ export default function Article() {
       <Code lang="text" filename="リテスト結果（E5 後に追記）">{`| # | 指摘 | リテスト判定 | 確認日 |
 |---|------|--------------|--------|
 | 1 | 反射型 XSS | 修正済 / 部分対応 / 未対応 / 再発 | 2026-08-xx |`}</Code>
+      <p>
+        付録には、<strong>調査手法の詳細</strong>（準拠したプロセス・テスト範囲・非破壊で実証した旨・証跡の保全とマスキング方針）や、<strong>免責事項・本報告書の利用条件</strong>（「発見された弱点が存在すること」を示すものであり、弱点が存在しないことを保証しない、など）を明記します。読み手が報告書の<strong>前提と限界</strong>を正しく理解できるようにするためのパートです。
+      </p>
+      <Figure
+        src="/learn/shots/vuln-research/report-08-appendix.png"
+        alt="報告書の付録ページ。A 調査手法の詳細（NIST SP800-115 準拠・OWASP WSTG・非破壊で安全に実証・証跡マスキング）と、B 免責事項・本報告書の利用条件"
+        caption="付録の実例。調査手法（準拠プロセス・非破壊での実証・証跡保全）と免責事項・利用条件を明記している（依頼主の合意のもと掲載・マスキング済み）"
+      />
 
       <TipBox>
         この章の完了条件は「<strong>報告書を納品し、報告会で事業文脈に翻訳して説明し、優先順位がクライアントと合意されている</strong>」こと。『危ない』を『いつ・何を直すか』の合意に変えるまでが報告です。
