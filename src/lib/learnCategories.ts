@@ -210,6 +210,7 @@ export const PRACTICE_DOMAINS: LearnDomain[] = [
 export const PUBLISHED_DOMAINS: LearnDomain[] = [
   "web", "security", "it-terms", "dev", "react-practice",
   "claude-code", "kyopro", "stack", "angular-practice",
+  "vuln-research",
 ];
 
 /** 本番ドメインかどうか（Preview の *.vercel.app / localhost は false）。 */
