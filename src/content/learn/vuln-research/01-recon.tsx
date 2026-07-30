@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KVList, Steps, Step, KeyPoints, TipBox, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KVList, Steps, Step, KeyPoints, TipBox, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "recon",
@@ -100,6 +100,19 @@ curl -s https://target.example.com/openapi.json | jq '.paths | keys'`}</Code>
       <TipBox>
         偵察の成果物は「攻撃面の一覧」です。<strong>画面・フォーム・API・パラメータ・認証境界</strong>を表にして、次章の調査チェックリストに落とし込みます。「どこを調べるべきか」が漏れなく見える状態になっていれば、この章は完了です。
       </TipBox>
+
+      <SubSection>実例 — 報告書に載せた「調査スコープ / URL ルーティング一覧」</SubSection>
+      <Callout variant="warn" title="掲載について（合意のうえで公開）">
+        以下は、実際に作成した脆弱性調査報告書の一部です。掲載にあたっては<strong>依頼主の合意を得たうえで公開</strong>しています。機微情報はマスキングしています。
+      </Callout>
+      <p>
+        偵察で洗い出した攻撃面は、報告書では「調査スコープ」として明文化します。各ルート（URL パス）に<strong>機能・認証要否・対象/対象外</strong>を割り当て、<strong>「どこを見て、どこを見なかったか」</strong>を第三者に検証可能な形で残します。外部決済代行（PSP）が対象外になっている点にも注目してください。
+      </p>
+      <Figure
+        src="/learn/shots/vuln-research/report-04-scope-routing.png"
+        alt="脆弱性調査報告書の『2. 調査概要』ページ。調査対象の表と、URL ルーティング一覧（ルート・機能・認証・対象の列）が並んでいる"
+        caption="報告書「調査概要 / URL ルーティング一覧」の実例。攻撃面（ルート）を機能・認証・対象で明示している（依頼主の合意のもと掲載・マスキング済み）"
+      />
 
       <Divider />
 
