@@ -166,18 +166,34 @@ const LearnSearch = () => {
           <div className="search-terms">
             <div className="search-terms-head">IT用語</div>
             {terms.map((t) => (
-              <button
-                key={`${t.section}/${t.term}`}
-                className="term-card"
-                onClick={() => { setOpen(false); navigate(`/nicotech/it-terms/${t.articleId}`); }}
-              >
-                <span className="term-card-head">
-                  <span className="term-card-term">{t.term}</span>
-                  {t.en && <span className="term-card-en">{t.en}</span>}
-                </span>
-                <span className="term-card-desc">{t.desc}</span>
-                <span className="term-card-meta">{getSectionLabel("it-terms", t.section)}</span>
-              </button>
+              <div key={`${t.section}/${t.term}`} className="term-card">
+                <button
+                  className="term-card-main"
+                  onClick={() => { setOpen(false); navigate(`/nicotech/it-terms/${t.articleId}`); }}
+                >
+                  <span className="term-card-head">
+                    <span className="term-card-term">{t.term}</span>
+                    {t.en && <span className="term-card-en">{t.en}</span>}
+                  </span>
+                  <span className="term-card-desc">{t.desc}</span>
+                  <span className="term-card-meta">{getSectionLabel("it-terms", t.section)}</span>
+                </button>
+                {t.related.length > 0 && (
+                  <div className="term-card-rel">
+                    <span className="term-card-rel-label">関連語</span>
+                    {t.related.map((r) => (
+                      <button
+                        key={r}
+                        className="term-chip"
+                        title={`「${r}」を検索`}
+                        onClick={() => { setQuery(r); inputRef.current?.focus(); }}
+                      >
+                        {r}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
           </div>
         )}
