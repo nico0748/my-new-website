@@ -178,6 +178,13 @@ Web・インフラ・セキュリティを分野ごとに体系立ててまと�
 - 一覧 `LearnPage` / コース `LearnDomainPage`（学習パス）/ 詳細 `LearnDetailPage`
 - **メタ任意項目**: `minutes`（目安の所要時間・分）を持たせるとカード/詳細に「約N分」表示
 - **学習進捗（localStorage）**: 見出し読了 `nicotech:read:<path>#<anchor>`（`kit.tsx` の `Section` チェックボックス）→ 全見出し読了で記事完了 `nicotech:done:<path>` を `LearnLayout` が自動設定。コース進捗は `src/lib/learnProgress.ts`（`getCourseProgress` 等）で集計し、コースページの進捗バー・ランディングのカード進捗に反映。変更時は `nicotech:progress` イベントを発火し `useProgressTick` で再描画
+### IT用語辞書と関連語（`it-terms` コース専用の仕組み）
+
+- `src/content/learn/it-terms/*.tsx` の `ComparisonTable`（`["用語","英語","意味"]`）から用語を機械抽出し、`src/lib/itTerms.ts`（**自動生成・直接編集しない**）を作る。再生成は `python3 scripts/gen-it-terms.py`
+- 各記事は末尾で **`export const RELATED: Record<string, string[]>`**（見出し語 → 関連語）を export する。関連語は検索パレット（`LearnSearch`）の**関連語チップ**として表示され、クリックでその語を再検索する
+- 関連語の値は**コース内に実在する見出し語**を指すこと。生成時に「スラッシュ分割・括弧除去」による別名解決（`リクエスト` → `リクエスト / レスポンス`）・自己参照除去・重複除去が走り、解決できない語は警告を出して捨てられる
+- 用語や関連語を足したら **必ず `python3 scripts/gen-it-terms.py` を再実行**して `itTerms.ts` を更新する
+
 - **⚠️ トップ（`portfolioPage.tsx`）・ヘッダー nav には出さない**。教材ライブラリはポートフォリオとは独立させ、`/learn` への直接アクセス（ルーティング）のみで到達させる方針。導線セクションやnavリンクを追加しないこと
 
 ---
