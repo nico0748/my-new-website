@@ -1,0 +1,29 @@
+<svg width="320" height="180" viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Burp Suite実践 コース">
+  <rect width="320" height="180" fill="#D9531E"/>
+  <g stroke="#ffffff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="34" y="66" width="52" height="48" rx="6" fill="#ffffff" fill-opacity="0.14"/>
+    <path d="M34 80 h52"/>
+    <rect x="234" y="66" width="52" height="48" rx="6" fill="#ffffff" fill-opacity="0.14"/>
+    <path d="M234 80 h52"/>
+    <path d="M100 78 h44 M100 78 l0 0"/>
+    <path d="M176 78 h44 M212 71 l8 7 -8 7"/>
+    <path d="M220 102 h-44 M144 102 h-44 M108 95 l-8 7 8 7"/>
+  </g>
+  <g>
+    <circle cx="160" cy="90" r="26" fill="#ffffff" fill-opacity="0.16" stroke="#ffffff" stroke-width="3.4"/>
+    <g transform="translate(130.833,60.833) scale(0.19444)" fill="#ffffff">
+      <g transform="translate(0.000000,300.000000) scale(0.100000,-0.100000)">
+        <path d="M1390 2452 l0 -129 -101 -124 c-56 -68 -108 -133 -118 -144 -9 -11
+-51 -63 -93 -115 -42 -52 -115 -142 -162 -200 -47 -57 -86 -108 -86 -112 0 -4
+125 -9 278 -10 l277 -3 3 -232 2 -233 128 -1 c197 -2 192 8 71 -140 -118 -143
+-168 -204 -186 -228 -9 -11 -12 -68 -13 -193 l0 -178 115 0 115 0 0 133 1 132
+42 52 c23 29 130 161 238 295 108 134 215 265 238 293 22 27 41 53 41 57 0 5
+-126 8 -280 8 l-280 0 0 235 0 234 -154 3 -154 3 60 75 c32 41 76 95 97 120
+21 25 64 77 95 115 l56 70 0 173 0 172 -115 0 -115 0 0 -128z"/>
+      </g>
+    </g>
+  </g>
+  <g stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-opacity="0.55" stroke-dasharray="5 7">
+    <path d="M160 22 v34 M160 124 v34"/>
+  </g>
+</svg>
