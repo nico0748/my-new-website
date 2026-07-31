@@ -11,6 +11,10 @@ import { mapPortfolioData } from "../lib/dataMapper";
 import type { PortfolioItem } from "../lib/dataMapper";
 import type { SheetRow } from "../lib/googleSheets";
 
+// 一覧カード側と一致させる view-transition-name（共有要素モーフ用）
+const vtName = (prefix: string, id: string) =>
+  `${prefix}-${String(id).replace(/[^\w-]/g, "-")}`;
+
 const ProjectDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -105,7 +109,7 @@ const ProjectDetailPage = () => {
               {/* サムネイル */}
               {project.thumbnail && (
                 <div className="rounded-2xl overflow-hidden mb-8 shadow-md" style={{ boxShadow: '0 8px 32px var(--accent-shadow)' }}>
-                  <img src={project.thumbnail} alt={project.title} className="w-full h-64 object-cover" />
+                  <img src={project.thumbnail} alt={project.title} className="w-full h-64 object-cover" style={{ viewTransitionName: vtName("project-img", project.id) }} />
                 </div>
               )}
 
@@ -129,7 +133,7 @@ const ProjectDetailPage = () => {
               {/* タイトル */}
               <h1
                 className="text-4xl sm:text-5xl font-bold tracking-tight mb-3"
-                style={{ color: 'var(--text-primary)', letterSpacing: '-0.03em' }}
+                style={{ color: 'var(--text-primary)', letterSpacing: '-0.03em', viewTransitionName: vtName("project-title", project.id) }}
               >
                 {project.title}
               </h1>

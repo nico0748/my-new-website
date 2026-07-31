@@ -52,7 +52,9 @@ const Header2: React.FC<HeaderProps2> = ({ activeSection, scrollToSection }) => 
             {navItems.map((item, i) => (
               <button
                 key={item}
+                type="button"
                 onClick={() => scrollToSection(item)}
+                aria-current={activeSection === item ? 'true' : undefined}
                 className="relative px-3 py-1.5 rounded text-sm capitalize transition-all duration-200 flex items-center gap-1.5"
                 style={{
                   color: activeSection === item ? 'var(--accent)' : 'var(--text-secondary)',
@@ -62,6 +64,7 @@ const Header2: React.FC<HeaderProps2> = ({ activeSection, scrollToSection }) => 
                 }}
               >
                 <span
+                  aria-hidden="true"
                   className="hidden sm:inline text-[12px]"
                   style={{
                     color: 'var(--accent)',

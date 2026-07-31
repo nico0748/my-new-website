@@ -6,6 +6,16 @@ export default {
   ],
   theme: {
     extend: {
+      // CSS 変数（RGB 三値）に紐付けた色。`bg-accent/10` `text-accent` `border-accent/30`
+      // のように Tailwind のα記法がそのまま効く（<alpha-value> がαに展開される）。
+      colors: {
+        accent: 'rgb(var(--accent-rgb) / <alpha-value>)',
+        'brand-bg': 'rgb(var(--bg-rgb-s) / <alpha-value>)',
+        'brand-surface': 'rgb(var(--surface-rgb) / <alpha-value>)',
+        'brand-text': 'rgb(var(--text-primary-rgb) / <alpha-value>)',
+        amber: 'rgb(var(--amber-rgb) / <alpha-value>)',
+        magenta: 'rgb(var(--magenta-rgb) / <alpha-value>)',
+      },
       // ダーク・ターミナル（英数=等幅 / 和文=ゴシック）
       fontFamily: {
         'mincho':       ['"Noto Sans JP"', 'sans-serif'],          // 本文（和文）
