@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useSearchParams } from "react-router-dom";
 import TerminalParticles from "../../components/ui/TerminalParticles";
 
@@ -33,15 +33,18 @@ const useTypewriter = (text: string, speed = 90, startDelay = 400) => {
 
 const HeroSection = ({ name, title, onScrollDown }: HeroSectionProps) => {
   const [searchParams] = useSearchParams();
+  const reduceMotion = useReducedMotion();
   const isReal = searchParams.get("id") === "real";
   const displayName = isReal ? REAL_NAME : name || "Portfolio";
-  const typedName = useTypewriter(displayName, 95, 500);
-  const nameDone = typedName.length === displayName.length;
+  const typed = useTypewriter(displayName, 95, 500);
+  // 低モーション時は打鍵アニメを飛ばして全文を即表示する
+  const typedName = reduceMotion ? displayName : typed;
+  const nameDone = reduceMotion ? true : typed.length === displayName.length;
 
   return (
     <section className="relative h-screen min-h-[640px] flex flex-col items-center justify-center overflow-hidden px-4">
-      {/* 降るグリフ — 背景にゆっくり落ちる */}
-      <TerminalParticles count={18} />
+      {/* 降るグリフ — 背景にゆっくり落ちる（低モーション時は描画しない） */}
+      {!reduceMotion && <TerminalParticles count={18} />}
 
       {/* ターミナルウィンドウ */}
       <motion.div

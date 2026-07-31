@@ -17,11 +17,17 @@ const cardVariants = {
   },
 };
 
+// view-transition-name に使える安全な識別子へ変換
+const vtName = (prefix: string, id: string) =>
+  `${prefix}-${String(id).replace(/[^\w-]/g, "-")}`;
+
 const ProjectCard: React.FC<Props> = ({ item }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/projects/${item.id}`);
+    // viewTransition: true で React Router がブラウザの View Transitions API を
+    // 使って遷移する（非対応ブラウザは自動で通常遷移にフォールバック）
+    navigate(`/projects/${item.id}`, { viewTransition: true });
   };
 
   return (
@@ -52,6 +58,7 @@ const ProjectCard: React.FC<Props> = ({ item }) => {
           src={item.thumbnail}
           alt={item.title}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          style={{ viewTransitionName: vtName("project-img", item.id) }}
         />
         <div
           className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4"
@@ -83,7 +90,7 @@ const ProjectCard: React.FC<Props> = ({ item }) => {
         {/* タイトル */}
         <h3
           className="text-lg font-bold mb-2 tracking-tight transition-colors duration-200"
-          style={{ color: 'var(--text-primary)' }}
+          style={{ color: 'var(--text-primary)', viewTransitionName: vtName("project-title", item.id) }}
         >
           {item.title}
         </h3>
