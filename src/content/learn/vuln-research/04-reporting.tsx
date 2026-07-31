@@ -1,5 +1,5 @@
 import type { LearnMeta } from "../../../lib/learnCategories";
-import { Lead, Section, SubSection, Callout, Code, ComparisonTable, KVList, KeyPoints, TipBox, Figure, Divider } from "../../../components/learn/kit";
+import { Lead, Section, SubSection, Callout, Code, Cmd, ComparisonTable, KVList, KeyPoints, TipBox, Figure, Divider } from "../../../components/learn/kit";
 
 export const meta: LearnMeta = {
   id: "reporting",
@@ -20,6 +20,10 @@ export default function Article() {
       <Lead>
         各種ツールで脆弱性を見つけただけでは、脆弱性診断は<strong>完了していません</strong>。発見した脆弱性を<strong>分析し、整理し、診断報告書としてまとめて報告するところまで</strong>が脆弱性診断です。この章では、報告書に<strong>何を・どの粒度で書くか</strong>を、記載事項ごとに具体的に定義します。
       </Lead>
+
+      <Callout variant="info" title="参考文献">
+        本章の報告書構成は、書籍<strong>『Web セキュリティ担当者のための脆弱性診断スタートガイド 第2版 ― 上野宣が教える新しい情報漏洩を防ぐ技術』</strong>で示される「診断報告書の記載事項」を土台に、実務の報告テンプレートへ落とし込んだものです。
+      </Callout>
 
       <Section>報告書は誰が・何のために使うか</Section>
       <p>
@@ -188,20 +192,33 @@ export default function Article() {
         caption="個別の脆弱性の報告の実例（LFJ-006）。非エンジニア向けの平易な説明と、開発者向けの再現手順・対策を1ページに収めている（依頼主の合意のもと掲載・マスキング済み）"
       />
 
-      <Section>リスク評価 — CVSS v3 で一貫させる</Section>
+      <Section>リスク評価 — CVSS v3.1 で一貫させる</Section>
       <p>
-        各指摘の深刻度は <strong>CVSS（共通脆弱性評価システム）v3</strong> のスコアで表します。深刻度とスコア帯の対応、そして3つの評価基準を報告書に明記します。
+        各指摘の深刻度は <strong>CVSS（共通脆弱性評価システム）v3.1</strong> のスコアで表します。前章の指摘個票で採点した値をそのまま持ち込み、脆弱性間で判定基準を一貫させます。まず<strong>深刻度とスコア帯の対応</strong>を報告書に明記します。
       </p>
       <ComparisonTable
-        headers={["深刻度", "CVSS スコア", "評価基準"]}
+        headers={["深刻度", "CVSS スコア"]}
         rows={[
-          ["緊急", "9.0 – 10.0", "基本評価基準（Base）: 脆弱性固有の最悪ケース"],
-          ["重要", "7.0 – 8.9", "現状評価基準（Temporal）: 悪用コード成熟度・修正状況"],
-          ["警告", "4.0 – 6.9", "環境評価基準（Environmental）: 対象システム固有の緩和/増幅"],
-          ["注意", "0.1 – 3.9", "—"],
-          ["なし", "0", "—"],
+          ["緊急", "9.0 – 10.0"],
+          ["重要", "7.0 – 8.9"],
+          ["警告", "4.0 – 6.9"],
+          ["注意", "0.1 – 3.9"],
+          ["なし", "0"],
         ]}
       />
+      <p>
+        CVSS には<strong>3つの評価基準</strong>があります。これは深刻度ランクごとに使い分けるものではなく、<strong>どのスコアにも横断的に適用されうる評価の層</strong>です。診断報告書では基本評価基準のスコアを軸に据え、必要に応じて他の層を補足するのが一般的です。
+      </p>
+      <KVList
+        items={[
+          { key: "基本評価基準（Base）", val: "脆弱性そのものが持つ、時間や環境によらない特性を評価する。報告書で主に用いるのはこのスコア" },
+          { key: "現状評価基準（Temporal）", val: "悪用コードの成熟度・修正状況・報告の信頼性など、時間とともに変化する要素で基本スコアを補正する" },
+          { key: "環境評価基準（Environmental）", val: "対象システム固有の構成や緩和策・資産の重要度を反映して補正する。依頼主の環境を踏まえた再評価に使う" },
+        ]}
+      />
+      <Callout variant="info" title="ベクタを必ず残す">
+        スコアの数値だけでなく <strong>CVSS ベクタ</strong>（例: <Cmd>CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N</Cmd>）を併記します。ベクタがあれば、依頼主側が自分の環境評価基準で再計算でき、採点の根拠も検証できます。
+      </Callout>
       <Callout variant="warn" title="報告書自体が漏えい源にならないように">
         報告書には脆弱性の在り処・再現手順・証跡が詰まっています。<strong>実トークン・個人情報は必ずマスキング</strong>し、<strong>機密文書</strong>として取扱い（守秘・開示範囲・保管/廃棄）を明記します。納品前に、スコアリングの揺れと修正案の実装可能性を<strong>相互レビュー</strong>してから提出します。
       </Callout>
@@ -234,7 +251,7 @@ export default function Article() {
           "構成: 表紙 / 目次 / イントロダクション / 診断実施概要 / 診断結果 / 付録",
           "二層の読み手: 非技術者向けエグゼクティブサマリ ＋ 開発者向け技術詳細（個票）",
           "個別指摘は通し番号・名称・識別子(CWE/CVE)・深刻度・発見場所・req/res・理由・解説・影響・対策",
-          "深刻度は CVSS v3 で一貫採点。報告書は機密文書としてマスキングと守秘の取扱いを明記",
+          "深刻度は CVSS v3.1 で一貫採点し、スコアだけでなくベクタも残す。報告書は機密文書としてマスキングと守秘の取扱いを明記",
         ]}
       />
 
