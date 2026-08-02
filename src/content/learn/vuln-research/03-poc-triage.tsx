@@ -21,6 +21,14 @@ export default function Article() {
         調査で挙がった「候補」は、まだ脆弱性ではありません。<strong>手動で裏取りして誤検知を排除</strong>し、<strong>第三者が再現できる最小の PoC</strong>で影響を安全に示し、<strong>CVSS で深刻度を採点</strong>して初めて「指摘」になります。この章は、発見を<strong>報告できる品質</strong>に引き上げる工程です。
       </Lead>
 
+      <Callout variant="danger" title="この章も『許可された対象』が大前提">
+        PoC の作成は、この工程の中で最も対象システムに踏み込む作業です。実施できるのは、
+        <strong>契約・依頼書などで明示的に許可された範囲</strong>と、
+        <strong>自分で用意した検証環境（ローカルの脆弱アプリ・公式ラボ）</strong>だけです。
+        許可の無い対象に対して再現を試みた時点で、不正アクセス禁止法違反や業務妨害に問われ得ます。
+        許可範囲・実施時間帯・禁止事項の確認は「コース概要と大前提」の章に戻って必ず済ませてください。
+      </Callout>
+
       <Section>Step 1 — False Positive を排除する</Section>
       <p>
         自動スキャナの検出やパターン一致は<strong>誤検知（False Positive）</strong>を多く含みます。すべての候補を<strong>手動で再現</strong>し、「本当に成立するか」を確かめます。裏取りできないものは指摘にしません。

@@ -9,7 +9,7 @@ export type LearnDomain =
   | "web" | "infra" | "security" | "mobile" | "dev" | "ai" | "kyopro" | "stack" | "claude-code" | "it-terms"
   | "web-adv" | "infra-adv" | "security-adv" | "mobile-adv" | "dev-adv" | "ai-adv"
   | "react-practice" | "angular-practice" | "api-practice" | "rag-practice"
-  | "vuln-research" | "ai-agent-practice" | "devsecops-practice";
+  | "vuln-research" | "ai-agent-practice" | "devsecops-practice" | "burp-practice";
 
 /** 難易度（体系順の補助）。 */
 export type LearnLevel = "intro" | "basic" | "practice";
@@ -187,19 +187,25 @@ export const DOMAIN_STYLES: Record<LearnDomain, DomainStyle> = {
     cover: "/learn/covers/devsecops-practice.svg",
     description: "CI/CD にセキュリティを組み込む実践。SAST/DAST・サプライチェーン・IaC セキュリティ・ランタイム監視まで。",
   },
+  "burp-practice": {
+    label: "Burp Suite実践",
+    accent: "#d9531e",               // バープ・オレンジ
+    cover: "/learn/covers/burp-practice.svg",
+    description: "Web アプリ診断の定番ツール Burp Suite を、公式ラボ（Web Security Academy）とローカル脆弱アプリで手を動かしながら習得。Proxy・Target・Repeater・Intruder から拡張機能まで、Community 版で使える範囲を中心に網羅します。",
+  },
 };
 
 export const DOMAIN_ORDER: LearnDomain[] = [
   "web", "infra", "security", "mobile", "dev", "claude-code", "it-terms", "ai", "kyopro", "stack",
   "web-adv", "infra-adv", "security-adv", "mobile-adv", "dev-adv", "ai-adv",
   "react-practice", "angular-practice", "api-practice", "rag-practice",
-  "vuln-research", "ai-agent-practice", "devsecops-practice",
+  "vuln-research", "ai-agent-practice", "devsecops-practice", "burp-practice",
 ];
 
 /** 実践コース（プロジェクト型）の一覧。 */
 export const PRACTICE_DOMAINS: LearnDomain[] = [
   "react-practice", "angular-practice", "api-practice", "rag-practice",
-  "vuln-research", "ai-agent-practice", "devsecops-practice",
+  "vuln-research", "ai-agent-practice", "devsecops-practice", "burp-practice",
 ];
 
 /** 本番サイト（nico-labo748.dev）で公開するコース。
@@ -431,6 +437,16 @@ export const DOMAIN_SECTIONS: Record<LearnDomain, SectionDef[]> = {
     { key: "supply-chain", label: "サプライチェーンセキュリティ" },
     { key: "iac-security", label: "IaC セキュリティ" },
     { key: "runtime", label: "ランタイム監視" },
+  ],
+  "burp-practice": [
+    { key: "setup", label: "導入と検証環境の構築" },
+    { key: "proxy", label: "Proxy — 通信を捕まえる" },
+    { key: "target", label: "Target — 攻撃面を整理する" },
+    { key: "repeater", label: "Repeater — 手で確かめる" },
+    { key: "intruder", label: "Intruder — 反復を自動化する" },
+    { key: "toolset", label: "補助ツール群" },
+    { key: "extend", label: "拡張とワークフロー自動化" },
+    { key: "workflow", label: "通し演習とレポート" },
   ],
 };
 
