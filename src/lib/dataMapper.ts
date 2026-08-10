@@ -84,7 +84,7 @@ export interface AnimeItem {
 }
 
 export const mapProfileData = (rows: SheetRow[]): ProfileData => {
-    const profile: any = {};
+    const profile: Record<string, string> = {};
     rows.forEach(row => {
         if (row.key && row.value) {
             profile[row.key] = row.value;
