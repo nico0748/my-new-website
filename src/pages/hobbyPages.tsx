@@ -15,12 +15,12 @@ const profileData = {
     imageUrl: "/sns_icon_round.png",
     socialLinks: []
 };
-const works: any[] = [];
-const records: any[] = [];
-const recs: any[] = [];
-const events: any[] = [];
+import type { Work, GridItem, EventItem } from '../types';
 
-import type { Work } from '../types';
+const works: Work[] = [];
+const records: GridItem[] = [];
+const recs: GridItem[] = [];
+const events: EventItem[] = [];
 
 // --- Feature and Layout Components ---
 import Profile from '../features/profile/Profile';

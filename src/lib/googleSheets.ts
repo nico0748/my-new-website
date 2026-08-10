@@ -35,12 +35,12 @@ export const fetchSheetData = async <T>(sheetName: string): Promise<T[]> => {
     const rawData = rows.slice(1);
 
     return rawData.map((row: string[]) => {
-      const item: any = {};
+      const item: Record<string, string> = {};
       headers.forEach((header: string, index: number) => {
         const cleanHeader = header.trim();
         item[cleanHeader] = row[index] || '';
       });
-      return item as T;
+      return item as unknown as T;
     });
   } catch (error) {
     console.error(`Failed to fetch ${sheetName}:`, error);
