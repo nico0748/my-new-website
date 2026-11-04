@@ -34,7 +34,7 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
   - テキスト（主）: `var(--text-primary)` `#ecebe8` / （本文）`var(--text-body)` `#cfcdc8`
   - テキスト（副）: `var(--text-secondary)` `#a4a29d` / （淡）`var(--text-muted)` `#6f6d69`
   - アクセント（主）: `var(--accent)` `#cbbf9f`（サンドベージュ）。セクション見出しと左の短い線・「すべて見る →」（`.link-accent`）・ソーシャルリンクのアイコン
-  - アクセント（従）: `var(--accent-2)` `#8fb59b`（セージ）/ `var(--accent-3)` `#86a7cf`（ダスティブルー）/ `var(--accent-4)` `#d27a72`（くすんだレッド）/ `var(--accent-5)` `#a89be0`（ラベンダー）。スキルのチャートは `src/lib/skillColors.ts` の `skillColor()` でカテゴリ名から色を決める（Frontend=緑 / Backend=青 / Database=ラベンダー / Infrastructure=赤）。サンドは見出しの色なのでチャートには使わない。ソーシャルリンクの ID 文字は `--accent-2`
+  - アクセント（従）: `var(--accent-2)` `#8fb59b`（セージ）/ `var(--accent-3)` `#86a7cf`（ダスティブルー）/ `var(--accent-4)` `#d9b65a`（マスタードイエロー）/ `var(--accent-5)` `#a89be0`（ラベンダー）。スキルのチャートは `src/lib/skillColors.ts` の `skillColor()` でカテゴリ名から色を決める（Frontend=緑 / Backend=青 / Database=黄 / Infrastructure=紫）。サンドは見出しの色なのでチャートには使わない。ソーシャルリンクの ID 文字は `--accent-2`
   - 罫線: `var(--border-color)` `rgba(255,255,255,0.08)`
 - **リンク**: 通常は `.link-quiet`（副テキスト色 → ホバーで主テキスト色）。外部リンクは `↗`
 
