@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, createRoutesFromElements } from "react-router-dom";
 import { RouterProvider } from "react-router-dom";
 import { MotionConfig } from "framer-motion";
-import { ThemeProvider } from "./lib/ThemeContext";
 import "./index.css";
 import { appRoutes } from "./App.tsx";
 
@@ -13,12 +12,10 @@ const router = createBrowserRouter(createRoutesFromElements(appRoutes));
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ThemeProvider>
-      {/* reducedMotion="user": OS の「視差効果を減らす」設定時に
-          全 motion コンポーネントの transform/layout アニメを自動で抑制する */}
-      <MotionConfig reducedMotion="user">
-        <RouterProvider router={router} />
-      </MotionConfig>
-    </ThemeProvider>
+    {/* reducedMotion="user": OS の「視差効果を減らす」設定時に
+        全 motion コンポーネントの transform/layout アニメを自動で抑制する */}
+    <MotionConfig reducedMotion="user">
+      <RouterProvider router={router} />
+    </MotionConfig>
   </React.StrictMode>
 );

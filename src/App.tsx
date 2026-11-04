@@ -2,11 +2,7 @@ import { Route, Navigate } from 'react-router-dom';
 import { LearnRedirect, RootLayout } from './components/layouts/RootLayout';
 
 // --- Page Components ---
-import AllWatchedAnime from './pages/allWatchedAnime';
-import AllToWatchAnime from './pages/alltoWatchAnime';
-import AllWatchingAnime from './pages/allWatchingAnime';
 import PortfolioPage from './pages/portfolioPage.tsx';
-import HobbyPage from './pages/hobbyPages.tsx';
 import ProjectDetailPage from './pages/ProjectDetailPage.tsx';
 import ProjectsPage from './pages/ProjectsPage.tsx';
 import SkillsPage from './pages/SkillsPage.tsx';
@@ -25,16 +21,17 @@ import ExperienceDetailPage from './pages/ExperienceDetailPage.tsx';
 export const appRoutes = (
   <Route element={<RootLayout />}>
         <Route path="/" element={<PortfolioPage />} />
-        <Route path="/hobbys" element={<HobbyPage />} />
-        <Route path="/watched-anime" element={<AllWatchedAnime />} />
-        <Route path="/to-watch-anime" element={<AllToWatchAnime />} />
-        <Route path="/watching-anime" element={<AllWatchingAnime />} />
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/projects/:id" element={<ProjectDetailPage />} />
         <Route path="/articles" element={<ArticlesPage />} />
         {/* 廃止: Topics はトップへ、旧 Study は Articles へ（ブックマーク互換） */}
         <Route path="/topics/*" element={<Navigate to="/" replace />} />
         <Route path="/study/*" element={<Navigate to="/articles" replace />} />
+        {/* 廃止: 旧 Hobby・アニメ一覧は、トップの Off-hours に置き換えたのでトップへ */}
+        <Route path="/hobbys" element={<Navigate to="/" replace />} />
+        <Route path="/watched-anime" element={<Navigate to="/" replace />} />
+        <Route path="/to-watch-anime" element={<Navigate to="/" replace />} />
+        <Route path="/watching-anime" element={<Navigate to="/" replace />} />
         <Route path="/nicotech" element={<LearnPage />} />
         {/* 経験録は :domain より先に置き、静的セグメントを優先させる */}
         <Route path="/nicotech/experience" element={<ExperiencePage />} />

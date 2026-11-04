@@ -64,15 +64,6 @@ export interface ArticleItem {
   image?: string;          // OGP 画像を上書きしたい場合のみ（Articles シートの image 列）
 }
 
-export interface AnimeItem {
-    id: string;
-    title: string;
-    official_site_url: string;
-    release_season: string;
-    twitter_avatar_url: string;
-    official_site_twitter_image_url: string;
-}
-
 export const mapProfileData = (rows: SheetRow[]): ProfileData => {
     const profile: Record<string, string> = {};
     rows.forEach(row => {
@@ -211,17 +202,6 @@ export const mapArticleData = (rows: SheetRow[]): ArticleItem[] => {
             tags: row.tags ? row.tags.split(',').map(t => t.trim()).filter(Boolean) : [],
             image: row.image || undefined,
         }));
-};
-
-export const mapAnimeData = (rows: SheetRow[]): AnimeItem[] => {
-    return rows.map(row => ({
-        id: row.id || "",
-        title: row.title || "",
-        official_site_url: row.official_site_url || "",
-        release_season: row.release_season || "",
-        twitter_avatar_url: row.twitter_avatar_url || "",
-        official_site_twitter_image_url: row.official_site_twitter_image_url || ""
-    }));
 };
 
 // ---------------------------------------------------------------------------

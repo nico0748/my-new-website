@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import SiteBackground from "../ui/SiteBackground";
-import { QIITA_PROFILE_URL } from "../../lib/articles";
+import type { ProfileData } from "../../lib/dataMapper";
+import { fetchProfile, getCachedProfile, socialLinksOf, SOCIAL_NAMES } from "../../lib/profile";
 
 /** ページ全体のコンテナ幅と左右の余白。カードの一覧はこの幅いっぱいに並べる。 */
 export const CONTENT_WIDTH = "max-w-[1080px] px-5 sm:px-8 lg:px-10";
@@ -14,7 +15,7 @@ const NAV = [
   { to: "/skills", label: "Skills" },
 ];
 
-export const SiteHeader: React.FC = () => (
+const SiteHeader: React.FC = () => (
   <header className={`${CONTENT_WIDTH} w-full mx-auto pt-8 pb-6 sm:pt-10 flex items-center justify-between`}
     style={{ viewTransitionName: "site-header" }}
   >
@@ -44,37 +45,64 @@ export const SiteHeader: React.FC = () => (
   </header>
 );
 
-export const SiteFooter: React.FC = () => (
-  <footer className={`${CONTENT_WIDTH} w-full mx-auto pt-12 pb-16 mt-24 md:mt-32`}>
-    <div className="h-px mb-10" style={{ background: "var(--border-color)" }} />
-    <div className="flex flex-col sm:flex-row sm:justify-between gap-8 text-[15px]">
-      <ul className="flex flex-wrap gap-x-6 gap-y-2">
-        {[{ to: "/", label: "Home" }, ...NAV, { to: "/hobbys", label: "Hobby" }].map((n) => (
-          <li key={n.to}>
-            <Link to={n.to} viewTransition className="link-quiet">
-              {n.label}
-            </Link>
-          </li>
-        ))}
-      </ul>
-      <ul className="flex flex-wrap gap-x-6 gap-y-2">
-        <li>
-          <a href={QIITA_PROFILE_URL} target="_blank" rel="noopener noreferrer" className="link-quiet">
-            Qiita
-          </a>
-        </li>
-        <li>
-          <a href="https://github.com/nico0748" target="_blank" rel="noopener noreferrer" className="link-quiet">
-            GitHub
-          </a>
-        </li>
-      </ul>
-    </div>
-    <p className="mt-10 text-[13px]" style={{ color: "var(--text-muted)" }}>
-      &copy; {new Date().getFullYear()} NICOLABO
-    </p>
-  </footer>
-);
+/** フッターのサイト内リンク（ヘッダーと同じページ + Home）。 */
+const FOOTER_NAV = [{ to: "/", label: "Home" }, ...NAV];
+
+/**
+ * 全ページ共通のフッター。左にサイト内リンク、右にトップの自己紹介と同じ SNS（Profile シートの URL）。
+ * SNS は Profile シートを読み終えてから出す（後から項目が割り込んで並びが変わらないように）。
+ */
+const SiteFooter: React.FC = () => {
+  // undefined = 読み込み中 / null = シートを読めなかった（Qiita だけ出す）
+  const [profile, setProfile] = useState<ProfileData | null | undefined>(() => getCachedProfile() ?? undefined);
+
+  useEffect(() => {
+    if (profile !== undefined) return;
+    let alive = true;
+    fetchProfile().then((p) => {
+      if (alive) setProfile(p);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [profile]);
+
+  const socials = profile === undefined ? [] : socialLinksOf(profile);
+
+  return (
+    <footer className={`${CONTENT_WIDTH} w-full mx-auto pt-12 pb-16 mt-24 md:mt-32`}>
+      <div className="h-px mb-10" style={{ background: "var(--border-color)" }} />
+      <div className="flex flex-col sm:flex-row sm:justify-between gap-6 sm:gap-8 text-[15px]">
+        <nav aria-label="サイト内">
+          <ul className="flex flex-wrap gap-x-6 gap-y-2">
+            {FOOTER_NAV.map((n) => (
+              <li key={n.to}>
+                <Link to={n.to} viewTransition className="link-quiet">
+                  {n.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <ul aria-label="SNS" className="flex flex-wrap gap-x-6 gap-y-2 min-h-[1.5em]">
+          {socials.map((l) => (
+            <li key={l.kind}>
+              <a href={l.url} target="_blank" rel="noopener noreferrer" className="link-quiet">
+                {SOCIAL_NAMES[l.kind]}{" "}
+                <span aria-hidden className="text-[13px]">
+                  ↗
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <p className="mt-10 text-[13px]" style={{ color: "var(--text-muted)" }}>
+        &copy; {new Date().getFullYear()} NICOLABO
+      </p>
+    </footer>
+  );
+};
 
 interface SiteLayoutProps {
   children: React.ReactNode;
