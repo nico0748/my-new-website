@@ -26,7 +26,7 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 - **Works / Articles は画像付きのボックス（スマホ1段・タブレット2段・PC 3段、`gap-5 lg:gap-6`。トップには最大6件）**: `WorkList`（サムネイル）/ `ArticleList`（OGP 画像）。枠線は `border-white/[0.08]`、ホバーで少し明るく。画像が無い場合は静かなプレースホルダー
 - **Skills** はカテゴリごとのレーダーチャート（`SkillRadarChart`、recharts）をボックスで並べる
 - **Timeline** は `Timeline`（年見出し + 縦線 + 「期間 · 種別」→ タイトル → 説明）。継続中の項目は差し色のドット
-- **ソーシャルリンク** は `SocialLinks`。1件1枚のカード（サービス名＋ユーザー ID、右端にアイコン）を縦に積み、トップの自己紹介では**名前と同じ高さから右側に**置く（タブレット未満では紹介文の下。右カラムは 300px）。**アイコンは各サービス本来の色**（`--brand-x` / `--brand-github` / `--brand-qiita` / `--brand-linkedin`）、ID は主テキスト色、サービス名は副テキスト色。URL は Profile シートの `xUrl` / `githubUrl` / `qiitaUrl` / `linkedinUrl`。ID は URL から自動で取り出すが、LinkedIn は `linkedinLabel`（例 `細澤-悠真`）で表示名を上書きできる
+- **ソーシャルリンク** は `SocialLinks`。1件1枚のカード（サービス名＋ユーザー ID、右端にアイコン）を縦に積み、トップの自己紹介では**名前と同じ高さから右側に**置く（タブレット未満では紹介文の下。右カラムは 300px）。**アイコンは各サービス本来の色**（`--brand-x` / `--brand-github` / `--brand-qiita` / `--brand-linkedin`）、ID は主テキスト色、サービス名は副テキスト色。URL は Profile シートの `xUrl` / `githubUrl` / `qiitaUrl` / `linkedinUrl`。ID は URL から自動で取り出すが、LinkedIn は `linkedinLabel`（例 `細澤 悠真`）で表示名を上書きできる。アイコンは各サービス公式のロゴマーク（Qiita も公式マーク。Simple Icons 由来）。自己紹介のアバターは `w-24`（md 以上 `w-32`）
 - **背景**: `SiteBackground`（インクネイビー一色＋上部にごく僅かな青い明るさ）。`SiteLayout` が内部で使う
 - **テーマモード**: ダーク単独
 - **カラーパレット（CSS 変数経由で参照）**:
@@ -81,6 +81,7 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 - 列: `id, title, description, thumbnail, tags, liveUrl, repoUrl, period, images`
   - `period`: 制作期間（例 `2025.04 - 2025.07`、継続中は `2026.10 -`）
   - `images`: 詳細ページのギャラリーに並べる追加画像（カンマ区切り。画像は `public/projects/images/`）
+  - `thumbnail`: 自作アプリ（PaperLens / SecOwl）は「左にアプリ名、右に Mac の画面に映したアプリ」の 16:10 画像（2000×1250 の WebP）。元の画面スクリーンショットは `public/projects/images/<id>-*.webp` に置く
 - 取得は `src/lib/projects.ts` の `fetchProjects()` に一本化（モジュール内キャッシュ）。詳細ページが最初の描画から画像とタイトルを出せるようにするためで、これが無いと View Transition のモーフが効かない
 - 一覧カードと詳細ページは `projectVtName("img" | "title", id)` で同じ `view-transition-name` を付ける
 - 詳細ページ（`/projects/:id`）は 画像ギャラリー＋右サイドバー（タイトル・期間・技術構成・リンク）→ 本文 Markdown（`public/projects/<id>.md`）→ 前後の作品ナビ
