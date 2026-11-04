@@ -16,11 +16,12 @@ export default {
         amber: 'rgb(var(--amber-rgb) / <alpha-value>)',
         magenta: 'rgb(var(--magenta-rgb) / <alpha-value>)',
       },
-      // ダーク・ターミナル（英数=等幅 / 和文=ゴシック）
+      // Calm Dark（英数=Inter / 和文=Noto Sans JP、コードのみ等幅）
       fontFamily: {
+        'sans':         ['Inter', '"Noto Sans JP"', 'sans-serif'],
         'mincho':       ['"Noto Sans JP"', 'sans-serif'],          // 本文（和文）
-        'display':      ['"JetBrains Mono"', '"Noto Sans JP"', 'monospace'], // 見出し
-        'handwritten':  ['"JetBrains Mono"', 'monospace'],
+        'display':      ['Inter', '"Noto Sans JP"', 'sans-serif'], // 見出し
+        'handwritten':  ['Inter', '"Noto Sans JP"', 'sans-serif'],
         'noto-serif':   ['"Noto Sans JP"', 'sans-serif'],
         'rounded':      ['"Noto Sans JP"', 'sans-serif'],
         'mono':         ['"JetBrains Mono"', 'monospace'],

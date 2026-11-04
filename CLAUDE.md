@@ -17,59 +17,31 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 
 ## デザインルール
 
-### テーマ: ダーク・ターミナル（IT / エンジニア系）
+### テーマ: Calm Dark（落ち着いた大人のダーク・余白重視）
 
-漆黒地にエレクトリック・シアンのアクセント。ターミナル / ハッカー系の演出（演出重視ハイブリッド：Hero とセクション見出しに `$` プロンプト・タイピング・点滅カーソルを被せ、中身は普通に読める）。
+2026-11 に旧「ダーク・ターミナル」調から刷新。参考は https://newt239.dev 。装飾は最小限にし、**1カラム・狭い本文幅・広い余白・静かなタイポグラフィ**で見せる。カードやグロー、ネオン色、ターミナル演出（`$` プロンプト・点滅カーソル・走査線・グリッド）は使わない。
 
-- **背景色**: `#0a0d12`（漆黒・近黒）
-- **背景コンポーネント**: `TerminalBackground` を使用（`src/components/ui/TerminalBackground.tsx`）
-  - ページルートに必ず `<TerminalBackground>` でラップする
-  - 漆黒 + 極薄シアングリッド + 微グロー + 走査線で構成
-  - 旧 `WashiBackground` / `SeigaihaPattern` / `GraphPaperBackground` / `StarryBackground` は削除済み・使わない
-- **テーマモード**: ダーク単独（ライトモード未対応・`ThemeToggle` なし）
+- **レイアウト**: `src/components/layouts/SiteLayout.tsx` の `SiteLayout` でページをラップする（ヘッダー＋本文＋フッター込み）。本文幅は `CONTENT_WIDTH`（`max-w-[720px]`）。セクション間は `mt-32` 程度の大きな余白
+- **部品**: `SectionHeading`（小さな大文字見出し）/ `MoreLink`（「すべて見る →」）/ `PageTitle`（下層ページのタイトル）/ `Loading`
+- **Works / Articles は画像付きのボックス（2カラム）**: `WorkList`（サムネイル）/ `ArticleList`（OGP 画像）。枠線は `border-white/[0.08]`、ホバーで少し明るく。画像が無い場合は静かなプレースホルダー
+- **Skills** はカテゴリごとのレーダーチャート（`SkillRadarChart`、recharts）をボックスで並べる
+- **Timeline** は `Timeline`（年見出し + 縦線 + 「期間 · 種別」→ タイトル → 説明）。継続中の項目は差し色のドット
+- **ソーシャルリンク** は `SocialLinks`（アイコン + ユーザー ID）。URL は Profile シートの `xUrl` / `githubUrl` / `qiitaUrl` / `linkedinUrl`
+- **背景**: `SiteBackground`（黒一色＋上部にごく僅かな明るさ）。`SiteLayout` が内部で使う
+- **テーマモード**: ダーク単独
 - **カラーパレット（CSS 変数経由で参照）**:
-  - テキスト（主）: `var(--text-primary)` `#e6edf3`（オフホワイト）
-  - テキスト（副）: `var(--text-secondary)` `#9da7b3`
-  - テキスト（淡）: `var(--text-muted)` `#5c6773`
-  - アクセント: `var(--accent)` `#00e5cc`（エレクトリック・シアン）
-  - サブ（アンバー）: `var(--accent-gold)` = `var(--accent-amber)` `#ffb454`
-  - サブ（マゼンタ）: `var(--accent-fox)` = `var(--accent-magenta)` `#ff5c8a`
-  - カード背景: `var(--card-bg)` `rgba(17, 22, 29, 0.72)`（グラス 半透明）
-  - カードボーダー: `var(--card-border)` `rgba(0, 229, 204, 0.18)`
-  - サーフェス: `var(--surface)` `#11161d`
-  - グリッド線: `var(--grid-line)` `rgba(0, 229, 204, 0.06)`
-  - ※ 旧変数名 `--seal-red` は名前のみ残置（値はシアン）。新規参照では使わない。
+  - 背景: `var(--bg)` `#111111`（ソフトブラック） / サーフェス `var(--surface)` `#181818`
+  - テキスト（主）: `var(--text-primary)` `#ecebe8` / （本文）`var(--text-body)` `#cfcdc8`
+  - テキスト（副）: `var(--text-secondary)` `#a4a29d` / （淡）`var(--text-muted)` `#6f6d69`
+  - アクセント: `var(--accent)` `#cbbf9f`（サンドベージュ。多用しない）
+  - 罫線: `var(--border-color)` `rgba(255,255,255,0.08)`
+- **リンク**: 通常は `.link-quiet`（副テキスト色 → ホバーで主テキスト色）。外部リンクは `↗`
 
-### カードスタイル（グラス glassmorphism）
+### タイポグラフィ
 
-```tsx
-style={{
-  background: 'var(--card-bg)',
-  backdropFilter: 'blur(12px)',
-  WebkitBackdropFilter: 'blur(12px)',
-  border: '1px solid var(--card-border)',
-  boxShadow: '0 4px 24px var(--card-shadow)',
-}}
-```
-
-### セクションタイトル
-
-`SectionWrapper` を使用。各セクションは連番ラベル（`01`・`02`…）+ ターミナルプロンプト風ラベル（`~/works ❯`）+ メインタイトル（点滅カーソル付き）+ シアンの下線アクセントで構成される。
-
-### 装飾要素
-
-- **降るグリフ**: `TerminalParticles` コンポーネント（`0 1 { } ; / >` 等が背景にゆっくり落ちる）。旧 `SakuraPetals` の後継。
-- **グリッド / 走査線**: `TerminalBackground` 内で適用済み。
-- **Hero**: ターミナルウィンドウ（信号機ドット + タイトルバー）の中で `whoami` → 名前をタイピング表示、`cat role.txt` → 肩書きを表示。点滅カーソル `_`（`.terminal-cursor` クラス）。
-- **ターミナルバッジ**: monospace の `{ dev }` `>_` 等を小さなバッジで配置（旧 `HankoSeal` 朱印の後継）。
-
-### タイポグラフィ（英数=等幅 / 和文=ゴシック）
-
-- ディスプレイ（見出し・ロゴ）: `JetBrains Mono`（等幅）
-- 本文（和文）: `Noto Sans JP`（ゴシック）
-- コードブロック / ターミナル演出: `JetBrains Mono`
-- 文字間隔: `letter-spacing: 0.01em` 〜 `0.02em` を基本（等幅は字間を詰める）
-- 等幅フォントは日本語グリフを持たないため、和文が混じる箇所は `'JetBrains Mono', 'Noto Sans JP'` の順でフォールバックさせる
+- 本文・見出しとも `var(--font-sans)` = `Inter` + `Noto Sans JP`
+- 等幅 `JetBrains Mono` はコード（`pre` / `code`）のみ
+- 見出しは `font-semibold` 程度に留め、極端に太くしない。本文の行間は広め（`leading-[2.1]` 前後）
 
 ---
 
@@ -82,8 +54,10 @@ style={{
 | `/` | PortfolioPage | メインポートフォリオ |
 | `/hobbys` | HobbyPage | 趣味ページ |
 | `/projects/:id` | ProjectDetailPage | Markdownで詳細を表示 |
-| `/topics` | TopicsPage | セキュリティ等のトピック一覧（カテゴリ絞り込み） |
-| `/topics/:id` | TopicDetailPage | Markdownで詳細を表示（md 無しは description + externalUrl にフォールバック） |
+| `/projects` | ProjectsPage | 作品一覧（行リスト） |
+| `/articles` | ArticlesPage | 自分が書いた記事の一覧（Qiita + Articles シート）。各記事は外部サイトへ遷移 |
+| `/topics/*` | → `/` | 廃止（リダイレクト） |
+| `/study/*` | → `/articles` | 廃止（リダイレクト） |
 | `/skills` | SkillsPage | 技術スタック一覧（カテゴリ行＋クリック展開） |
 | `/skills/:category` | → `/skills` | リダイレクト |
 | `/learn` | LearnPage | 教材トップ（分野カード一覧） |
@@ -120,28 +94,22 @@ style={{
 
 ---
 
-## Topics コンテンツ（セキュリティ等）
+## Articles（自分が書いた記事）
 
-- データソースは Google Sheets の **「Topics」シート**（既存の Projects と同じ仕組み）
-  - ヘッダー列: `id, title, description, category, date, tags, thumbnail, author, markdownFile, externalUrl, source`
-  - 型・マッパーは `src/lib/dataMapper.ts` の `TopicItem` / `mapTopicData`（新しい順にソート）
-- 記事本文は `public/topics/<id>.md` に置くと `/topics/:id` で自動表示（`.prose-custom`）。md が無い場合は `description` ＋ `externalUrl` にフォールバック
-- **カテゴリ**: `news` / `cve` / `vuln` / `daily` / `it` / `other`（自由文字列・未知は other 扱い）。色・ラベル・アイコンは `src/lib/topicCategories.ts` の `getTopicCategoryStyle` で一元管理（アイコンは `src/components/ui/CategoryIcon.tsx` のピクトグラム）。新カテゴリはここに追加する
-- 一覧 `TopicsPage` / 詳細 `TopicDetailPage` / カード `TopicCard`。トップページ（`portfolioPage.tsx`）にも最新3件の抜粋セクション（`id="topics"`）あり
-- `source = "auto"` / `externalUrl` は将来の自動取り込み（CVE/ニュースフィード）用に予約済み
+旧 Topics・Study は 2026-11 に廃止。トップの「Articles」と `/articles` は、自分が外部サイトに書いた記事へのリンク集。
 
----
+- **Qiita**: `src/lib/articles.ts` の `fetchArticles()` が Qiita API v2（`/api/v2/users/nico0748/items`、CORS 対応・未認証 60req/h）からクライアント側で取得。sessionStorage に 30 分キャッシュ
+- **Qiita 以外（Zenn / note 等）**: Google Sheets の **「Articles」シート**（`id, title, url, platform, date, tags`）に手で追記。`platform` が空なら URL から自動判定（`detectPlatform`）
+- 両者をマージして日付の新しい順に表示。型は `src/lib/dataMapper.ts` の `ArticleItem`
+- **OGP 画像**: `api/ogp.js`（Vercel Function）が記事ページの `og:image` を取り出して返す（`/api/ogp?url=...`、CDN キャッシュ 1 週間）。SSRF 対策で取得先は記事プラットフォームのホストに限定（新しい掲載先を足すときは `ALLOWED_HOSTS` に追加）。Articles シートの `image` 列で上書き可。ローカルの `npm run dev` では関数が動かないためプレースホルダー表示になる
 
-## Study コンテンツ（学習記録）
+## Timeline シート
 
-学習・深掘りした内容の記録。Topics と同一構造（claude-obsidian で執筆 → Google Sheets へ送信 → サイト表示）。
-
-- データソースは Google Sheets の **「Study」シート**（ヘッダー列は Topics と同一）
-  - 型・マッパーは `src/lib/dataMapper.ts` の `StudyItem` / `mapStudyData`（新しい順にソート）
-- 記事本文は `public/study/<id>.md` に置くと `/study/:id` で自動表示。md が無い場合は `description` ＋ `externalUrl` にフォールバック
-- **カテゴリ**: `language` / `framework` / `cs` / `security` / `infra` / `book` / `other`（自由文字列・未知は other）。色・ラベル・アイコンは `src/lib/studyCategories.ts` の `getStudyCategoryStyle` で一元管理（アイコンは `src/components/ui/CategoryIcon.tsx` のピクトグラム）
-- 一覧 `StudyPage` / 詳細 `StudyDetailPage` / カード `StudyCard`。トップにも最新3件の抜粋セクション（`id="study"`）あり
-- **GAS（`scripts/gas/`）は Topics/Study 兼用**: `append-topic.gs` は `sheet` パラメータで追記先を切替（許可リスト `['Topics','Study']`）、`notify-topics.gs` は両シートの onChange を1トリガーで Slack 通知（シートごとに最終通知行を管理）
+- 列: `start, end, title, description, type, href`
+- `start` / `end` は **`YYYY-MM`**（年だけなら `YYYY`）。`end` は継続中なら `present`、単発なら空欄。セルは書式「書式なしテキスト」にして日付への自動変換を防ぐ
+- `type`: `education` / `work` / `project` / `certification` / `other`。`href` は外部 URL か `/projects/xxx` のようなサイト内パス
+- 並び順はサイト側で `start` の新しい順に並べ替える（旧形式の `year` 列 "2025/04~07" も読めるが、新規は start/end で書く）
+- Topics / Study シートと `scripts/gas/` の GAS はサイトからは参照しない（残置）
 
 ---
 
@@ -156,11 +124,11 @@ Web・インフラ・セキュリティを分野ごとに体系立ててまと�
   - `export default function Article()` … 本文（自由な TSX。演出の自由度を優先）
 - **索引は `import.meta.glob` で自動生成**（`src/lib/learnRegistry.ts`）。記事を増やすときは TSX を1本足すだけ。レジストリやページの編集は不要
 - 記事本文は `.learn-docs .prose` でラップされるので、素の `<h2>`/`<p>`/`<ul>` はそのまま整形される。加えて `src/components/learn/kit.tsx` の部品（`Section` `Callout` `Code` `Steps`/`Step` `KeyPoints` `ComparisonTable` `KVList` `TipBox` `Figure` `Cmd` `Lead` `Divider`）でリッチに書ける
-- ⚠️ **これは「ハードコードされたデータを `src/` に置かない」ルールの教材専用の例外**。教材本文はデータではなくコード（自由度の高い表現）であるため。Study/Topics/Projects 等は従来どおり Google Sheets を使う
+- ⚠️ **これは「ハードコードされたデータを `src/` に置かない」ルールの教材専用の例外**。教材本文はデータではなくコード（自由度の高い表現）であるため。Projects 等は従来どおり Google Sheets を使う
 
 ### デザイン — ⚠️ ポートフォリオとは独立（Learn 専用スタイル）
 
-- Learn はポートフォリオのダーク・ターミナル調を**踏襲しない**。**Progate 系のライトなドキュメント調**（Inter フォント／ティール `#22b0a0` ＋ ピンク CTA `#ff5c7a` ／白背景・ネイビー見出し）で構成する
+- Learn はポートフォリオの Calm Dark 調を**踏襲しない**。**Progate 系のライトなドキュメント調**（Inter フォント／ティール `#22b0a0` ＋ ピンク CTA `#ff5c7a` ／白背景・ネイビー見出し）で構成する
 - 専用 CSS は `src/styles/learn.css`。**すべて `.learn-docs` 配下にスコープ**し、グローバル（index.css のダークテーマ・Tailwind）に影響させない。CSS 変数も `.learn-docs` 上で定義（`--accent` 等の portfolio 変数は使わない）
 - レイアウトは2系統:
   - **`/learn`（ランディング）= `LearnPage`**: サイドバーなしの Progate 系マーケティング面。ヒーロー＋ミント帯＋**コースカード（`.course-grid` / `.course-card`）**。body 背景は `useEffect` で白に切替
@@ -258,13 +226,12 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
 
 ## 禁止事項
 
-- 旧 `WashiBackground` / `SeigaihaPattern` / `StarryBackground` / `GraphPaperBackground` を使用しない（`TerminalBackground` に統一）
-- 和風パレット（`#f5ede1` 生成り / `#c8443c` 緋色 / `#2c1810` 墨色 など）や明朝体（`Hina Mincho` / `Shippori Mincho B1`）をポートフォリオに新規採用しない（ダーク・ターミナルに統一）
-- 見出し・ロゴは等幅（`JetBrains Mono`）、和文本文はゴシック（`Noto Sans JP`）を使う。明朝体・手書き体（`Klee One`）は新規採用しない
-- ハードコードされたデータを `src/` 以下に置かない（Google Sheets に移行済み）。※例外は Learn 教材のみ（`src/content/learn/` の TSX 記事。詳細は「Learn コンテンツ」節）
+- ターミナル演出（`$` プロンプト・点滅カーソル・グリッド/走査線背景・ネオン色・グロー）やグラスモーフィズムのカードをポートフォリオに持ち込まない（Calm Dark に統一）
+- 和風パレットや明朝体・手書き体を新規採用しない。見出し・本文は `var(--font-sans)`（Inter + Noto Sans JP）
+- ハードコードされたデータを `src/` 以下に置かない（Google Sheets に移行済み。記事は Qiita API）。※例外は Learn 教材のみ（`src/content/learn/` の TSX 記事。詳細は「Learn コンテンツ」節）
 - **Learn（`/learn`）UI で絵文字（emoji / ピクトグラム）を使わない**。コース・カテゴリのアイコンは `public/learn/covers/` のカバー画像か SVG アイコンで表現する（矢印記号 `←`/`→` は可）
 - **絵文字（emoji / ピクトグラム文字）をサイト全体で使わない**。カテゴリ・状態の記号は `src/components/ui/CategoryIcon.tsx` のピクトグラム（Lucide 相当の 24 viewBox / stroke 2）で表す。矢印記号 `←`/`→`/`↗`/`❯`/`▸` は可
-- Learn のデザインにポートフォリオのダーク・ターミナル調（`TerminalBackground`・`--accent` 等の portfolio 変数）を持ち込まない。Learn は `.learn-docs` スコープの専用スタイル（`src/styles/learn.css`・Progate 系ライトテーマ）で統一する
+- Learn のデザインにポートフォリオの Calm Dark 調（`SiteBackground`・`--accent` 等の portfolio 変数）を持ち込まない。Learn は `.learn-docs` スコープの専用スタイル（`src/styles/learn.css`・Progate 系ライトテーマ）で統一する
 - ハードコードされた色（`#xxxxxx`）を直接書かず、CSS 変数（`var(--accent)` 等）経由で参照する
 - 未使用の `console.log` をコミットしない
 - `--no-verify` フラグは使わない
