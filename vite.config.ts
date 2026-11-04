@@ -40,6 +40,8 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2}'],
+        // 趣味の記録（OFF-HOURS）の写真は増え続けるので precache せず、表示されたものだけ runtime でキャッシュする
+        globIgnores: ['off-hours/**'],
         // Learn 教材（多数の TSX 記事 + highlight.js）でメイン JS が肥大し、
         // 既定の precache 上限 2 MiB を超えてビルドが失敗するため引き上げる。
         // ※ 恒久対策は Learn ルートのコード分割（React.lazy）でメインチャンクを縮小すること。
@@ -70,7 +72,17 @@ export default defineConfig({
             handler: 'NetworkFirst',
             options: {
               cacheName: 'google-sheets-cache',
-              expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 },
+              expiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          // 趣味の記録（OFF-HOURS）の写真
+          {
+            urlPattern: /\/off-hours\/.*\.(?:webp|png|jpe?g)$/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'off-hours-images',
+              expiration: { maxEntries: 60, maxAgeSeconds: 60 * 60 * 24 * 30 },
               cacheableResponse: { statuses: [0, 200] },
             },
           },

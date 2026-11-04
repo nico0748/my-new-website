@@ -8,6 +8,7 @@ import WorkList from "../components/ui/WorkList";
 import SkillRadarChart from "../components/ui/SkillRadarChart";
 import { skillColor } from "../lib/skillColors";
 import Timeline from "../components/ui/Timeline";
+import OffHoursBoard from "../components/ui/OffHoursBoard";
 import Reveal from "../components/ui/Reveal";
 import SocialLinks from "../components/ui/SocialLinks";
 import type { SocialLink } from "../components/ui/SocialLinks";
@@ -18,6 +19,8 @@ import { mapProfileData, mapSkillsData, mapTimelineData } from "../lib/dataMappe
 import { fetchProjects, getCachedProjects } from "../lib/projects";
 import type { ProfileData, SkillCategory, TimelineItem, PortfolioItem, ArticleItem } from "../lib/dataMapper";
 import { fetchArticles, QIITA_PROFILE_URL } from "../lib/articles";
+import { fetchOffHours, getCachedOffHours } from "../lib/offHours";
+import type { OffHoursItem } from "../lib/dataMapper";
 
 const REAL_NAME = "細澤 悠真";
 
@@ -28,6 +31,7 @@ const PortfolioPage = () => {
   const [timeline, setTimeline] = useState<TimelineItem[]>([]);
   const [articles, setArticles] = useState<ArticleItem[]>([]);
   const [articlesLoaded, setArticlesLoaded] = useState(false);
+  const [offHours, setOffHours] = useState<OffHoursItem[]>(() => getCachedOffHours() ?? []);
   // Profile シートを読み終えたか（ソーシャルリンクを全件そろってからフェードインさせるため）
   const [profileReady, setProfileReady] = useState(!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY);
 
@@ -35,6 +39,8 @@ const PortfolioPage = () => {
     fetchArticles()
       .then(setArticles)
       .finally(() => setArticlesLoaded(true));
+    // 趣味の記録は Profile 等とは別に読む（待たせるとソーシャルリンクの表示まで遅れるため）
+    fetchOffHours().then(setOffHours);
 
     if (!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY) return;
     (async () => {
@@ -109,6 +115,21 @@ const PortfolioPage = () => {
             <SectionHeading id="timeline">Timeline</SectionHeading>
           </Reveal>
           <Timeline items={timeline} />
+        </section>
+      )}
+
+      {offHours.length > 0 && (
+        <section className="mt-24 md:mt-32">
+          <Reveal>
+            <SectionHeading id="off-hours">Off-hours</SectionHeading>
+          </Reveal>
+          <Reveal
+            className={`-mt-3 md:-mt-4 mb-8 md:mb-10 ${READABLE_WIDTH} text-[15px] leading-[1.9]`}
+            style={{ color: "var(--text-secondary)" }}
+          >
+            <p>コードの外で、観て、聴いて、手に取って、足を運んだもの。</p>
+          </Reveal>
+          <OffHoursBoard items={offHours} />
         </section>
       )}
     </SiteLayout>

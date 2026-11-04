@@ -26,6 +26,7 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 - **Works / Articles は画像付きのボックス（スマホ1段・タブレット2段・PC 3段、`gap-5 lg:gap-6`。トップには最大6件）**: `WorkList`（サムネイル）/ `ArticleList`（OGP 画像）。枠線は `border-white/[0.08]`、ホバーで少し明るく。画像が無い場合は静かなプレースホルダー
 - **Skills** はカテゴリごとのレーダーチャート（`SkillRadarChart`、recharts）をボックスで並べる
 - **Timeline** は `Timeline`（年見出し + 縦線 + 「期間 · 種別」→ タイトル → 説明）。継続中の項目は差し色のドット
+- **Off-hours**（趣味の記録、TIMELINE の下）は `OffHoursBoard`。カテゴリごとの箱（`grid-cols-1 md:grid-cols-2`、Skills と同じ枠）に、56px 角のサムネイル＋タイトル＋「日付 · subtitle」を新しい順に 3 件。画像が無ければ lucide-react のアイコン（stroke 1.75）。リードは「コードの外で、観て、聴いて、手に取って、足を運んだもの。」
 - **ソーシャルリンク** は `SocialLinks`。1件1枚のカード（サービス名＋ユーザー ID、右端にアイコン）を縦に積み、トップの自己紹介では**名前と同じ高さから右側に**置く（タブレット未満では紹介文の下。右カラムは 300px）。**アイコンは各サービス本来の色**（`--brand-x` / `--brand-github` / `--brand-qiita` / `--brand-linkedin`）、ID は主テキスト色、サービス名は副テキスト色。URL は Profile シートの `xUrl` / `githubUrl` / `qiitaUrl` / `linkedinUrl`。ID は URL から自動で取り出すが、LinkedIn は `linkedinLabel`（例 `細澤 悠真`）で表示名を上書きできる。アイコンは各サービス公式のロゴマーク（Qiita も公式マーク。Simple Icons 由来）。自己紹介のアバターは `w-24`（md 以上 `w-32`）
 - **背景**: `SiteBackground`（インクネイビー一色＋上部にごく僅かな青い明るさ）。`SiteLayout` が内部で使う
 - **テーマモード**: ダーク単独
@@ -38,7 +39,7 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
   - 罫線: `var(--border-color)` `rgba(160,180,210,0.1)`（青みを帯びた薄い線）
 - **リンク**: 通常は `.link-quiet`（副テキスト色 → ホバーで主テキスト色）。外部リンクは `↗`
 - **アニメーション**:
-  - **スクロールで下からフェードイン**は `src/components/ui/Reveal.tsx` の `Reveal` で包む（一度だけ・同じフレームで入った要素は DOM 順に 0.1 秒ずつずらす）。トップでは Profile → WORKS → ARTICLES → SKILLS → TIMELINE の各見出し・カード・年ごとの Timeline を個別に包んでいる。`WorkList` / `ArticleList` のカードは常に Reveal 付き
+  - **スクロールで下からフェードイン**は `src/components/ui/Reveal.tsx` の `Reveal` で包む（一度だけ・同じフレームで入った要素は DOM 順に 0.1 秒ずつずらす）。トップでは Profile → WORKS → ARTICLES → SKILLS → TIMELINE → OFF-HOURS の各見出し・カード・年ごとの Timeline・Off-hours の箱を個別に包んでいる。`WorkList` / `ArticleList` のカードは常に Reveal 付き
   - ページ遷移（View Transition）で入ってきたときは、最初の画面に入る Reveal は**アニメせず即表示**する（遷移アニメとの二重化と、共有要素のモーフ後のちらつきを防ぐ）。新しく Reveal を足すときもこの仕組みに乗せ、framer-motion の `initial={{ opacity: 0 }}` を共有要素の祖先に付けないこと
   - 画面遷移は `index.css` の View Transitions 節で制御。ページ全体は「旧ページを先に消し、新ページを少し遅らせて下から浮かべる」。作品の画像・タイトルは `vt-project-img` / `vt-project-title`（`view-transition-class`）＋ `projectVtName()` の名前でモーフし、時間とカーブは `--vt-morph-duration` / `--vt-morph-easing`
   - サイト内リンクは `<Link viewTransition>` にする（ヘッダー・フッター・「すべて見る →」も対応済み）。スクロール位置は `RootLayout` の `<ScrollRestoration />` が管理（新しいページは先頭から、戻る / 進むは復元）
@@ -121,6 +122,18 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 - **Qiita 以外（Zenn / note 等）**: Google Sheets の **「Articles」シート**（`id, title, url, platform, date, tags`）に手で追記。`platform` が空なら URL から自動判定（`detectPlatform`）
 - 両者をマージして日付の新しい順に表示。型は `src/lib/dataMapper.ts` の `ArticleItem`
 - **OGP 画像**: `api/ogp.js`（Vercel Function）が記事ページの `og:image` を取り出して返す（`/api/ogp?url=...`、CDN キャッシュ 1 週間）。SSRF 対策で取得先は記事プラットフォームのホストに限定（新しい掲載先を足すときは `ALLOWED_HOSTS` に追加）。Articles シートの `image` 列で上書き可。ローカルの `npm run dev` では関数が動かないためプレースホルダー表示になる
+
+## Off-hours（OffHours シート）
+
+趣味の記録（アニメ・音楽・イベント・同人作品）。詳細と経緯は `docs/off-hours.md`。
+
+- 列: `date, category, title, subtitle, url, image`。`date` は日付セル（表示 `yyyy-mm-dd`）、`category` はドロップダウン（アニメ / 音楽 / イベント / 同人作品。英字キー `anime` / `music` / `event` / `indie` も可）
+- 取得は `src/lib/offHours.ts` の `fetchOffHours()`（モジュール内キャッシュ）。変換は `dataMapper.ts` の `mapOffHoursData()`。Profile 等の `Promise.all` には入れない（ソーシャルリンクの表示が遅れるため）
+- ⚠️ シートは公開物（API キーがバンドルに入る）。見られて困るものは書かない。表示側でも次を守る:
+  - 未来の日付は出さない。イベントは当日も出さない（翌日から表示）
+  - 同人作品は全年齢のみ。DLsite の URL は全年齢フロア（`home` / `comic` / `soft`）以外なら行ごと捨てる。同人作品の画像は使わない
+  - `url` は `https://` のみ、`image` は `https://` か `/off-hours/...`（写真は `public/off-hours/`、EXIF を消す。PWA の precache からは除外済み）
+  - 価格・購入数・私的なメモの列は作らない
 
 ## Timeline シート
 
