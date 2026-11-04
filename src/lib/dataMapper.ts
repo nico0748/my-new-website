@@ -46,32 +46,14 @@ export interface ProfileData {
     qiitaUrl?: string;
 }
 
-export interface TopicItem {
+export interface ArticleItem {
   id: string;
   title: string;
-  description: string;
-  category: string;        // "news" | "cve" | "vuln" | "daily" | "it" | "other"（自由文字列・未知は other スタイル）
+  url: string;             // 記事本体（外部サイト）への URL
+  platform: string;        // "Qiita" | "Zenn" | "note" など（URL から自動判定）
   date: string;            // YYYY-MM-DD
   tags: string[];
-  thumbnail?: string;
-  author?: string;
-  markdownFile?: string;   // 既定: /topics/<id>.md
-  externalUrl?: string;    // CVE/ニュース原典リンク（Phase2 自動取込でも使用）
-  source?: string;         // "manual" | "auto"（Phase2 向け・既定 manual）
-}
-
-export interface StudyItem {
-  id: string;
-  title: string;
-  description: string;
-  category: string;        // "language" | "framework" | "cs" | "security" | "infra" | "book" | "other"（自由文字列・未知は other）
-  date: string;            // YYYY-MM-DD
-  tags: string[];
-  thumbnail?: string;
-  author?: string;
-  markdownFile?: string;   // 既定: /study/<id>.md
-  externalUrl?: string;    // 参考リンク
-  source?: string;         // "manual" | "auto"（claude-obsidian 連携・既定 manual）
+  likes?: number;
 }
 
 export interface AnimeItem {
@@ -157,42 +139,34 @@ export const mapPortfolioData = (rows: SheetRow[]): PortfolioItem[] => {
     }));
 };
 
-export const mapTopicData = (rows: SheetRow[]): TopicItem[] => {
-    return rows
-        .filter(row => row.id && row.title)
-        .map(row => ({
-            id: row.id,
-            title: row.title,
-            description: row.description || "",
-            category: (row.category || "other").trim(),
-            date: row.date || "",
-            tags: row.tags ? row.tags.split(',').map(t => t.trim()).filter(Boolean) : [],
-            thumbnail: row.thumbnail || undefined,
-            author: row.author || undefined,
-            markdownFile: row.markdownFile || `/topics/${row.id}.md`,
-            externalUrl: row.externalUrl || undefined,
-            source: row.source || "manual",
-        }))
-        .sort((a, b) => (a.date < b.date ? 1 : -1)); // 新しい順
+/** URL のホスト名から掲載先プラットフォーム名を推定する。 */
+export const detectPlatform = (url: string): string => {
+    try {
+        const host = new URL(url).hostname.replace(/^www\./, "");
+        if (host.endsWith("qiita.com")) return "Qiita";
+        if (host.endsWith("zenn.dev")) return "Zenn";
+        if (host.endsWith("note.com")) return "note";
+        if (host.includes("hatenablog") || host.includes("hatena")) return "はてなブログ";
+        if (host.endsWith("speakerdeck.com")) return "Speaker Deck";
+        if (host.endsWith("medium.com")) return "Medium";
+        return host;
+    } catch {
+        return "";
+    }
 };
 
-export const mapStudyData = (rows: SheetRow[]): StudyItem[] => {
+/** Google Sheets「Articles」シート（任意）: id, title, url, platform, date, tags */
+export const mapArticleData = (rows: SheetRow[]): ArticleItem[] => {
     return rows
-        .filter(row => row.id && row.title)
+        .filter(row => row.title && row.url)
         .map(row => ({
-            id: row.id,
+            id: row.id || row.url,
             title: row.title,
-            description: row.description || "",
-            category: (row.category || "other").trim(),
-            date: row.date || "",
+            url: row.url,
+            platform: row.platform || detectPlatform(row.url),
+            date: (row.date || "").slice(0, 10),
             tags: row.tags ? row.tags.split(',').map(t => t.trim()).filter(Boolean) : [],
-            thumbnail: row.thumbnail || undefined,
-            author: row.author || undefined,
-            markdownFile: row.markdownFile || `/study/${row.id}.md`,
-            externalUrl: row.externalUrl || undefined,
-            source: row.source || "manual",
-        }))
-        .sort((a, b) => (a.date < b.date ? 1 : -1)); // 新しい順
+        }));
 };
 
 export const mapAnimeData = (rows: SheetRow[]): AnimeItem[] => {
