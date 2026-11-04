@@ -30,6 +30,14 @@ const ICONS: Record<SocialKind, React.ReactNode> = {
 
 const NAMES: Record<SocialKind, string> = { qiita: "Qiita", github: "GitHub", x: "X", linkedin: "LinkedIn" };
 
+/** 各サービス本来の色（index.css の --brand-*）。 */
+const BRAND_COLORS: Record<SocialKind, string> = {
+  x: "var(--brand-x)",
+  github: "var(--brand-github)",
+  qiita: "var(--brand-qiita)",
+  linkedin: "var(--brand-linkedin)",
+};
+
 /** URL の最後のパスから表示用 ID を作る（X / Qiita は @ を付ける。LinkedIn は末尾の英数字 ID を省く）。 */
 const handleFromUrl = (kind: SocialKind, url: string): string => {
   try {
@@ -41,25 +49,47 @@ const handleFromUrl = (kind: SocialKind, url: string): string => {
   }
 };
 
-/** アイコン + ユーザー ID で並べるソーシャルリンク。 */
+/** サービス名・ユーザー ID・アイコンを1枚のカードにして縦に積むソーシャルリンク。
+ *  アイコンは各サービス本来の色、ID は主テキスト色、サービス名は副テキスト色。 */
 const SocialLinks: React.FC<{ links: SocialLink[]; className?: string }> = ({ links, className = "" }) => (
-  <ul className={`flex flex-wrap gap-x-7 gap-y-3 text-sm ${className}`}>
-    {links.map((l) => (
-      <li key={l.kind}>
-        <a
-          href={l.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={`${NAMES[l.kind]}: ${l.label ?? handleFromUrl(l.kind, l.url)}`}
-          className="link-quiet inline-flex items-center gap-2"
-        >
-          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden className="shrink-0">
-            {ICONS[l.kind]}
-          </svg>
-          <span>{l.label ?? handleFromUrl(l.kind, l.url)}</span>
-        </a>
-      </li>
-    ))}
+  <ul className={`flex flex-col gap-2.5 ${className}`}>
+    {links.map((l) => {
+      const handle = l.label ?? handleFromUrl(l.kind, l.url);
+      return (
+        <li key={l.kind}>
+          <a
+            href={l.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${NAMES[l.kind]}: ${handle}`}
+            className="group flex items-center justify-between gap-4 rounded-xl border px-5 py-3.5 transition-colors
+              bg-[color:var(--surface)] border-[color:var(--border-color)]
+              hover:border-[color:var(--accent-border)] hover:bg-[color:var(--surface-hover)]
+              focus-visible:outline-none focus-visible:border-[color:var(--accent)]"
+          >
+            <span className="min-w-0">
+              <span className="block text-[13px]" style={{ color: "var(--text-secondary)" }}>
+                {NAMES[l.kind]}
+              </span>
+              <span className="mt-0.5 block truncate text-[17px] font-semibold" style={{ color: "var(--text-primary)" }}>
+                {handle}
+              </span>
+            </span>
+            <svg
+              viewBox="0 0 24 24"
+              width="22"
+              height="22"
+              fill="currentColor"
+              aria-hidden
+              className="shrink-0"
+              style={{ color: BRAND_COLORS[l.kind] }}
+            >
+              {ICONS[l.kind]}
+            </svg>
+          </a>
+        </li>
+      );
+    })}
   </ul>
 );
 

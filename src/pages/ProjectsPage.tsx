@@ -22,7 +22,7 @@ const ProjectsPage = () => {
       ) : works.length > 0 ? (
         <WorkList items={works} />
       ) : (
-        <p className="text-sm" style={{ color: "var(--text-muted)" }}>
+        <p className="text-[15px]" style={{ color: "var(--text-muted)" }}>
           作品データがありません（Google Sheets を設定してください）
         </p>
       )}

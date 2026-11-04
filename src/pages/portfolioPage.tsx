@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
-import SiteLayout, { SectionHeading, MoreLink } from "../components/layouts/SiteLayout";
+import SiteLayout, { SectionHeading, MoreLink, READABLE_WIDTH } from "../components/layouts/SiteLayout";
 import ArticleList from "../components/ui/ArticleList";
 import WorkList from "../components/ui/WorkList";
 import SkillRadarChart from "../components/ui/SkillRadarChart";
+import { skillColor } from "../lib/skillColors";
 import Timeline from "../components/ui/Timeline";
 import SocialLinks from "../components/ui/SocialLinks";
 import type { SocialLink } from "../components/ui/SocialLinks";
@@ -61,16 +62,16 @@ const PortfolioPage = () => {
     <SiteLayout>
       <Intro profile={profile} />
 
-      <section className="mt-32">
+      <section className="mt-24 md:mt-32">
         <SectionHeading id="works">Works</SectionHeading>
-        {works.length > 0 ? <WorkList items={works.slice(0, 4)} /> : <Empty text="作品を読み込んでいます" />}
+        {works.length > 0 ? <WorkList items={works.slice(0, 6)} /> : <Empty text="作品を読み込んでいます" />}
         <MoreLink to="/projects">すべての作品を見る</MoreLink>
       </section>
 
-      <section className="mt-32">
+      <section className="mt-24 md:mt-32">
         <SectionHeading id="articles">Articles</SectionHeading>
         {articles.length > 0 ? (
-          <ArticleList items={articles.slice(0, 4)} />
+          <ArticleList items={articles.slice(0, 6)} />
         ) : (
           <Empty text={articlesLoaded ? "記事を取得できませんでした。Qiita から直接ご覧ください。" : "記事を読み込んでいます"} />
         )}
@@ -78,11 +79,16 @@ const PortfolioPage = () => {
       </section>
 
       {skills.length > 0 && (
-        <section className="mt-32">
+        <section className="mt-24 md:mt-32">
           <SectionHeading id="skills">Skills</SectionHeading>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {skills.slice(0, 4).map((c) => (
-              <SkillRadarChart key={c.category} category={c.category} skills={c.skills} />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
+            {skills.slice(0, 4).map((c, i) => (
+              <SkillRadarChart
+                key={c.category}
+                category={c.category}
+                skills={c.skills}
+                color={skillColor(c.category, i)}
+              />
             ))}
           </div>
           <MoreLink to="/skills">すべてのスキルを見る</MoreLink>
@@ -90,7 +96,7 @@ const PortfolioPage = () => {
       )}
 
       {timeline.length > 0 && (
-        <section className="mt-32">
+        <section className="mt-24 md:mt-32">
           <SectionHeading id="timeline">Timeline</SectionHeading>
           <Timeline items={timeline} />
         </section>
@@ -117,72 +123,85 @@ const Intro = ({ profile }: { profile: ProfileData }) => {
     );
 
   // Profile シートの各 URL から表示。Qiita だけは記事取得と同じユーザーを既定値にする
-  const socials: SocialLink[] = [
-    { kind: "x" as const, url: profile.xUrl },
-    { kind: "github" as const, url: profile.githubUrl },
-    { kind: "qiita" as const, url: profile.qiitaUrl || QIITA_PROFILE_URL },
-    { kind: "linkedin" as const, url: profile.linkedinUrl },
-  ].filter((l): l is SocialLink => !!l.url);
+  const candidates: { kind: SocialLink["kind"]; url?: string; label?: string }[] = [
+    { kind: "x", url: profile.xUrl },
+    { kind: "github", url: profile.githubUrl },
+    { kind: "qiita", url: profile.qiitaUrl || QIITA_PROFILE_URL },
+    // LinkedIn は URL の ID が「名-姓」になるため、表示名は Profile シートの linkedinLabel を優先
+    { kind: "linkedin", url: profile.linkedinUrl, label: profile.linkedinLabel },
+  ];
+  const socials = candidates.filter((l): l is SocialLink => !!l.url);
 
   return (
-    <section className="pt-20 sm:pt-28">
+    <section className="pt-12 md:pt-20">
       <motion.img
         {...fadeUp(0)}
         src={profile.image || "/sns_icon_round.png"}
         alt=""
-        className="w-16 h-16 rounded-full object-cover mb-10"
+        className="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover mb-8 md:mb-10"
         style={{ border: "1px solid var(--avatar-border)" }}
       />
-      <motion.h1 {...fadeUp(0.05)} className="text-[2.5rem] sm:text-5xl font-semibold tracking-tight leading-tight">
-        <button
-          type="button"
-          onClick={toggleName}
-          aria-label={`名前を${isReal ? "nico" : REAL_NAME}に切り替える`}
-          className="text-left cursor-pointer"
-          style={{ color: "var(--text-primary)" }}
-        >
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.span
-              key={displayName}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              className="inline-block"
+      {/* 左: 名前・肩書・紹介文 / 右: ソーシャルリンクのカード（名前と同じ高さから始める）。タブレット未満では下に回す */}
+      <div className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,1fr)_300px] md:gap-14 lg:gap-20 md:items-start">
+        <div>
+          <motion.h1 {...fadeUp(0.05)} className="text-[2.75rem] sm:text-[3.5rem] font-semibold tracking-tight leading-tight">
+            <button
+              type="button"
+              onClick={toggleName}
+              aria-label={`名前を${isReal ? "nico" : REAL_NAME}に切り替える`}
+              className="text-left cursor-pointer"
+              style={{ color: "var(--text-primary)" }}
             >
-              {displayName}
-            </motion.span>
-          </AnimatePresence>
-        </button>
-      </motion.h1>
-      {profile.title && (
-        <motion.p {...fadeUp(0.1)} className="mt-4 text-[15px]" style={{ color: "var(--text-muted)" }}>
-          {profile.title}
-        </motion.p>
-      )}
-      {profile.description && (
-        <motion.p
-          {...fadeUp(0.15)}
-          className="mt-10 text-[15px] leading-[2.1] whitespace-pre-line"
-          style={{ color: "var(--text-body)" }}
-        >
-          {profile.description}
-        </motion.p>
-      )}
-      <motion.div {...fadeUp(0.2)} className="mt-10">
-        <SocialLinks links={socials} />
-        {profile.blogUrl && (
-          <a href={profile.blogUrl} target="_blank" rel="noopener noreferrer" className="link-quiet mt-3 inline-block text-sm">
-            Blog ↗
-          </a>
-        )}
-      </motion.div>
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.span
+                  key={displayName}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.25 }}
+                  className="inline-block"
+                >
+                  {displayName}
+                </motion.span>
+              </AnimatePresence>
+            </button>
+          </motion.h1>
+          {profile.title && (
+            <motion.p {...fadeUp(0.1)} className="mt-4 text-[17px]" style={{ color: "var(--text-muted)" }}>
+              {/* 「A | B」の肩書は区切りの位置で折り返す（単語の途中で改行しない） */}
+              {profile.title.split("|").map((part, i) => (
+                <span key={i}>
+                  {i > 0 && <span className="mx-2.5 opacity-50">|</span>}
+                  <span className="inline-block">{part.trim()}</span>
+                </span>
+              ))}
+            </motion.p>
+          )}
+          {profile.description && (
+            <motion.p
+              {...fadeUp(0.15)}
+              className={`mt-8 md:mt-10 ${READABLE_WIDTH} text-[17px] leading-[2.1] whitespace-pre-line`}
+              style={{ color: "var(--text-body)" }}
+            >
+              {profile.description}
+            </motion.p>
+          )}
+          {profile.blogUrl && (
+            <a href={profile.blogUrl} target="_blank" rel="noopener noreferrer" className="link-quiet mt-8 inline-block text-[15px]">
+              Blog ↗
+            </a>
+          )}
+        </div>
+        <motion.div {...fadeUp(0.2)}>
+          <SocialLinks links={socials} />
+        </motion.div>
+      </div>
     </section>
   );
 };
 
 const Empty = ({ text }: { text: string }) => (
-  <p className="py-4 text-sm" style={{ color: "var(--text-muted)" }}>
+  <p className="py-4 text-[15px]" style={{ color: "var(--text-muted)" }}>
     {text}
   </p>
 );

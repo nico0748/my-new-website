@@ -118,13 +118,13 @@ const SkillsPage = () => {
                     {/* Category Header */}
                     <div className="flex items-center gap-3 mb-4">
                       <h2
-                        className="text-lg font-bold tracking-tight"
+                        className="text-xl font-bold tracking-tight"
                         style={{ color: "var(--text-primary)" }}
                       >
                         {cat.category}
                       </h2>
                       <span
-                        className="text-xs font-medium px-2 py-0.5 rounded-full"
+                        className="text-[13px] font-medium px-2 py-0.5 rounded-full"
                         style={{
                           background: `${catColor}12`,
                           color: catColor,
@@ -167,14 +167,14 @@ const SkillsPage = () => {
                               />
                             ) : (
                               <div
-                                className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0 text-xs font-bold "
+                                className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0 text-[13px] font-bold "
                                 style={{ background: `${catColor}22`, color: catColor }}
                               >
                                 {skill.name.slice(0, 2)}
                               </div>
                             )}
                             <span
-                              className="text-sm font-medium whitespace-nowrap"
+                              className="text-[15px] font-medium whitespace-nowrap"
                               style={{
                                 color: selected ? catColor : "var(--text-primary)",
                               }}
@@ -226,13 +226,13 @@ const SkillsPage = () => {
                                       />
                                     )}
                                     <h3
-                                      className="text-lg font-bold tracking-tight"
+                                      className="text-xl font-bold tracking-tight"
                                       style={{ color: "var(--text-primary)" }}
                                     >
                                       {skill.name}
                                     </h3>
                                     <span
-                                      className="text-xs font-semibold px-2 py-0.5 rounded-full"
+                                      className="text-[13px] font-semibold px-2 py-0.5 rounded-full"
                                       style={{
                                         color: lvl.color,
                                         background: `${lvl.color}15`,
@@ -243,7 +243,7 @@ const SkillsPage = () => {
                                     </span>
                                     {skill.experienceYears && (
                                       <span
-                                        className="text-xs font-medium px-2 py-0.5 rounded-full"
+                                        className="text-[13px] font-medium px-2 py-0.5 rounded-full"
                                         style={{
                                           background: "var(--skill-bar-empty)",
                                           color: "var(--text-secondary)",
@@ -273,7 +273,7 @@ const SkillsPage = () => {
                                       ))}
                                     </div>
                                     <span
-                                      className="text-xs font-medium w-8 text-right"
+                                      className="text-[13px] font-medium w-8 text-right"
                                       style={{
                                         color: "var(--text-muted)",
                                         fontFamily:
@@ -287,7 +287,7 @@ const SkillsPage = () => {
                                   {/* Description */}
                                   {skill.description && (
                                     <p
-                                      className="text-sm leading-relaxed mb-3"
+                                      className="text-[15px] leading-relaxed mb-3"
                                       style={{ color: "var(--text-secondary)" }}
                                     >
                                       {skill.description}
@@ -304,7 +304,7 @@ const SkillsPage = () => {
                                       }}
                                     >
                                       <div
-                                        className="text-[10px] font-semibold tracking-[0.2em] uppercase mb-1"
+                                        className="text-[11px] font-semibold tracking-[0.2em] uppercase mb-1"
                                         style={{
                                           color: "var(--text-muted)",
                                           fontFamily:
@@ -314,7 +314,7 @@ const SkillsPage = () => {
                                         使用経験・コメント
                                       </div>
                                       <p
-                                        className="text-sm leading-relaxed"
+                                        className="text-[15px] leading-relaxed"
                                         style={{ color: "var(--text-body)" }}
                                       >
                                         {skill.comment}
@@ -327,7 +327,7 @@ const SkillsPage = () => {
                                     skill.libraries.length > 0 && (
                                       <div className="mb-3">
                                         <div
-                                          className="text-[10px] font-semibold tracking-[0.2em] uppercase mb-2"
+                                          className="text-[11px] font-semibold tracking-[0.2em] uppercase mb-2"
                                           style={{
                                             color: "var(--text-muted)",
                                             fontFamily:
@@ -340,7 +340,7 @@ const SkillsPage = () => {
                                           {skill.libraries.map((lib) => (
                                             <span
                                               key={lib}
-                                              className="text-xs font-medium px-2.5 py-1 rounded-lg"
+                                              className="text-[13px] font-medium px-2.5 py-1 rounded-lg"
                                               style={{
                                                 background: "var(--skill-bar-empty)",
                                                 color: "var(--text-body)",
@@ -358,7 +358,7 @@ const SkillsPage = () => {
                                   {related.length > 0 && (
                                     <div>
                                       <div
-                                        className="text-[10px] font-semibold tracking-[0.2em] uppercase mb-2"
+                                        className="text-[11px] font-semibold tracking-[0.2em] uppercase mb-2"
                                         style={{
                                           color: "var(--text-muted)",
                                           fontFamily:
@@ -372,7 +372,7 @@ const SkillsPage = () => {
                                           <Link
                                             key={proj.id}
                                             to={`/projects/${proj.id}`}
-                                            className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200"
+                                            className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-[13px] font-medium transition-all duration-200"
                                             style={{
                                               background: "var(--accent-bg)",
                                               color: "var(--text-body)",
@@ -403,7 +403,7 @@ const SkillsPage = () => {
                                       skill.libraries.length === 0) &&
                                     related.length === 0 && (
                                       <p
-                                        className="text-sm"
+                                        className="text-[15px]"
                                         style={{ color: "var(--text-muted)" }}
                                       >
                                         詳細情報は Google Sheets の
@@ -481,7 +481,7 @@ const SkillsPage = () => {
             transition={{ duration: 0.5 }}
           >
             <div
-              className="text-xs font-semibold tracking-[0.2em] uppercase mb-4"
+              className="text-[13px] font-semibold tracking-[0.2em] uppercase mb-4"
               style={{
                 color: "var(--text-muted)",
                 fontFamily: "var(--font-sans)",
@@ -490,7 +490,7 @@ const SkillsPage = () => {
               スキルレベルの基準
             </div>
             <p
-              className="text-sm leading-relaxed mb-6"
+              className="text-[15px] leading-relaxed mb-6"
               style={{ color: "var(--text-secondary)" }}
             >
               各スキルは 1〜5
@@ -546,14 +546,14 @@ const SkillsPage = () => {
                       ))}
                     </div>
                     <span
-                      className="text-xs font-bold whitespace-nowrap"
+                      className="text-[13px] font-bold whitespace-nowrap"
                       style={{ color: item.color }}
                     >
                       {item.label}
                     </span>
                   </div>
                   <p
-                    className="text-sm leading-relaxed flex-1"
+                    className="text-[15px] leading-relaxed flex-1"
                     style={{ color: "var(--text-secondary)" }}
                   >
                     {item.desc}

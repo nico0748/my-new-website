@@ -19,22 +19,23 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 
 ### テーマ: Calm Dark（落ち着いた大人のダーク・余白重視）
 
-2026-11 に旧「ダーク・ターミナル」調から刷新。参考は https://newt239.dev 。装飾は最小限にし、**1カラム・狭い本文幅・広い余白・静かなタイポグラフィ**で見せる。カードやグロー、ネオン色、ターミナル演出（`$` プロンプト・点滅カーソル・走査線・グリッド）は使わない。
+2026-11 に旧「ダーク・ターミナル」調から刷新。参考は https://newt239.dev 。装飾は最小限にし、**静かなタイポグラフィと整った余白**で見せる（2026-11 に「狭い1カラム」はやめ、一覧は広い幅で段組みにした）。カードやグロー、ネオン色、ターミナル演出（`$` プロンプト・点滅カーソル・走査線・グリッド）は使わない。
 
-- **レイアウト**: `src/components/layouts/SiteLayout.tsx` の `SiteLayout` でページをラップする（ヘッダー＋本文＋フッター込み）。本文幅は `CONTENT_WIDTH`（`max-w-[720px]`）。セクション間は `mt-32` 程度の大きな余白
+- **レイアウト**: `src/components/layouts/SiteLayout.tsx` の `SiteLayout` でページをラップする（ヘッダー＋本文＋フッター込み）。コンテナは `CONTENT_WIDTH`（`max-w-[1080px]` ＋左右余白 `px-5 sm:px-8 lg:px-10`）で全ページ共通。**文章ブロックは `READABLE_WIDTH`（`max-w-[680px]`、日本語で1行 38〜42 字前後）に収める**（紹介文・ページのリード・Timeline の説明・作品詳細の Markdown は 760px まで）。セクション間は `mt-24 md:mt-32`、ヒーローの上は `pt-12 md:pt-20`
 - **部品**: `SectionHeading`（小さな大文字見出し）/ `MoreLink`（「すべて見る →」）/ `PageTitle`（下層ページのタイトル）/ `Loading`
-- **Works / Articles は画像付きのボックス（2カラム）**: `WorkList`（サムネイル）/ `ArticleList`（OGP 画像）。枠線は `border-white/[0.08]`、ホバーで少し明るく。画像が無い場合は静かなプレースホルダー
+- **Works / Articles は画像付きのボックス（スマホ1段・タブレット2段・PC 3段、`gap-5 lg:gap-6`。トップには最大6件）**: `WorkList`（サムネイル）/ `ArticleList`（OGP 画像）。枠線は `border-white/[0.08]`、ホバーで少し明るく。画像が無い場合は静かなプレースホルダー
 - **Skills** はカテゴリごとのレーダーチャート（`SkillRadarChart`、recharts）をボックスで並べる
 - **Timeline** は `Timeline`（年見出し + 縦線 + 「期間 · 種別」→ タイトル → 説明）。継続中の項目は差し色のドット
-- **ソーシャルリンク** は `SocialLinks`（アイコン + ユーザー ID）。URL は Profile シートの `xUrl` / `githubUrl` / `qiitaUrl` / `linkedinUrl`
-- **背景**: `SiteBackground`（黒一色＋上部にごく僅かな明るさ）。`SiteLayout` が内部で使う
+- **ソーシャルリンク** は `SocialLinks`。1件1枚のカード（サービス名＋ユーザー ID、右端にアイコン）を縦に積み、トップの自己紹介では**名前と同じ高さから右側に**置く（タブレット未満では紹介文の下。右カラムは 300px）。**アイコンは各サービス本来の色**（`--brand-x` / `--brand-github` / `--brand-qiita` / `--brand-linkedin`）、ID は主テキスト色、サービス名は副テキスト色。URL は Profile シートの `xUrl` / `githubUrl` / `qiitaUrl` / `linkedinUrl`。ID は URL から自動で取り出すが、LinkedIn は `linkedinLabel`（例 `細澤-悠真`）で表示名を上書きできる
+- **背景**: `SiteBackground`（インクネイビー一色＋上部にごく僅かな青い明るさ）。`SiteLayout` が内部で使う
 - **テーマモード**: ダーク単独
 - **カラーパレット（CSS 変数経由で参照）**:
-  - 背景: `var(--bg)` `#111111`（ソフトブラック） / サーフェス `var(--surface)` `#181818`
-  - テキスト（主）: `var(--text-primary)` `#ecebe8` / （本文）`var(--text-body)` `#cfcdc8`
-  - テキスト（副）: `var(--text-secondary)` `#a4a29d` / （淡）`var(--text-muted)` `#6f6d69`
-  - アクセント: `var(--accent)` `#cbbf9f`（サンドベージュ。多用しない）
-  - 罫線: `var(--border-color)` `rgba(255,255,255,0.08)`
+  - 背景: `var(--bg)` `#0f1217`（インクネイビー＝青みのある黒） / サーフェス `var(--surface)` `#161a21`
+  - テキスト（主）: `var(--text-primary)` `#e8eaee` / （本文）`var(--text-body)` `#c9cdd4`
+  - テキスト（副）: `var(--text-secondary)` `#9ba2ad` / （淡）`var(--text-muted)` `#666d78`
+  - アクセント（主）: `var(--accent)` `#cbbf9f`（サンドベージュ）。セクション見出しと左の短い線・「すべて見る →」（`.link-accent`）
+  - アクセント（従）: `var(--accent-2)` `#8fb59b`（セージ）/ `var(--accent-3)` `#86a7cf`（ダスティブルー）/ `var(--accent-4)` `#d9b65a`（マスタードイエロー）/ `var(--accent-5)` `#a89be0`（ラベンダー）。スキルのチャートは `src/lib/skillColors.ts` の `skillColor()` でカテゴリ名から色を決める（Frontend=緑 / Backend=青 / Database=黄 / Infrastructure=紫）。サンドは見出しの色なのでチャートには使わない
+  - 罫線: `var(--border-color)` `rgba(160,180,210,0.1)`（青みを帯びた薄い線）
 - **リンク**: 通常は `.link-quiet`（副テキスト色 → ホバーで主テキスト色）。外部リンクは `↗`
 
 ### タイポグラフィ
@@ -42,6 +43,7 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 - 本文・見出しとも `var(--font-sans)` = `Inter` + `Noto Sans JP`
 - 等幅 `JetBrains Mono` はコード（`pre` / `code`）のみ
 - 見出しは `font-semibold` 程度に留め、極端に太くしない。本文の行間は広め（`leading-[2.1]` 前後）
+- 文字サイズは大きめ（2026-11 に一段階拡大）。目安: 本文・自己紹介・カードのタイトル `17px` / カードの説明 `14px` / 補足（タグ・日付）`13px` / ナビ・リンク `15px` / セクション見出し（WORKS など）`19px`（md 以上 `21px`、`font-semibold`。「すべて見る →」の 15px と差を付ける）。`text-xs` `text-sm` は使わず px 指定で揃える。Markdown（`.prose-custom`）は `1.0625rem`
 
 ---
 

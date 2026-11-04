@@ -29,7 +29,7 @@ const OgpImage: React.FC<{ item: ArticleItem }> = ({ item }) => {
         />
       ) : (
         <div className="flex h-full w-full items-center justify-center" aria-hidden>
-          <span className="text-[13px] tracking-[0.2em] uppercase" style={{ color: "var(--text-muted)" }}>
+          <span className="text-[14px] tracking-[0.2em] uppercase" style={{ color: "var(--text-muted)" }}>
             {item.platform}
           </span>
         </div>
@@ -40,7 +40,7 @@ const OgpImage: React.FC<{ item: ArticleItem }> = ({ item }) => {
 
 /** 記事のボックス一覧（OGP 画像 + タイトル + 掲載先 · 日付）。クリックで外部の記事ページへ遷移する。 */
 const ArticleList: React.FC<{ items: ArticleItem[] }> = ({ items }) => (
-  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+  <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
     {items.map((a) => (
       <li key={a.id}>
         <a
@@ -52,10 +52,10 @@ const ArticleList: React.FC<{ items: ArticleItem[] }> = ({ items }) => (
         >
           <OgpImage item={a} />
           <div className="flex flex-1 flex-col p-5">
-            <span className="text-[14px] font-medium leading-relaxed line-clamp-2" style={{ color: "var(--text-primary)" }}>
+            <span className="text-[16px] font-medium leading-relaxed line-clamp-2" style={{ color: "var(--text-primary)" }}>
               {a.title}
             </span>
-            <span className="mt-auto flex items-center gap-2 pt-3 text-[12px]" style={{ color: "var(--text-muted)" }}>
+            <span className="mt-auto flex items-center gap-2 pt-3 text-[13px]" style={{ color: "var(--text-muted)" }}>
               <span>{a.platform}</span>
               <span aria-hidden>·</span>
               <time dateTime={a.date}>{formatJaDate(a.date)}</time>

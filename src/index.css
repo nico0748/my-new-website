@@ -3,30 +3,41 @@
 @tailwind utilities;
 
 /* ─── Theme: Calm Dark（落ち着いた大人のダーク） ─────────────────
-   温かみのある黒地に、オフホワイトの文字と控えめなサンドベージュの差し色。
+   青みを帯びたインクネイビーの地に、オフホワイトの文字と控えめなサンドベージュの差し色。
    装飾は最小限にして余白とタイポグラフィで見せる。ダークテーマ単独構成。 */
 
 :root {
   /* 地色 / サーフェス */
-  --bg: #111111;                            /* ソフトブラック */
-  --bg-rgb: 17, 17, 17;
-  --bg-glow: rgba(255, 255, 255, 0.035);    /* 上部のごく僅かな明るさ */
-  --surface: #181818;                       /* パネル面 */
-  --card-bg: #161616;
-  --card-bg-solid: #161616;
-  --card-border: rgba(255, 255, 255, 0.08);
+  --bg: #0f1217;                            /* インクネイビー */
+  --bg-rgb: 15, 18, 23;
+  --bg-glow: rgba(134, 167, 207, 0.07);     /* 上部のごく僅かな青い明るさ */
+  --surface: #161a21;                       /* パネル面 */
+  --surface-hover: #1b2029;                 /* パネル面（ホバー） */
+  --card-bg: #141820;
+  --card-bg-solid: #141820;
+  --card-border: rgba(160, 180, 210, 0.1);
   --card-shadow: rgba(0, 0, 0, 0.35);
-  --header-bg: rgba(17, 17, 17, 0.82);
+  --header-bg: rgba(15, 18, 23, 0.82);
   --footer-bg: transparent;
 
   /* 文字 */
-  --text-primary: #ecebe8;                  /* オフホワイト */
-  --text-secondary: #a4a29d;                /* ウォームグレー */
-  --text-muted: #6f6d69;                    /* ミュート */
-  --text-body: #cfcdc8;
+  --text-primary: #e8eaee;                  /* オフホワイト */
+  --text-secondary: #9ba2ad;                /* ブルーグレー */
+  --text-muted: #666d78;                    /* ミュート */
+  --text-body: #c9cdd4;
 
   /* アクセント — サンドベージュ（強く主張しない差し色） */
   --accent: #cbbf9f;
+  /* 2色目以降（サンドを主役に、スキルのカテゴリ色分けやアクセント文字に使う） */
+  --accent-2: #8fb59b; /* セージグリーン */
+  --accent-3: #86a7cf; /* ダスティブルー */
+  --accent-4: #d9b65a; /* マスタードイエロー */
+  --accent-5: #a89be0; /* ラベンダー */
+  /* 外部サービスのブランド色（ソーシャルリンクのアイコン）。X / GitHub は暗い地では白が公式 */
+  --brand-x: #ffffff;
+  --brand-github: #ffffff;
+  --brand-qiita: #55c500;
+  --brand-linkedin: #0a66c2;
   --accent-hover: #e3d9bd;
   --accent-bg: rgba(203, 191, 159, 0.07);
   --accent-border: rgba(203, 191, 159, 0.24);
@@ -34,9 +45,9 @@
 
   /* RGB 三値（スペース区切り）— rgb(var(--x) / α) でα合成できる基準色 */
   --accent-rgb: 203 191 159;
-  --bg-rgb-s: 17 17 17;
-  --surface-rgb: 24 24 24;
-  --text-primary-rgb: 236 235 232;
+  --bg-rgb-s: 15 18 23;
+  --surface-rgb: 22 26 33;
+  --text-primary-rgb: 232 234 238;
   --amber-rgb: 214 178 120;
   --magenta-rgb: 196 140 140;
 
@@ -53,8 +64,8 @@
   --accent-magenta: #c48c8c;
 
   /* 罫線 */
-  --border-color: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.16);
+  --border-color: rgba(160, 180, 210, 0.1);
+  --border-strong: rgba(160, 180, 210, 0.2);
   --washi-fiber: transparent;
   --grid-line: transparent;
   --seal-red: #cbbf9f;                      /* 旧参照名（値は差し色） */
@@ -62,21 +73,21 @@
   /* Markdown / コード */
   --code-bg: rgba(255, 255, 255, 0.06);
   --code-border: rgba(255, 255, 255, 0.08);
-  --pre-bg: #181818;
-  --pre-text: #ecebe8;
+  --pre-bg: #161a21;
+  --pre-text: #e8eaee;
   --tag-bg: rgba(255, 255, 255, 0.04);
-  --tag-color: #a4a29d;
+  --tag-color: #9ba2ad;
   --tag-border: rgba(255, 255, 255, 0.1);
-  --dot-bg: #111111;
+  --dot-bg: #0f1217;
   --hover-card-shadow: rgba(0, 0, 0, 0.4);
-  --warning-bg: rgba(24, 24, 24, 0.95);
+  --warning-bg: rgba(22, 26, 33, 0.95);
   --blockquote-bg: rgba(255, 255, 255, 0.03);
   --table-even-bg: rgba(255, 255, 255, 0.025);
   --skill-bar-empty: rgba(255, 255, 255, 0.08);
   --avatar-border: rgba(255, 255, 255, 0.12);
   --avatar-shadow: rgba(0, 0, 0, 0.3);
   --avatar-ring: rgba(255, 255, 255, 0.04);
-  --online-badge-border: #181818;
+  --online-badge-border: #161a21;
 
   /* フォント */
   --font-sans: 'Inter', 'Noto Sans JP', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
@@ -179,7 +190,7 @@ pre, code {
 
 .prose-custom {
   color: var(--text-primary);
-  font-size: 1rem;
+  font-size: 1.0625rem;
   line-height: 1.95;
   font-family: var(--font-sans);
 }
@@ -406,6 +417,16 @@ pre, code {
 .link-quiet {
   color: var(--text-secondary);
   transition: color 0.2s ease;
+}
+
+/* サンドの差し色リンク（「すべて見る →」など） */
+.link-accent {
+  color: var(--accent);
+  transition: color 0.2s ease;
+}
+
+.link-accent:hover {
+  color: var(--accent-hover);
 }
 
 .link-quiet:hover {
