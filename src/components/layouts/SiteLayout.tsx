@@ -20,18 +20,18 @@ export const SiteHeader: React.FC<{ wide?: boolean }> = ({ wide }) => (
   >
     <Link
       to="/"
-      className="text-[17px] font-semibold tracking-tight transition-opacity hover:opacity-70"
+      className="text-[16px] sm:text-[17px] font-semibold tracking-tight transition-opacity hover:opacity-70"
       style={{ color: "var(--text-primary)" }}
     >
       nico-labo748.dev
     </Link>
-    <nav className="flex items-center gap-6">
+    <nav className="flex items-center gap-4 sm:gap-6">
       {NAV.map((n) => (
         <NavLink
           key={n.to}
           to={n.to}
           viewTransition
-          className="text-[15px] transition-colors"
+          className="text-[14px] sm:text-[15px] transition-colors"
           style={({ isActive }) => ({
             color: isActive ? "var(--text-primary)" : "var(--text-muted)",
           })}

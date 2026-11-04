@@ -141,50 +141,61 @@ const Intro = ({ profile }: { profile: ProfileData }) => {
         className="w-16 h-16 rounded-full object-cover mb-10"
         style={{ border: "1px solid var(--avatar-border)" }}
       />
-      <motion.h1 {...fadeUp(0.05)} className="text-[2.75rem] sm:text-[3.5rem] font-semibold tracking-tight leading-tight">
-        <button
-          type="button"
-          onClick={toggleName}
-          aria-label={`名前を${isReal ? "nico" : REAL_NAME}に切り替える`}
-          className="text-left cursor-pointer"
-          style={{ color: "var(--text-primary)" }}
-        >
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.span
-              key={displayName}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              className="inline-block"
+      {/* 左: 名前・肩書・紹介文 / 右: ソーシャルリンクのカード（名前と同じ高さから始める）。スマホでは下に回す */}
+      <div className="grid grid-cols-1 gap-12 sm:grid-cols-[minmax(0,1fr)_240px] sm:gap-10 sm:items-start">
+        <div>
+          <motion.h1 {...fadeUp(0.05)} className="text-[2.75rem] sm:text-[3.5rem] font-semibold tracking-tight leading-tight">
+            <button
+              type="button"
+              onClick={toggleName}
+              aria-label={`名前を${isReal ? "nico" : REAL_NAME}に切り替える`}
+              className="text-left cursor-pointer"
+              style={{ color: "var(--text-primary)" }}
             >
-              {displayName}
-            </motion.span>
-          </AnimatePresence>
-        </button>
-      </motion.h1>
-      {profile.title && (
-        <motion.p {...fadeUp(0.1)} className="mt-4 text-[17px]" style={{ color: "var(--text-muted)" }}>
-          {profile.title}
-        </motion.p>
-      )}
-      {profile.description && (
-        <motion.p
-          {...fadeUp(0.15)}
-          className="mt-10 text-[17px] leading-[2.1] whitespace-pre-line"
-          style={{ color: "var(--text-body)" }}
-        >
-          {profile.description}
-        </motion.p>
-      )}
-      <motion.div {...fadeUp(0.2)} className="mt-10">
-        <SocialLinks links={socials} />
-        {profile.blogUrl && (
-          <a href={profile.blogUrl} target="_blank" rel="noopener noreferrer" className="link-quiet mt-3 inline-block text-[15px]">
-            Blog ↗
-          </a>
-        )}
-      </motion.div>
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.span
+                  key={displayName}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.25 }}
+                  className="inline-block"
+                >
+                  {displayName}
+                </motion.span>
+              </AnimatePresence>
+            </button>
+          </motion.h1>
+          {profile.title && (
+            <motion.p {...fadeUp(0.1)} className="mt-4 text-[17px]" style={{ color: "var(--text-muted)" }}>
+              {/* 「A | B」の肩書は区切りの位置で折り返す（単語の途中で改行しない） */}
+              {profile.title.split("|").map((part, i) => (
+                <span key={i}>
+                  {i > 0 && <span className="mx-2.5 opacity-50">|</span>}
+                  <span className="inline-block">{part.trim()}</span>
+                </span>
+              ))}
+            </motion.p>
+          )}
+          {profile.description && (
+            <motion.p
+              {...fadeUp(0.15)}
+              className="mt-10 text-[17px] leading-[2.1] whitespace-pre-line"
+              style={{ color: "var(--text-body)" }}
+            >
+              {profile.description}
+            </motion.p>
+          )}
+          {profile.blogUrl && (
+            <a href={profile.blogUrl} target="_blank" rel="noopener noreferrer" className="link-quiet mt-8 inline-block text-[15px]">
+              Blog ↗
+            </a>
+          )}
+        </div>
+        <motion.div {...fadeUp(0.2)}>
+          <SocialLinks links={socials} />
+        </motion.div>
+      </div>
     </section>
   );
 };

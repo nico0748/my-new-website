@@ -41,26 +41,47 @@ const handleFromUrl = (kind: SocialKind, url: string): string => {
   }
 };
 
-/** アイコン + ユーザー ID で並べるソーシャルリンク。 */
+/** サービス名・ユーザー ID・アイコンを1枚のカードにして縦に積むソーシャルリンク。
+ *  ID とアイコンは同じ差し色（サンド）で揃え、サービス名は副テキスト色。 */
 const SocialLinks: React.FC<{ links: SocialLink[]; className?: string }> = ({ links, className = "" }) => (
-  <ul className={`flex flex-wrap gap-x-7 gap-y-3 text-[15px] ${className}`}>
-    {links.map((l) => (
-      <li key={l.kind}>
-        <a
-          href={l.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={`${NAMES[l.kind]}: ${l.label ?? handleFromUrl(l.kind, l.url)}`}
-          className="inline-flex items-center gap-2 transition-colors text-[color:var(--accent)] hover:text-[color:var(--text-primary)]"
-        >
-          {/* アイコンと ID は同じ差し色（サンド）で揃える */}
-          <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden className="shrink-0">
-            {ICONS[l.kind]}
-          </svg>
-          <span>{l.label ?? handleFromUrl(l.kind, l.url)}</span>
-        </a>
-      </li>
-    ))}
+  <ul className={`flex flex-col gap-2.5 ${className}`}>
+    {links.map((l) => {
+      const handle = l.label ?? handleFromUrl(l.kind, l.url);
+      return (
+        <li key={l.kind}>
+          <a
+            href={l.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${NAMES[l.kind]}: ${handle}`}
+            className="group flex items-center justify-between gap-4 rounded-xl border px-5 py-3.5 transition-colors
+              bg-[color:var(--surface)] border-[color:var(--border-color)]
+              hover:border-[color:var(--accent-border)] hover:bg-[color:var(--surface-hover)]
+              focus-visible:outline-none focus-visible:border-[color:var(--accent)]"
+          >
+            <span className="min-w-0">
+              <span className="block text-[13px]" style={{ color: "var(--text-secondary)" }}>
+                {NAMES[l.kind]}
+              </span>
+              <span className="mt-0.5 block truncate text-[17px] font-semibold" style={{ color: "var(--accent)" }}>
+                {handle}
+              </span>
+            </span>
+            <svg
+              viewBox="0 0 24 24"
+              width="22"
+              height="22"
+              fill="currentColor"
+              aria-hidden
+              className="shrink-0 transition-opacity opacity-90 group-hover:opacity-100"
+              style={{ color: "var(--accent)" }}
+            >
+              {ICONS[l.kind]}
+            </svg>
+          </a>
+        </li>
+      );
+    })}
   </ul>
 );
 

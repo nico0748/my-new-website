@@ -26,7 +26,7 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 - **Works / Articles は画像付きのボックス（2カラム）**: `WorkList`（サムネイル）/ `ArticleList`（OGP 画像）。枠線は `border-white/[0.08]`、ホバーで少し明るく。画像が無い場合は静かなプレースホルダー
 - **Skills** はカテゴリごとのレーダーチャート（`SkillRadarChart`、recharts）をボックスで並べる
 - **Timeline** は `Timeline`（年見出し + 縦線 + 「期間 · 種別」→ タイトル → 説明）。継続中の項目は差し色のドット
-- **ソーシャルリンク** は `SocialLinks`（アイコン + ユーザー ID。アイコンと ID は同じサンド `var(--accent)`、ホバーで主テキスト色）。URL は Profile シートの `xUrl` / `githubUrl` / `qiitaUrl` / `linkedinUrl`。ID は URL から自動で取り出すが、LinkedIn は `linkedinLabel`（例 `細澤-悠真`）で表示名を上書きできる
+- **ソーシャルリンク** は `SocialLinks`。1件1枚のカード（サービス名＋ユーザー ID、右端にアイコン）を縦に積み、トップの自己紹介では**名前と同じ高さから右側に**置く（スマホでは紹介文の下）。ID とアイコンは同じサンド `var(--accent)`、サービス名は副テキスト色。URL は Profile シートの `xUrl` / `githubUrl` / `qiitaUrl` / `linkedinUrl`。ID は URL から自動で取り出すが、LinkedIn は `linkedinLabel`（例 `細澤-悠真`）で表示名を上書きできる
 - **背景**: `SiteBackground`（インクネイビー一色＋上部にごく僅かな青い明るさ）。`SiteLayout` が内部で使う
 - **テーマモード**: ダーク単独
 - **カラーパレット（CSS 変数経由で参照）**:
