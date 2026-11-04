@@ -298,20 +298,47 @@ export const mapOffHoursData = (rows: SheetRow[], today: string = todayJst()): O
 };
 
 // ---------------------------------------------------------------------------
-// アニメの視聴記録（Annict から同期しているシート all-watched-anime / all-watching-anime）
-// 列: id, title, official_site_url, release_season, twitter_avatar_url, official_site_twitter_image_url
-// 同期は Apps Script（annict-sync.gs）が 6 時間ごとに行う。サイトは読むだけ。
+// アニメの視聴記録（Annict から同期しているシート all-watching-anime / all-watched-anime / all-wanna-watch-anime）
+// 列: id, title, official_site_url, release_season, twitter_avatar_url, official_site_twitter_image_url,
+//     media, episodes_count, watchers_count, original, director, studio, cast, wikipedia_url, twitter_hashtag
+// 同期は Apps Script（scripts/gas/annict-sync.gs）が 6 時間ごとに行う。サイトは読むだけ。
+// media 以降の詳細の列は、同期スクリプトを更新するまで空のことがある（空なら表示しない）。
 // ---------------------------------------------------------------------------
+
+/** Annict の記録の状態。watching = 見てる / watched = 見た / wanna = 見たい */
+export type AnimeStatus = "watching" | "watched" | "wanna";
+
+export interface AnimeCast {
+    /** キャラクター名（無いこともある） */
+    character?: string;
+    /** 声優名 */
+    actor: string;
+}
 
 export interface AnimeWork {
     id: string;
     title: string;
     /** 放送クール（例 "2026年夏"）。年だけのこともある */
     season: string;
-    /** 視聴中なら true（all-watching-anime） */
-    watching: boolean;
+    status: AnimeStatus;
+    /** 公式サイト */
     url?: string;
+    /** 横長のキービジュアル（公式サイトの OGP 画像） */
     image?: string;
+    /** 公式 X のアイコン（キービジュアルが無い・読めないときの代わり） */
+    avatar?: string;
+    /** 種別（TV / 映画 / OVA / Web / その他） */
+    media?: string;
+    episodes?: number;
+    /** Annict で記録している人数 */
+    watchers?: number;
+    original?: string;
+    director?: string;
+    studio?: string;
+    cast: AnimeCast[];
+    wikipediaUrl?: string;
+    /** 公式ハッシュタグ（# は付けない） */
+    hashtag?: string;
 }
 
 const SEASON_ORDER: Record<string, number> = { 冬: 1, 春: 2, 夏: 3, 秋: 4 };
@@ -323,31 +350,60 @@ export const seasonRank = (season: string): number => {
     return Number(m[1]) * 10 + (m[2] ? SEASON_ORDER[m[2]] : 0);
 };
 
-/**
- * Annict のシートを作品の一覧にする。放送クールの新しい順（同じクールなら Annict の ID の大きい順）。
- * URL と画像は https のものだけ残す（http の画像は混在コンテンツになるため）。
- */
-export const mapAnimeWorks = (watchingRows: SheetRow[], watchedRows: SheetRow[]): AnimeWork[] => {
+/** 放送クールの新しい順（同じクールなら Annict の ID の大きい順）。 */
+export const sortAnime = (works: AnimeWork[]): AnimeWork[] =>
+    [...works].sort((a, b) => seasonRank(b.season) - seasonRank(a.season) || Number(b.id) - Number(a.id));
+
+/** 画像の URL。http の画像は https に読み替える（そのままだと混在コンテンツで読まれないため）。 */
+const animeImage = (v?: string): string | undefined =>
+    httpsUrl((v || "").trim().replace(/^http:\/\//i, "https://"))?.href;
+
+const positiveInt = (v?: string): number | undefined => {
+    const n = Number((v || "").replace(/[,\s]/g, ""));
+    return Number.isInteger(n) && n > 0 ? n : undefined;
+};
+
+/** cast 列: 1 行に 1 人、「キャラクター名：声優名」（キャラクター名が無ければ声優名だけ）。 */
+const parseCast = (v?: string): AnimeCast[] =>
+    (v || "")
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter(Boolean)
+        .map((line) => {
+            const i = line.lastIndexOf("：");
+            return i > 0 ? { character: line.slice(0, i).trim(), actor: line.slice(i + 1).trim() } : { actor: line };
+        })
+        .filter((c) => c.actor);
+
+const text = (v?: string): string | undefined => (v || "").trim() || undefined;
+
+/** 1 枚のシート（1 つの状態）を作品の一覧にする。URL は https のものだけ残す。並びは放送クールの新しい順。 */
+export const mapAnimeRows = (rows: SheetRow[], status: AnimeStatus): AnimeWork[] => {
     const seen = new Set<string>();
-    const toWork = (row: SheetRow, watching: boolean): AnimeWork | null => {
+    const works: AnimeWork[] = [];
+    rows.forEach((row) => {
         const id = (row.id || "").trim();
         const title = (row.title || "").trim();
-        if (!id || !title || seen.has(id)) return null;
+        if (!id || !title || seen.has(id)) return;
         seen.add(id);
-        return {
+        works.push({
             id,
             title,
             season: (row.release_season || "").trim(),
-            watching,
+            status,
             url: httpsUrl(row.official_site_url)?.href,
-            image: httpsUrl(row.official_site_twitter_image_url)?.href,
-        };
-    };
-    const works = [
-        ...watchingRows.map((r) => toWork(r, true)),
-        ...watchedRows.map((r) => toWork(r, false)),
-    ].filter((w): w is AnimeWork => w !== null);
-    return works.sort(
-        (a, b) => seasonRank(b.season) - seasonRank(a.season) || Number(b.id) - Number(a.id)
-    );
+            image: animeImage(row.official_site_twitter_image_url),
+            avatar: animeImage(row.twitter_avatar_url),
+            media: text(row.media),
+            episodes: positiveInt(row.episodes_count),
+            watchers: positiveInt(row.watchers_count),
+            original: text(row.original),
+            director: text(row.director),
+            studio: text(row.studio),
+            cast: parseCast(row.cast),
+            wikipediaUrl: httpsUrl(row.wikipedia_url)?.href,
+            hashtag: text((row.twitter_hashtag || "").replace(/^#/, "")),
+        });
+    });
+    return sortAnime(works);
 };

@@ -7,6 +7,7 @@ import ProjectDetailPage from './pages/ProjectDetailPage.tsx';
 import ProjectsPage from './pages/ProjectsPage.tsx';
 import SkillsPage from './pages/SkillsPage.tsx';
 import ArticlesPage from './pages/ArticlesPage.tsx';
+import AnimePage from './pages/AnimePage.tsx';
 import LearnPage from './pages/LearnPage.tsx';
 import LearnDomainPage from './pages/LearnDomainPage.tsx';
 import LearnDetailPage from './pages/LearnDetailPage.tsx';
@@ -27,11 +28,12 @@ export const appRoutes = (
         {/* 廃止: Topics はトップへ、旧 Study は Articles へ（ブックマーク互換） */}
         <Route path="/topics/*" element={<Navigate to="/" replace />} />
         <Route path="/study/*" element={<Navigate to="/articles" replace />} />
-        {/* 廃止: 旧 Hobby・アニメ一覧は、トップの Off-hours に置き換えたのでトップへ */}
+        <Route path="/anime" element={<AnimePage />} />
+        {/* 廃止: 旧 Hobby はトップの Off-hours へ、旧アニメ一覧 3 ページは /anime の各タブへ */}
         <Route path="/hobbys" element={<Navigate to="/" replace />} />
-        <Route path="/watched-anime" element={<Navigate to="/" replace />} />
-        <Route path="/to-watch-anime" element={<Navigate to="/" replace />} />
-        <Route path="/watching-anime" element={<Navigate to="/" replace />} />
+        <Route path="/watched-anime" element={<Navigate to="/anime?tab=watched" replace />} />
+        <Route path="/to-watch-anime" element={<Navigate to="/anime?tab=wanna" replace />} />
+        <Route path="/watching-anime" element={<Navigate to="/anime?tab=watching" replace />} />
         <Route path="/nicotech" element={<LearnPage />} />
         {/* 経験録は :domain より先に置き、静的セグメントを優先させる */}
         <Route path="/nicotech/experience" element={<ExperiencePage />} />

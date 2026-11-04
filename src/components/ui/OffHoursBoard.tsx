@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { Music2, Package, Ticket, Tv } from "lucide-react";
 import type { AnimeWork, OffHoursCategory, OffHoursItem } from "../../lib/dataMapper";
+import { animeHref, animeVtName } from "../../lib/anime";
 import { OFF_HOURS_LABEL, OFF_HOURS_ORDER } from "../../lib/offHours";
 import type { SpotifyTrack } from "../../lib/spotify";
 import Reveal from "./Reveal";
+import AnimeCard from "./AnimeCard";
+import { MoreLink } from "../layouts/SiteLayout";
 
 const SPOTIFY_ICON =
   "M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z";
@@ -34,6 +37,8 @@ interface Card {
   sub?: React.ReactNode;
   url?: string;
   image?: string | null;
+  /** Annict の作品（アニメのカードはポップアップを開く） */
+  work?: AnimeWork;
 }
 
 /** 64px 角のサムネイル（ジャケット・作品画像）。画像が無い / 読み込めないときはカテゴリのピクトグラム。 */
@@ -134,10 +139,37 @@ const fromAnime = (w: AnimeWork): Card => ({
   key: `annict-${w.id}`,
   category: "anime",
   title: w.title,
-  sub: [w.season, w.watching ? "視聴中" : ""].filter(Boolean).join(" · ") || undefined,
-  url: w.url,
-  image: w.image,
+  sub: [w.season, w.status === "watching" ? "視聴中" : ""].filter(Boolean).join(" · ") || undefined,
+  work: w,
 });
+
+/**
+ * アニメは横長のサムネイルを上に置いたカード（一覧ページと同じ）。Annict の作品は一覧ページのポップアップを開き、
+ * 画像とタイトルがそのままモーフする（トップに出るのは数件なので、全カードに名前を付けておく）。
+ */
+const AnimeTile: React.FC<{ card: Card }> = ({ card }) => {
+  const w = card.work;
+  if (w)
+    return (
+      <AnimeCard
+        id={w.id}
+        title={w.title}
+        sub={card.sub}
+        sources={[w.image, w.avatar]}
+        link={{ to: animeHref(w), state: { from: "top" } }}
+        vtNames={{ img: animeVtName("img", w.id), title: animeVtName("title", w.id) }}
+      />
+    );
+  return (
+    <AnimeCard
+      id={card.key}
+      title={card.title}
+      sub={card.sub}
+      sources={[card.image ?? undefined]}
+      link={card.url ? { href: card.url } : undefined}
+    />
+  );
+};
 
 const fromTrack = (t: SpotifyTrack): Card => ({
   key: `spotify-${t.url}`,
@@ -223,13 +255,16 @@ const OffHoursBoard: React.FC<{ items: OffHoursItem[]; topTracks?: SpotifyTrack[
                 </h3>
                 <SourceNote category={g.category} hasTracks={topTracks.length > 0} hasAnime={anime.length > 0} />
               </div>
-              <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
+              <ul
+                className={`grid gap-3 lg:grid-cols-4 lg:gap-4 ${g.category === "anime" ? "grid-cols-2" : "grid-cols-1 sm:grid-cols-2"}`}
+              >
                 {g.cards.map((c, i) => (
                   <li key={c.key} className={i >= LIMIT[g.category].mobile ? "max-sm:hidden" : undefined}>
-                    <CardView card={c} />
+                    {g.category === "anime" ? <AnimeTile card={c} /> : <CardView card={c} />}
                   </li>
                 ))}
               </ul>
+              {g.category === "anime" && anime.length > 0 && <MoreLink to="/anime">すべてのアニメを見る</MoreLink>}
             </section>
           </Reveal>
         );
