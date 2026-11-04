@@ -8,44 +8,53 @@ import WorkList from "../components/ui/WorkList";
 import SkillRadarChart from "../components/ui/SkillRadarChart";
 import { skillColor } from "../lib/skillColors";
 import Timeline from "../components/ui/Timeline";
+import OffHoursBoard from "../components/ui/OffHoursBoard";
 import Reveal from "../components/ui/Reveal";
 import SocialLinks from "../components/ui/SocialLinks";
-import type { SocialLink } from "../components/ui/SocialLinks";
 
 import { fetchSheetData } from "../lib/googleSheets";
 import type { SheetRow } from "../lib/googleSheets";
-import { mapProfileData, mapSkillsData, mapTimelineData } from "../lib/dataMapper";
+import { mapSkillsData, mapTimelineData } from "../lib/dataMapper";
 import { fetchProjects, getCachedProjects } from "../lib/projects";
 import type { ProfileData, SkillCategory, TimelineItem, PortfolioItem, ArticleItem } from "../lib/dataMapper";
-import { fetchArticles, QIITA_PROFILE_URL } from "../lib/articles";
+import { fetchArticles } from "../lib/articles";
+import { fetchProfile, getCachedProfile, socialLinksOf } from "../lib/profile";
+import { fetchOffHours, getCachedOffHours } from "../lib/offHours";
+import type { OffHoursItem } from "../lib/dataMapper";
 
 const REAL_NAME = "細澤 悠真";
 
 const PortfolioPage = () => {
-  const [profile, setProfile] = useState<ProfileData>({ name: "", title: "", description: "", image: "" });
+  const [profile, setProfile] = useState<ProfileData>(
+    () => getCachedProfile() ?? { name: "", title: "", description: "", image: "" }
+  );
   const [works, setWorks] = useState<PortfolioItem[]>(() => getCachedProjects() ?? []);
   const [skills, setSkills] = useState<SkillCategory[]>([]);
   const [timeline, setTimeline] = useState<TimelineItem[]>([]);
   const [articles, setArticles] = useState<ArticleItem[]>([]);
   const [articlesLoaded, setArticlesLoaded] = useState(false);
+  const [offHours, setOffHours] = useState<OffHoursItem[]>(() => getCachedOffHours() ?? []);
   // Profile シートを読み終えたか（ソーシャルリンクを全件そろってからフェードインさせるため）
-  const [profileReady, setProfileReady] = useState(!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY);
+  const [profileReady, setProfileReady] = useState(!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY || !!getCachedProfile());
 
   useEffect(() => {
     fetchArticles()
       .then(setArticles)
       .finally(() => setArticlesLoaded(true));
+    // 趣味の記録は Profile 等とは別に読む（待たせるとソーシャルリンクの表示まで遅れるため）
+    fetchOffHours().then(setOffHours);
 
     if (!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY) return;
     (async () => {
       try {
-        const [profileRows, worksItems, skillsRows, timelineRows] = await Promise.all([
-          fetchSheetData<SheetRow>("Profile"),
+        const [profileData, worksItems, skillsRows, timelineRows] = await Promise.all([
+          // フッターの SNS リンクと同じ取得を共有する（lib/profile.ts）
+          fetchProfile(),
           fetchProjects(),
           fetchSheetData<SheetRow>("Skills"),
           fetchSheetData<SheetRow>("Timeline"),
         ]);
-        if (profileRows.length > 0) setProfile(mapProfileData(profileRows));
+        if (profileData) setProfile(profileData);
         if (worksItems.length > 0) setWorks(worksItems);
         if (skillsRows.length > 0) setSkills(mapSkillsData(skillsRows));
         if (timelineRows.length > 0) setTimeline(mapTimelineData(timelineRows));
@@ -111,6 +120,21 @@ const PortfolioPage = () => {
           <Timeline items={timeline} />
         </section>
       )}
+
+      {offHours.length > 0 && (
+        <section className="mt-24 md:mt-32">
+          <Reveal>
+            <SectionHeading id="off-hours">Off-hours</SectionHeading>
+          </Reveal>
+          <Reveal
+            className={`-mt-3 md:-mt-4 mb-8 md:mb-10 ${READABLE_WIDTH} text-[15px] leading-[1.9]`}
+            style={{ color: "var(--text-secondary)" }}
+          >
+            <p>コードの外で、観て、聴いて、手に取って、足を運んだもの。</p>
+          </Reveal>
+          <OffHoursBoard items={offHours} />
+        </section>
+      )}
     </SiteLayout>
   );
 };
@@ -132,15 +156,8 @@ const Intro = ({ profile, ready }: { profile: ProfileData; ready: boolean }) => 
       { replace: true }
     );
 
-  // Profile シートの各 URL から表示。Qiita だけは記事取得と同じユーザーを既定値にする
-  const candidates: { kind: SocialLink["kind"]; url?: string; label?: string }[] = [
-    { kind: "x", url: profile.xUrl },
-    { kind: "github", url: profile.githubUrl },
-    { kind: "qiita", url: profile.qiitaUrl || QIITA_PROFILE_URL },
-    // LinkedIn は URL の ID が「名-姓」になるため、表示名は Profile シートの linkedinLabel を優先
-    { kind: "linkedin", url: profile.linkedinUrl, label: profile.linkedinLabel },
-  ];
-  const socials = candidates.filter((l): l is SocialLink => !!l.url);
+  // Profile シートの各 URL から表示（フッターと同じ並び。lib/profile.ts）
+  const socials = socialLinksOf(profile);
 
   return (
     <section className="pt-12 md:pt-20">

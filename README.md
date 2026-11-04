@@ -1,7 +1,7 @@
 <a href="https://nico-labo748.dev" target="_blank">
   <img
     src="public/site_ogp3.webp"
-    alt="OGP image of my hobby site"
+    alt="OGP image of nico-labo748.dev"
   />
 </a>
 
