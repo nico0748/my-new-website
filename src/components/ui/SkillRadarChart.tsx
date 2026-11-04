@@ -13,7 +13,7 @@ interface SkillRadarChartProps {
 }
 
 /** カテゴリごとのスキルレーダーチャート（ボックス）。Calm Dark に合わせて線と面は控えめに。 */
-const SkillRadarChart = ({ category, skills, color = "var(--accent)" }: SkillRadarChartProps) => {
+const SkillRadarChart = ({ category, skills, color = "var(--accent-2)" }: SkillRadarChartProps) => {
   const chartData = skills.map((s) => ({ subject: s.name, value: s.level, fullMark: 5 }));
 
   return (

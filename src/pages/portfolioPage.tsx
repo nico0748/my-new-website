@@ -6,7 +6,7 @@ import SiteLayout, { SectionHeading, MoreLink } from "../components/layouts/Site
 import ArticleList from "../components/ui/ArticleList";
 import WorkList from "../components/ui/WorkList";
 import SkillRadarChart from "../components/ui/SkillRadarChart";
-import { SKILL_COLORS } from "../lib/skillColors";
+import { skillColor } from "../lib/skillColors";
 import Timeline from "../components/ui/Timeline";
 import SocialLinks from "../components/ui/SocialLinks";
 import type { SocialLink } from "../components/ui/SocialLinks";
@@ -86,7 +86,7 @@ const PortfolioPage = () => {
                 key={c.category}
                 category={c.category}
                 skills={c.skills}
-                color={SKILL_COLORS[i % SKILL_COLORS.length]}
+                color={skillColor(c.category, i)}
               />
             ))}
           </div>
