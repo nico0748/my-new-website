@@ -50,6 +50,8 @@ Google Sheets の **`OffHours`** タブに 1 行ずつ足します（行の順�
 - 並び順は放送クール（`release_season`、例 `2026年夏`）の新しい順。視聴中のものは「· 視聴中」と出します。
 - 画像は `official_site_twitter_image_url`、リンクは `official_site_url`（どちらも `https://` のみ）。
 - Annict で「見た / 見てる」にした作品はそのままサイトに出ます。出したくない作品は Annict 側で記録を外してください。
+- カードを押すと `/anime`（見てる / 見た / 見たい の一覧）のポップアップが開きます。
+- 原作・監督・制作・キャストなどの詳細は、同期スクリプト（`scripts/gas/annict-sync.gs`）が Annict の GraphQL API から取って `media` 以降の列に書きます。スクリプトを更新したら、Apps Script のエディタに貼り直して `syncAnnict()` を 1 回実行してください（トリガーはそのままで構いません）。
 
 ## Spotify の「最近よく聴いている曲」
 
