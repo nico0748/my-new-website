@@ -12,7 +12,8 @@ import type { SocialLink } from "../components/ui/SocialLinks";
 
 import { fetchSheetData } from "../lib/googleSheets";
 import type { SheetRow } from "../lib/googleSheets";
-import { mapProfileData, mapPortfolioData, mapSkillsData, mapTimelineData } from "../lib/dataMapper";
+import { mapProfileData, mapSkillsData, mapTimelineData } from "../lib/dataMapper";
+import { fetchProjects, getCachedProjects } from "../lib/projects";
 import type { ProfileData, SkillCategory, TimelineItem, PortfolioItem, ArticleItem } from "../lib/dataMapper";
 import { fetchArticles, QIITA_PROFILE_URL } from "../lib/articles";
 
@@ -26,7 +27,7 @@ const fadeUp = (delay = 0) => ({
 
 const PortfolioPage = () => {
   const [profile, setProfile] = useState<ProfileData>({ name: "", title: "", description: "", image: "" });
-  const [works, setWorks] = useState<PortfolioItem[]>([]);
+  const [works, setWorks] = useState<PortfolioItem[]>(() => getCachedProjects() ?? []);
   const [skills, setSkills] = useState<SkillCategory[]>([]);
   const [timeline, setTimeline] = useState<TimelineItem[]>([]);
   const [articles, setArticles] = useState<ArticleItem[]>([]);
@@ -40,14 +41,14 @@ const PortfolioPage = () => {
     if (!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY) return;
     (async () => {
       try {
-        const [profileRows, worksRows, skillsRows, timelineRows] = await Promise.all([
+        const [profileRows, worksItems, skillsRows, timelineRows] = await Promise.all([
           fetchSheetData<SheetRow>("Profile"),
-          fetchSheetData<SheetRow>("Projects"),
+          fetchProjects(),
           fetchSheetData<SheetRow>("Skills"),
           fetchSheetData<SheetRow>("Timeline"),
         ]);
         if (profileRows.length > 0) setProfile(mapProfileData(profileRows));
-        if (worksRows.length > 0) setWorks(mapPortfolioData(worksRows));
+        if (worksItems.length > 0) setWorks(worksItems);
         if (skillsRows.length > 0) setSkills(mapSkillsData(skillsRows));
         if (timelineRows.length > 0) setTimeline(mapTimelineData(timelineRows));
       } catch (error) {
