@@ -103,7 +103,7 @@ export const DOMAIN_STYLES: Record<LearnDomain, DomainStyle> = {
     label: "IT用語解説",
     accent: "#10b981",               // エメラルド
     cover: "/learn/covers/it-terms.svg",
-    description: "「APIを叩く」「プロセスをキルする」などの現場の言い回しから、開発・Web・ネットワーク・インフラ・データ・セキュリティの基本用語まで。分からない言葉を引くための IT 用語辞典。",
+    description: "「APIを叩く」「プロセスをキルする」などの現場の言い回しから、開発・設計・テスト・Web・ネットワーク・インフラ・クラウド・データ・AI・セキュリティ、さらに職種やプロジェクト管理の用語まで。分からない言葉を引くための IT 用語辞典。",
   },
 
   // ── 応用コース（濃色サムネ）。基礎を終えた人向けの実践編。 ──
@@ -292,13 +292,18 @@ export const DOMAIN_SECTIONS: Record<LearnDomain, SectionDef[]> = {
     { key: "intro", label: "はじめに・基本のキ" },
     { key: "jargon", label: "現場の言い回し・スラング" },
     { key: "dev", label: "開発・プログラミング用語" },
+    { key: "design", label: "設計・アーキテクチャ用語" },
+    { key: "testing", label: "テスト・品質用語" },
     { key: "frontend", label: "フロントエンド・UI用語" },
     { key: "web-net", label: "Web・ネットワーク用語" },
     { key: "infra", label: "インフラ・クラウド・仮想化用語" },
+    { key: "cloud", label: "クラウド用語" },
     { key: "data", label: "データ・データベース用語" },
     { key: "algorithm", label: "アルゴリズム・データ構造用語" },
     { key: "ai", label: "AI・機械学習・エージェント用語" },
     { key: "security", label: "セキュリティ用語" },
+    { key: "roles", label: "職種・チームの役割" },
+    { key: "pm", label: "プロジェクトマネジメント用語" },
   ],
   ai: [
     { key: "ai-basics", label: "AI / 機械学習の基礎" },
