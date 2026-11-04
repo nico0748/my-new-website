@@ -28,14 +28,14 @@ const ArticlesPage = () => {
       {loading ? (
         <Loading />
       ) : items.length === 0 ? (
-        <p className="text-sm" style={{ color: "var(--text-muted)" }}>
+        <p className="text-[15px]" style={{ color: "var(--text-muted)" }}>
           記事を取得できませんでした。
         </p>
       ) : (
         <div className="flex flex-col gap-14">
           {years.map((y) => (
             <section key={y}>
-              <h2 className="text-[13px] font-medium tracking-[0.18em] mb-4" style={{ color: "var(--text-muted)" }}>
+              <h2 className="text-[14px] font-medium tracking-[0.18em] mb-4" style={{ color: "var(--text-muted)" }}>
                 {y}
               </h2>
               <ArticleList items={byYear[y]} />

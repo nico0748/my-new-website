@@ -21,7 +21,7 @@ const formatPeriod = (start: string, end?: string): string => {
 
 const Title: React.FC<{ item: TimelineItem }> = ({ item }) => {
   const text = (
-    <span className="row-title text-[15px] leading-relaxed" style={{ color: "var(--text-primary)" }}>
+    <span className="row-title text-[17px] leading-relaxed" style={{ color: "var(--text-primary)" }}>
       {item.title}
     </span>
   );
@@ -32,7 +32,7 @@ const Title: React.FC<{ item: TimelineItem }> = ({ item }) => {
     </Link>
   ) : (
     <a href={item.href} target="_blank" rel="noopener noreferrer" className="row-link">
-      {text} <span aria-hidden className="text-[12px]" style={{ color: "var(--text-muted)" }}>↗</span>
+      {text} <span aria-hidden className="text-[13px]" style={{ color: "var(--text-muted)" }}>↗</span>
     </a>
   );
 };
@@ -52,7 +52,7 @@ const Timeline: React.FC<{ items: TimelineItem[] }> = ({ items }) => {
       {groups.map((g) => (
         <section key={g.year} className="grid grid-cols-1 sm:grid-cols-[5rem_1fr] gap-x-6 gap-y-4">
           <h3
-            className="text-[15px] font-medium tabular-nums sm:pt-[3px]"
+            className="text-[17px] font-medium tabular-nums sm:pt-[3px]"
             style={{ color: "var(--text-primary)" }}
           >
             {g.year}
@@ -71,7 +71,7 @@ const Timeline: React.FC<{ items: TimelineItem[] }> = ({ items }) => {
                       border: `1px solid ${ongoing ? "var(--accent)" : "var(--text-muted)"}`,
                     }}
                   />
-                  <p className="text-[12px] tabular-nums tracking-wide" style={{ color: "var(--text-muted)" }}>
+                  <p className="text-[13px] tabular-nums tracking-wide" style={{ color: "var(--text-muted)" }}>
                     {formatPeriod(it.start, it.end)}
                     <span className="mx-2" aria-hidden>·</span>
                     {TYPE_LABEL[it.type] ?? TYPE_LABEL.other}
@@ -81,7 +81,7 @@ const Timeline: React.FC<{ items: TimelineItem[] }> = ({ items }) => {
                     <Title item={it} />
                   </div>
                   {it.description && (
-                    <p className="mt-1.5 text-[13px] leading-[1.9]" style={{ color: "var(--text-secondary)" }}>
+                    <p className="mt-1.5 text-[14px] leading-[1.9]" style={{ color: "var(--text-secondary)" }}>
                       {it.description}
                     </p>
                   )}

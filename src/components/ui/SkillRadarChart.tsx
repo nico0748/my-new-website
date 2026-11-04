@@ -18,7 +18,7 @@ const SkillRadarChart = ({ category, skills, color = "var(--accent-2)" }: SkillR
 
   return (
     <div className="rounded-lg p-5 border border-white/[0.08]" style={{ background: "var(--card-bg)" }}>
-      <h3 className="text-[15px] font-medium" style={{ color: "var(--text-primary)" }}>
+      <h3 className="text-[17px] font-medium" style={{ color: "var(--text-primary)" }}>
         {category}
       </h3>
 
@@ -26,7 +26,7 @@ const SkillRadarChart = ({ category, skills, color = "var(--accent-2)" }: SkillR
         <ResponsiveContainer width="100%" height={240}>
           <RadarChart data={chartData} outerRadius="68%">
             <PolarGrid stroke="rgba(255,255,255,0.08)" />
-            <PolarAngleAxis dataKey="subject" tick={{ fill: "var(--text-secondary)", fontSize: 11 }} />
+            <PolarAngleAxis dataKey="subject" tick={{ fill: "var(--text-secondary)", fontSize: 12 }} />
             <PolarRadiusAxis angle={90} domain={[0, 5]} tick={false} axisLine={false} />
             <Radar
               name={category}
@@ -43,7 +43,7 @@ const SkillRadarChart = ({ category, skills, color = "var(--accent-2)" }: SkillR
 
       <ul className="mt-3 space-y-2">
         {skills.map((s) => (
-          <li key={s.name} className="flex items-center gap-3 text-[13px]">
+          <li key={s.name} className="flex items-center gap-3 text-[14px]">
             <span className="w-28 shrink-0 truncate" style={{ color: "var(--text-body)" }}>
               {s.name}
             </span>
@@ -56,7 +56,7 @@ const SkillRadarChart = ({ category, skills, color = "var(--accent-2)" }: SkillR
                 />
               ))}
             </span>
-            <span className="w-7 text-right tabular-nums text-[12px]" style={{ color: "var(--text-muted)" }}>
+            <span className="w-7 text-right tabular-nums text-[13px]" style={{ color: "var(--text-muted)" }}>
               {s.level}/5
             </span>
           </li>

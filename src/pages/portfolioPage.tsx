@@ -139,7 +139,7 @@ const Intro = ({ profile }: { profile: ProfileData }) => {
         className="w-16 h-16 rounded-full object-cover mb-10"
         style={{ border: "1px solid var(--avatar-border)" }}
       />
-      <motion.h1 {...fadeUp(0.05)} className="text-[2.5rem] sm:text-5xl font-semibold tracking-tight leading-tight">
+      <motion.h1 {...fadeUp(0.05)} className="text-[2.75rem] sm:text-[3.5rem] font-semibold tracking-tight leading-tight">
         <button
           type="button"
           onClick={toggleName}
@@ -162,14 +162,14 @@ const Intro = ({ profile }: { profile: ProfileData }) => {
         </button>
       </motion.h1>
       {profile.title && (
-        <motion.p {...fadeUp(0.1)} className="mt-4 text-[15px]" style={{ color: "var(--text-muted)" }}>
+        <motion.p {...fadeUp(0.1)} className="mt-4 text-[17px]" style={{ color: "var(--text-muted)" }}>
           {profile.title}
         </motion.p>
       )}
       {profile.description && (
         <motion.p
           {...fadeUp(0.15)}
-          className="mt-10 text-[15px] leading-[2.1] whitespace-pre-line"
+          className="mt-10 text-[17px] leading-[2.1] whitespace-pre-line"
           style={{ color: "var(--text-body)" }}
         >
           {profile.description}
@@ -178,7 +178,7 @@ const Intro = ({ profile }: { profile: ProfileData }) => {
       <motion.div {...fadeUp(0.2)} className="mt-10">
         <SocialLinks links={socials} />
         {profile.blogUrl && (
-          <a href={profile.blogUrl} target="_blank" rel="noopener noreferrer" className="link-quiet mt-3 inline-block text-sm">
+          <a href={profile.blogUrl} target="_blank" rel="noopener noreferrer" className="link-quiet mt-3 inline-block text-[15px]">
             Blog ↗
           </a>
         )}
@@ -188,7 +188,7 @@ const Intro = ({ profile }: { profile: ProfileData }) => {
 };
 
 const Empty = ({ text }: { text: string }) => (
-  <p className="py-4 text-sm" style={{ color: "var(--text-muted)" }}>
+  <p className="py-4 text-[15px]" style={{ color: "var(--text-muted)" }}>
     {text}
   </p>
 );

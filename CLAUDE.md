@@ -26,16 +26,16 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 - **Works / Articles は画像付きのボックス（2カラム）**: `WorkList`（サムネイル）/ `ArticleList`（OGP 画像）。枠線は `border-white/[0.08]`、ホバーで少し明るく。画像が無い場合は静かなプレースホルダー
 - **Skills** はカテゴリごとのレーダーチャート（`SkillRadarChart`、recharts）をボックスで並べる
 - **Timeline** は `Timeline`（年見出し + 縦線 + 「期間 · 種別」→ タイトル → 説明）。継続中の項目は差し色のドット
-- **ソーシャルリンク** は `SocialLinks`（アイコン + ユーザー ID）。URL は Profile シートの `xUrl` / `githubUrl` / `qiitaUrl` / `linkedinUrl`
-- **背景**: `SiteBackground`（黒一色＋上部にごく僅かな明るさ）。`SiteLayout` が内部で使う
+- **ソーシャルリンク** は `SocialLinks`（アイコン + ユーザー ID。アイコンと ID は同じサンド `var(--accent)`、ホバーで主テキスト色）。URL は Profile シートの `xUrl` / `githubUrl` / `qiitaUrl` / `linkedinUrl`
+- **背景**: `SiteBackground`（インクネイビー一色＋上部にごく僅かな青い明るさ）。`SiteLayout` が内部で使う
 - **テーマモード**: ダーク単独
 - **カラーパレット（CSS 変数経由で参照）**:
-  - 背景: `var(--bg)` `#111111`（ソフトブラック） / サーフェス `var(--surface)` `#181818`
-  - テキスト（主）: `var(--text-primary)` `#ecebe8` / （本文）`var(--text-body)` `#cfcdc8`
-  - テキスト（副）: `var(--text-secondary)` `#a4a29d` / （淡）`var(--text-muted)` `#6f6d69`
+  - 背景: `var(--bg)` `#0f1217`（インクネイビー＝青みのある黒） / サーフェス `var(--surface)` `#161a21`
+  - テキスト（主）: `var(--text-primary)` `#e8eaee` / （本文）`var(--text-body)` `#c9cdd4`
+  - テキスト（副）: `var(--text-secondary)` `#9ba2ad` / （淡）`var(--text-muted)` `#666d78`
   - アクセント（主）: `var(--accent)` `#cbbf9f`（サンドベージュ）。セクション見出しと左の短い線・「すべて見る →」（`.link-accent`）・ソーシャルリンクのアイコン
-  - アクセント（従）: `var(--accent-2)` `#8fb59b`（セージ）/ `var(--accent-3)` `#86a7cf`（ダスティブルー）/ `var(--accent-4)` `#d9b65a`（マスタードイエロー）/ `var(--accent-5)` `#a89be0`（ラベンダー）。スキルのチャートは `src/lib/skillColors.ts` の `skillColor()` でカテゴリ名から色を決める（Frontend=緑 / Backend=青 / Database=黄 / Infrastructure=紫）。サンドは見出しの色なのでチャートには使わない。ソーシャルリンクの ID 文字は `--accent-2`
-  - 罫線: `var(--border-color)` `rgba(255,255,255,0.08)`
+  - アクセント（従）: `var(--accent-2)` `#8fb59b`（セージ）/ `var(--accent-3)` `#86a7cf`（ダスティブルー）/ `var(--accent-4)` `#d9b65a`（マスタードイエロー）/ `var(--accent-5)` `#a89be0`（ラベンダー）。スキルのチャートは `src/lib/skillColors.ts` の `skillColor()` でカテゴリ名から色を決める（Frontend=緑 / Backend=青 / Database=黄 / Infrastructure=紫）。サンドは見出しの色なのでチャートには使わない
+  - 罫線: `var(--border-color)` `rgba(160,180,210,0.1)`（青みを帯びた薄い線）
 - **リンク**: 通常は `.link-quiet`（副テキスト色 → ホバーで主テキスト色）。外部リンクは `↗`
 
 ### タイポグラフィ
@@ -43,6 +43,7 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 - 本文・見出しとも `var(--font-sans)` = `Inter` + `Noto Sans JP`
 - 等幅 `JetBrains Mono` はコード（`pre` / `code`）のみ
 - 見出しは `font-semibold` 程度に留め、極端に太くしない。本文の行間は広め（`leading-[2.1]` 前後）
+- 文字サイズは大きめ（2026-11 に一段階拡大）。目安: 本文・自己紹介・カードのタイトル `17px` / カードの説明 `14px` / 補足（タグ・日付）`13px` / ナビ・リンク `15px` / セクション見出し `14px`。`text-xs` `text-sm` は使わず px 指定で揃える。Markdown（`.prose-custom`）は `1.0625rem`
 
 ---
 

@@ -43,7 +43,7 @@ const handleFromUrl = (kind: SocialKind, url: string): string => {
 
 /** アイコン + ユーザー ID で並べるソーシャルリンク。 */
 const SocialLinks: React.FC<{ links: SocialLink[]; className?: string }> = ({ links, className = "" }) => (
-  <ul className={`flex flex-wrap gap-x-7 gap-y-3 text-sm ${className}`}>
+  <ul className={`flex flex-wrap gap-x-7 gap-y-3 text-[15px] ${className}`}>
     {links.map((l) => (
       <li key={l.kind}>
         <a
@@ -51,25 +51,13 @@ const SocialLinks: React.FC<{ links: SocialLink[]; className?: string }> = ({ li
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`${NAMES[l.kind]}: ${l.label ?? handleFromUrl(l.kind, l.url)}`}
-          className="group inline-flex items-center gap-2"
+          className="inline-flex items-center gap-2 transition-colors text-[color:var(--accent)] hover:text-[color:var(--text-primary)]"
         >
-          <svg
-            viewBox="0 0 24 24"
-            width="15"
-            height="15"
-            fill="currentColor"
-            aria-hidden
-            className="shrink-0"
-            style={{ color: "var(--accent)" }}
-          >
+          {/* アイコンと ID は同じ差し色（サンド）で揃える */}
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden className="shrink-0">
             {ICONS[l.kind]}
           </svg>
-          <span
-            className="transition-colors group-hover:text-[color:var(--text-primary)]"
-            style={{ color: "var(--accent-2)" }}
-          >
-            {l.label ?? handleFromUrl(l.kind, l.url)}
-          </span>
+          <span>{l.label ?? handleFromUrl(l.kind, l.url)}</span>
         </a>
       </li>
     ))}

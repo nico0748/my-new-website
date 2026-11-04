@@ -31,7 +31,7 @@ const Gallery: React.FC<{ project: PortfolioItem }> = ({ project }) => {
   if (images.length === 0) {
     return (
       <div
-        className="aspect-[16/10] rounded-lg flex items-center justify-center text-4xl font-semibold"
+        className="aspect-[16/10] rounded-lg flex items-center justify-center text-[2.5rem] font-semibold"
         style={{ background: "var(--surface)", color: "var(--text-muted)", border: "1px solid var(--border-color)" }}
         aria-hidden
       >
@@ -95,7 +95,7 @@ const Gallery: React.FC<{ project: PortfolioItem }> = ({ project }) => {
           >
             <img src={images[index]} alt="" className="max-h-full max-w-full rounded-md" />
             {images.length > 1 && (
-              <p className="absolute bottom-6 left-0 right-0 text-center text-xs" style={{ color: "var(--text-secondary)" }}>
+              <p className="absolute bottom-6 left-0 right-0 text-center text-[13px]" style={{ color: "var(--text-secondary)" }}>
                 {index + 1} / {images.length} · ← → で切り替え · Esc で閉じる
               </p>
             )}
@@ -108,10 +108,10 @@ const Gallery: React.FC<{ project: PortfolioItem }> = ({ project }) => {
 
 const Meta: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
   <div className="mt-6 first:mt-0">
-    <dt className="text-[11px] font-medium uppercase tracking-[0.16em]" style={{ color: "var(--text-muted)" }}>
+    <dt className="text-[12px] font-medium uppercase tracking-[0.16em]" style={{ color: "var(--text-muted)" }}>
       {label}
     </dt>
-    <dd className="mt-2 text-sm" style={{ color: "var(--text-body)" }}>
+    <dd className="mt-2 text-[15px]" style={{ color: "var(--text-body)" }}>
       {children}
     </dd>
   </div>
@@ -174,7 +174,7 @@ const ProjectDetailPage = () => {
   return (
     <SiteLayout wide>
       <article className="pt-12">
-        <Link to="/projects" viewTransition className="text-sm link-quiet">
+        <Link to="/projects" viewTransition className="text-[15px] link-quiet">
           ← Works
         </Link>
 
@@ -186,13 +186,13 @@ const ProjectDetailPage = () => {
 
             <div className="order-1 md:order-2">
               <h1
-                className="inline-block text-2xl sm:text-[28px] font-semibold tracking-tight leading-snug"
+                className="inline-block text-[1.75rem] sm:text-[2rem] font-semibold tracking-tight leading-snug"
                 style={{ color: "var(--text-primary)", viewTransitionName: projectVtName("title", project.id) }}
               >
                 {project.title}
               </h1>
               {project.description && (
-                <p className="mt-4 text-sm leading-[1.9]" style={{ color: "var(--text-secondary)" }}>
+                <p className="mt-4 text-[15px] leading-[1.9]" style={{ color: "var(--text-secondary)" }}>
                   {project.description}
                 </p>
               )}
@@ -205,7 +205,7 @@ const ProjectDetailPage = () => {
                       {project.tags.map((t) => (
                         <li
                           key={t}
-                          className="rounded px-2.5 py-1 text-[12px]"
+                          className="rounded px-2.5 py-1 text-[13px]"
                           style={{ background: "var(--surface)", color: "var(--text-body)", border: "1px solid var(--border-color)" }}
                         >
                           {t}
@@ -238,7 +238,7 @@ const ProjectDetailPage = () => {
             </div>
           </header>
         ) : (
-          <p className="mt-12 text-sm" style={{ color: "var(--text-muted)" }}>
+          <p className="mt-12 text-[15px]" style={{ color: "var(--text-muted)" }}>
             この作品は見つかりませんでした。
           </p>
         )}
@@ -252,7 +252,7 @@ const ProjectDetailPage = () => {
           className="max-w-[720px] min-h-[40vh]"
         >
           {mdError ? (
-            <p className="text-sm" style={{ color: "var(--text-muted)" }}>
+            <p className="text-[15px]" style={{ color: "var(--text-muted)" }}>
               詳しい紹介は準備中です。
             </p>
           ) : (
@@ -265,7 +265,7 @@ const ProjectDetailPage = () => {
         </motion.div>
 
         {project && (
-          <nav aria-label="作品ナビゲーション" className="mt-24 grid grid-cols-[1fr_auto_1fr] gap-3 text-sm">
+          <nav aria-label="作品ナビゲーション" className="mt-24 grid grid-cols-[1fr_auto_1fr] gap-3 text-[15px]">
             {prev ? (
               <Link
                 to={`/projects/${prev.id}`}
@@ -273,7 +273,7 @@ const ProjectDetailPage = () => {
                 rel="prev"
                 className="group rounded-lg px-4 py-3 border border-white/[0.08] hover:border-white/[0.18] transition-colors"
               >
-                <span className="block text-[11px]" style={{ color: "var(--text-muted)" }}>
+                <span className="block text-[12px]" style={{ color: "var(--text-muted)" }}>
                   ← 前の作品
                 </span>
                 <span className="mt-1 block truncate" style={{ color: "var(--text-body)" }}>
@@ -298,7 +298,7 @@ const ProjectDetailPage = () => {
                 rel="next"
                 className="group rounded-lg px-4 py-3 text-right border border-white/[0.08] hover:border-white/[0.18] transition-colors"
               >
-                <span className="block text-[11px]" style={{ color: "var(--text-muted)" }}>
+                <span className="block text-[12px]" style={{ color: "var(--text-muted)" }}>
                   次の作品 →
                 </span>
                 <span className="mt-1 block truncate" style={{ color: "var(--text-body)" }}>
