@@ -134,6 +134,7 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
   - 同人作品は全年齢のみ。DLsite の URL は全年齢フロア（`home` / `comic` / `soft`）以外なら行ごと捨てる。同人作品の画像は使わない
   - `url` は `https://` のみ、`image` は `https://` か `/off-hours/...`（写真は `public/off-hours/`、EXIF を消す。PWA の precache からは除外済み）
   - 価格・購入数・私的なメモの列は作らない
+- **Spotify**: 音楽の箱の下段に「最近よく聴いている」曲（直近 4 週間のトップトラック、最大 3 曲、explicit 除外）。`api/spotify.js`（Vercel Function、権限は `user-top-read` のみ、CDN 1 日キャッシュ）→ `src/lib/spotify.ts` の `fetchTopTracks()`。再生中・再生履歴は取らない。環境変数 `SPOTIFY_CLIENT_ID` / `SPOTIFY_CLIENT_SECRET` / `SPOTIFY_REFRESH_TOKEN`（`VITE_` を付けない）。未設定なら空配列で、曲の欄は出ない。手順は `docs/spotify-setup.md`。ジャケットは切り抜かず、Spotify のロゴ（`--brand-spotify`）とリンクを添える
 
 ## Timeline シート
 
