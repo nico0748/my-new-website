@@ -20,6 +20,7 @@ export const SiteHeader: React.FC = () => (
   >
     <Link
       to="/"
+      viewTransition
       className="text-[16px] sm:text-[17px] font-semibold tracking-tight transition-opacity hover:opacity-70"
       style={{ color: "var(--text-primary)" }}
     >
@@ -50,7 +51,7 @@ export const SiteFooter: React.FC = () => (
       <ul className="flex flex-wrap gap-x-6 gap-y-2">
         {[{ to: "/", label: "Home" }, ...NAV, { to: "/hobbys", label: "Hobby" }].map((n) => (
           <li key={n.to}>
-            <Link to={n.to} className="link-quiet">
+            <Link to={n.to} viewTransition className="link-quiet">
               {n.label}
             </Link>
           </li>
@@ -114,7 +115,7 @@ export const MoreLink: React.FC<{ to: string; children: React.ReactNode; externa
       {children} <span aria-hidden>↗</span>
     </a>
   ) : (
-    <Link to={to} className={cls}>
+    <Link to={to} viewTransition className={cls}>
       {children} <span aria-hidden>→</span>
     </Link>
   );

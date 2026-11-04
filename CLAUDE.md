@@ -37,6 +37,12 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
   - アクセント（従）: `var(--accent-2)` `#8fb59b`（セージ）/ `var(--accent-3)` `#86a7cf`（ダスティブルー）/ `var(--accent-4)` `#d9b65a`（マスタードイエロー）/ `var(--accent-5)` `#a89be0`（ラベンダー）。スキルのチャートは `src/lib/skillColors.ts` の `skillColor()` でカテゴリ名から色を決める（Frontend=緑 / Backend=青 / Database=黄 / Infrastructure=紫）。サンドは見出しの色なのでチャートには使わない
   - 罫線: `var(--border-color)` `rgba(160,180,210,0.1)`（青みを帯びた薄い線）
 - **リンク**: 通常は `.link-quiet`（副テキスト色 → ホバーで主テキスト色）。外部リンクは `↗`
+- **アニメーション**:
+  - **スクロールで下からフェードイン**は `src/components/ui/Reveal.tsx` の `Reveal` で包む（一度だけ・同じフレームで入った要素は DOM 順に 0.1 秒ずつずらす）。トップでは Profile → WORKS → ARTICLES → SKILLS → TIMELINE の各見出し・カード・年ごとの Timeline を個別に包んでいる。`WorkList` / `ArticleList` のカードは常に Reveal 付き
+  - ページ遷移（View Transition）で入ってきたときは、最初の画面に入る Reveal は**アニメせず即表示**する（遷移アニメとの二重化と、共有要素のモーフ後のちらつきを防ぐ）。新しく Reveal を足すときもこの仕組みに乗せ、framer-motion の `initial={{ opacity: 0 }}` を共有要素の祖先に付けないこと
+  - 画面遷移は `index.css` の View Transitions 節で制御。ページ全体は「旧ページを先に消し、新ページを少し遅らせて下から浮かべる」。作品の画像・タイトルは `vt-project-img` / `vt-project-title`（`view-transition-class`）＋ `projectVtName()` の名前でモーフし、時間とカーブは `--vt-morph-duration` / `--vt-morph-easing`
+  - サイト内リンクは `<Link viewTransition>` にする（ヘッダー・フッター・「すべて見る →」も対応済み）。スクロール位置は `RootLayout` の `<ScrollRestoration />` が管理（新しいページは先頭から、戻る / 進むは復元）
+  - `prefers-reduced-motion: reduce` では Reveal も画面遷移も動かさない
 
 ### タイポグラフィ
 

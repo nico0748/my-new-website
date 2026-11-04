@@ -52,7 +52,7 @@ const Gallery: React.FC<{ project: PortfolioItem }> = ({ project }) => {
         <img
           src={images[index]}
           alt={index === 0 ? `${project.title} のサムネイル` : `${project.title} の画面 ${index + 1}`}
-          className="aspect-[16/10] w-full object-cover"
+          className={`aspect-[16/10] w-full object-cover ${index === 0 ? "vt-project-img" : ""}`}
           style={index === 0 ? { viewTransitionName: projectVtName("img", project.id) } : undefined}
         />
       </button>
@@ -186,7 +186,7 @@ const ProjectDetailPage = () => {
 
             <div className="order-1 md:order-2">
               <h1
-                className="inline-block text-[1.75rem] sm:text-[2rem] font-semibold tracking-tight leading-snug"
+                className="vt-project-title inline-block text-[1.75rem] sm:text-[2rem] font-semibold tracking-tight leading-snug"
                 style={{ color: "var(--text-primary)", viewTransitionName: projectVtName("title", project.id) }}
               >
                 {project.title}
