@@ -90,14 +90,14 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children }) => (
   </SiteBackground>
 );
 
-/** セクション見出し。小さく静かに置き、余白で区切る。 */
+/** セクション見出し。「すべて見る →」などの本文リンクより一段大きくし、見出しだと分かるようにする。 */
 export const SectionHeading: React.FC<{ id?: string; children: React.ReactNode }> = ({ id, children }) => (
   <h2
     id={id}
-    className="flex items-center gap-3 text-[14px] font-medium uppercase tracking-[0.18em] mb-8 scroll-mt-12"
+    className="flex items-center gap-3.5 text-[19px] md:text-[21px] font-semibold uppercase tracking-[0.14em] mb-8 md:mb-10 scroll-mt-12"
     style={{ color: "var(--accent)" }}
   >
-    <span aria-hidden className="h-px w-[18px]" style={{ background: "var(--accent)" }} />
+    <span aria-hidden className="h-px w-[24px]" style={{ background: "var(--accent)" }} />
     {children}
   </h2>
 );
