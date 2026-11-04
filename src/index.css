@@ -2,80 +2,99 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ─── Theme: Dark Terminal（ダーク・ターミナル IT 系） ──────────────────
-   漆黒地にエレクトリック・シアンのアクセント。ターミナル / ハッカー系の演出。
-   ダークテーマ単独構成。 */
+/* ─── Theme: Calm Dark（落ち着いた大人のダーク） ─────────────────
+   青みを帯びたインクネイビーの地に、オフホワイトの文字と控えめなサンドベージュの差し色。
+   装飾は最小限にして余白とタイポグラフィで見せる。ダークテーマ単独構成。 */
 
 :root {
   /* 地色 / サーフェス */
-  --bg: #0a0d12;                            /* 漆黒（near-black, cool） */
-  --bg-rgb: 10, 13, 18;
-  --surface: #11161d;                       /* パネル面 */
-  --card-bg: rgba(17, 22, 29, 0.72);        /* グラス面 半透明 */
-  --card-bg-solid: #11161d;
-  --card-border: rgba(0, 229, 204, 0.18);   /* シアンの極薄 */
-  --card-shadow: rgba(0, 0, 0, 0.5);
-  --header-bg: rgba(10, 13, 18, 0.85);
-  --footer-bg: rgba(10, 13, 18, 0.6);
+  --bg: #0f1217;                            /* インクネイビー */
+  --bg-rgb: 15, 18, 23;
+  --bg-glow: rgba(134, 167, 207, 0.07);     /* 上部のごく僅かな青い明るさ */
+  --surface: #161a21;                       /* パネル面 */
+  --surface-hover: #1b2029;                 /* パネル面（ホバー） */
+  --card-bg: #141820;
+  --card-bg-solid: #141820;
+  --card-border: rgba(160, 180, 210, 0.1);
+  --card-shadow: rgba(0, 0, 0, 0.35);
+  --header-bg: rgba(15, 18, 23, 0.82);
+  --footer-bg: transparent;
 
   /* 文字 */
-  --text-primary: #e6edf3;                  /* オフホワイト */
-  --text-secondary: #9da7b3;                /* スレートグレー */
-  --text-muted: #5c6773;                    /* ミュート */
-  --text-body: #c4ccd4;
+  --text-primary: #e8eaee;                  /* オフホワイト */
+  --text-secondary: #9ba2ad;                /* ブルーグレー */
+  --text-muted: #666d78;                    /* ミュート */
+  --text-body: #c9cdd4;
 
-  /* アクセント — エレクトリック・シアン */
-  --accent: #00e5cc;
-  --accent-hover: #3df0db;
-  --accent-bg: rgba(0, 229, 204, 0.08);
-  --accent-border: rgba(0, 229, 204, 0.28);
-  --accent-shadow: rgba(0, 229, 204, 0.25);
+  /* アクセント — サンドベージュ（強く主張しない差し色） */
+  --accent: #cbbf9f;
+  /* 2色目以降（サンドを主役に、スキルのカテゴリ色分けやアクセント文字に使う） */
+  --accent-2: #8fb59b; /* セージグリーン */
+  --accent-3: #86a7cf; /* ダスティブルー */
+  --accent-4: #d9b65a; /* マスタードイエロー */
+  --accent-5: #a89be0; /* ラベンダー */
+  /* 外部サービスのブランド色（ソーシャルリンクのアイコン）。X / GitHub は暗い地では白が公式 */
+  --brand-x: #ffffff;
+  --brand-github: #ffffff;
+  --brand-qiita: #55c500;
+  --brand-linkedin: #0a66c2;
+  --accent-hover: #e3d9bd;
+  --accent-bg: rgba(203, 191, 159, 0.07);
+  --accent-border: rgba(203, 191, 159, 0.24);
+  --accent-shadow: rgba(0, 0, 0, 0.25);
 
-  /* RGB 三値（スペース区切り）— rgb(var(--x) / α) でα合成できる基準色。
-     既存の --accent-bg/border/shadow 等はこれで段階的に置き換え可能。
-     例: border: 1px solid rgb(var(--accent-rgb) / 0.28); */
-  --accent-rgb: 0 229 204;
-  --bg-rgb-s: 10 13 18;
-  --surface-rgb: 17 22 29;
-  --text-primary-rgb: 230 237 243;
-  --amber-rgb: 255 180 84;
-  --magenta-rgb: 255 92 138;
+  /* RGB 三値（スペース区切り）— rgb(var(--x) / α) でα合成できる基準色 */
+  --accent-rgb: 203 191 159;
+  --bg-rgb-s: 15 18 23;
+  --surface-rgb: 22 26 33;
+  --text-primary-rgb: 232 234 238;
+  --amber-rgb: 214 178 120;
+  --magenta-rgb: 196 140 140;
 
   /* View Transitions（画面遷移）の共通チューニング */
   --view-transition-duration: 0.35s;
+  /* 共有要素（作品の画像・タイトル）のモーフ。長めの時間で、終わり際にゆっくり減速させる */
+  --vt-morph-duration: 0.6s;
+  --vt-morph-easing: cubic-bezier(0.2, 0, 0, 1);
+  --overlay: rgba(0, 0, 0, 0.88);
   --view-transition-easing: cubic-bezier(0.22, 1, 0.36, 1);
 
-  /* サブカラー（旧 --accent-gold/--accent-fox/--accent-sumi を転用） */
-  --accent-gold: #ffb454;                   /* アンバー（warning/secondary） */
-  --accent-fox: #ff5c8a;                    /* マゼンタ（第2差し色） */
-  --accent-sumi: #060809;                   /* 最暗 */
-  --accent-amber: #ffb454;
-  --accent-magenta: #ff5c8a;
+  /* サブカラー（彩度を落としたもの） */
+  --accent-gold: #d6b278;
+  --accent-fox: #c48c8c;
+  --accent-sumi: #0a0a0a;
+  --accent-amber: #d6b278;
+  --accent-magenta: #c48c8c;
 
-  /* 罫線・グリッド */
-  --border-color: rgba(255, 255, 255, 0.08);
-  --washi-fiber: rgba(0, 229, 204, 0.04);   /* 旧名維持: 微細ノイズ */
-  --grid-line: rgba(0, 229, 204, 0.06);
-  --seal-red: #00e5cc;                      /* 旧朱印参照 → シアン化 */
+  /* 罫線 */
+  --border-color: rgba(160, 180, 210, 0.1);
+  --border-strong: rgba(160, 180, 210, 0.2);
+  --washi-fiber: transparent;
+  --grid-line: transparent;
+  --seal-red: #cbbf9f;                      /* 旧参照名（値は差し色） */
 
   /* Markdown / コード */
-  --code-bg: rgba(0, 229, 204, 0.08);
-  --code-border: rgba(0, 229, 204, 0.18);
-  --pre-bg: #0d1117;
-  --pre-text: #e6edf3;
-  --tag-bg: rgba(0, 229, 204, 0.08);
-  --tag-color: #00e5cc;
-  --tag-border: rgba(0, 229, 204, 0.22);
-  --dot-bg: #0a0d12;
-  --hover-card-shadow: rgba(0, 229, 204, 0.22);
-  --warning-bg: rgba(17, 22, 29, 0.95);
-  --blockquote-bg: rgba(0, 229, 204, 0.05);
-  --table-even-bg: rgba(255, 255, 255, 0.03);
+  --code-bg: rgba(255, 255, 255, 0.06);
+  --code-border: rgba(255, 255, 255, 0.08);
+  --pre-bg: #161a21;
+  --pre-text: #e8eaee;
+  --tag-bg: rgba(255, 255, 255, 0.04);
+  --tag-color: #9ba2ad;
+  --tag-border: rgba(255, 255, 255, 0.1);
+  --dot-bg: #0f1217;
+  --hover-card-shadow: rgba(0, 0, 0, 0.4);
+  --warning-bg: rgba(22, 26, 33, 0.95);
+  --blockquote-bg: rgba(255, 255, 255, 0.03);
+  --table-even-bg: rgba(255, 255, 255, 0.025);
   --skill-bar-empty: rgba(255, 255, 255, 0.08);
-  --avatar-border: rgba(0, 229, 204, 0.3);
-  --avatar-shadow: rgba(0, 229, 204, 0.22);
-  --avatar-ring: rgba(0, 229, 204, 0.06);
-  --online-badge-border: #11161d;
+  --avatar-border: rgba(255, 255, 255, 0.12);
+  --avatar-shadow: rgba(0, 0, 0, 0.3);
+  --avatar-ring: rgba(255, 255, 255, 0.04);
+  --online-badge-border: #161a21;
+
+  /* フォント */
+  --font-sans: 'Inter', 'Noto Sans JP', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Noto Sans JP', monospace;
 }
 
 /* ─── 既定タイポグラフィ ─────────────────────────────── */
@@ -93,7 +112,7 @@ html {
 }
 
 body {
-  font-family: 'JetBrains Mono', 'Noto Sans JP', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+  font-family: var(--font-sans);
   color: var(--text-primary);
   background-color: var(--bg);
   font-feature-settings: "palt";        /* プロポーショナル詰め */
@@ -105,11 +124,11 @@ body {
   box-sizing: border-box;
 }
 
-/* ─── ターミナル系ディテール（スクロールバー / 選択色） ───────── */
+/* ─── ディテール（スクロールバー / 選択色） ───────── */
 
 ::selection {
-  background: var(--accent);
-  color: var(--bg);
+  background: rgba(203, 191, 159, 0.3);
+  color: var(--text-primary);
 }
 
 ::-webkit-scrollbar {
@@ -122,13 +141,13 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 229, 204, 0.25);
+  background: rgba(255, 255, 255, 0.12);
   border: 2px solid var(--bg);
   border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 229, 204, 0.45);
+  background: rgba(255, 255, 255, 0.22);
 }
 
 /* 点滅カーソル（ターミナル演出） */
@@ -174,47 +193,37 @@ pre, code {
 
 .prose-custom {
   color: var(--text-primary);
-  font-size: 1rem;
-  line-height: 1.85;
-  font-family: 'Noto Sans JP', 'JetBrains Mono', sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.95;
+  font-family: var(--font-sans);
 }
 
 .prose-custom h1 {
-  font-family: 'JetBrains Mono', 'Noto Sans JP', sans-serif;
-  font-size: 2rem;
-  font-weight: 700;
+  font-family: var(--font-sans);
+  font-size: 1.75rem;
+  font-weight: 600;
   color: var(--text-primary);
-  margin: 2rem 0 1rem;
-  letter-spacing: 0.02em;
+  margin: 2.5rem 0 1.25rem;
+  letter-spacing: 0.01em;
   border-bottom: 1px solid var(--border-color);
   padding-bottom: 0.5rem;
   position: relative;
 }
 
-.prose-custom h1::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -1px;
-  width: 3rem;
-  height: 2px;
-  background: var(--accent);
-}
-
 .prose-custom h2 {
-  font-family: 'JetBrains Mono', 'Noto Sans JP', sans-serif;
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-family: var(--font-sans);
+  font-size: 1.35rem;
+  font-weight: 600;
   color: var(--text-primary);
-  margin: 1.75rem 0 0.75rem;
-  letter-spacing: 0.02em;
+  margin: 2.5rem 0 1rem;
+  letter-spacing: 0.01em;
 }
 
 .prose-custom h3 {
-  font-family: 'JetBrains Mono', 'Noto Sans JP', sans-serif;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
   margin: 1.5rem 0 0.5rem;
 }
 
@@ -278,7 +287,7 @@ pre, code {
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
   font-size: 0.875rem;
   background: var(--code-bg);
-  color: var(--accent);
+  color: var(--text-primary);
   padding: 0.15rem 0.45rem;
   border-radius: 4px;
   border: 1px solid var(--code-border);
@@ -293,7 +302,7 @@ pre, code {
   margin: 1.25rem 0;
   font-size: 0.875rem;
   line-height: 1.6;
-  box-shadow: 0 4px 16px var(--card-shadow);
+  border: 1px solid var(--border-color);
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
 }
 
@@ -306,13 +315,13 @@ pre, code {
 }
 
 .prose-custom blockquote {
-  border-left: 3px solid var(--accent);
+  border-left: 2px solid var(--border-strong);
   padding: 0.5rem 1rem;
   margin: 1rem 0;
   background: var(--blockquote-bg);
   color: var(--text-secondary);
   font-style: normal;
-  font-family: 'JetBrains Mono', 'Noto Sans JP', sans-serif;
+  font-family: var(--font-sans);
 }
 
 .prose-custom hr {
@@ -329,13 +338,13 @@ pre, code {
 }
 
 .prose-custom th {
-  background: var(--accent-bg);
-  color: var(--accent);
-  font-weight: 700;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+  font-weight: 600;
   padding: 0.6rem 1rem;
   text-align: left;
   border: 1px solid var(--border-color);
-  font-family: 'JetBrains Mono', 'Noto Sans JP', sans-serif;
+  font-family: var(--font-sans);
 }
 
 .prose-custom td {
@@ -357,11 +366,11 @@ pre, code {
 }
 
 /* ─── キーボードフォーカスの可視化（:focus-visible） ─────────────
-   マウスクリックでは出さず、キーボード操作時のみシアンのリングを表示。 */
+   マウスクリックでは出さず、キーボード操作時のみリングを表示。 */
 
 :where(a, button, [role="button"], [tabindex], input, textarea, select):focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  outline: 1px solid var(--text-secondary);
+  outline-offset: 3px;
   border-radius: 4px;
 }
 
@@ -388,8 +397,24 @@ pre, code {
 
 /* ─── View Transitions（画面遷移アニメの共通設定） ────────────────
    React Router v7 の viewTransition:true で発火。共有要素（一覧カードの
-   サムネイル/タイトル ↔ 詳細ページのヒーロー/見出し）は同じ
-   view-transition-name でモーフする。低モーション時はアニメを無効化。 */
+   サムネイル/タイトル ↔ 詳細ページの画像/見出し）は同じ
+   view-transition-name でモーフする。低モーション時はアニメを無効化。
+
+   - ページ全体（root）: 旧ページをすっと消し、新ページを少し遅らせて下から浮かべる
+     （同時にクロスフェードさせると文字が二重に見えるため）
+   - 作品の画像・タイトル（view-transition-class: project-img / project-title）:
+     ゆっくり減速するカーブで位置と大きさを移す。旧スナップショットは早めに消し、
+     拡大でぼやける旧画像が残らないようにする */
+
+@keyframes vt-fade-out {
+  to { opacity: 0; }
+}
+@keyframes vt-fade-in {
+  from { opacity: 0; }
+}
+@keyframes vt-fade-in-up {
+  from { opacity: 0; transform: translate3d(0, 14px, 0); }
+}
 
 ::view-transition-group(*),
 ::view-transition-old(*),
@@ -398,10 +423,116 @@ pre, code {
   animation-timing-function: var(--view-transition-easing);
 }
 
+::view-transition-old(root) {
+  animation: 180ms cubic-bezier(0.4, 0, 1, 1) both vt-fade-out;
+}
+::view-transition-new(root) {
+  animation: 420ms cubic-bezier(0, 0, 0.2, 1) 80ms both vt-fade-in-up;
+}
+
+.vt-project-img { view-transition-class: project-img; }
+.vt-project-title { view-transition-class: project-title; }
+
+::view-transition-group(.project-img),
+::view-transition-group(.project-title) {
+  animation-duration: var(--vt-morph-duration);
+  animation-timing-function: var(--vt-morph-easing);
+}
+/* 画像: 新しい（大きく鮮明な）画像を最初から不透明で縮めて見せ、旧画像はすぐ消す */
+::view-transition-old(.project-img) {
+  animation: 200ms ease-out both vt-fade-out;
+}
+::view-transition-new(.project-img) {
+  animation: none;
+}
+/* タイトル: 文字は高さ基準で拡縮して縦横比を保ち、新旧を短くクロスフェード */
+::view-transition-old(.project-title),
+::view-transition-new(.project-title) {
+  height: 100%;
+  width: auto;
+}
+::view-transition-old(.project-title) {
+  animation: 200ms ease-out both vt-fade-out;
+}
+::view-transition-new(.project-title) {
+  animation: 280ms ease-out 40ms both vt-fade-in;
+}
+/* 片方のページにしか無い作品（遷移先の一覧に並ぶ他のカードなど）は動かさず、
+   ページ全体と同じタイミングで消える / 浮かぶ（先に出てちらつかないように） */
+::view-transition-old(.project-img):only-child,
+::view-transition-old(.project-title):only-child {
+  animation: 180ms cubic-bezier(0.4, 0, 1, 1) both vt-fade-out;
+}
+::view-transition-new(.project-img):only-child,
+::view-transition-new(.project-title):only-child {
+  animation: 420ms cubic-bezier(0, 0, 0.2, 1) 80ms both vt-fade-in-up;
+}
+
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(*),
   ::view-transition-old(*),
   ::view-transition-new(*) {
     animation: none !important;
   }
+}
+
+/* ─── スクロールで下からフェードイン（Reveal コンポーネント） ───────── */
+
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0s);
+}
+.reveal.is-shown,
+.reveal.is-instant {
+  opacity: 1;
+  transform: none;
+}
+.reveal.is-instant {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ─── 静かなリンク（Calm Dark 共通） ─────────────────────────── */
+
+.link-quiet {
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+
+/* サンドの差し色リンク（「すべて見る →」など） */
+.link-accent {
+  color: var(--accent);
+  transition: color 0.2s ease;
+}
+
+.link-accent:hover {
+  color: var(--accent-hover);
+}
+
+.link-quiet:hover {
+  color: var(--text-primary);
+}
+
+/* 一覧の行リンク: ホバーでタイトルに細い下線 */
+.row-link .row-title {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  transition: background-size 0.3s ease;
+}
+
+.row-link:hover .row-title {
+  background-size: 100% 1px;
 }

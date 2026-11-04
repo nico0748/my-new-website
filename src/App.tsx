@@ -1,6 +1,5 @@
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
-import { useAnalytics } from './lib/analytics';
+import { Route, Navigate } from 'react-router-dom';
+import { LearnRedirect, RootLayout } from './components/layouts/RootLayout';
 
 // --- Page Components ---
 import AllWatchedAnime from './pages/allWatchedAnime';
@@ -11,30 +10,20 @@ import HobbyPage from './pages/hobbyPages.tsx';
 import ProjectDetailPage from './pages/ProjectDetailPage.tsx';
 import ProjectsPage from './pages/ProjectsPage.tsx';
 import SkillsPage from './pages/SkillsPage.tsx';
-import TopicsPage from './pages/TopicsPage.tsx';
-import TopicDetailPage from './pages/TopicDetailPage.tsx';
-import StudyPage from './pages/StudyPage.tsx';
-import StudyDetailPage from './pages/StudyDetailPage.tsx';
+import ArticlesPage from './pages/ArticlesPage.tsx';
 import LearnPage from './pages/LearnPage.tsx';
 import LearnDomainPage from './pages/LearnDomainPage.tsx';
 import LearnDetailPage from './pages/LearnDetailPage.tsx';
 import ExperiencePage from './pages/ExperiencePage.tsx';
 import ExperienceDetailPage from './pages/ExperienceDetailPage.tsx';
 
-/** 旧 /learn/... を新 /nicotech/... へ置き換えてリダイレクト（クエリ・ハッシュ保持）。 */
-function LearnRedirect() {
-  const loc = useLocation();
-  const to = loc.pathname.replace(/^\/learn/, "/nicotech") + loc.search + loc.hash;
-  return <Navigate to={to} replace />;
-}
-
-export default function App() {
-  const location = useLocation();
-  useAnalytics(); // GA4: ルート遷移ごとに page_view を送信（本番のみ）
-
-  return (
-    <AnimatePresence mode="wait">
-      <Routes location={location} key={location.pathname}>
+/**
+ * ルート定義。main.tsx の createBrowserRouter（data router）に渡す。
+ * <Link viewTransition> による一覧 → 詳細の共有要素モーフは data router でしか効かないため、
+ * <Routes> ではなくこの形で持つ。
+ */
+export const appRoutes = (
+  <Route element={<RootLayout />}>
         <Route path="/" element={<PortfolioPage />} />
         <Route path="/hobbys" element={<HobbyPage />} />
         <Route path="/watched-anime" element={<AllWatchedAnime />} />
@@ -42,10 +31,10 @@ export default function App() {
         <Route path="/watching-anime" element={<AllWatchingAnime />} />
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/projects/:id" element={<ProjectDetailPage />} />
-        <Route path="/topics" element={<TopicsPage />} />
-        <Route path="/topics/:id" element={<TopicDetailPage />} />
-        <Route path="/study" element={<StudyPage />} />
-        <Route path="/study/:id" element={<StudyDetailPage />} />
+        <Route path="/articles" element={<ArticlesPage />} />
+        {/* 廃止: Topics はトップへ、旧 Study は Articles へ（ブックマーク互換） */}
+        <Route path="/topics/*" element={<Navigate to="/" replace />} />
+        <Route path="/study/*" element={<Navigate to="/articles" replace />} />
         <Route path="/nicotech" element={<LearnPage />} />
         {/* 経験録は :domain より先に置き、静的セグメントを優先させる */}
         <Route path="/nicotech/experience" element={<ExperiencePage />} />
@@ -56,7 +45,5 @@ export default function App() {
         <Route path="/learn/*" element={<LearnRedirect />} />
         <Route path="/skills" element={<SkillsPage />} />
         <Route path="/skills/:category" element={<Navigate to="/skills" replace />} />
-      </Routes>
-    </AnimatePresence>
-  );
-}
+  </Route>
+);

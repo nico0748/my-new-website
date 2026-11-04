@@ -1,393 +1,224 @@
-import Header2 from "../components/layouts/header/Header2";
-import Footer2 from "../components/layouts/footer/Footer2";
-import HeroSection from "../features/hero/HeroSection";
-import Profile2 from "../features/profile/Profile2";
-import TerminalBackground from "../components/ui/TerminalBackground";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
-import ProjectCard from "../components/ui/ProjectCard";
-import TopicCard from "../components/ui/TopicCard";
-import StudyCard from "../components/ui/StudyCard";
-import SectionWrapper from "../components/ui/SectionWrapper";
+import SiteLayout, { SectionHeading, MoreLink, READABLE_WIDTH } from "../components/layouts/SiteLayout";
+import ArticleList from "../components/ui/ArticleList";
+import WorkList from "../components/ui/WorkList";
 import SkillRadarChart from "../components/ui/SkillRadarChart";
-import TimelineItemComponent from "../components/ui/TimelineItem";
+import { skillColor } from "../lib/skillColors";
+import Timeline from "../components/ui/Timeline";
+import Reveal from "../components/ui/Reveal";
+import SocialLinks from "../components/ui/SocialLinks";
+import type { SocialLink } from "../components/ui/SocialLinks";
 
 import { fetchSheetData } from "../lib/googleSheets";
-import { mapProfileData, mapPortfolioData, mapSkillsData, mapTimelineData, mapTopicData, mapStudyData } from "../lib/dataMapper";
-import type { ProfileData, SkillCategory, TimelineItem as TimelineItemType, PortfolioItem, TopicItem, StudyItem } from "../lib/dataMapper";
 import type { SheetRow } from "../lib/googleSheets";
+import { mapProfileData, mapSkillsData, mapTimelineData } from "../lib/dataMapper";
+import { fetchProjects, getCachedProjects } from "../lib/projects";
+import type { ProfileData, SkillCategory, TimelineItem, PortfolioItem, ArticleItem } from "../lib/dataMapper";
+import { fetchArticles, QIITA_PROFILE_URL } from "../lib/articles";
 
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+const REAL_NAME = "細澤 悠真";
 
 const PortfolioPage = () => {
-  const [activeSection, setActiveSection] = useState<string>("profile");
-
   const [profile, setProfile] = useState<ProfileData>({ name: "", title: "", description: "", image: "" });
-  const [portfolio, setPortfolio] = useState<PortfolioItem[]>([]);
+  const [works, setWorks] = useState<PortfolioItem[]>(() => getCachedProjects() ?? []);
   const [skills, setSkills] = useState<SkillCategory[]>([]);
-  const [timeline, setTimeline] = useState<TimelineItemType[]>([]);
-  const [topics, setTopics] = useState<TopicItem[]>([]);
-  const [studies, setStudies] = useState<StudyItem[]>([]);
+  const [timeline, setTimeline] = useState<TimelineItem[]>([]);
+  const [articles, setArticles] = useState<ArticleItem[]>([]);
+  const [articlesLoaded, setArticlesLoaded] = useState(false);
+  // Profile シートを読み終えたか（ソーシャルリンクを全件そろってからフェードインさせるため）
+  const [profileReady, setProfileReady] = useState(!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY);
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY) return;
+    fetchArticles()
+      .then(setArticles)
+      .finally(() => setArticlesLoaded(true));
 
+    if (!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY) return;
+    (async () => {
       try {
-        const [profileRows, portfolioRows, skillsRows, timelineRows, topicsRows, studyRows] = await Promise.all([
+        const [profileRows, worksItems, skillsRows, timelineRows] = await Promise.all([
           fetchSheetData<SheetRow>("Profile"),
-          fetchSheetData<SheetRow>("Projects"),
+          fetchProjects(),
           fetchSheetData<SheetRow>("Skills"),
           fetchSheetData<SheetRow>("Timeline"),
-          fetchSheetData<SheetRow>("Topics"),
-          fetchSheetData<SheetRow>("Study"),
         ]);
-
         if (profileRows.length > 0) setProfile(mapProfileData(profileRows));
-        if (portfolioRows.length > 0) setPortfolio(mapPortfolioData(portfolioRows));
+        if (worksItems.length > 0) setWorks(worksItems);
         if (skillsRows.length > 0) setSkills(mapSkillsData(skillsRows));
         if (timelineRows.length > 0) setTimeline(mapTimelineData(timelineRows));
-        if (topicsRows.length > 0) setTopics(mapTopicData(topicsRows));
-        if (studyRows.length > 0) setStudies(mapStudyData(studyRows));
       } catch (error) {
         console.error("Failed to fetch data from Google Sheets", error);
+      } finally {
+        setProfileReady(true);
       }
-    };
-
-    fetchData();
+    })();
   }, []);
 
-  const scrollToSection = (id: string): void => {
-    const element = document.getElementById(id);
-    if (element) {
-      window.scrollTo({ top: element.offsetTop - 80, behavior: "smooth" });
-      setActiveSection(id);
-    }
-  };
+  return (
+    <SiteLayout>
+      <Intro profile={profile} ready={profileReady} />
 
-  useEffect(() => {
-    const sections = ["profile", "topics", "study", "projects", "skills", "timeline"];
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActiveSection(entry.target.id);
-        });
+      <section className="mt-24 md:mt-32">
+        <Reveal>
+          <SectionHeading id="works">Works</SectionHeading>
+        </Reveal>
+        {works.length > 0 ? <WorkList items={works.slice(0, 6)} /> : <Empty text="作品を読み込んでいます" />}
+        <Reveal>
+          <MoreLink to="/projects">すべての作品を見る</MoreLink>
+        </Reveal>
+      </section>
+
+      <section className="mt-24 md:mt-32">
+        <Reveal>
+          <SectionHeading id="articles">Articles</SectionHeading>
+        </Reveal>
+        {articles.length > 0 ? (
+          <ArticleList items={articles.slice(0, 6)} />
+        ) : (
+          <Empty text={articlesLoaded ? "記事を取得できませんでした。Qiita から直接ご覧ください。" : "記事を読み込んでいます"} />
+        )}
+        <Reveal>
+          <MoreLink to="/articles">すべての記事を見る</MoreLink>
+        </Reveal>
+      </section>
+
+      {skills.length > 0 && (
+        <section className="mt-24 md:mt-32">
+          <Reveal>
+            <SectionHeading id="skills">Skills</SectionHeading>
+          </Reveal>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
+            {skills.slice(0, 4).map((c, i) => (
+              <Reveal key={c.category} className="h-full">
+                <SkillRadarChart category={c.category} skills={c.skills} color={skillColor(c.category, i)} />
+              </Reveal>
+            ))}
+          </div>
+          <Reveal>
+            <MoreLink to="/skills">すべてのスキルを見る</MoreLink>
+          </Reveal>
+        </section>
+      )}
+
+      {timeline.length > 0 && (
+        <section className="mt-24 md:mt-32">
+          <Reveal>
+            <SectionHeading id="timeline">Timeline</SectionHeading>
+          </Reveal>
+          <Timeline items={timeline} />
+        </section>
+      )}
+    </SiteLayout>
+  );
+};
+
+/** 冒頭の自己紹介。名前クリックで nico ⇄ 本名を切り替える隠し機能（?id=real）を維持。 */
+const Intro = ({ profile, ready }: { profile: ProfileData; ready: boolean }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const isReal = searchParams.get("id") === "real";
+  const displayName = isReal ? REAL_NAME : profile.name || "nico";
+
+  const toggleName = () =>
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        if (isReal) next.delete("id");
+        else next.set("id", "real");
+        return next;
       },
-      { rootMargin: "-50% 0px -50% 0px" }
+      { replace: true }
     );
 
-    sections.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-
-    return () => {
-      sections.forEach((id) => {
-        const el = document.getElementById(id);
-        if (el) observer.unobserve(el);
-      });
-    };
-  }, []);
+  // Profile シートの各 URL から表示。Qiita だけは記事取得と同じユーザーを既定値にする
+  const candidates: { kind: SocialLink["kind"]; url?: string; label?: string }[] = [
+    { kind: "x", url: profile.xUrl },
+    { kind: "github", url: profile.githubUrl },
+    { kind: "qiita", url: profile.qiitaUrl || QIITA_PROFILE_URL },
+    // LinkedIn は URL の ID が「名-姓」になるため、表示名は Profile シートの linkedinLabel を優先
+    { kind: "linkedin", url: profile.linkedinUrl, label: profile.linkedinLabel },
+  ];
+  const socials = candidates.filter((l): l is SocialLink => !!l.url);
 
   return (
-    <TerminalBackground>
-      <div className="font-sans antialiased overflow-x-hidden min-h-screen">
-        <Header2 activeSection={activeSection} scrollToSection={scrollToSection} />
-
-        {/* Hero — フルスクリーン（profile.name + profile.title）*/}
-        <HeroSection
-          name={profile.name}
-          title={profile.title}
-          onScrollDown={() => scrollToSection("profile")}
+    <section className="pt-12 md:pt-20">
+      {/* Profile → WORKS → … の順に、画面に入ったものから下からフェードインする（Reveal） */}
+      <Reveal>
+        <img
+          src={profile.image || "/sns_icon_round.png"}
+          alt=""
+          className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover mb-8 md:mb-10"
+          style={{ border: "1px solid var(--avatar-border)" }}
         />
-
-        <main className="container mx-auto px-4 w-full max-w-full overflow-x-hidden">
-          {/* About me（既存の profile セクション） */}
-          <SectionWrapper
-            id="profile"
-            title="About me"
-            index={1}
-            label="Profile"
-            subtitle="自己紹介と、これまでに歩んできた背景・関心の方向性をまとめています。"
-          >
-            <Profile2 data={profile} />
-          </SectionWrapper>
-
-          {/* Topics */}
-          <SectionWrapper
-            id="topics"
-            title="Topics"
-            index={2}
-            label="Latest"
-            subtitle="セキュリティニュース・CVE分析・脆弱性解説・1日1題をまとめています。"
-          >
-            {topics.length > 0 ? (
-              <>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {topics.slice(0, 3).map((item) => (
-                    <TopicCard key={item.id} item={item} />
-                  ))}
-                </div>
-                <div className="flex justify-center mt-8">
-                  <Link
-                    to="/topics"
-                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 hover:opacity-90"
-                    style={{
-                      background: 'var(--card-bg)',
-                      color: 'var(--accent)',
-                      border: '1px solid var(--accent-border)',
-                      boxShadow: '0 2px 12px var(--accent-shadow)',
-                    }}
-                  >
-                    すべてのトピックを見る →
-                  </Link>
-                </div>
-              </>
-            ) : (
-              <p className="text-center py-12 text-sm" style={{ color: 'var(--text-muted)' }}>
-                トピックがありません（Google Sheets の「Topics」シートを設定してください）
-              </p>
-            )}
-          </SectionWrapper>
-
-          {/* Study */}
-          <SectionWrapper
-            id="study"
-            title="Study"
-            index={3}
-            label="Learning"
-            subtitle="学習・深掘りした内容の記録です。"
-          >
-            {studies.length > 0 ? (
-              <>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {studies.slice(0, 3).map((item) => (
-                    <StudyCard key={item.id} item={item} />
-                  ))}
-                </div>
-                <div className="flex justify-center mt-8">
-                  <Link
-                    to="/study"
-                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 hover:opacity-90"
-                    style={{
-                      background: 'var(--card-bg)',
-                      color: 'var(--accent)',
-                      border: '1px solid var(--accent-border)',
-                      boxShadow: '0 2px 12px var(--accent-shadow)',
-                    }}
-                  >
-                    すべての学習記録を見る →
-                  </Link>
-                </div>
-              </>
-            ) : (
-              <p className="text-center py-12 text-sm" style={{ color: 'var(--text-muted)' }}>
-                学習記録がありません（Google Sheets の「Study」シートを設定してください）
-              </p>
-            )}
-          </SectionWrapper>
-
-          {/* Works */}
-          <SectionWrapper
-            id="projects"
-            title="Works"
-            index={4}
-            label="Projects"
-            subtitle="腕によりをかけて制作した、愛すべき成果物たちをご紹介します。"
-          >
-            {portfolio.length > 0 ? (
-              <>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {portfolio.slice(0, 6).map((item) => (
-                    <ProjectCard key={item.id} item={item} />
-                  ))}
-                </div>
-                {portfolio.length > 6 && (
-                  <div className="flex justify-center mt-8">
-                    <Link
-                      to="/projects"
-                      className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 hover:opacity-90"
-                      style={{
-                        background: 'var(--card-bg)',
-                        color: 'var(--accent)',
-                        border: '1px solid var(--accent-border)',
-                        boxShadow: '0 2px 12px var(--accent-shadow)',
-                      }}
-                    >
-                      すべてのプロジェクトを見る →
-                    </Link>
-                  </div>
-                )}
-              </>
-            ) : (
-              <p className="text-center py-12 text-sm" style={{ color: 'var(--text-muted)' }}>
-                プロジェクトデータがありません（Google Sheets を設定してください）
-              </p>
-            )}
-          </SectionWrapper>
-
-          {/* Skills */}
-          <SectionWrapper
-            id="skills"
-            title="Skills"
-            index={5}
-            label="Stack"
-            subtitle="日々の制作で使っている技術スタックを、得意分野ごとにレーダーチャートで可視化しています。"
-          >
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {skills.slice(0, 3).map((category, index) => (
-                <SkillRadarChart key={index} category={category.category} skills={category.skills} />
-              ))}
-            </div>
-            <div className="flex justify-center mt-8">
-              <Link
-                to="/skills"
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 hover:opacity-90"
-                style={{
-                  background: 'var(--card-bg)',
-                  color: 'var(--accent)',
-                  border: '1px solid var(--accent-border)',
-                  boxShadow: '0 2px 12px var(--accent-shadow)',
-                }}
+      </Reveal>
+      {/* 左: 名前・肩書・紹介文 / 右: ソーシャルリンクのカード（名前と同じ高さから始める）。タブレット未満では下に回す */}
+      <div className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,1fr)_300px] md:gap-14 lg:gap-20 md:items-start">
+        <div>
+          <Reveal>
+            <h1 className="text-[2.75rem] sm:text-[3.5rem] font-semibold tracking-tight leading-tight">
+              <button
+                type="button"
+                onClick={toggleName}
+                aria-label={`名前を${isReal ? "nico" : REAL_NAME}に切り替える`}
+                className="text-left cursor-pointer"
+                style={{ color: "var(--text-primary)" }}
               >
-                すべてのスキルを見る →
-              </Link>
-            </div>
-          </SectionWrapper>
-
-          {/* Timeline */}
-          <SectionWrapper
-            id="timeline"
-            title="Timeline"
-            index={6}
-            label="History"
-            subtitle="学業・仕事・制作・資格など、これまでの歩みを時系列で振り返ります。"
-          >
-            <TimelineSection items={timeline} />
-          </SectionWrapper>
-        </main>
-
-        <Footer2 />
-
-        {/* APIキー未設定警告 */}
-        {!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY && (
-          <div
-            className="fixed bottom-4 right-4 p-4 rounded-2xl z-50 max-w-sm pointer-events-none"
-            style={{
-              background: 'var(--warning-bg)',
-              backdropFilter: 'blur(12px)',
-              border: '1px solid rgba(239,68,68,0.3)',
-              boxShadow: '0 8px 24px rgba(239,68,68,0.12)',
-            }}
-          >
-            <h4 className="font-bold text-sm flex items-center gap-1.5" style={{ color: '#ef4444' }}>
-              ⚠️ Google Sheets API 未設定
-            </h4>
-            <p className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>
-              <code className="px-1 py-0.5 rounded text-xs" style={{ background: 'rgba(239,68,68,0.08)' }}>
-                .env.local
-              </code>{" "}
-              を作成してAPIキーを設定してください。
-            </p>
-          </div>
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.span
+                    key={displayName}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.25 }}
+                    className="inline-block"
+                  >
+                    {displayName}
+                  </motion.span>
+                </AnimatePresence>
+              </button>
+            </h1>
+          </Reveal>
+          {profile.title && (
+            <Reveal className="mt-4 text-[17px]" style={{ color: "var(--text-muted)" }}>
+              {/* 「A | B」の肩書は区切りの位置で折り返す（単語の途中で改行しない） */}
+              {profile.title.split("|").map((part, i) => (
+                <span key={i}>
+                  {i > 0 && <span className="mx-2.5 opacity-50">|</span>}
+                  <span className="inline-block">{part.trim()}</span>
+                </span>
+              ))}
+            </Reveal>
+          )}
+          {profile.description && (
+            <Reveal
+              className={`mt-8 md:mt-10 ${READABLE_WIDTH} text-[17px] leading-[2.1] whitespace-pre-line`}
+              style={{ color: "var(--text-body)" }}
+            >
+              <p>{profile.description}</p>
+            </Reveal>
+          )}
+          {profile.blogUrl && (
+            <a href={profile.blogUrl} target="_blank" rel="noopener noreferrer" className="link-quiet mt-8 inline-block text-[15px]">
+              Blog ↗
+            </a>
+          )}
+        </div>
+        {ready && (
+          <Reveal>
+            <SocialLinks links={socials} />
+          </Reveal>
         )}
       </div>
-    </TerminalBackground>
+    </section>
   );
 };
 
-/** Zigzag vertical timeline with center line, year banners, and animated nodes. */
-const TimelineSection = ({ items }: { items: TimelineItemType[] }) => {
-  // Group consecutive items sharing the same year.
-  const groups: { year: string; yearLabel?: string; items: TimelineItemType[] }[] = [];
-  items.forEach((item) => {
-    const last = groups[groups.length - 1];
-    if (last && last.year === item.year) {
-      last.items.push(item);
-      if (!last.yearLabel && item.yearLabel) last.yearLabel = item.yearLabel;
-    } else {
-      groups.push({ year: item.year, yearLabel: item.yearLabel, items: [item] });
-    }
-  });
-
-  return (
-    <div className="relative max-w-4xl mx-auto pb-8">
-      {/* Center line (desktop) */}
-      <div
-        className="absolute top-0 bottom-0 hidden md:block w-px"
-        style={{
-          left: '50%',
-          transform: 'translateX(-50%)',
-          background:
-            'linear-gradient(to bottom, transparent 0%, var(--border-color) 8%, var(--border-color) 92%, transparent 100%)',
-        }}
-      />
-      {/* Left line (mobile) */}
-      <div
-        className="absolute top-0 bottom-0 md:hidden w-px"
-        style={{
-          left: '1rem',
-          background:
-            'linear-gradient(to bottom, transparent 0%, var(--border-color) 6%, var(--border-color) 94%, transparent 100%)',
-        }}
-      />
-
-      {groups.map((group, gi) => {
-        const startIdx = groups
-          .slice(0, gi)
-          .reduce((acc, g) => acc + g.items.length, 0);
-        return (
-          <div key={`${group.year}-${gi}`} className="relative">
-            {/* Year banner — sits on top of the center line */}
-            <div className="relative flex justify-start md:justify-center pl-12 md:pl-0 mb-8 md:mb-10 mt-2 md:mt-4">
-              <div
-                className="relative z-10 inline-flex items-baseline gap-2 px-4 py-1.5 rounded-full"
-                style={{
-                  background: 'var(--card-bg-solid)',
-                  border: '1.5px solid var(--accent-border)',
-                }}
-              >
-                <span
-                  className="text-lg md:text-xl font-bold tracking-tight tabular-nums"
-                  style={{
-                    color: 'var(--accent)',
-                    letterSpacing: '0.06em',
-                    fontFamily: "'JetBrains Mono', 'Noto Sans JP', monospace",
-                  }}
-                >
-                  {group.year}
-                </span>
-                {group.yearLabel && (
-                  <span
-                    className="text-[11px] sm:text-xs font-medium"
-                    style={{ color: 'var(--text-muted)' }}
-                  >
-                    {group.yearLabel}
-                  </span>
-                )}
-              </div>
-            </div>
-
-            {/* Items */}
-            <div className="space-y-8 md:space-y-12 mb-12">
-              {group.items.map((item, ii) => (
-                <TimelineItemComponent
-                  key={`${gi}-${ii}`}
-                  month={item.month}
-                  title={item.title}
-                  description={item.description}
-                  href={item.href}
-                  status={item.status}
-                  type={item.type}
-                  index={startIdx + ii}
-                />
-              ))}
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-};
+const Empty = ({ text }: { text: string }) => (
+  <p className="py-4 text-[15px]" style={{ color: "var(--text-muted)" }}>
+    {text}
+  </p>
+);
 
 export default PortfolioPage;

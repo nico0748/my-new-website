@@ -9,6 +9,10 @@ export interface PortfolioItem {
   liveUrl?: string;
   repoUrl?: string;
   markdownFile?: string; // /projects/<id>.md など
+  /** 制作期間。例: "2025.04 - 2025.07" / "2026.10 -"（継続中） */
+  period?: string;
+  /** 詳細ページのギャラリー（サムネイルの後ろに並ぶ追加画像）。シートではカンマ区切り */
+  images?: string[];
 }
 
 export interface Skill {
@@ -26,13 +30,12 @@ export interface SkillCategory {
 }
 
 export interface TimelineItem {
-    year: string;
-    yearLabel?: string;
-    month?: string;
+    start: string;           // "YYYY-MM" または "YYYY"
+    end?: string;            // "YYYY-MM" / "YYYY" / "present"（継続中）。単発なら空
     title: string;
     description: string;
     type: "education" | "work" | "project" | "other" | "certification";
-    href?: string;
+    href?: string;           // 外部 URL、または "/projects/xxx" のようなサイト内パス
     status?: "done" | "upcoming";
 }
 
@@ -44,34 +47,21 @@ export interface ProfileData {
     blogUrl?: string;
     githubUrl?: string;
     qiitaUrl?: string;
+    xUrl?: string;
+    linkedinUrl?: string;
+    /** LinkedIn の表示名（URL の ID と違う表記にしたいとき）。Profile シートの linkedinLabel */
+    linkedinLabel?: string;
 }
 
-export interface TopicItem {
+export interface ArticleItem {
   id: string;
   title: string;
-  description: string;
-  category: string;        // "news" | "cve" | "vuln" | "daily" | "it" | "other"（自由文字列・未知は other スタイル）
+  url: string;             // 記事本体（外部サイト）への URL
+  platform: string;        // "Qiita" | "Zenn" | "note" など（URL から自動判定）
   date: string;            // YYYY-MM-DD
   tags: string[];
-  thumbnail?: string;
-  author?: string;
-  markdownFile?: string;   // 既定: /topics/<id>.md
-  externalUrl?: string;    // CVE/ニュース原典リンク（Phase2 自動取込でも使用）
-  source?: string;         // "manual" | "auto"（Phase2 向け・既定 manual）
-}
-
-export interface StudyItem {
-  id: string;
-  title: string;
-  description: string;
-  category: string;        // "language" | "framework" | "cs" | "security" | "infra" | "book" | "other"（自由文字列・未知は other）
-  date: string;            // YYYY-MM-DD
-  tags: string[];
-  thumbnail?: string;
-  author?: string;
-  markdownFile?: string;   // 既定: /study/<id>.md
-  externalUrl?: string;    // 参考リンク
-  source?: string;         // "manual" | "auto"（claude-obsidian 連携・既定 manual）
+  likes?: number;
+  image?: string;          // OGP 画像を上書きしたい場合のみ（Articles シートの image 列）
 }
 
 export interface AnimeItem {
@@ -84,7 +74,7 @@ export interface AnimeItem {
 }
 
 export const mapProfileData = (rows: SheetRow[]): ProfileData => {
-    const profile: any = {};
+    const profile: Record<string, string> = {};
     rows.forEach(row => {
         if (row.key && row.value) {
             profile[row.key] = row.value;
@@ -98,6 +88,9 @@ export const mapProfileData = (rows: SheetRow[]): ProfileData => {
         blogUrl: profile.blogUrl || undefined,
         githubUrl: profile.githubUrl || undefined,
         qiitaUrl: profile.qiitaUrl || undefined,
+        xUrl: profile.xUrl || undefined,
+        linkedinUrl: profile.linkedinUrl || undefined,
+        linkedinLabel: profile.linkedinLabel || undefined,
     };
 };
 
@@ -131,17 +124,47 @@ export const mapSkillsData = (rows: SheetRow[]): SkillCategory[] => {
     }));
 };
 
+/** "2025/04", "2025-4", "2025.04", "2025" などを "YYYY-MM" / "YYYY" に正規化する。 */
+const normalizeYm = (v: string): string => {
+    const m = /^(\d{4})(?:\s*[/.\-年]\s*(\d{1,2}))?/.exec(v.trim());
+    if (!m) return "";
+    return m[2] ? `${m[1]}-${m[2].padStart(2, "0")}` : m[1];
+};
+
+const normalizeEnd = (v: string): string | undefined => {
+    const t = v.trim().toLowerCase();
+    if (!t) return undefined;
+    if (["present", "now", "現在", "~", "〜"].includes(t)) return "present";
+    return normalizeYm(t) || undefined;
+};
+
+/** 旧形式の year 列（"2026/05~" / "2025/04~07" / "2025/02"）を start / end に分解する。 */
+const parseLegacyYear = (v: string): { start: string; end?: string } => {
+    const m = /^(\d{4})\s*[/.-]?\s*(\d{1,2})?\s*([~〜-])?\s*(\d{1,2})?/.exec(v.trim());
+    if (!m) return { start: "" };
+    const start = m[2] ? `${m[1]}-${m[2].padStart(2, "0")}` : m[1];
+    if (m[4]) return { start, end: `${m[1]}-${m[4].padStart(2, "0")}` };
+    return { start, end: m[3] ? "present" : undefined };
+};
+
+/** Timeline シート: start, end, title, description, type, href（旧 year 列にも対応）。新しい順に並べる。 */
 export const mapTimelineData = (rows: SheetRow[]): TimelineItem[] => {
-    return rows.map(row => ({
-        year: row.year || "",
-        yearLabel: row.yearLabel || undefined,
-        month: row.month || undefined,
-        title: row.title,
-        description: row.description,
-        type: (row.type as TimelineItem["type"]) || "other",
-        href: row.href || undefined,
-        status: (row.status as TimelineItem["status"]) || "done",
-    }));
+    return rows
+        .filter(row => row.title && (row.start || row.year))
+        .map(row => {
+            const period = row.start
+                ? { start: normalizeYm(row.start), end: normalizeEnd(row.end || "") }
+                : parseLegacyYear(row.year);
+            return {
+                ...period,
+                title: row.title.trim(),
+                description: (row.description || "").trim(),
+                type: (row.type as TimelineItem["type"]) || "other",
+                href: row.href || undefined,
+                status: (row.status as TimelineItem["status"]) || "done",
+            };
+        })
+        .sort((a, b) => (a.start < b.start ? 1 : a.start > b.start ? -1 : 0));
 };
 
 export const mapPortfolioData = (rows: SheetRow[]): PortfolioItem[] => {
@@ -154,45 +177,40 @@ export const mapPortfolioData = (rows: SheetRow[]): PortfolioItem[] => {
         liveUrl: row.liveUrl,
         repoUrl: row.repoUrl,
         markdownFile: row.markdownFile || `/projects/${row.id}.md`,
+        period: row.period?.trim() || undefined,
+        images: row.images ? row.images.split(',').map(t => t.trim()).filter(Boolean) : [],
     }));
 };
 
-export const mapTopicData = (rows: SheetRow[]): TopicItem[] => {
-    return rows
-        .filter(row => row.id && row.title)
-        .map(row => ({
-            id: row.id,
-            title: row.title,
-            description: row.description || "",
-            category: (row.category || "other").trim(),
-            date: row.date || "",
-            tags: row.tags ? row.tags.split(',').map(t => t.trim()).filter(Boolean) : [],
-            thumbnail: row.thumbnail || undefined,
-            author: row.author || undefined,
-            markdownFile: row.markdownFile || `/topics/${row.id}.md`,
-            externalUrl: row.externalUrl || undefined,
-            source: row.source || "manual",
-        }))
-        .sort((a, b) => (a.date < b.date ? 1 : -1)); // 新しい順
+/** URL のホスト名から掲載先プラットフォーム名を推定する。 */
+export const detectPlatform = (url: string): string => {
+    try {
+        const host = new URL(url).hostname.replace(/^www\./, "");
+        if (host.endsWith("qiita.com")) return "Qiita";
+        if (host.endsWith("zenn.dev")) return "Zenn";
+        if (host.endsWith("note.com")) return "note";
+        if (host.includes("hatenablog") || host.includes("hatena")) return "はてなブログ";
+        if (host.endsWith("speakerdeck.com")) return "Speaker Deck";
+        if (host.endsWith("medium.com")) return "Medium";
+        return host;
+    } catch {
+        return "";
+    }
 };
 
-export const mapStudyData = (rows: SheetRow[]): StudyItem[] => {
+/** Google Sheets「Articles」シート（任意）: id, title, url, platform, date, tags */
+export const mapArticleData = (rows: SheetRow[]): ArticleItem[] => {
     return rows
-        .filter(row => row.id && row.title)
+        .filter(row => row.title && row.url)
         .map(row => ({
-            id: row.id,
+            id: row.id || row.url,
             title: row.title,
-            description: row.description || "",
-            category: (row.category || "other").trim(),
-            date: row.date || "",
+            url: row.url,
+            platform: row.platform || detectPlatform(row.url),
+            date: (row.date || "").slice(0, 10),
             tags: row.tags ? row.tags.split(',').map(t => t.trim()).filter(Boolean) : [],
-            thumbnail: row.thumbnail || undefined,
-            author: row.author || undefined,
-            markdownFile: row.markdownFile || `/study/${row.id}.md`,
-            externalUrl: row.externalUrl || undefined,
-            source: row.source || "manual",
-        }))
-        .sort((a, b) => (a.date < b.date ? 1 : -1)); // 新しい順
+            image: row.image || undefined,
+        }));
 };
 
 export const mapAnimeData = (rows: SheetRow[]): AnimeItem[] => {

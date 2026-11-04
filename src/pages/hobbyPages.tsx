@@ -15,12 +15,12 @@ const profileData = {
     imageUrl: "/sns_icon_round.png",
     socialLinks: []
 };
-const works: any[] = [];
-const records: any[] = [];
-const recs: any[] = [];
-const events: any[] = [];
+import type { Work, GridItem, EventItem } from '../types';
 
-import type { Work } from '../types';
+const works: Work[] = [];
+const records: GridItem[] = [];
+const recs: GridItem[] = [];
+const events: EventItem[] = [];
 
 // --- Feature and Layout Components ---
 import Profile from '../features/profile/Profile';
@@ -32,7 +32,7 @@ import Recs from '../features/recs/Recs';
 import Events from '../features/events/Events';
 import Contact from '../features/contact/Contact';
 import Footer from '../components/layouts/footer/Footer';
-import TerminalBackground from '../components/ui/TerminalBackground';
+import SiteBackground from '../components/ui/SiteBackground';
 
 const HobbyPage = () => {
   const [activeSection, setActiveSection] = useState<string>('profile');
@@ -129,7 +129,7 @@ const HobbyPage = () => {
   };
 
   return (
-    <TerminalBackground>
+    <SiteBackground>
       <div
         className="font-sans antialiased overflow-x-hidden min-h-screen"
         style={{ color: 'var(--text-primary)' }}
@@ -153,7 +153,7 @@ const HobbyPage = () => {
 
         <Footer />
       </div>
-    </TerminalBackground>
+    </SiteBackground>
   );
 }
 
