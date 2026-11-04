@@ -49,6 +49,8 @@ export interface ProfileData {
     qiitaUrl?: string;
     xUrl?: string;
     linkedinUrl?: string;
+    /** LinkedIn の表示名（URL の ID と違う表記にしたいとき）。Profile シートの linkedinLabel */
+    linkedinLabel?: string;
 }
 
 export interface ArticleItem {
@@ -88,6 +90,7 @@ export const mapProfileData = (rows: SheetRow[]): ProfileData => {
         qiitaUrl: profile.qiitaUrl || undefined,
         xUrl: profile.xUrl || undefined,
         linkedinUrl: profile.linkedinUrl || undefined,
+        linkedinLabel: profile.linkedinLabel || undefined,
     };
 };
 

@@ -123,12 +123,14 @@ const Intro = ({ profile }: { profile: ProfileData }) => {
     );
 
   // Profile シートの各 URL から表示。Qiita だけは記事取得と同じユーザーを既定値にする
-  const socials: SocialLink[] = [
-    { kind: "x" as const, url: profile.xUrl },
-    { kind: "github" as const, url: profile.githubUrl },
-    { kind: "qiita" as const, url: profile.qiitaUrl || QIITA_PROFILE_URL },
-    { kind: "linkedin" as const, url: profile.linkedinUrl },
-  ].filter((l): l is SocialLink => !!l.url);
+  const candidates: { kind: SocialLink["kind"]; url?: string; label?: string }[] = [
+    { kind: "x", url: profile.xUrl },
+    { kind: "github", url: profile.githubUrl },
+    { kind: "qiita", url: profile.qiitaUrl || QIITA_PROFILE_URL },
+    // LinkedIn は URL の ID が「名-姓」になるため、表示名は Profile シートの linkedinLabel を優先
+    { kind: "linkedin", url: profile.linkedinUrl, label: profile.linkedinLabel },
+  ];
+  const socials = candidates.filter((l): l is SocialLink => !!l.url);
 
   return (
     <section className="pt-20 sm:pt-28">
