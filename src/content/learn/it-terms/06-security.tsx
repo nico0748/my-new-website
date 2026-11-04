@@ -162,6 +162,7 @@ export default function Article() {
           ["ブルートフォース攻撃", "Brute Force", "総当たりでパスワードを試す攻撃"],
           ["リバースブルートフォース", "Reverse Brute Force", "パスワードを固定し、ID 側を次々に変えて試す攻撃"],
           ["パスワードリスト攻撃", "Password List Attack", "他所で漏洩した ID/パスワードの組で不正ログインを試みる"],
+          ["レインボーテーブル攻撃", "Rainbow Table Attack", "ハッシュ値と元パスワードの対応表を使い、一気に解読する攻撃"],
           ["アカウントリスト攻撃", "Account List Attack", "パスワードリスト攻撃と同義。使い回しが被害を広げる"],
         ]}
       />
@@ -206,6 +207,7 @@ export default function Article() {
           ["シングルサインオン", "Single Sign-On", "一度の認証で複数サービスを利用できる仕組み"],
           ["OAuth", "OAuth", "パスワードを渡さず、権限だけを外部サービスに委譲する仕組み"],
           ["OpenID", "OpenID", "外部の ID を使って本人確認を行う認証の規格"],
+          ["JWT", "JSON Web Token", "利用者情報を署名付きで持ち運ぶトークン形式。ジョットと読む"],
           ["SAML", "Security Assertion Markup Language", "企業向け SSO で認証情報を安全に受け渡す規格"],
           ["IDaaS", "Identity as a Service", "ID 管理・認証をクラウドで提供するサービス"],
           ["特権 ID", "Privileged ID", "管理者など強い権限を持つアカウント。厳重管理が必要"],
@@ -309,6 +311,7 @@ export default function Article() {
           ["KEV / EPSS", "KEV / EPSS", "悪用が確認済みの一覧 / 悪用されやすさの予測スコア"],
           ["責任ある開示", "Responsible Disclosure", "修正の猶予を与えたうえで脆弱性を報告する作法"],
           ["ISMS", "Information Security Management System", "情報セキュリティを組織的に管理する仕組み（ISO 27001）"],
+          ["プライバシーマーク", "Privacy Mark", "個人情報を適切に扱う体制があると認定された事業者に与えられる日本の制度"],
           ["コンプライアンス", "Compliance", "法令や社内規程を遵守すること"],
           ["個人情報保護法", "APPI", "個人情報の取り扱いを定めた日本の法律"],
           ["PCI DSS", "PCI DSS", "クレジットカード情報を扱う事業者向けのセキュリティ基準"],
@@ -606,4 +609,7 @@ export const RELATED: Record<string, string[]> = {
   "Web3.0": ["ブロックチェーン", "暗号資産（仮想通貨）", "エコシステム"],
   "エコシステム": ["Web3.0", "IaaS / PaaS / SaaS"],
   "ブラウザーフィンガープリント": ["Cookie", "ブラウザ・ハイジャッカー", "OSINT", "ヘッダ / ボディ"],
+  "JWT": ["API キー / ベアラートークン", "OAuth", "セッション"],
+  "レインボーテーブル攻撃": ["ソルト / ストレッチング", "ハッシュ値", "ブルートフォース攻撃"],
+  "プライバシーマーク": ["ISMS", "個人情報保護法", "コンプライアンス"],
 };

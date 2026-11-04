@@ -305,6 +305,30 @@ export const IT_TERMS: ItTerm[] = [
     ]
   },
   {
+    "term": "ターミナル",
+    "en": "Terminal",
+    "desc": "コマンドを打ち込むための画面。シェルを動かす入れ物",
+    "section": "intro",
+    "group": "もう一歩 — コンピュータの中身と基本単位",
+    "related": [
+      "シェル",
+      "CLI / GUI",
+      "コマンド"
+    ]
+  },
+  {
+    "term": "標準入力 / 標準出力 / 標準エラー",
+    "en": "stdin / stdout / stderr",
+    "desc": "コマンドが受け取る入力 / 通常の出力先 / エラーの出力先",
+    "section": "intro",
+    "group": "もう一歩 — コンピュータの中身と基本単位",
+    "related": [
+      "シェル",
+      "入出力（I/O）",
+      "ログ"
+    ]
+  },
+  {
     "term": "CLI / GUI",
     "en": "CLI / GUI",
     "desc": "コマンドで操作する画面 / マウスなど視覚的に操作する画面",
@@ -325,6 +349,30 @@ export const IT_TERMS: ItTerm[] = [
       "パス",
       "拡張子",
       "ストレージ"
+    ]
+  },
+  {
+    "term": "ファイルシステム",
+    "en": "File System",
+    "desc": "ディスク上でファイルをどう並べ、どう探すかを決める仕組み。NTFS / ext4 など",
+    "section": "intro",
+    "group": "もう一歩 — コンピュータの中身と基本単位",
+    "related": [
+      "ファイル / ディレクトリ",
+      "ストレージ",
+      "パーミッション"
+    ]
+  },
+  {
+    "term": "パーミッション",
+    "en": "Permission",
+    "desc": "ファイルやディレクトリに対する読み・書き・実行の許可設定",
+    "section": "intro",
+    "group": "もう一歩 — コンピュータの中身と基本単位",
+    "related": [
+      "ファイルシステム",
+      "最小権限の原則",
+      "ファイル / ディレクトリ"
     ]
   },
   {
@@ -384,6 +432,306 @@ export const IT_TERMS: ItTerm[] = [
       "ドライバ",
       "OS",
       "ハードウェア"
+    ]
+  },
+  {
+    "term": "レジスタ",
+    "en": "Register",
+    "desc": "CPU 内部の最速の記憶場所。計算のすぐ手元に置く値",
+    "section": "intro",
+    "group": "もう一歩 — 性能・記憶・数の扱い",
+    "related": [
+      "CPU",
+      "キャッシュメモリ",
+      "メモリ"
+    ]
+  },
+  {
+    "term": "キャッシュメモリ",
+    "en": "Cache Memory",
+    "desc": "CPU とメモリの速度差を埋める中間の記憶。L1 / L2 / L3 と階層になる",
+    "section": "intro",
+    "group": "もう一歩 — 性能・記憶・数の扱い",
+    "related": [
+      "レジスタ",
+      "メモリ",
+      "キャッシュ"
+    ]
+  },
+  {
+    "term": "仮想メモリ / スワップ",
+    "en": "Virtual Memory / Swap",
+    "desc": "メモリが足りないときディスクを一時的にメモリ代わりに使う仕組み",
+    "section": "intro",
+    "group": "もう一歩 — 性能・記憶・数の扱い",
+    "related": [
+      "メモリ",
+      "ストレージ",
+      "プロセス / スレッド"
+    ]
+  },
+  {
+    "term": "メモリリーク",
+    "en": "Memory Leak",
+    "desc": "使い終わったメモリが解放されず、じわじわ空きが減る不具合",
+    "section": "intro",
+    "group": "もう一歩 — 性能・記憶・数の扱い",
+    "related": [
+      "メモリ",
+      "ガベージコレクション",
+      "ソークテスト"
+    ]
+  },
+  {
+    "term": "マザーボード",
+    "en": "Motherboard",
+    "desc": "CPU・メモリ・拡張機器をつなぐ基板",
+    "section": "intro",
+    "group": "もう一歩 — 性能・記憶・数の扱い",
+    "related": [
+      "CPU",
+      "メモリ",
+      "ハードウェア"
+    ]
+  },
+  {
+    "term": "BIOS / UEFI",
+    "en": "BIOS / UEFI",
+    "desc": "電源投入直後にハードを初期化し、OS を起動する基本プログラム",
+    "section": "intro",
+    "group": "もう一歩 — 性能・記憶・数の扱い",
+    "related": [
+      "ファームウェア",
+      "OS",
+      "マザーボード"
+    ]
+  },
+  {
+    "term": "32bit / 64bit",
+    "en": "32-bit / 64-bit",
+    "desc": "一度に扱えるデータ幅。64bit は大きなメモリを扱える",
+    "section": "intro",
+    "group": "もう一歩 — 性能・記憶・数の扱い",
+    "related": [
+      "CPU",
+      "メモリ",
+      "ビット / バイト"
+    ]
+  },
+  {
+    "term": "クロック周波数",
+    "en": "Clock Frequency",
+    "desc": "1秒あたりの動作回数。GHz で表す処理速度の目安",
+    "section": "intro",
+    "group": "もう一歩 — 性能・記憶・数の扱い",
+    "related": [
+      "CPU",
+      "マルチコア",
+      "スペック"
+    ]
+  },
+  {
+    "term": "マルチコア",
+    "en": "Multi-core",
+    "desc": "1つの CPU に複数の計算コアを載せ、同時に処理する構造",
+    "section": "intro",
+    "group": "もう一歩 — 性能・記憶・数の扱い",
+    "related": [
+      "CPU",
+      "並列処理 / 並行処理",
+      "プロセス / スレッド"
+    ]
+  },
+  {
+    "term": "CPU アーキテクチャ",
+    "en": "CPU Architecture",
+    "desc": "命令セットの系統。x86 / x64 / ARM など。対応する実行ファイルが変わる",
+    "section": "intro",
+    "group": "もう一歩 — 性能・記憶・数の扱い",
+    "related": [
+      "CPU",
+      "32bit / 64bit",
+      "クロスコンパイル"
+    ]
+  },
+  {
+    "term": "マルチスレッド / マルチプロセス",
+    "en": "Multi-thread / Multi-process",
+    "desc": "1プロセス内で複数の流れを動かす / 複数のプロセスを同時に動かす",
+    "section": "intro",
+    "group": "もう一歩 — 性能・記憶・数の扱い",
+    "related": [
+      "プロセス / スレッド",
+      "並列処理 / 並行処理",
+      "グリーンスレッド"
+    ]
+  },
+  {
+    "term": "グリーンスレッド",
+    "en": "Green Thread",
+    "desc": "OS ではなく言語処理系が管理する軽量なスレッド",
+    "section": "intro",
+    "group": "もう一歩 — 性能・記憶・数の扱い",
+    "related": [
+      "マルチスレッド / マルチプロセス",
+      "コルーチン",
+      "プロセス / スレッド"
+    ]
+  },
+  {
+    "term": "並列処理 / 並行処理",
+    "en": "Parallel / Concurrent",
+    "desc": "本当に同時に動かす / 切り替えて同時のように見せる",
+    "section": "intro",
+    "group": "もう一歩 — 性能・記憶・数の扱い",
+    "related": [
+      "マルチコア",
+      "プロセス / スレッド",
+      "同期 / 非同期"
+    ]
+  },
+  {
+    "term": "割り込み",
+    "en": "Interrupt",
+    "desc": "処理中に外部から通知を受け、優先して対応する仕組み",
+    "section": "intro",
+    "group": "もう一歩 — 性能・記憶・数の扱い",
+    "related": [
+      "カーネル",
+      "入出力（I/O）",
+      "プロセス / スレッド"
+    ]
+  },
+  {
+    "term": "エンディアン",
+    "en": "Endianness",
+    "desc": "複数バイトの値をどの順で並べるかの流儀（ビッグ / リトル）",
+    "section": "intro",
+    "group": "もう一歩 — 性能・記憶・数の扱い",
+    "related": [
+      "ビット / バイト",
+      "2進数 / 16進数",
+      "バイナリ"
+    ]
+  },
+  {
+    "term": "圧縮 / 解凍",
+    "en": "Compression / Decompression",
+    "desc": "データを小さくすること / 元に戻すこと",
+    "section": "intro",
+    "group": "もう一歩 — 性能・記憶・数の扱い",
+    "related": [
+      "エンコード / デコード",
+      "ファイル / ディレクトリ",
+      "ストレージ"
+    ]
+  },
+  {
+    "term": "エンコード / デコード",
+    "en": "Encode / Decode",
+    "desc": "決まった形式に変換すること / 元の形に戻すこと",
+    "section": "intro",
+    "group": "もう一歩 — 性能・記憶・数の扱い",
+    "related": [
+      "文字コード",
+      "圧縮 / 解凍",
+      "シリアライズ / デシリアライズ"
+    ]
+  },
+  {
+    "term": "SSD / HDD",
+    "en": "SSD / HDD",
+    "desc": "半導体で高速なストレージ / 円盤を回す安価で大容量なストレージ",
+    "section": "intro",
+    "group": "もう一歩 — 性能・記憶・数の扱い",
+    "related": [
+      "ストレージ",
+      "RAID",
+      "NAS / SAN"
+    ]
+  },
+  {
+    "term": "キーボード配列",
+    "en": "Keyboard Layout",
+    "desc": "JIS 配列 / US 配列など、キーの並びの規格",
+    "section": "intro",
+    "group": "もう一歩 — 性能・記憶・数の扱い",
+    "related": [
+      "文字コード",
+      "OS",
+      "ハードウェア"
+    ]
+  },
+  {
+    "term": "エミュレータ",
+    "en": "Emulator",
+    "desc": "別の機器や環境を、ソフトウェア上で模して動かすもの",
+    "section": "intro",
+    "group": "もう一歩 — 性能・記憶・数の扱い",
+    "related": [
+      "仮想マシン",
+      "仮想化",
+      "組み込みシステム"
+    ]
+  },
+  {
+    "term": "NAS / SAN",
+    "en": "NAS / SAN",
+    "desc": "ネットワーク越しに共有するファイル置き場 / 専用網で結ぶ高速なストレージ網",
+    "section": "intro",
+    "group": "もう一歩 — 性能・記憶・数の扱い",
+    "related": [
+      "SSD / HDD",
+      "ストレージ",
+      "ネットワーク"
+    ]
+  },
+  {
+    "term": "論理演算",
+    "en": "Logical Operation",
+    "desc": "AND / OR / NOT など、真偽を組み合わせる基本の演算",
+    "section": "intro",
+    "group": "もう一歩 — 性能・記憶・数の扱い",
+    "related": [
+      "2進数 / 16進数",
+      "アルゴリズム",
+      "ビット / バイト"
+    ]
+  },
+  {
+    "term": "組み込みシステム",
+    "en": "Embedded System",
+    "desc": "家電や車など、機器に内蔵された専用コンピュータ",
+    "section": "intro",
+    "group": "もう一歩 — 性能・記憶・数の扱い",
+    "related": [
+      "ファームウェア",
+      "IoT",
+      "ドライバ"
+    ]
+  },
+  {
+    "term": "ムーアの法則",
+    "en": "Moore's Law",
+    "desc": "半導体の集積度がおよそ2年で倍になるという経験則",
+    "section": "intro",
+    "group": "もう一歩 — 性能・記憶・数の扱い",
+    "related": [
+      "CPU",
+      "スペック",
+      "量子コンピュータ"
+    ]
+  },
+  {
+    "term": "量子コンピュータ",
+    "en": "Quantum Computer",
+    "desc": "量子の重ね合わせを使い、特定の問題を桁違いに速く解こうとする計算機",
+    "section": "intro",
+    "group": "もう一歩 — 性能・記憶・数の扱い",
+    "related": [
+      "CPU",
+      "量子暗号",
+      "ムーアの法則"
     ]
   },
   {
@@ -1273,6 +1621,30 @@ export const IT_TERMS: ItTerm[] = [
     ]
   },
   {
+    "term": "手続き型プログラミング",
+    "en": "Procedural Programming",
+    "desc": "処理を上から順に手順として書いていく、基本的な書き方",
+    "section": "dev",
+    "group": "オブジェクト指向",
+    "related": [
+      "オブジェクト指向",
+      "関数型プログラミング",
+      "制御構文"
+    ]
+  },
+  {
+    "term": "関数型プログラミング",
+    "en": "Functional Programming",
+    "desc": "副作用を避け、関数の組み合わせで書くプログラミングの流儀",
+    "section": "dev",
+    "group": "オブジェクト指向",
+    "related": [
+      "純粋関数 / 副作用",
+      "高階関数",
+      "手続き型プログラミング"
+    ]
+  },
+  {
     "term": "クラス",
     "en": "Class",
     "desc": "オブジェクトの設計図。プロパティとメソッドの集まり",
@@ -1582,6 +1954,378 @@ export const IT_TERMS: ItTerm[] = [
       "メモリ",
       "スコープ",
       "クロージャ"
+    ]
+  },
+  {
+    "term": "疑似コード",
+    "en": "Pseudocode",
+    "desc": "特定の言語によらず、処理の流れを日本語混じりで書いたもの",
+    "section": "dev",
+    "group": "もう一歩 — メモリ・並行処理・データの受け渡し",
+    "related": [
+      "アルゴリズム",
+      "アクティビティ図 / フローチャート",
+      "制御構文"
+    ]
+  },
+  {
+    "term": "制御構文",
+    "en": "Control Flow",
+    "desc": "条件分岐（if）やループ（for / while）など、流れを決める書き方",
+    "section": "dev",
+    "group": "もう一歩 — メモリ・並行処理・データの受け渡し",
+    "related": [
+      "疑似コード",
+      "関数 / メソッド",
+      "ネスト"
+    ]
+  },
+  {
+    "term": "データ型",
+    "en": "Data Type",
+    "desc": "値の種類。整数 / 小数 / 文字列 / 真偽値 など",
+    "section": "dev",
+    "group": "もう一歩 — メモリ・並行処理・データの受け渡し",
+    "related": [
+      "変数",
+      "静的型 / 動的型",
+      "型推論 / ジェネリクス"
+    ]
+  },
+  {
+    "term": "メンバー変数 / クラス変数",
+    "en": "Instance / Class Variable",
+    "desc": "インスタンスごとに持つ変数 / クラス全体で共有する変数",
+    "section": "dev",
+    "group": "もう一歩 — メモリ・並行処理・データの受け渡し",
+    "related": [
+      "変数",
+      "クラス",
+      "プロパティ"
+    ]
+  },
+  {
+    "term": "正規表現",
+    "en": "Regular Expression",
+    "desc": "文字列のパターンを記号で書き表し、検索や検証に使う記法",
+    "section": "dev",
+    "group": "もう一歩 — メモリ・並行処理・データの受け渡し",
+    "related": [
+      "文字コード",
+      "サニタイズ / エスケープ",
+      "リンター / フォーマッタ"
+    ]
+  },
+  {
+    "term": "ポインタ / 参照",
+    "en": "Pointer / Reference",
+    "desc": "値そのものではなく、値の置き場所を指し示す仕組み",
+    "section": "dev",
+    "group": "もう一歩 — メモリ・並行処理・データの受け渡し",
+    "related": [
+      "値渡し / 参照渡し",
+      "スタック領域 / ヒープ領域",
+      "ガベージコレクション"
+    ]
+  },
+  {
+    "term": "値渡し / 参照渡し",
+    "en": "Pass by Value / Reference",
+    "desc": "コピーを渡す / 元の置き場所を渡す。書き換えの影響が変わる",
+    "section": "dev",
+    "group": "もう一歩 — メモリ・並行処理・データの受け渡し",
+    "related": [
+      "ポインタ / 参照",
+      "イミュータブル / ミュータブル",
+      "引数（ひきすう）"
+    ]
+  },
+  {
+    "term": "イミュータブル / ミュータブル",
+    "en": "Immutable / Mutable",
+    "desc": "作った後に変えられない / 変えられる",
+    "section": "dev",
+    "group": "もう一歩 — メモリ・並行処理・データの受け渡し",
+    "related": [
+      "値渡し / 参照渡し",
+      "純粋関数 / 副作用",
+      "エンティティ / 値オブジェクト"
+    ]
+  },
+  {
+    "term": "シリアライズ / デシリアライズ",
+    "en": "Serialize / Deserialize",
+    "desc": "オブジェクトを保存・送信できる形式に変換 / 元に戻す",
+    "section": "dev",
+    "group": "もう一歩 — メモリ・並行処理・データの受け渡し",
+    "related": [
+      "JSON / XML / YAML",
+      "エンコード / デコード",
+      "API"
+    ]
+  },
+  {
+    "term": "スレッドセーフ",
+    "en": "Thread-safe",
+    "desc": "複数スレッドから同時に使っても壊れない性質",
+    "section": "dev",
+    "group": "もう一歩 — メモリ・並行処理・データの受け渡し",
+    "related": [
+      "排他制御",
+      "レースコンディション",
+      "プロセス / スレッド"
+    ]
+  },
+  {
+    "term": "コルーチン",
+    "en": "Coroutine",
+    "desc": "途中で処理を中断・再開できる関数。軽量な非同期処理に使う",
+    "section": "dev",
+    "group": "もう一歩 — メモリ・並行処理・データの受け渡し",
+    "related": [
+      "同期 / 非同期",
+      "グリーンスレッド",
+      "コールバック / Promise"
+    ]
+  },
+  {
+    "term": "排他制御",
+    "en": "Mutual Exclusion",
+    "desc": "同時に触られると困る処理を、1つずつしか通さないようにすること",
+    "section": "dev",
+    "group": "もう一歩 — メモリ・並行処理・データの受け渡し",
+    "related": [
+      "スレッドセーフ",
+      "ロック",
+      "レースコンディション"
+    ]
+  },
+  {
+    "term": "レースコンディション",
+    "en": "Race Condition",
+    "desc": "処理の順序次第で結果が変わってしまう不具合",
+    "section": "dev",
+    "group": "もう一歩 — メモリ・並行処理・データの受け渡し",
+    "related": [
+      "スレッドセーフ",
+      "排他制御",
+      "フレーキーテスト"
+    ]
+  },
+  {
+    "term": "スタック領域 / ヒープ領域",
+    "en": "Stack / Heap",
+    "desc": "呼び出しごとに自動確保される領域 / 明示的に確保する自由な領域",
+    "section": "dev",
+    "group": "もう一歩 — メモリ・並行処理・データの受け渡し",
+    "related": [
+      "ポインタ / 参照",
+      "ガベージコレクション",
+      "メモリ"
+    ]
+  },
+  {
+    "term": "ブランチ戦略",
+    "en": "Branching Strategy",
+    "desc": "Git Flow / GitHub Flow など、枝の切り方と統合ルールの方針",
+    "section": "dev",
+    "group": "もう一歩 — チーム開発とリリースの用語",
+    "related": [
+      "プルリクエスト",
+      "バージョン管理",
+      "CI / CD"
+    ]
+  },
+  {
+    "term": "Git",
+    "en": "Git",
+    "desc": "変更履歴を分散管理する、事実上の標準のバージョン管理システム",
+    "section": "dev",
+    "group": "もう一歩 — チーム開発とリリースの用語",
+    "related": [
+      "バージョン管理",
+      "ブランチ戦略",
+      "GitHub / GitLab / Bitbucket"
+    ]
+  },
+  {
+    "term": "GitHub / GitLab / Bitbucket",
+    "en": "GitHub / GitLab / Bitbucket",
+    "desc": "Git リポジトリのホスティングサービス。レビューや CI も備える",
+    "section": "dev",
+    "group": "もう一歩 — チーム開発とリリースの用語",
+    "related": [
+      "Git",
+      "プルリクエスト",
+      "CI / CD"
+    ]
+  },
+  {
+    "term": "プルリクエスト",
+    "en": "Pull / Merge Request",
+    "desc": "変更を取り込んでほしいと依頼し、レビューを受ける単位",
+    "section": "dev",
+    "group": "もう一歩 — チーム開発とリリースの用語",
+    "related": [
+      "ブランチ戦略",
+      "レビュー",
+      "プルリク（を出す / 投げる）"
+    ]
+  },
+  {
+    "term": "モノレポ / ポリレポ",
+    "en": "Monorepo / Polyrepo",
+    "desc": "複数プロジェクトを1リポジトリに集約 / 別々に分ける",
+    "section": "dev",
+    "group": "もう一歩 — チーム開発とリリースの用語",
+    "related": [
+      "ブランチ戦略",
+      "パッケージマネージャ",
+      "ビルドツール"
+    ]
+  },
+  {
+    "term": "ビルドツール",
+    "en": "Build Tool",
+    "desc": "コンパイル・依存解決・成果物生成を自動化するツール",
+    "section": "dev",
+    "group": "もう一歩 — チーム開発とリリースの用語",
+    "related": [
+      "ビルド",
+      "パッケージマネージャ",
+      "クロスコンパイル"
+    ]
+  },
+  {
+    "term": "エディタ",
+    "en": "Editor",
+    "desc": "コードを書くためのソフト。VS Code / Vim など",
+    "section": "dev",
+    "group": "もう一歩 — チーム開発とリリースの用語",
+    "related": [
+      "IDE",
+      "リンター / フォーマッタ",
+      "デバッガ"
+    ]
+  },
+  {
+    "term": "CSV / TSV",
+    "en": "CSV / TSV",
+    "desc": "カンマ / タブ区切りの表形式テキスト。データ受け渡しの定番",
+    "section": "dev",
+    "group": "もう一歩 — チーム開発とリリースの用語",
+    "related": [
+      "JSON / XML / YAML",
+      "テキストファイル / バイナリファイル",
+      "文字コード"
+    ]
+  },
+  {
+    "term": "テキストファイル / バイナリファイル",
+    "en": "Text / Binary File",
+    "desc": "文字として読める形式 / そのままでは読めない形式",
+    "section": "dev",
+    "group": "もう一歩 — チーム開発とリリースの用語",
+    "related": [
+      "バイナリ",
+      "文字コード",
+      "CSV / TSV"
+    ]
+  },
+  {
+    "term": "クロスコンパイル",
+    "en": "Cross Compile",
+    "desc": "別の OS や CPU 向けの実行ファイルを作ること",
+    "section": "dev",
+    "group": "もう一歩 — チーム開発とリリースの用語",
+    "related": [
+      "コンパイル",
+      "ビルドツール",
+      "バイナリ"
+    ]
+  },
+  {
+    "term": "ホットフィックス",
+    "en": "Hotfix",
+    "desc": "本番の重大な不具合を、通常の流れを飛ばして緊急修正すること",
+    "section": "dev",
+    "group": "もう一歩 — チーム開発とリリースの用語",
+    "related": [
+      "デプロイ",
+      "パッチ",
+      "リリースノート / チェンジログ"
+    ]
+  },
+  {
+    "term": "フィーチャーフラグ",
+    "en": "Feature Flag",
+    "desc": "コードを入れたまま、機能の有効・無効を設定で切り替える仕組み",
+    "section": "dev",
+    "group": "もう一歩 — チーム開発とリリースの用語",
+    "related": [
+      "デプロイ戦略",
+      "A/B テスト",
+      "ホットフィックス"
+    ]
+  },
+  {
+    "term": "リリースノート / チェンジログ",
+    "en": "Release Note / Changelog",
+    "desc": "利用者向けの変更点のお知らせ / 変更履歴の一覧",
+    "section": "dev",
+    "group": "もう一歩 — チーム開発とリリースの用語",
+    "related": [
+      "セマンティックバージョニング",
+      "ホットフィックス",
+      "デプロイ"
+    ]
+  },
+  {
+    "term": "ドキュメンテーションコメント",
+    "en": "Doc Comment",
+    "desc": "関数や型の説明を、そのまま文書として生成できる形式で書くコメント",
+    "section": "dev",
+    "group": "もう一歩 — チーム開発とリリースの用語",
+    "related": [
+      "コメント",
+      "OpenAPI / Swagger",
+      "テクニカルライター"
+    ]
+  },
+  {
+    "term": "ライセンス",
+    "en": "License",
+    "desc": "MIT / Apache / GPL など、そのコードを使ってよい条件",
+    "section": "dev",
+    "group": "もう一歩 — チーム開発とリリースの用語",
+    "related": [
+      "オープンソース",
+      "パッケージマネージャ",
+      "コンプライアンス"
+    ]
+  },
+  {
+    "term": "技術選定",
+    "en": "Technology Selection",
+    "desc": "要件と制約から、使う言語・フレームワーク・基盤を決めること",
+    "section": "dev",
+    "group": "もう一歩 — チーム開発とリリースの用語",
+    "related": [
+      "アーキテクト",
+      "トレードオフ",
+      "フレームワーク"
+    ]
+  },
+  {
+    "term": "ボイラープレート",
+    "en": "Boilerplate",
+    "desc": "毎回ほぼ同じ形で書く定型のコード",
+    "section": "dev",
+    "group": "もう一歩 — チーム開発とリリースの用語",
+    "related": [
+      "フレームワーク",
+      "DRY 原則",
+      "ライブラリ"
     ]
   },
   {
@@ -2340,6 +3084,282 @@ export const IT_TERMS: ItTerm[] = [
     ]
   },
   {
+    "term": "スループット",
+    "en": "Throughput",
+    "desc": "単位時間あたりに処理・転送できた量。「太さ」に相当する",
+    "section": "web-net",
+    "group": "もう一歩 — 通信の性能と品質",
+    "related": [
+      "レイテンシ",
+      "帯域 / トラフィック",
+      "性能テスト"
+    ]
+  },
+  {
+    "term": "レスポンスタイム / ターンアラウンドタイム",
+    "en": "Response / Turnaround Time",
+    "desc": "反応が返るまでの時間 / 依頼から完了までの総時間",
+    "section": "web-net",
+    "group": "もう一歩 — 通信の性能と品質",
+    "related": [
+      "レイテンシ",
+      "スループット",
+      "性能テスト"
+    ]
+  },
+  {
+    "term": "ラウンドトリップタイム（RTT）",
+    "en": "Round Trip Time",
+    "desc": "行って戻ってくるまでの往復時間。ping で測る値",
+    "section": "web-net",
+    "group": "もう一歩 — 通信の性能と品質",
+    "related": [
+      "レイテンシ",
+      "ping / traceroute",
+      "スループット"
+    ]
+  },
+  {
+    "term": "輻輳（ふくそう）",
+    "en": "Congestion",
+    "desc": "通信が集中し、詰まって遅くなる状態",
+    "section": "web-net",
+    "group": "もう一歩 — 通信の性能と品質",
+    "related": [
+      "帯域 / トラフィック",
+      "パケットロス / ジッタ",
+      "QoS"
+    ]
+  },
+  {
+    "term": "パケットロス / ジッタ",
+    "en": "Packet Loss / Jitter",
+    "desc": "パケットが届かないこと / 到着間隔のばらつき",
+    "section": "web-net",
+    "group": "もう一歩 — 通信の性能と品質",
+    "related": [
+      "輻輳（ふくそう）",
+      "QoS",
+      "パケット"
+    ]
+  },
+  {
+    "term": "QoS",
+    "en": "Quality of Service",
+    "desc": "重要な通信を優先し、品質を確保する制御",
+    "section": "web-net",
+    "group": "もう一歩 — 通信の性能と品質",
+    "related": [
+      "輻輳（ふくそう）",
+      "帯域 / トラフィック",
+      "パケットロス / ジッタ"
+    ]
+  },
+  {
+    "term": "TCP / UDP",
+    "en": "TCP / UDP",
+    "desc": "確実に届ける代わりに手順が多い / 速いが届く保証がない",
+    "section": "web-net",
+    "group": "もう一歩 — 通信の性能と品質",
+    "related": [
+      "TCP/IP",
+      "3ウェイハンドシェイク",
+      "ソケット"
+    ]
+  },
+  {
+    "term": "3ウェイハンドシェイク",
+    "en": "Three-way Handshake",
+    "desc": "TCP が接続を確立するときの3往復のやり取り",
+    "section": "web-net",
+    "group": "もう一歩 — 通信の性能と品質",
+    "related": [
+      "TCP / UDP",
+      "TLS ハンドシェイク / 証明書",
+      "ソケット"
+    ]
+  },
+  {
+    "term": "ソケット",
+    "en": "Socket",
+    "desc": "IP アドレスとポートの組。通信の出入口を表す抽象",
+    "section": "web-net",
+    "group": "もう一歩 — 通信の性能と品質",
+    "related": [
+      "ポート",
+      "TCP / UDP",
+      "IP アドレス"
+    ]
+  },
+  {
+    "term": "Wi-Fi",
+    "en": "Wi-Fi",
+    "desc": "無線 LAN の規格・ブランド名。IEEE 802.11 系の規格に基づく",
+    "section": "web-net",
+    "group": "もう一歩 — 通信の性能と品質",
+    "related": [
+      "LAN / WAN",
+      "WEP / WPA / WPA2 / WPA3",
+      "SSID"
+    ]
+  },
+  {
+    "term": "API エンドポイント",
+    "en": "API Endpoint",
+    "desc": "API のどの機能を呼ぶかを示す、個々の URL とメソッドの組",
+    "section": "web-net",
+    "group": "もう一歩 — 通信の性能と品質",
+    "related": [
+      "API",
+      "REST",
+      "HTTP メソッド"
+    ]
+  },
+  {
+    "term": "Keep-Alive",
+    "en": "Keep-Alive",
+    "desc": "接続を使い回し、毎回つなぎ直す無駄をなくす仕組み",
+    "section": "web-net",
+    "group": "もう一歩 — 通信の性能と品質",
+    "related": [
+      "HTTP/2・HTTP/3",
+      "コネクションプール",
+      "レイテンシ"
+    ]
+  },
+  {
+    "term": "ロングポーリング",
+    "en": "Long Polling",
+    "desc": "サーバーが変化するまで応答を保留し、疑似的に push を実現する方式",
+    "section": "web-net",
+    "group": "もう一歩 — 通信の性能と品質",
+    "related": [
+      "WebSocket / SSE",
+      "Webhook",
+      "Keep-Alive"
+    ]
+  },
+  {
+    "term": "gRPC",
+    "en": "gRPC",
+    "desc": "HTTP/2 上で高速に関数呼び出しを行う通信方式。サービス間連携に多用",
+    "section": "web-net",
+    "group": "もう一歩 — 通信の性能と品質",
+    "related": [
+      "REST",
+      "GraphQL",
+      "HTTP/2・HTTP/3"
+    ]
+  },
+  {
+    "term": "GraphQL",
+    "en": "GraphQL",
+    "desc": "必要な項目だけをクライアントが指定して取得できる API 方式",
+    "section": "web-net",
+    "group": "もう一歩 — 通信の性能と品質",
+    "related": [
+      "REST",
+      "gRPC",
+      "API"
+    ]
+  },
+  {
+    "term": "トンネリング",
+    "en": "Tunneling",
+    "desc": "ある通信を別の通信の中に包んで運ぶ技術。VPN の基礎",
+    "section": "web-net",
+    "group": "もう一歩 — 通信の性能と品質",
+    "related": [
+      "VPN",
+      "IPsec",
+      "SSH"
+    ]
+  },
+  {
+    "term": "ポートフォワーディング",
+    "en": "Port Forwarding",
+    "desc": "特定ポート宛の通信を別のホスト・ポートへ転送する設定",
+    "section": "web-net",
+    "group": "もう一歩 — 通信の性能と品質",
+    "related": [
+      "ポート",
+      "NAT",
+      "SSH"
+    ]
+  },
+  {
+    "term": "ネットワークトポロジー",
+    "en": "Network Topology",
+    "desc": "機器のつなぎ方の形。スター型・メッシュ型など",
+    "section": "web-net",
+    "group": "もう一歩 — 通信の性能と品質",
+    "related": [
+      "LAN / WAN",
+      "スイッチ / ハブ",
+      "ルータ"
+    ]
+  },
+  {
+    "term": "スイッチ / ハブ",
+    "en": "Switch / Hub",
+    "desc": "宛先を見て必要な口だけに流す機器 / 全ての口に流す機器",
+    "section": "web-net",
+    "group": "もう一歩 — 通信の性能と品質",
+    "related": [
+      "ルータ",
+      "MAC アドレス",
+      "ネットワークトポロジー"
+    ]
+  },
+  {
+    "term": "FQDN",
+    "en": "Fully Qualified Domain Name",
+    "desc": "ホスト名からトップレベルまでを省略せず書いた完全なドメイン名",
+    "section": "web-net",
+    "group": "もう一歩 — 通信の性能と品質",
+    "related": [
+      "ドメイン",
+      "DNS",
+      "名前解決"
+    ]
+  },
+  {
+    "term": "A レコード / CNAME / MX レコード",
+    "en": "DNS Records",
+    "desc": "名前をIPに対応 / 別名を定義 / メールの宛先サーバーを指定",
+    "section": "web-net",
+    "group": "もう一歩 — 通信の性能と品質",
+    "related": [
+      "DNS",
+      "FQDN",
+      "TTL"
+    ]
+  },
+  {
+    "term": "TTL",
+    "en": "Time To Live",
+    "desc": "その情報をどれだけキャッシュしてよいかの有効期間",
+    "section": "web-net",
+    "group": "もう一歩 — 通信の性能と品質",
+    "related": [
+      "DNS",
+      "キャッシュ",
+      "A レコード / CNAME / MX レコード"
+    ]
+  },
+  {
+    "term": "gzip / Brotli",
+    "en": "gzip / Brotli",
+    "desc": "転送時にデータを圧縮し、通信量と表示時間を減らす方式",
+    "section": "web-net",
+    "group": "もう一歩 — 通信の性能と品質",
+    "related": [
+      "圧縮 / 解凍",
+      "CDN",
+      "スループット"
+    ]
+  },
+  {
     "term": "サーバー",
     "en": "Server",
     "desc": "サービスやデータを提供する側のコンピュータ",
@@ -2634,6 +3654,30 @@ export const IT_TERMS: ItTerm[] = [
     ]
   },
   {
+    "term": "フェイルセーフ",
+    "en": "Fail-safe",
+    "desc": "壊れたときに、安全な側に倒れるよう設計しておく考え方",
+    "section": "infra",
+    "group": "拡張性・信頼性",
+    "related": [
+      "フェイルオーバー",
+      "冗長化",
+      "可用性"
+    ]
+  },
+  {
+    "term": "クラスタリング",
+    "en": "Clustering",
+    "desc": "複数台を1つのまとまりとして動かし、性能と可用性を高める構成",
+    "section": "infra",
+    "group": "拡張性・信頼性",
+    "related": [
+      "冗長化",
+      "Pod / ノード / クラスタ",
+      "ロードバランシング"
+    ]
+  },
+  {
     "term": "ロードバランシング",
     "en": "Load Balancing",
     "desc": "処理を複数サーバーに分散して負荷を平準化すること",
@@ -2694,6 +3738,18 @@ export const IT_TERMS: ItTerm[] = [
     ]
   },
   {
+    "term": "リストア",
+    "en": "Restore",
+    "desc": "バックアップから元の状態へ復元すること",
+    "section": "infra",
+    "group": "拡張性・信頼性",
+    "related": [
+      "バックアップ / スナップショット",
+      "DR（災害復旧）",
+      "RPO / RTO"
+    ]
+  },
+  {
     "term": "Dockerfile",
     "en": "Dockerfile",
     "desc": "コンテナイメージの作り方を書いた手順書",
@@ -2703,6 +3759,30 @@ export const IT_TERMS: ItTerm[] = [
       "イメージ",
       "コンテナ",
       "レジストリ"
+    ]
+  },
+  {
+    "term": "Docker",
+    "en": "Docker",
+    "desc": "コンテナを作り・動かすための代表的なツール",
+    "section": "infra",
+    "group": "コンテナ・オーケストレーション",
+    "related": [
+      "コンテナ",
+      "Dockerfile",
+      "Docker Compose"
+    ]
+  },
+  {
+    "term": "Docker Compose",
+    "en": "Docker Compose",
+    "desc": "複数コンテナの構成を1ファイルで定義し、まとめて起動するツール",
+    "section": "infra",
+    "group": "コンテナ・オーケストレーション",
+    "related": [
+      "Docker",
+      "コンテナ",
+      "Kubernetes（K8s）"
     ]
   },
   {
@@ -2826,6 +3906,66 @@ export const IT_TERMS: ItTerm[] = [
     ]
   },
   {
+    "term": "ブルーグリーンデプロイ",
+    "en": "Blue-Green Deployment",
+    "desc": "本番と同じ環境をもう一組用意し、切り替えて公開する方式",
+    "section": "infra",
+    "group": "CI/CD・自動化・運用",
+    "related": [
+      "デプロイ戦略",
+      "カナリアリリース",
+      "ゼロダウンタイムデプロイ"
+    ]
+  },
+  {
+    "term": "カナリアリリース",
+    "en": "Canary Release",
+    "desc": "一部の利用者にだけ先行公開し、様子を見てから広げる方式",
+    "section": "infra",
+    "group": "CI/CD・自動化・運用",
+    "related": [
+      "ブルーグリーンデプロイ",
+      "ローリングアップデート",
+      "フィーチャーフラグ"
+    ]
+  },
+  {
+    "term": "ローリングアップデート",
+    "en": "Rolling Update",
+    "desc": "サーバーを順番に入れ替え、止めずに更新する方式",
+    "section": "infra",
+    "group": "CI/CD・自動化・運用",
+    "related": [
+      "カナリアリリース",
+      "ブルーグリーンデプロイ",
+      "ゼロダウンタイムデプロイ"
+    ]
+  },
+  {
+    "term": "ドライラン",
+    "en": "Dry Run",
+    "desc": "実際には変更せず、何が起きるかだけを確認する実行モード",
+    "section": "infra",
+    "group": "CI/CD・自動化・運用",
+    "related": [
+      "IaC",
+      "デプロイ",
+      "構成管理"
+    ]
+  },
+  {
+    "term": "環境（ローカル / 開発 / ステージング / 本番）",
+    "en": "Environments",
+    "desc": "手元 / 検証用 / 本番相当の確認用 / 実際に使われる環境",
+    "section": "infra",
+    "group": "CI/CD・自動化・運用",
+    "related": [
+      "デプロイ",
+      "環境変数",
+      "CI / CD"
+    ]
+  },
+  {
     "term": "オートスケーリング",
     "en": "Auto Scaling",
     "desc": "負荷に応じてサーバー数を自動で増減させる仕組み",
@@ -2910,6 +4050,294 @@ export const IT_TERMS: ItTerm[] = [
     ]
   },
   {
+    "term": "オンコール",
+    "en": "On-call",
+    "desc": "障害発生時に呼び出される当番。時間帯で交代する",
+    "section": "infra",
+    "group": "もう一歩 — 障害対応と可観測性",
+    "related": [
+      "インシデント対応",
+      "エスカレーション",
+      "SRE"
+    ]
+  },
+  {
+    "term": "アラート / 閾値",
+    "en": "Alert / Threshold",
+    "desc": "異常を知らせる通知 / それを出す基準値",
+    "section": "infra",
+    "group": "もう一歩 — 障害対応と可観測性",
+    "related": [
+      "モニタリング",
+      "オブザーバビリティ",
+      "オンコール"
+    ]
+  },
+  {
+    "term": "メトリクス / トレース",
+    "en": "Metrics / Trace",
+    "desc": "数値で測る指標 / 1リクエストの通り道の記録",
+    "section": "infra",
+    "group": "もう一歩 — 障害対応と可観測性",
+    "related": [
+      "オブザーバビリティ",
+      "ログ",
+      "分散トレーシング"
+    ]
+  },
+  {
+    "term": "分散トレーシング",
+    "en": "Distributed Tracing",
+    "desc": "複数サービスにまたがる処理を1本の流れとして追う仕組み",
+    "section": "infra",
+    "group": "もう一歩 — 障害対応と可観測性",
+    "related": [
+      "メトリクス / トレース",
+      "マイクロサービス",
+      "オブザーバビリティ"
+    ]
+  },
+  {
+    "term": "MTTR / MTBF",
+    "en": "Mean Time To Repair / Between Failures",
+    "desc": "平均復旧時間 / 平均故障間隔",
+    "section": "infra",
+    "group": "もう一歩 — 障害対応と可観測性",
+    "related": [
+      "SLA / SLO / SLI",
+      "可用性",
+      "インシデント対応"
+    ]
+  },
+  {
+    "term": "MTTF",
+    "en": "Mean Time To Failure",
+    "desc": "平均故障寿命。故障したら交換する機器に使う指標",
+    "section": "infra",
+    "group": "もう一歩 — 障害対応と可観測性",
+    "related": [
+      "MTTR / MTBF",
+      "可用性",
+      "SLA / SLO / SLI"
+    ]
+  },
+  {
+    "term": "エラーバジェット",
+    "en": "Error Budget",
+    "desc": "SLO から逆算した「許される失敗量」。使い切ったら開発より安定化を優先する",
+    "section": "infra",
+    "group": "もう一歩 — 障害対応と可観測性",
+    "related": [
+      "SLA / SLO / SLI",
+      "SRE",
+      "MTTR / MTBF"
+    ]
+  },
+  {
+    "term": "ランブック / 手順書",
+    "en": "Runbook",
+    "desc": "障害時や定型作業の手順をまとめた文書",
+    "section": "infra",
+    "group": "もう一歩 — 障害対応と可観測性",
+    "related": [
+      "オンコール",
+      "インシデント対応",
+      "属人化"
+    ]
+  },
+  {
+    "term": "ダッシュボード",
+    "en": "Dashboard",
+    "desc": "メトリクスやログをまとめて可視化する画面。Grafana / Datadog など",
+    "section": "infra",
+    "group": "もう一歩 — 障害対応と可観測性",
+    "related": [
+      "モニタリング",
+      "メトリクス / トレース",
+      "オブザーバビリティ"
+    ]
+  },
+  {
+    "term": "トイル",
+    "en": "Toil",
+    "desc": "手作業で繰り返す運用の雑務。自動化して減らすべきもの",
+    "section": "infra",
+    "group": "もう一歩 — 障害対応と可観測性",
+    "related": [
+      "SRE",
+      "ランブック / 手順書",
+      "IaC"
+    ]
+  },
+  {
+    "term": "IOPS",
+    "en": "IOPS",
+    "desc": "1秒あたりの入出力回数。ストレージ性能の指標",
+    "section": "infra",
+    "group": "もう一歩 — 障害対応と可観測性",
+    "related": [
+      "ストレージ",
+      "ボリューム / マウント",
+      "キャパシティ"
+    ]
+  },
+  {
+    "term": "構成管理",
+    "en": "Configuration Management",
+    "desc": "サーバー設定をコードで管理し、同じ状態を再現できるようにすること",
+    "section": "infra",
+    "group": "もう一歩 — 障害対応と可観測性",
+    "related": [
+      "IaC",
+      "イミュータブルインフラ",
+      "ドリフト"
+    ]
+  },
+  {
+    "term": "イミュータブルインフラ",
+    "en": "Immutable Infrastructure",
+    "desc": "動いている環境を直さず、作り直して置き換える運用方針",
+    "section": "infra",
+    "group": "もう一歩 — 障害対応と可観測性",
+    "related": [
+      "構成管理",
+      "ドリフト",
+      "デプロイ戦略"
+    ]
+  },
+  {
+    "term": "ドリフト",
+    "en": "Configuration Drift",
+    "desc": "手作業の変更が積もり、定義した構成と実物がずれること",
+    "section": "infra",
+    "group": "もう一歩 — 障害対応と可観測性",
+    "related": [
+      "構成管理",
+      "イミュータブルインフラ",
+      "IaC"
+    ]
+  },
+  {
+    "term": "サービスメッシュ",
+    "en": "Service Mesh",
+    "desc": "サービス間通信の再試行・暗号化・可視化を基盤側で引き受ける仕組み",
+    "section": "infra",
+    "group": "もう一歩 — 障害対応と可観測性",
+    "related": [
+      "Kubernetes（K8s）",
+      "サーキットブレーカー",
+      "マイクロサービス"
+    ]
+  },
+  {
+    "term": "Ingress / Service",
+    "en": "Ingress / Service",
+    "desc": "Kubernetes で外部からの入口を定義するもの / Pod 群への窓口",
+    "section": "infra",
+    "group": "もう一歩 — 障害対応と可観測性",
+    "related": [
+      "Kubernetes（K8s）",
+      "ロードバランサ",
+      "Pod / ノード / クラスタ"
+    ]
+  },
+  {
+    "term": "Helm",
+    "en": "Helm",
+    "desc": "Kubernetes のマニフェストをパッケージとして管理するツール",
+    "section": "infra",
+    "group": "もう一歩 — 障害対応と可観測性",
+    "related": [
+      "Kubernetes（K8s）",
+      "IaC",
+      "パッケージマネージャ"
+    ]
+  },
+  {
+    "term": "ConfigMap / Secret",
+    "en": "ConfigMap / Secret",
+    "desc": "設定値を外出しする仕組み / 機密値を扱う仕組み",
+    "section": "infra",
+    "group": "もう一歩 — 障害対応と可観測性",
+    "related": [
+      "Kubernetes（K8s）",
+      "環境変数",
+      "暗号化 / 復号"
+    ]
+  },
+  {
+    "term": "ゼロダウンタイムデプロイ",
+    "en": "Zero-downtime Deployment",
+    "desc": "サービスを止めずに新版へ切り替えるデプロイ",
+    "section": "infra",
+    "group": "もう一歩 — 障害対応と可観測性",
+    "related": [
+      "デプロイ戦略",
+      "ロードバランシング",
+      "ヘルスチェック"
+    ]
+  },
+  {
+    "term": "DR（災害復旧）",
+    "en": "Disaster Recovery",
+    "desc": "大規模障害・災害から業務を復旧させる備えと手順",
+    "section": "infra",
+    "group": "もう一歩 — 障害対応と可観測性",
+    "related": [
+      "RPO / RTO",
+      "バックアップ / スナップショット",
+      "ゾーン冗長 / リージョン冗長"
+    ]
+  },
+  {
+    "term": "RPO / RTO",
+    "en": "Recovery Point / Time Objective",
+    "desc": "どこまでのデータ損失を許すか / どれだけの時間で復旧するか",
+    "section": "infra",
+    "group": "もう一歩 — 障害対応と可観測性",
+    "related": [
+      "DR（災害復旧）",
+      "バックアップ / スナップショット",
+      "MTTR / MTBF"
+    ]
+  },
+  {
+    "term": "ジョブスケジューラ",
+    "en": "Job Scheduler",
+    "desc": "定期処理やバッチの実行順序と時刻を管理する仕組み",
+    "section": "infra",
+    "group": "もう一歩 — 障害対応と可観測性",
+    "related": [
+      "cron",
+      "バッチ / ストリーム",
+      "systemd / デーモン"
+    ]
+  },
+  {
+    "term": "ログローテーション",
+    "en": "Log Rotation",
+    "desc": "ログを一定量・期間で切り替え、古いものを整理する仕組み",
+    "section": "infra",
+    "group": "もう一歩 — 障害対応と可観測性",
+    "related": [
+      "ログ",
+      "ストレージ",
+      "モニタリング"
+    ]
+  },
+  {
+    "term": "NTP",
+    "en": "Network Time Protocol",
+    "desc": "サーバー間の時刻を合わせる仕組み。ログ突き合わせの前提になる",
+    "section": "infra",
+    "group": "もう一歩 — 障害対応と可観測性",
+    "related": [
+      "ログ",
+      "フォレンジック",
+      "モニタリング"
+    ]
+  },
+  {
     "term": "データベース",
     "en": "Database",
     "desc": "決まった形式で整理されたデータの集まり",
@@ -2948,6 +4376,30 @@ export const IT_TERMS: ItTerm[] = [
     ]
   },
   {
+    "term": "MySQL / PostgreSQL",
+    "en": "MySQL / PostgreSQL",
+    "desc": "広く使われるオープンソースの RDBMS。手軽さ / 機能の豊富さがそれぞれの持ち味",
+    "section": "data",
+    "group": "データベースの基本構造",
+    "related": [
+      "RDBMS",
+      "RDB",
+      "Oracle Database / SQL Server"
+    ]
+  },
+  {
+    "term": "Oracle Database / SQL Server",
+    "en": "Oracle / SQL Server",
+    "desc": "企業システムで多く使われる商用の RDBMS",
+    "section": "data",
+    "group": "データベースの基本構造",
+    "related": [
+      "RDBMS",
+      "MySQL / PostgreSQL",
+      "RDB"
+    ]
+  },
+  {
     "term": "NoSQL",
     "en": "NoSQL",
     "desc": "表形式にとらわれない DB。文書型・KV型など。柔軟・大規模向き",
@@ -2957,6 +4409,18 @@ export const IT_TERMS: ItTerm[] = [
       "RDB",
       "データベース",
       "スキーマ"
+    ]
+  },
+  {
+    "term": "NewSQL",
+    "en": "NewSQL",
+    "desc": "RDB の一貫性と NoSQL の分散性能の両立を狙った新しい DB 群",
+    "section": "data",
+    "group": "データベースの基本構造",
+    "related": [
+      "NoSQL",
+      "RDB",
+      "CAP 定理"
     ]
   },
   {
@@ -3448,6 +4912,234 @@ export const IT_TERMS: ItTerm[] = [
       "SQL",
       "SQL インジェクション",
       "サニタイズ / エスケープ"
+    ]
+  },
+  {
+    "term": "実行計画",
+    "en": "Execution Plan / EXPLAIN",
+    "desc": "DB がそのクエリをどう処理するつもりかを示した計画。遅い原因を読む手がかり",
+    "section": "data",
+    "group": "もう一歩 — チューニングと分散データベース",
+    "related": [
+      "スロークエリ",
+      "インデックス",
+      "フルスキャン"
+    ]
+  },
+  {
+    "term": "フルスキャン",
+    "en": "Full Table Scan",
+    "desc": "索引を使わず表を全部読む処理。件数が増えると急激に遅くなる",
+    "section": "data",
+    "group": "もう一歩 — チューニングと分散データベース",
+    "related": [
+      "インデックス",
+      "実行計画",
+      "スロークエリ"
+    ]
+  },
+  {
+    "term": "スロークエリ",
+    "en": "Slow Query",
+    "desc": "実行に時間がかかりすぎているクエリ。ログで検出する",
+    "section": "data",
+    "group": "もう一歩 — チューニングと分散データベース",
+    "related": [
+      "実行計画",
+      "インデックス",
+      "N+1 問題"
+    ]
+  },
+  {
+    "term": "複合インデックス",
+    "en": "Composite Index",
+    "desc": "複数カラムをまとめて張る索引。並び順が効き方を左右する",
+    "section": "data",
+    "group": "もう一歩 — チューニングと分散データベース",
+    "related": [
+      "インデックス",
+      "カーディナリティ",
+      "実行計画"
+    ]
+  },
+  {
+    "term": "カーディナリティ",
+    "en": "Cardinality",
+    "desc": "そのカラムに何種類の値があるか。索引の効きやすさに関わる",
+    "section": "data",
+    "group": "もう一歩 — チューニングと分散データベース",
+    "related": [
+      "インデックス",
+      "複合インデックス",
+      "実行計画"
+    ]
+  },
+  {
+    "term": "N+1 問題",
+    "en": "N+1 Problem",
+    "desc": "一覧1回＋各行1回ずつ問い合わせてしまい、クエリが激増する典型的な性能問題",
+    "section": "data",
+    "group": "もう一歩 — チューニングと分散データベース",
+    "related": [
+      "ORM",
+      "JOIN",
+      "スロークエリ"
+    ]
+  },
+  {
+    "term": "サロゲートキー / ナチュラルキー",
+    "en": "Surrogate / Natural Key",
+    "desc": "連番など人工的な主キー / 業務上の意味を持つ主キー",
+    "section": "data",
+    "group": "もう一歩 — チューニングと分散データベース",
+    "related": [
+      "主キー / 外部キー",
+      "正規化 / 非正規化",
+      "スキーマ"
+    ]
+  },
+  {
+    "term": "CAP 定理",
+    "en": "CAP Theorem",
+    "desc": "分散DBでは一貫性・可用性・分断耐性の3つを同時に満たせないという定理",
+    "section": "data",
+    "group": "もう一歩 — チューニングと分散データベース",
+    "related": [
+      "結果整合性",
+      "レプリケーション",
+      "NoSQL"
+    ]
+  },
+  {
+    "term": "結果整合性",
+    "en": "Eventual Consistency",
+    "desc": "一時的にずれても、いずれ全体が同じ状態に落ち着く整合性のとり方",
+    "section": "data",
+    "group": "もう一歩 — チューニングと分散データベース",
+    "related": [
+      "CAP 定理",
+      "レプリケーション",
+      "ACID"
+    ]
+  },
+  {
+    "term": "KVS / ドキュメント指向",
+    "en": "Key-Value / Document Store",
+    "desc": "鍵と値だけの単純な DB / JSON のような文書を格納する DB",
+    "section": "data",
+    "group": "もう一歩 — チューニングと分散データベース",
+    "related": [
+      "NoSQL",
+      "カラム指向 / グラフ DB",
+      "スキーマレス"
+    ]
+  },
+  {
+    "term": "カラム指向 / グラフ DB",
+    "en": "Columnar / Graph Database",
+    "desc": "列単位で保存し集計に強い DB / 関係のつながりを扱う DB",
+    "section": "data",
+    "group": "もう一歩 — チューニングと分散データベース",
+    "related": [
+      "NoSQL",
+      "KVS / ドキュメント指向",
+      "OLTP / OLAP"
+    ]
+  },
+  {
+    "term": "時系列データベース",
+    "en": "Time-series Database",
+    "desc": "時刻付きの計測値を大量に扱うことに特化した DB",
+    "section": "data",
+    "group": "もう一歩 — チューニングと分散データベース",
+    "related": [
+      "メトリクス / トレース",
+      "ビッグデータ",
+      "NoSQL"
+    ]
+  },
+  {
+    "term": "スキーマレス",
+    "en": "Schemaless",
+    "desc": "事前に構造を固定しない方式。柔軟だが不整合が入りやすい",
+    "section": "data",
+    "group": "もう一歩 — チューニングと分散データベース",
+    "related": [
+      "NoSQL",
+      "スキーマ",
+      "KVS / ドキュメント指向"
+    ]
+  },
+  {
+    "term": "CDC",
+    "en": "Change Data Capture",
+    "desc": "DB の変更を検知して他システムへ流す仕組み",
+    "section": "data",
+    "group": "もう一歩 — チューニングと分散データベース",
+    "related": [
+      "ETL",
+      "ELT",
+      "バッチ / ストリーム"
+    ]
+  },
+  {
+    "term": "ELT",
+    "en": "Extract/Load/Transform",
+    "desc": "先に貯めてから加工する、DWH 時代の ETL の並べ替え",
+    "section": "data",
+    "group": "もう一歩 — チューニングと分散データベース",
+    "related": [
+      "ETL",
+      "DWH",
+      "データレイク"
+    ]
+  },
+  {
+    "term": "データガバナンス",
+    "en": "Data Governance",
+    "desc": "データの所有者・品質・利用ルールを組織として定めること",
+    "section": "data",
+    "group": "もう一歩 — チューニングと分散データベース",
+    "related": [
+      "データ品質",
+      "データカタログ",
+      "コンプライアンス"
+    ]
+  },
+  {
+    "term": "データカタログ",
+    "en": "Data Catalog",
+    "desc": "どこにどんなデータがあるかを検索できるようにした目録",
+    "section": "data",
+    "group": "もう一歩 — チューニングと分散データベース",
+    "related": [
+      "データガバナンス",
+      "DWH",
+      "データ品質"
+    ]
+  },
+  {
+    "term": "データ品質",
+    "en": "Data Quality",
+    "desc": "欠損・重複・鮮度など、データが使える状態かの度合い",
+    "section": "data",
+    "group": "もう一歩 — チューニングと分散データベース",
+    "related": [
+      "データガバナンス",
+      "データカタログ",
+      "ETL"
+    ]
+  },
+  {
+    "term": "マスキング / 匿名化",
+    "en": "Masking / Anonymization",
+    "desc": "個人情報を伏せて扱えるようにする / 個人を特定できなくする加工",
+    "section": "data",
+    "group": "もう一歩 — チューニングと分散データベース",
+    "related": [
+      "個人情報保護法",
+      "テストデータ",
+      "データガバナンス"
     ]
   },
   {
@@ -4620,6 +6312,18 @@ export const IT_TERMS: ItTerm[] = [
     ]
   },
   {
+    "term": "レインボーテーブル攻撃",
+    "en": "Rainbow Table Attack",
+    "desc": "ハッシュ値と元パスワードの対応表を使い、一気に解読する攻撃",
+    "section": "security",
+    "group": "認証・パスワードへの攻撃",
+    "related": [
+      "ソルト / ストレッチング",
+      "ハッシュ値",
+      "ブルートフォース攻撃"
+    ]
+  },
+  {
     "term": "アカウントリスト攻撃",
     "en": "Account List Attack",
     "desc": "パスワードリスト攻撃と同義。使い回しが被害を広げる",
@@ -4981,6 +6685,18 @@ export const IT_TERMS: ItTerm[] = [
       "シングルサインオン",
       "SAML",
       "API"
+    ]
+  },
+  {
+    "term": "JWT",
+    "en": "JSON Web Token",
+    "desc": "利用者情報を署名付きで持ち運ぶトークン形式。ジョットと読む",
+    "section": "security",
+    "group": "認証・アクセス管理",
+    "related": [
+      "API キー / ベアラートークン",
+      "OAuth",
+      "セッション"
     ]
   },
   {
@@ -5908,6 +7624,18 @@ export const IT_TERMS: ItTerm[] = [
       "コンプライアンス",
       "脆弱性管理",
       "PCI DSS"
+    ]
+  },
+  {
+    "term": "プライバシーマーク",
+    "en": "Privacy Mark",
+    "desc": "個人情報を適切に扱う体制があると認定された事業者に与えられる日本の制度",
+    "section": "security",
+    "group": "運用・組織・標準",
+    "related": [
+      "ISMS",
+      "個人情報保護法",
+      "コンプライアンス"
     ]
   },
   {
@@ -7284,6 +9012,18 @@ export const IT_TERMS: ItTerm[] = [
     ]
   },
   {
+    "term": "モデル",
+    "en": "Model",
+    "desc": "学習の結果できあがった、予測や生成を行う本体",
+    "section": "ai",
+    "group": "機械学習の基礎",
+    "related": [
+      "学習（訓練） / 推論",
+      "パラメータ / ハイパーパラメータ",
+      "ベンチマーク"
+    ]
+  },
+  {
     "term": "データセット / 特徴量 / ラベル",
     "en": "Dataset / Feature / Label",
     "desc": "学習に使うデータ / 入力の手がかり / 正解の値",
@@ -7689,6 +9429,4555 @@ export const IT_TERMS: ItTerm[] = [
       "サブエージェント",
       "エージェンティックループ",
       "プランニング"
+    ]
+  },
+  {
+    "term": "活性化関数",
+    "en": "Activation Function",
+    "desc": "ニューロンの出力を非線形に変換し、複雑な表現を可能にする関数",
+    "section": "ai",
+    "group": "もう一歩 — モデルと学習の中身",
+    "related": [
+      "ニューラルネットワーク",
+      "損失関数",
+      "勾配降下法"
+    ]
+  },
+  {
+    "term": "損失関数",
+    "en": "Loss Function",
+    "desc": "予測が正解からどれだけずれているかを数値化する関数",
+    "section": "ai",
+    "group": "もう一歩 — モデルと学習の中身",
+    "related": [
+      "勾配降下法",
+      "活性化関数",
+      "学習（訓練） / 推論"
+    ]
+  },
+  {
+    "term": "エポック / バッチサイズ / 学習率",
+    "en": "Epoch / Batch Size / Learning Rate",
+    "desc": "訓練データを何周するか / 一度に使う件数 / 一歩の大きさ",
+    "section": "ai",
+    "group": "もう一歩 — モデルと学習の中身",
+    "related": [
+      "勾配降下法",
+      "パラメータ / ハイパーパラメータ",
+      "過学習"
+    ]
+  },
+  {
+    "term": "正則化 / ドロップアウト",
+    "en": "Regularization / Dropout",
+    "desc": "複雑さに罰を与える / 一部の結合を無効化する。どちらも過学習対策",
+    "section": "ai",
+    "group": "もう一歩 — モデルと学習の中身",
+    "related": [
+      "過学習",
+      "汎化",
+      "交差検証"
+    ]
+  },
+  {
+    "term": "交差検証",
+    "en": "Cross Validation",
+    "desc": "データを分割して学習と検証を入れ替え、汎化性能を確かめる方法",
+    "section": "ai",
+    "group": "もう一歩 — モデルと学習の中身",
+    "related": [
+      "汎化",
+      "過学習",
+      "データセット / 特徴量 / ラベル"
+    ]
+  },
+  {
+    "term": "混同行列",
+    "en": "Confusion Matrix",
+    "desc": "正解と予測の当たり外れを表にしたもの。分類の評価の土台",
+    "section": "ai",
+    "group": "もう一歩 — モデルと学習の中身",
+    "related": [
+      "適合率 / 再現率 / F1",
+      "分類 / 回帰",
+      "ベンチマーク"
+    ]
+  },
+  {
+    "term": "適合率 / 再現率 / F1",
+    "en": "Precision / Recall / F1",
+    "desc": "誤検知の少なさ / 見逃しの少なさ / その調和平均",
+    "section": "ai",
+    "group": "もう一歩 — モデルと学習の中身",
+    "related": [
+      "混同行列",
+      "分類 / 回帰",
+      "異常検知"
+    ]
+  },
+  {
+    "term": "CNN",
+    "en": "Convolutional Neural Network",
+    "desc": "画像の局所的な特徴を捉えるのが得意なネットワーク",
+    "section": "ai",
+    "group": "もう一歩 — モデルと学習の中身",
+    "related": [
+      "ニューラルネットワーク",
+      "ディープラーニング",
+      "RNN / LSTM"
+    ]
+  },
+  {
+    "term": "RNN / LSTM",
+    "en": "Recurrent NN / LSTM",
+    "desc": "順番のあるデータを扱うネットワーク / 長い依存を覚えられる改良版",
+    "section": "ai",
+    "group": "もう一歩 — モデルと学習の中身",
+    "related": [
+      "CNN",
+      "Transformer",
+      "Attention"
+    ]
+  },
+  {
+    "term": "Attention",
+    "en": "Attention",
+    "desc": "入力のどこに注目するかを学習する仕組み。Transformer の中核",
+    "section": "ai",
+    "group": "もう一歩 — モデルと学習の中身",
+    "related": [
+      "Transformer",
+      "LLM（大規模言語モデル）",
+      "RNN / LSTM"
+    ]
+  },
+  {
+    "term": "GAN",
+    "en": "Generative Adversarial Network",
+    "desc": "生成役と判定役を競わせて、本物らしいデータを作る仕組み",
+    "section": "ai",
+    "group": "もう一歩 — モデルと学習の中身",
+    "related": [
+      "拡散モデル",
+      "生成 AI",
+      "ディープラーニング"
+    ]
+  },
+  {
+    "term": "拡散モデル",
+    "en": "Diffusion Model",
+    "desc": "ノイズから少しずつ像を復元して生成する方式。画像生成の主流",
+    "section": "ai",
+    "group": "もう一歩 — モデルと学習の中身",
+    "related": [
+      "GAN",
+      "生成 AI",
+      "マルチモーダル"
+    ]
+  },
+  {
+    "term": "トークナイザ",
+    "en": "Tokenizer",
+    "desc": "文章をトークンに切り分ける処理・部品",
+    "section": "ai",
+    "group": "もう一歩 — モデルと学習の中身",
+    "related": [
+      "トークン",
+      "埋め込み / ベクトル",
+      "LLM（大規模言語モデル）"
+    ]
+  },
+  {
+    "term": "LoRA / PEFT",
+    "en": "LoRA / PEFT",
+    "desc": "全体を再学習せず、小さな差分だけを学習して調整する軽量な手法",
+    "section": "ai",
+    "group": "もう一歩 — モデルと学習の中身",
+    "related": [
+      "ファインチューニング",
+      "量子化",
+      "パラメータ / ハイパーパラメータ"
+    ]
+  },
+  {
+    "term": "自然言語処理（NLP）",
+    "en": "Natural Language Processing",
+    "desc": "人間の言葉をコンピュータに扱わせる技術分野",
+    "section": "ai",
+    "group": "もう一歩 — モデルと学習の中身",
+    "related": [
+      "LLM（大規模言語モデル）",
+      "トークナイザ",
+      "埋め込み / ベクトル"
+    ]
+  },
+  {
+    "term": "コンピュータビジョン",
+    "en": "Computer Vision",
+    "desc": "画像や映像を解析し、写っているものを理解させる技術分野",
+    "section": "ai",
+    "group": "もう一歩 — モデルと学習の中身",
+    "related": [
+      "CNN",
+      "ディープラーニング",
+      "マルチモーダル"
+    ]
+  },
+  {
+    "term": "音声認識 / 音声合成",
+    "en": "Speech Recognition / Synthesis",
+    "desc": "話し声を文字に変換する / 文字を話し声に変換する",
+    "section": "ai",
+    "group": "もう一歩 — モデルと学習の中身",
+    "related": [
+      "自然言語処理（NLP）",
+      "マルチモーダル",
+      "ディープラーニング"
+    ]
+  },
+  {
+    "term": "異常検知",
+    "en": "Anomaly Detection",
+    "desc": "普段と違うふるまいを見つけ出す技術。監視や不正検知に使う",
+    "section": "ai",
+    "group": "もう一歩 — モデルと学習の中身",
+    "related": [
+      "機械学習",
+      "適合率 / 再現率 / F1",
+      "モニタリング"
+    ]
+  },
+  {
+    "term": "レコメンデーション",
+    "en": "Recommendation",
+    "desc": "利用者の傾向から、次に好みそうなものを提示する仕組み",
+    "section": "ai",
+    "group": "もう一歩 — モデルと学習の中身",
+    "related": [
+      "機械学習",
+      "埋め込み / ベクトル",
+      "データマイニング"
+    ]
+  },
+  {
+    "term": "アノテーション",
+    "en": "Annotation",
+    "desc": "学習用データに正解ラベルを付ける作業",
+    "section": "ai",
+    "group": "もう一歩 — AI の活用と信頼性",
+    "related": [
+      "データセット / 特徴量 / ラベル",
+      "合成データ",
+      "教師あり / なし / 強化学習"
+    ]
+  },
+  {
+    "term": "合成データ",
+    "en": "Synthetic Data",
+    "desc": "人工的に作った学習用データ。不足や偏りを補うために使う",
+    "section": "ai",
+    "group": "もう一歩 — AI の活用と信頼性",
+    "related": [
+      "アノテーション",
+      "データセット / 特徴量 / ラベル",
+      "バイアス"
+    ]
+  },
+  {
+    "term": "ベンチマーク",
+    "en": "Benchmark",
+    "desc": "共通の課題セットでモデルの性能を比較すること",
+    "section": "ai",
+    "group": "もう一歩 — AI の活用と信頼性",
+    "related": [
+      "混同行列",
+      "汎化",
+      "LLM（大規模言語モデル）"
+    ]
+  },
+  {
+    "term": "バイアス",
+    "en": "Bias",
+    "desc": "データや設計に由来する偏り。差別的な出力につながることがある",
+    "section": "ai",
+    "group": "もう一歩 — AI の活用と信頼性",
+    "related": [
+      "AI 倫理",
+      "説明可能 AI（XAI）",
+      "データセット / 特徴量 / ラベル"
+    ]
+  },
+  {
+    "term": "説明可能 AI（XAI）",
+    "en": "Explainable AI",
+    "desc": "なぜその判断になったのかを人が理解できるようにする取り組み",
+    "section": "ai",
+    "group": "もう一歩 — AI の活用と信頼性",
+    "related": [
+      "AI 倫理",
+      "バイアス",
+      "ハルシネーション"
+    ]
+  },
+  {
+    "term": "AI 倫理",
+    "en": "AI Ethics",
+    "desc": "公平性・透明性・説明責任など、AI を使う上での規範",
+    "section": "ai",
+    "group": "もう一歩 — AI の活用と信頼性",
+    "related": [
+      "バイアス",
+      "説明可能 AI（XAI）",
+      "ヒューマンインザループ"
+    ]
+  },
+  {
+    "term": "プロンプトインジェクション",
+    "en": "Prompt Injection",
+    "desc": "外部の文章に紛れた指示で AI を乗っ取ろうとする攻撃",
+    "section": "ai",
+    "group": "もう一歩 — AI の活用と信頼性",
+    "related": [
+      "プロンプト",
+      "ガードレール",
+      "SQL インジェクション"
+    ]
+  },
+  {
+    "term": "ガードレール",
+    "en": "Guardrails",
+    "desc": "AI の入出力を検査し、危険な応答や逸脱を防ぐ仕組み",
+    "section": "ai",
+    "group": "もう一歩 — AI の活用と信頼性",
+    "related": [
+      "プロンプトインジェクション",
+      "ヒューマンインザループ",
+      "システムプロンプト"
+    ]
+  },
+  {
+    "term": "ヒューマンインザループ",
+    "en": "Human in the Loop",
+    "desc": "重要な判断や最終確認に人を必ず挟む設計",
+    "section": "ai",
+    "group": "もう一歩 — AI の活用と信頼性",
+    "related": [
+      "ガードレール",
+      "AI エージェント",
+      "AI 倫理"
+    ]
+  },
+  {
+    "term": "コンテキストエンジニアリング",
+    "en": "Context Engineering",
+    "desc": "AI に渡す情報の量と質を設計し、限られた文脈枠を最大限使う工夫",
+    "section": "ai",
+    "group": "もう一歩 — AI の活用と信頼性",
+    "related": [
+      "コンテキストウィンドウ",
+      "プロンプト",
+      "RAG（検索拡張生成）"
+    ]
+  },
+  {
+    "term": "バイブコーディング",
+    "en": "Vibe Coding",
+    "desc": "自然言語で指示し、AI に実装させながら進める開発スタイル",
+    "section": "ai",
+    "group": "もう一歩 — AI の活用と信頼性",
+    "related": [
+      "AI エージェント",
+      "プロンプト",
+      "コンテキストエンジニアリング"
+    ]
+  },
+  {
+    "term": "AI コーディングアシスタント",
+    "en": "AI Coding Assistant",
+    "desc": "補完やコード生成で開発を助ける AI ツール",
+    "section": "ai",
+    "group": "もう一歩 — AI の活用と信頼性",
+    "related": [
+      "バイブコーディング",
+      "AI エージェント",
+      "生成 AI"
+    ]
+  },
+  {
+    "term": "AGI",
+    "en": "Artificial General Intelligence",
+    "desc": "特定分野に限らず、幅広い課題を人間並みにこなす仮想の AI",
+    "section": "ai",
+    "group": "もう一歩 — AI の活用と信頼性",
+    "related": [
+      "シンギュラリティ",
+      "LLM（大規模言語モデル）",
+      "チューリングテスト"
+    ]
+  },
+  {
+    "term": "シンギュラリティ",
+    "en": "Singularity",
+    "desc": "AI が人知を超え、変化が予測不能になるとされる転換点",
+    "section": "ai",
+    "group": "もう一歩 — AI の活用と信頼性",
+    "related": [
+      "AGI",
+      "AI 倫理",
+      "生成 AI"
+    ]
+  },
+  {
+    "term": "チューリングテスト",
+    "en": "Turing Test",
+    "desc": "人間と区別がつかない受け答えができるかで知能を測る古典的な試験",
+    "section": "ai",
+    "group": "もう一歩 — AI の活用と信頼性",
+    "related": [
+      "AGI",
+      "自然言語処理（NLP）",
+      "エキスパートシステム"
+    ]
+  },
+  {
+    "term": "エキスパートシステム",
+    "en": "Expert System",
+    "desc": "専門家の知識をルールとして書き下ろした、初期の AI 方式",
+    "section": "ai",
+    "group": "もう一歩 — AI の活用と信頼性",
+    "related": [
+      "チューリングテスト",
+      "機械学習",
+      "自然言語処理（NLP）"
+    ]
+  },
+  {
+    "term": "要件定義",
+    "en": "Requirements Definition",
+    "desc": "何を作るかを決め、文書にまとめる最初の工程",
+    "section": "design",
+    "group": "設計の基本と考え方",
+    "related": [
+      "機能要件 / 非機能要件",
+      "基本設計 / 詳細設計",
+      "ユースケース"
+    ]
+  },
+  {
+    "term": "機能要件 / 非機能要件",
+    "en": "Functional / Non-functional",
+    "desc": "何ができるか / どれだけ速く・安全に・止まらずに動くか",
+    "section": "design",
+    "group": "設計の基本と考え方",
+    "related": [
+      "要件定義",
+      "可用性",
+      "設計レビュー"
+    ]
+  },
+  {
+    "term": "基本設計 / 詳細設計",
+    "en": "External / Internal Design",
+    "desc": "外から見た仕様を決める / 内部の作りを決める",
+    "section": "design",
+    "group": "設計の基本と考え方",
+    "related": [
+      "要件定義",
+      "設計レビュー",
+      "論理設計 / 物理設計"
+    ]
+  },
+  {
+    "term": "仕様書 / 設計書",
+    "en": "Specification / Design Document",
+    "desc": "何をどう作るかを文章で定めた成果物",
+    "section": "design",
+    "group": "設計の基本と考え方",
+    "related": [
+      "要件定義",
+      "基本設計 / 詳細設計",
+      "PRD"
+    ]
+  },
+  {
+    "term": "PRD",
+    "en": "Product Requirements Document",
+    "desc": "何をなぜ作るのかをまとめた製品要求仕様書",
+    "section": "design",
+    "group": "設計の基本と考え方",
+    "related": [
+      "要件定義",
+      "仕様書 / 設計書",
+      "デザインドック"
+    ]
+  },
+  {
+    "term": "デザインドック",
+    "en": "Design Doc",
+    "desc": "実装前に設計案と選んだ理由を共有するための文書",
+    "section": "design",
+    "group": "設計の基本と考え方",
+    "related": [
+      "ADR",
+      "仕様書 / 設計書",
+      "設計レビュー"
+    ]
+  },
+  {
+    "term": "抽象化",
+    "en": "Abstraction",
+    "desc": "細部を隠し、本質だけを見えるようにすること",
+    "section": "design",
+    "group": "設計の基本と考え方",
+    "related": [
+      "インターフェース / 抽象クラス",
+      "依存性逆転の原則",
+      "疎結合 / 密結合"
+    ]
+  },
+  {
+    "term": "疎結合 / 密結合",
+    "en": "Loose / Tight Coupling",
+    "desc": "部品どうしの依存が弱い / 強く絡み合っている状態",
+    "section": "design",
+    "group": "設計の基本と考え方",
+    "related": [
+      "凝集度",
+      "関心の分離",
+      "依存性注入（DI）"
+    ]
+  },
+  {
+    "term": "凝集度",
+    "en": "Cohesion",
+    "desc": "1つの部品が「1つの役目」にどれだけまとまっているかの度合い",
+    "section": "design",
+    "group": "設計の基本と考え方",
+    "related": [
+      "疎結合 / 密結合",
+      "単一責任の原則",
+      "関心の分離"
+    ]
+  },
+  {
+    "term": "関心の分離",
+    "en": "Separation of Concerns",
+    "desc": "役割ごとに範囲を切り分け、混ぜないという指針",
+    "section": "design",
+    "group": "設計の基本と考え方",
+    "related": [
+      "レイヤードアーキテクチャ",
+      "凝集度",
+      "MVC"
+    ]
+  },
+  {
+    "term": "DRY 原則",
+    "en": "Don't Repeat Yourself",
+    "desc": "同じ知識をコード中に重複させないという指針",
+    "section": "design",
+    "group": "設計の基本と考え方",
+    "related": [
+      "KISS 原則",
+      "YAGNI 原則",
+      "リファクタリング"
+    ]
+  },
+  {
+    "term": "KISS 原則",
+    "en": "Keep It Simple, Stupid",
+    "desc": "できるだけ単純に保つという指針",
+    "section": "design",
+    "group": "設計の基本と考え方",
+    "related": [
+      "DRY 原則",
+      "YAGNI 原則",
+      "オーバーエンジニアリング"
+    ]
+  },
+  {
+    "term": "YAGNI 原則",
+    "en": "You Aren't Gonna Need It",
+    "desc": "今いらない機能は作り込まないという指針",
+    "section": "design",
+    "group": "設計の基本と考え方",
+    "related": [
+      "KISS 原則",
+      "オーバーエンジニアリング",
+      "MVP（実用最小限の製品）"
+    ]
+  },
+  {
+    "term": "技術的負債",
+    "en": "Technical Debt",
+    "desc": "その場しのぎの設計が後で利息のように開発を重くすること",
+    "section": "design",
+    "group": "設計の基本と考え方",
+    "related": [
+      "リファクタリング",
+      "スパゲッティコード",
+      "アンチパターン"
+    ]
+  },
+  {
+    "term": "可読性 / 保守性",
+    "en": "Readability / Maintainability",
+    "desc": "読んで分かること / 直しやすいこと",
+    "section": "design",
+    "group": "設計の基本と考え方",
+    "related": [
+      "リファクタリング",
+      "技術的負債",
+      "レビュー"
+    ]
+  },
+  {
+    "term": "拡張性 / 再利用性",
+    "en": "Extensibility / Reusability",
+    "desc": "後から足しやすいこと / 他でも使い回せること",
+    "section": "design",
+    "group": "設計の基本と考え方",
+    "related": [
+      "オープン・クローズドの原則",
+      "ライブラリ",
+      "抽象化"
+    ]
+  },
+  {
+    "term": "トレードオフ",
+    "en": "Trade-off",
+    "desc": "何かを取れば何かを失う関係。設計は選択の連続",
+    "section": "design",
+    "group": "設計の基本と考え方",
+    "related": [
+      "ソフトウェアアーキテクチャ",
+      "オーバーエンジニアリング",
+      "技術的負債"
+    ]
+  },
+  {
+    "term": "オーバーエンジニアリング",
+    "en": "Over-engineering",
+    "desc": "必要以上に複雑・高機能に作り込んでしまうこと",
+    "section": "design",
+    "group": "設計の基本と考え方",
+    "related": [
+      "YAGNI 原則",
+      "KISS 原則",
+      "技術的負債"
+    ]
+  },
+  {
+    "term": "設計レビュー",
+    "en": "Design Review",
+    "desc": "実装前に設計案を持ち寄り、妥当性を確認する場",
+    "section": "design",
+    "group": "設計の基本と考え方",
+    "related": [
+      "レビュー",
+      "ADR",
+      "基本設計 / 詳細設計"
+    ]
+  },
+  {
+    "term": "SOLID 原則",
+    "en": "SOLID",
+    "desc": "オブジェクト指向設計の5つの指針の頭文字をまとめた呼び名",
+    "section": "design",
+    "group": "オブジェクト指向設計の原則",
+    "related": [
+      "単一責任の原則",
+      "依存性逆転の原則",
+      "オブジェクト指向"
+    ]
+  },
+  {
+    "term": "単一責任の原則",
+    "en": "Single Responsibility",
+    "desc": "1つのクラスが持つ変更理由は1つにする",
+    "section": "design",
+    "group": "オブジェクト指向設計の原則",
+    "related": [
+      "SOLID 原則",
+      "凝集度",
+      "神クラス"
+    ]
+  },
+  {
+    "term": "オープン・クローズドの原則",
+    "en": "Open-Closed",
+    "desc": "拡張には開き、修正には閉じた作りにする",
+    "section": "design",
+    "group": "オブジェクト指向設計の原則",
+    "related": [
+      "SOLID 原則",
+      "ストラテジー",
+      "拡張性 / 再利用性"
+    ]
+  },
+  {
+    "term": "リスコフの置換原則",
+    "en": "Liskov Substitution",
+    "desc": "派生クラスは親クラスと差し替えても壊れないこと",
+    "section": "design",
+    "group": "オブジェクト指向設計の原則",
+    "related": [
+      "SOLID 原則",
+      "継承",
+      "ポリモーフィズム"
+    ]
+  },
+  {
+    "term": "インターフェース分離の原則",
+    "en": "Interface Segregation",
+    "desc": "使わないメソッドを押し付けない、小さな窓口に分ける",
+    "section": "design",
+    "group": "オブジェクト指向設計の原則",
+    "related": [
+      "SOLID 原則",
+      "インターフェース / 抽象クラス",
+      "疎結合 / 密結合"
+    ]
+  },
+  {
+    "term": "依存性逆転の原則",
+    "en": "Dependency Inversion",
+    "desc": "具体ではなく抽象に依存させる",
+    "section": "design",
+    "group": "オブジェクト指向設計の原則",
+    "related": [
+      "SOLID 原則",
+      "依存性注入（DI）",
+      "抽象化"
+    ]
+  },
+  {
+    "term": "継承より委譲",
+    "en": "Composition over Inheritance",
+    "desc": "継承で広げるより、部品を持たせて組み合わせる",
+    "section": "design",
+    "group": "オブジェクト指向設計の原則",
+    "related": [
+      "継承",
+      "コンポジット",
+      "SOLID 原則"
+    ]
+  },
+  {
+    "term": "循環依存",
+    "en": "Circular Dependency",
+    "desc": "AがBを、BがAを必要とし、切り離せなくなった状態",
+    "section": "design",
+    "group": "オブジェクト指向設計の原則",
+    "related": [
+      "疎結合 / 密結合",
+      "モジュール",
+      "レイヤードアーキテクチャ"
+    ]
+  },
+  {
+    "term": "神クラス",
+    "en": "God Class",
+    "desc": "何でも知っていて何でもやる、肥大化したクラス（アンチパターン）",
+    "section": "design",
+    "group": "オブジェクト指向設計の原則",
+    "related": [
+      "単一責任の原則",
+      "アンチパターン",
+      "スパゲッティコード"
+    ]
+  },
+  {
+    "term": "スパゲッティコード",
+    "en": "Spaghetti Code",
+    "desc": "処理が絡み合い、どこから読めばよいか分からないコード",
+    "section": "design",
+    "group": "オブジェクト指向設計の原則",
+    "related": [
+      "アンチパターン",
+      "技術的負債",
+      "リファクタリング"
+    ]
+  },
+  {
+    "term": "アンチパターン",
+    "en": "Anti-pattern",
+    "desc": "よくやりがちだが、あとで痛い目を見る典型的な失敗の型",
+    "section": "design",
+    "group": "オブジェクト指向設計の原則",
+    "related": [
+      "神クラス",
+      "スパゲッティコード",
+      "デザインパターン"
+    ]
+  },
+  {
+    "term": "GoF",
+    "en": "Gang of Four",
+    "desc": "23のデザインパターンをまとめた古典的な書籍・著者たちの通称",
+    "section": "design",
+    "group": "デザインパターン",
+    "related": [
+      "デザインパターン",
+      "生成 / 構造 / 振る舞い",
+      "シングルトン"
+    ]
+  },
+  {
+    "term": "生成 / 構造 / 振る舞い",
+    "en": "Creational / Structural / Behavioral",
+    "desc": "GoF パターンの3分類。作り方 / 組み方 / 動かし方",
+    "section": "design",
+    "group": "デザインパターン",
+    "related": [
+      "GoF",
+      "デザインパターン",
+      "ファクトリメソッド"
+    ]
+  },
+  {
+    "term": "シングルトン",
+    "en": "Singleton",
+    "desc": "インスタンスを1つだけに限定するパターン",
+    "section": "design",
+    "group": "デザインパターン",
+    "related": [
+      "GoF",
+      "ファクトリメソッド",
+      "インスタンス"
+    ]
+  },
+  {
+    "term": "ファクトリメソッド",
+    "en": "Factory Method",
+    "desc": "生成処理を専用のメソッドに任せ、種類の追加を楽にするパターン",
+    "section": "design",
+    "group": "デザインパターン",
+    "related": [
+      "ビルダー",
+      "シングルトン",
+      "GoF"
+    ]
+  },
+  {
+    "term": "ビルダー",
+    "en": "Builder",
+    "desc": "複雑なオブジェクトを段階的に組み立てるパターン",
+    "section": "design",
+    "group": "デザインパターン",
+    "related": [
+      "ファクトリメソッド",
+      "GoF",
+      "プロトタイプ"
+    ]
+  },
+  {
+    "term": "アダプター",
+    "en": "Adapter",
+    "desc": "使いたい部品の形が合わないとき、変換して差し込むパターン",
+    "section": "design",
+    "group": "デザインパターン",
+    "related": [
+      "ファサード",
+      "デコレーター",
+      "GoF"
+    ]
+  },
+  {
+    "term": "デコレーター",
+    "en": "Decorator",
+    "desc": "元の部品を包んで、機能を後から足すパターン",
+    "section": "design",
+    "group": "デザインパターン",
+    "related": [
+      "アダプター",
+      "Proxy パターン",
+      "GoF"
+    ]
+  },
+  {
+    "term": "ファサード",
+    "en": "Facade",
+    "desc": "複雑な内部を1つの簡単な窓口にまとめるパターン",
+    "section": "design",
+    "group": "デザインパターン",
+    "related": [
+      "アダプター",
+      "ファサード API",
+      "GoF"
+    ]
+  },
+  {
+    "term": "Proxy パターン",
+    "en": "Proxy",
+    "desc": "本体の代理を立て、アクセス制御や遅延生成を挟むパターン",
+    "section": "design",
+    "group": "デザインパターン",
+    "related": [
+      "デコレーター",
+      "プロキシ",
+      "GoF"
+    ]
+  },
+  {
+    "term": "コンポジット",
+    "en": "Composite",
+    "desc": "個と集合を同じ扱いにし、木構造を素直に表すパターン",
+    "section": "design",
+    "group": "デザインパターン",
+    "related": [
+      "イテレータ",
+      "木 / 二分木",
+      "GoF"
+    ]
+  },
+  {
+    "term": "ストラテジー",
+    "en": "Strategy",
+    "desc": "処理のやり方を差し替え可能な部品にするパターン",
+    "section": "design",
+    "group": "デザインパターン",
+    "related": [
+      "オープン・クローズドの原則",
+      "テンプレートメソッド",
+      "GoF"
+    ]
+  },
+  {
+    "term": "オブザーバー",
+    "en": "Observer",
+    "desc": "変化を購読者へ通知する、イベント通知のパターン",
+    "section": "design",
+    "group": "デザインパターン",
+    "related": [
+      "Pub/Sub",
+      "イベント駆動アーキテクチャ",
+      "GoF"
+    ]
+  },
+  {
+    "term": "テンプレートメソッド",
+    "en": "Template Method",
+    "desc": "手順の骨格を親が決め、細部を子に任せるパターン",
+    "section": "design",
+    "group": "デザインパターン",
+    "related": [
+      "ストラテジー",
+      "継承",
+      "GoF"
+    ]
+  },
+  {
+    "term": "コマンド",
+    "en": "Command",
+    "desc": "処理を「命令オブジェクト」にして、実行や取り消しを扱えるようにする",
+    "section": "design",
+    "group": "デザインパターン",
+    "related": [
+      "イテレータ",
+      "GoF",
+      "メッセージキュー"
+    ]
+  },
+  {
+    "term": "イテレータ",
+    "en": "Iterator",
+    "desc": "中の構造を知らずに要素を順に取り出すパターン",
+    "section": "design",
+    "group": "デザインパターン",
+    "related": [
+      "コンポジット",
+      "配列 / リスト",
+      "GoF"
+    ]
+  },
+  {
+    "term": "ステート",
+    "en": "State",
+    "desc": "状態ごとに振る舞いのオブジェクトを切り替えるパターン",
+    "section": "design",
+    "group": "デザインパターン",
+    "related": [
+      "状態遷移図",
+      "オブザーバー",
+      "GoF"
+    ]
+  },
+  {
+    "term": "MVC",
+    "en": "Model-View-Controller",
+    "desc": "データ / 表示 / 操作の橋渡し に役割を3分割する構成",
+    "section": "design",
+    "group": "デザインパターン",
+    "related": [
+      "MVVM",
+      "MVP",
+      "関心の分離"
+    ]
+  },
+  {
+    "term": "MVVM",
+    "en": "Model-View-ViewModel",
+    "desc": "画面用のデータを ViewModel に置き、表示と自動で同期させる構成",
+    "section": "design",
+    "group": "デザインパターン",
+    "related": [
+      "MVC",
+      "MVP",
+      "双方向バインディング"
+    ]
+  },
+  {
+    "term": "MVP",
+    "en": "Model-View-Presenter",
+    "desc": "表示を受け身にし、Presenter が処理を仕切る構成",
+    "section": "design",
+    "group": "デザインパターン",
+    "related": [
+      "MVC",
+      "MVVM",
+      "関心の分離"
+    ]
+  },
+  {
+    "term": "ソフトウェアアーキテクチャ",
+    "en": "Software Architecture",
+    "desc": "システム全体の骨格。後から変えにくい重要な決定の集まり",
+    "section": "design",
+    "group": "アーキテクチャ",
+    "related": [
+      "レイヤードアーキテクチャ",
+      "マイクロサービス",
+      "ADR"
+    ]
+  },
+  {
+    "term": "三層アーキテクチャ",
+    "en": "3-Tier Architecture",
+    "desc": "プレゼンテーション / ビジネスロジック / データ に分ける古典構成",
+    "section": "design",
+    "group": "アーキテクチャ",
+    "related": [
+      "レイヤードアーキテクチャ",
+      "MVC",
+      "ソフトウェアアーキテクチャ"
+    ]
+  },
+  {
+    "term": "レイヤードアーキテクチャ",
+    "en": "Layered Architecture",
+    "desc": "層を重ね、上の層だけが下の層を呼ぶ構成",
+    "section": "design",
+    "group": "アーキテクチャ",
+    "related": [
+      "クリーンアーキテクチャ",
+      "三層アーキテクチャ",
+      "関心の分離"
+    ]
+  },
+  {
+    "term": "クリーンアーキテクチャ",
+    "en": "Clean Architecture",
+    "desc": "業務ルールを中心に置き、外側（DB・UI）を差し替え可能にする構成",
+    "section": "design",
+    "group": "アーキテクチャ",
+    "related": [
+      "ヘキサゴナルアーキテクチャ",
+      "レイヤードアーキテクチャ",
+      "依存性逆転の原則"
+    ]
+  },
+  {
+    "term": "ヘキサゴナルアーキテクチャ",
+    "en": "Hexagonal / Ports and Adapters",
+    "desc": "中心の業務ロジックに、外部を差し込み口（ポート）経由でつなぐ構成",
+    "section": "design",
+    "group": "アーキテクチャ",
+    "related": [
+      "クリーンアーキテクチャ",
+      "リポジトリパターン",
+      "依存性逆転の原則"
+    ]
+  },
+  {
+    "term": "モノリス",
+    "en": "Monolith",
+    "desc": "1つのアプリにすべてを詰め込んだ構成。単純だが巨大化しやすい",
+    "section": "design",
+    "group": "アーキテクチャ",
+    "related": [
+      "マイクロサービス",
+      "モジュラーモノリス",
+      "ソフトウェアアーキテクチャ"
+    ]
+  },
+  {
+    "term": "モジュラーモノリス",
+    "en": "Modular Monolith",
+    "desc": "1つのアプリのまま、内部をモジュールで強く分離した構成",
+    "section": "design",
+    "group": "アーキテクチャ",
+    "related": [
+      "モノリス",
+      "マイクロサービス",
+      "モジュール"
+    ]
+  },
+  {
+    "term": "マイクロサービス",
+    "en": "Microservices",
+    "desc": "小さなサービスに分割し、個別に開発・デプロイする構成",
+    "section": "design",
+    "group": "アーキテクチャ",
+    "related": [
+      "モノリス",
+      "SOA",
+      "サーガパターン"
+    ]
+  },
+  {
+    "term": "SOA",
+    "en": "Service Oriented Architecture",
+    "desc": "業務機能をサービス単位で提供し、組み合わせて使う考え方",
+    "section": "design",
+    "group": "アーキテクチャ",
+    "related": [
+      "マイクロサービス",
+      "イベント駆動アーキテクチャ",
+      "API"
+    ]
+  },
+  {
+    "term": "イベント駆動アーキテクチャ",
+    "en": "Event-Driven Architecture",
+    "desc": "「起きたこと」を通知して、受け手が勝手に反応する構成",
+    "section": "design",
+    "group": "アーキテクチャ",
+    "related": [
+      "Pub/Sub",
+      "メッセージキュー",
+      "イベントソーシング"
+    ]
+  },
+  {
+    "term": "メッセージキュー",
+    "en": "Message Queue",
+    "desc": "処理依頼を一旦ためて、順に取り出して処理する仕組み",
+    "section": "design",
+    "group": "アーキテクチャ",
+    "related": [
+      "Pub/Sub",
+      "イベント駆動アーキテクチャ",
+      "バッチ / ストリーム"
+    ]
+  },
+  {
+    "term": "Pub/Sub",
+    "en": "Publish-Subscribe",
+    "desc": "発行者と購読者を直接つながずに通知を配る方式",
+    "section": "design",
+    "group": "アーキテクチャ",
+    "related": [
+      "メッセージキュー",
+      "オブザーバー",
+      "イベント駆動アーキテクチャ"
+    ]
+  },
+  {
+    "term": "CQRS",
+    "en": "Command Query Responsibility Segregation",
+    "desc": "更新用と参照用でモデル・経路を分ける設計",
+    "section": "design",
+    "group": "アーキテクチャ",
+    "related": [
+      "イベントソーシング",
+      "ドメイン駆動設計（DDD）",
+      "OLTP / OLAP"
+    ]
+  },
+  {
+    "term": "イベントソーシング",
+    "en": "Event Sourcing",
+    "desc": "現在の状態ではなく、起きた出来事の履歴を正とする保存方式",
+    "section": "design",
+    "group": "アーキテクチャ",
+    "related": [
+      "CQRS",
+      "イベント駆動アーキテクチャ",
+      "トランザクション"
+    ]
+  },
+  {
+    "term": "サーガパターン",
+    "en": "Saga",
+    "desc": "複数サービスにまたがる処理を、補償処理付きの一連の手順で整合させる",
+    "section": "design",
+    "group": "アーキテクチャ",
+    "related": [
+      "マイクロサービス",
+      "トランザクション",
+      "イベント駆動アーキテクチャ"
+    ]
+  },
+  {
+    "term": "サーキットブレーカー",
+    "en": "Circuit Breaker",
+    "desc": "失敗が続く呼び出しを一時遮断し、連鎖障害を防ぐ仕組み",
+    "section": "design",
+    "group": "アーキテクチャ",
+    "related": [
+      "リトライ / タイムアウト",
+      "マイクロサービス",
+      "ヘルスチェック"
+    ]
+  },
+  {
+    "term": "BFF",
+    "en": "Backend For Frontend",
+    "desc": "画面ごとの都合に合わせた専用バックエンドを挟む構成",
+    "section": "design",
+    "group": "アーキテクチャ",
+    "related": [
+      "マイクロサービス",
+      "API",
+      "ファサード API"
+    ]
+  },
+  {
+    "term": "ステートレス / ステートフル",
+    "en": "Stateless / Stateful",
+    "desc": "状態を持たない（増やしやすい） / 状態を持つ（引き継ぎが要る）",
+    "section": "design",
+    "group": "アーキテクチャ",
+    "related": [
+      "スケールアウト / イン",
+      "セッション",
+      "REST"
+    ]
+  },
+  {
+    "term": "ドメイン駆動設計（DDD）",
+    "en": "Domain-Driven Design",
+    "desc": "業務の言葉と構造をそのままコードの構造に写し取る設計手法",
+    "section": "design",
+    "group": "ドメイン駆動設計とモデリング",
+    "related": [
+      "ユビキタス言語",
+      "境界づけられたコンテキスト",
+      "集約"
+    ]
+  },
+  {
+    "term": "ユビキタス言語",
+    "en": "Ubiquitous Language",
+    "desc": "開発者と業務側が同じ意味で使う、共通の用語集",
+    "section": "design",
+    "group": "ドメイン駆動設計とモデリング",
+    "related": [
+      "ドメイン駆動設計（DDD）",
+      "境界づけられたコンテキスト",
+      "要件定義"
+    ]
+  },
+  {
+    "term": "境界づけられたコンテキスト",
+    "en": "Bounded Context",
+    "desc": "同じ言葉の意味が通じる範囲を区切ったモデルの境界",
+    "section": "design",
+    "group": "ドメイン駆動設計とモデリング",
+    "related": [
+      "ドメイン駆動設計（DDD）",
+      "マイクロサービス",
+      "ユビキタス言語"
+    ]
+  },
+  {
+    "term": "エンティティ / 値オブジェクト",
+    "en": "Entity / Value Object",
+    "desc": "同一性で区別する物 / 値そのもので区別する物",
+    "section": "design",
+    "group": "ドメイン駆動設計とモデリング",
+    "related": [
+      "集約",
+      "ドメイン駆動設計（DDD）",
+      "イミュータブル / ミュータブル"
+    ]
+  },
+  {
+    "term": "集約",
+    "en": "Aggregate",
+    "desc": "まとめて整合性を保つべきオブジェクトの塊と、その代表（ルート）",
+    "section": "design",
+    "group": "ドメイン駆動設計とモデリング",
+    "related": [
+      "エンティティ / 値オブジェクト",
+      "リポジトリパターン",
+      "トランザクション"
+    ]
+  },
+  {
+    "term": "リポジトリパターン",
+    "en": "Repository",
+    "desc": "保存先の詳細を隠し、コレクションのように扱えるようにする層",
+    "section": "design",
+    "group": "ドメイン駆動設計とモデリング",
+    "related": [
+      "集約",
+      "ORM",
+      "クリーンアーキテクチャ"
+    ]
+  },
+  {
+    "term": "ユースケース",
+    "en": "Use Case",
+    "desc": "利用者がシステムで達成したい一連の操作の単位",
+    "section": "design",
+    "group": "ドメイン駆動設計とモデリング",
+    "related": [
+      "ユースケース図",
+      "要件定義",
+      "ユーザーストーリー"
+    ]
+  },
+  {
+    "term": "UML",
+    "en": "Unified Modeling Language",
+    "desc": "設計を図で表すための共通記法",
+    "section": "design",
+    "group": "ドメイン駆動設計とモデリング",
+    "related": [
+      "クラス図",
+      "シーケンス図",
+      "ER 図"
+    ]
+  },
+  {
+    "term": "クラス図",
+    "en": "Class Diagram",
+    "desc": "クラスと関係（継承・保有）を表す静的な構造図",
+    "section": "design",
+    "group": "ドメイン駆動設計とモデリング",
+    "related": [
+      "UML",
+      "クラス",
+      "ER 図"
+    ]
+  },
+  {
+    "term": "シーケンス図",
+    "en": "Sequence Diagram",
+    "desc": "処理のやり取りを時間の流れで表す図",
+    "section": "design",
+    "group": "ドメイン駆動設計とモデリング",
+    "related": [
+      "UML",
+      "アクティビティ図 / フローチャート",
+      "ユースケース図"
+    ]
+  },
+  {
+    "term": "ユースケース図",
+    "en": "Use Case Diagram",
+    "desc": "誰が何をできるかを俯瞰する図",
+    "section": "design",
+    "group": "ドメイン駆動設計とモデリング",
+    "related": [
+      "UML",
+      "ユースケース",
+      "クラス図"
+    ]
+  },
+  {
+    "term": "状態遷移図",
+    "en": "State Diagram",
+    "desc": "状態と、状態が移るきっかけを表す図",
+    "section": "design",
+    "group": "ドメイン駆動設計とモデリング",
+    "related": [
+      "UML",
+      "ステート",
+      "状態遷移テスト"
+    ]
+  },
+  {
+    "term": "アクティビティ図 / フローチャート",
+    "en": "Activity Diagram / Flowchart",
+    "desc": "処理や業務の流れを分岐つきで表す図",
+    "section": "design",
+    "group": "ドメイン駆動設計とモデリング",
+    "related": [
+      "UML",
+      "シーケンス図",
+      "疑似コード"
+    ]
+  },
+  {
+    "term": "ER 図",
+    "en": "Entity Relationship Diagram",
+    "desc": "テーブル（実体）と関連を表す、データ設計の図",
+    "section": "design",
+    "group": "ドメイン駆動設計とモデリング",
+    "related": [
+      "UML",
+      "スキーマ",
+      "正規化 / 非正規化"
+    ]
+  },
+  {
+    "term": "ADR",
+    "en": "Architecture Decision Record",
+    "desc": "「なぜその設計にしたか」を1件ずつ残す記録",
+    "section": "design",
+    "group": "ドメイン駆動設計とモデリング",
+    "related": [
+      "ソフトウェアアーキテクチャ",
+      "設計レビュー",
+      "C4 モデル"
+    ]
+  },
+  {
+    "term": "C4 モデル",
+    "en": "C4 Model",
+    "desc": "文脈・コンテナ・コンポーネント・コードの4段階で図示する手法",
+    "section": "design",
+    "group": "ドメイン駆動設計とモデリング",
+    "related": [
+      "UML",
+      "ソフトウェアアーキテクチャ",
+      "ADR"
+    ]
+  },
+  {
+    "term": "ワイヤーフレーム / モックアップ",
+    "en": "Wireframe / Mockup",
+    "desc": "画面の骨組みの下書き / 見た目まで作った試作",
+    "section": "design",
+    "group": "ドメイン駆動設計とモデリング",
+    "related": [
+      "プロトタイプ",
+      "UI デザイナー / UX デザイナー",
+      "MVP（実用最小限の製品）"
+    ]
+  },
+  {
+    "term": "プロトタイプ",
+    "en": "Prototype",
+    "desc": "動きを確かめるための試作品",
+    "section": "design",
+    "group": "ドメイン駆動設計とモデリング",
+    "related": [
+      "ワイヤーフレーム / モックアップ",
+      "MVP（実用最小限の製品）",
+      "PoC（概念実証）"
+    ]
+  },
+  {
+    "term": "リソース指向設計",
+    "en": "Resource Oriented Design",
+    "desc": "URL を「もの」として設計し、動詞は HTTP メソッドで表す考え方",
+    "section": "design",
+    "group": "API・インターフェース設計",
+    "related": [
+      "REST",
+      "HTTP メソッド",
+      "API バージョニング"
+    ]
+  },
+  {
+    "term": "スキーマファースト",
+    "en": "Schema First",
+    "desc": "先に API の定義を決め、実装とクライアントをそこから作る進め方",
+    "section": "design",
+    "group": "API・インターフェース設計",
+    "related": [
+      "OpenAPI / Swagger",
+      "契約",
+      "契約テスト"
+    ]
+  },
+  {
+    "term": "OpenAPI / Swagger",
+    "en": "OpenAPI",
+    "desc": "REST API の仕様を機械可読な形式で書く標準とツール群",
+    "section": "design",
+    "group": "API・インターフェース設計",
+    "related": [
+      "スキーマファースト",
+      "REST",
+      "API"
+    ]
+  },
+  {
+    "term": "API バージョニング",
+    "en": "API Versioning",
+    "desc": "互換性を壊さずに API を進化させるための版の付け方",
+    "section": "design",
+    "group": "API・インターフェース設計",
+    "related": [
+      "後方互換性",
+      "セマンティックバージョニング",
+      "リソース指向設計"
+    ]
+  },
+  {
+    "term": "後方互換性",
+    "en": "Backward Compatibility",
+    "desc": "古い利用者をそのまま動かし続けられる性質",
+    "section": "design",
+    "group": "API・インターフェース設計",
+    "related": [
+      "API バージョニング",
+      "契約",
+      "リグレッション / デグレ"
+    ]
+  },
+  {
+    "term": "契約",
+    "en": "Contract",
+    "desc": "呼ぶ側と呼ばれる側が守ると約束した入出力の取り決め",
+    "section": "design",
+    "group": "API・インターフェース設計",
+    "related": [
+      "契約テスト",
+      "スキーマファースト",
+      "後方互換性"
+    ]
+  },
+  {
+    "term": "ファサード API",
+    "en": "Facade API",
+    "desc": "複数の内部サービスを1つの窓口にまとめて公開する設計",
+    "section": "design",
+    "group": "API・インターフェース設計",
+    "related": [
+      "ファサード",
+      "BFF",
+      "API"
+    ]
+  },
+  {
+    "term": "論理設計 / 物理設計",
+    "en": "Logical / Physical Design",
+    "desc": "概念としての構造 / 実際の製品に合わせた具体構造",
+    "section": "design",
+    "group": "API・インターフェース設計",
+    "related": [
+      "ER 図",
+      "基本設計 / 詳細設計",
+      "スキーマ"
+    ]
+  },
+  {
+    "term": "単体テスト",
+    "en": "Unit Test",
+    "desc": "関数やクラスなど、最小単位が正しく動くか確かめるテスト",
+    "section": "testing",
+    "group": "テストの種類",
+    "related": [
+      "結合テスト",
+      "テストピラミッド",
+      "モック / スタブ"
+    ]
+  },
+  {
+    "term": "結合テスト",
+    "en": "Integration Test",
+    "desc": "部品どうしをつないだときに正しく動くか確かめるテスト",
+    "section": "testing",
+    "group": "テストの種類",
+    "related": [
+      "単体テスト",
+      "システムテスト",
+      "契約テスト"
+    ]
+  },
+  {
+    "term": "システムテスト",
+    "en": "System Test",
+    "desc": "システム全体を本番同等の構成で確かめるテスト",
+    "section": "testing",
+    "group": "テストの種類",
+    "related": [
+      "結合テスト",
+      "受け入れテスト（UAT）",
+      "E2E テスト"
+    ]
+  },
+  {
+    "term": "受け入れテスト（UAT）",
+    "en": "User Acceptance Test",
+    "desc": "発注者・利用者が「これで良い」と判断するためのテスト",
+    "section": "testing",
+    "group": "テストの種類",
+    "related": [
+      "システムテスト",
+      "ATDD",
+      "リリース判定"
+    ]
+  },
+  {
+    "term": "E2E テスト",
+    "en": "End-to-End Test",
+    "desc": "利用者の操作をそのまま画面から通しで再現するテスト",
+    "section": "testing",
+    "group": "テストの種類",
+    "related": [
+      "システムテスト",
+      "テストピラミッド",
+      "フレーキーテスト"
+    ]
+  },
+  {
+    "term": "回帰テスト",
+    "en": "Regression Test",
+    "desc": "修正で他が壊れていないか、既存機能をまとめて確認するテスト",
+    "section": "testing",
+    "group": "テストの種類",
+    "related": [
+      "リグレッション / デグレ",
+      "テスト自動化",
+      "スモークテスト"
+    ]
+  },
+  {
+    "term": "スモークテスト",
+    "en": "Smoke Test",
+    "desc": "最低限動くかを短時間で確認する、最初の関門となるテスト",
+    "section": "testing",
+    "group": "テストの種類",
+    "related": [
+      "回帰テスト",
+      "CI / CD",
+      "品質ゲート"
+    ]
+  },
+  {
+    "term": "探索的テスト",
+    "en": "Exploratory Testing",
+    "desc": "手順書に頼らず、その場で考えながら触って不具合を探す進め方",
+    "section": "testing",
+    "group": "テストの種類",
+    "related": [
+      "モンキーテスト",
+      "テスト観点",
+      "ユーザビリティテスト"
+    ]
+  },
+  {
+    "term": "負荷テスト / ストレステスト",
+    "en": "Load / Stress Test",
+    "desc": "想定量の負荷に耐えるか / 限界を超えたときどう壊れるかを見る",
+    "section": "testing",
+    "group": "テストの種類",
+    "related": [
+      "性能テスト",
+      "ソークテスト",
+      "スループット"
+    ]
+  },
+  {
+    "term": "性能テスト",
+    "en": "Performance Test",
+    "desc": "応答時間や処理量が目標を満たすか測るテスト",
+    "section": "testing",
+    "group": "テストの種類",
+    "related": [
+      "負荷テスト / ストレステスト",
+      "レイテンシ",
+      "スループット"
+    ]
+  },
+  {
+    "term": "ソークテスト",
+    "en": "Soak Test",
+    "desc": "長時間動かし続けて、メモリリークなど時間で悪化する問題を探す",
+    "section": "testing",
+    "group": "テストの種類",
+    "related": [
+      "負荷テスト / ストレステスト",
+      "メモリリーク",
+      "性能テスト"
+    ]
+  },
+  {
+    "term": "ユーザビリティテスト",
+    "en": "Usability Test",
+    "desc": "実際の利用者に使ってもらい、迷う箇所を観察するテスト",
+    "section": "testing",
+    "group": "テストの種類",
+    "related": [
+      "A/B テスト",
+      "UI デザイナー / UX デザイナー",
+      "探索的テスト"
+    ]
+  },
+  {
+    "term": "A/B テスト",
+    "en": "A/B Testing",
+    "desc": "2案を実際の利用者に出し分け、成果が良い方を選ぶ検証",
+    "section": "testing",
+    "group": "テストの種類",
+    "related": [
+      "ユーザビリティテスト",
+      "フィーチャーフラグ",
+      "KPI / KGI"
+    ]
+  },
+  {
+    "term": "モンキーテスト",
+    "en": "Monkey Testing",
+    "desc": "でたらめな操作を大量に与えて、想定外の落ち方を探すテスト",
+    "section": "testing",
+    "group": "テストの種類",
+    "related": [
+      "探索的テスト",
+      "ファジング",
+      "エッジケース"
+    ]
+  },
+  {
+    "term": "ホワイトボックステスト",
+    "en": "White-box Testing",
+    "desc": "中身のコード構造を見て、通る経路を狙って設計するテスト",
+    "section": "testing",
+    "group": "テスト技法とテストケース",
+    "related": [
+      "ブラックボックステスト",
+      "カバレッジ",
+      "C0 / C1 / C2"
+    ]
+  },
+  {
+    "term": "ブラックボックステスト",
+    "en": "Black-box Testing",
+    "desc": "中身を見ず、入力と出力の仕様だけから設計するテスト",
+    "section": "testing",
+    "group": "テスト技法とテストケース",
+    "related": [
+      "ホワイトボックステスト",
+      "同値分割",
+      "境界値分析"
+    ]
+  },
+  {
+    "term": "同値分割",
+    "en": "Equivalence Partitioning",
+    "desc": "同じ結果になる入力をグループにまとめ、代表だけ試す技法",
+    "section": "testing",
+    "group": "テスト技法とテストケース",
+    "related": [
+      "境界値分析",
+      "ブラックボックステスト",
+      "テストケース"
+    ]
+  },
+  {
+    "term": "境界値分析",
+    "en": "Boundary Value Analysis",
+    "desc": "しきい値の前後（0/1、上限/上限+1）を狙って試す技法",
+    "section": "testing",
+    "group": "テスト技法とテストケース",
+    "related": [
+      "同値分割",
+      "エッジケース",
+      "テストケース"
+    ]
+  },
+  {
+    "term": "デシジョンテーブル",
+    "en": "Decision Table",
+    "desc": "条件の組み合わせと結果を表にして漏れを防ぐ技法",
+    "section": "testing",
+    "group": "テスト技法とテストケース",
+    "related": [
+      "ペアワイズ法",
+      "テストケース",
+      "テスト観点"
+    ]
+  },
+  {
+    "term": "状態遷移テスト",
+    "en": "State Transition Testing",
+    "desc": "状態と遷移を洗い出し、ありえない遷移も含めて試す技法",
+    "section": "testing",
+    "group": "テスト技法とテストケース",
+    "related": [
+      "状態遷移図",
+      "テストケース",
+      "ステート"
+    ]
+  },
+  {
+    "term": "ペアワイズ法",
+    "en": "Pairwise Testing",
+    "desc": "全組み合わせでなく、2因子の組み合わせを網羅して件数を減らす技法",
+    "section": "testing",
+    "group": "テスト技法とテストケース",
+    "related": [
+      "デシジョンテーブル",
+      "テストケース",
+      "テスト計画書 / テスト仕様書"
+    ]
+  },
+  {
+    "term": "テストケース",
+    "en": "Test Case",
+    "desc": "入力・手順・期待結果を1件ずつ書き出したもの",
+    "section": "testing",
+    "group": "テスト技法とテストケース",
+    "related": [
+      "テストシナリオ",
+      "テスト観点",
+      "エビデンス"
+    ]
+  },
+  {
+    "term": "テストシナリオ",
+    "en": "Test Scenario",
+    "desc": "業務の流れに沿って複数の操作をつないだ大きな確認単位",
+    "section": "testing",
+    "group": "テスト技法とテストケース",
+    "related": [
+      "テストケース",
+      "ユースケース",
+      "E2E テスト"
+    ]
+  },
+  {
+    "term": "テスト観点",
+    "en": "Test Viewpoint",
+    "desc": "何に着目して試すかの切り口。機能・性能・異常系など",
+    "section": "testing",
+    "group": "テスト技法とテストケース",
+    "related": [
+      "テストケース",
+      "品質特性",
+      "正常系 / 異常系"
+    ]
+  },
+  {
+    "term": "正常系 / 異常系",
+    "en": "Happy / Unhappy Path",
+    "desc": "想定どおりの流れ / 誤入力や障害が起きる流れ",
+    "section": "testing",
+    "group": "テスト技法とテストケース",
+    "related": [
+      "エッジケース",
+      "テスト観点",
+      "例外 / スタックトレース"
+    ]
+  },
+  {
+    "term": "エッジケース",
+    "en": "Edge Case",
+    "desc": "極端な値や滅多に起きない条件。バグが潜みやすい",
+    "section": "testing",
+    "group": "テスト技法とテストケース",
+    "related": [
+      "境界値分析",
+      "正常系 / 異常系",
+      "バグ"
+    ]
+  },
+  {
+    "term": "テストデータ",
+    "en": "Test Data",
+    "desc": "テストのために用意する入力データ。本番データの扱いに注意",
+    "section": "testing",
+    "group": "テスト技法とテストケース",
+    "related": [
+      "フィクスチャ",
+      "マスキング / 匿名化",
+      "テストケース"
+    ]
+  },
+  {
+    "term": "カバレッジ",
+    "en": "Coverage",
+    "desc": "テストがコードのどれだけを通ったかの割合",
+    "section": "testing",
+    "group": "テスト技法とテストケース",
+    "related": [
+      "C0 / C1 / C2",
+      "ホワイトボックステスト",
+      "ミューテーションテスト"
+    ]
+  },
+  {
+    "term": "C0 / C1 / C2",
+    "en": "Statement / Branch / Condition Coverage",
+    "desc": "命令網羅 / 分岐網羅 / 条件網羅。カバレッジの厳しさの段階",
+    "section": "testing",
+    "group": "テスト技法とテストケース",
+    "related": [
+      "カバレッジ",
+      "ホワイトボックステスト",
+      "品質ゲート"
+    ]
+  },
+  {
+    "term": "テスト自動化",
+    "en": "Test Automation",
+    "desc": "テストをコード化し、繰り返し自動で実行できるようにすること",
+    "section": "testing",
+    "group": "テスト自動化と開発手法",
+    "related": [
+      "CI / CD",
+      "TDD",
+      "フレーキーテスト"
+    ]
+  },
+  {
+    "term": "テストフレームワーク",
+    "en": "Test Framework",
+    "desc": "テストを書き実行するための土台。Jest / pytest / JUnit など",
+    "section": "testing",
+    "group": "テスト自動化と開発手法",
+    "related": [
+      "テスト自動化",
+      "アサーション",
+      "単体テスト"
+    ]
+  },
+  {
+    "term": "TDD",
+    "en": "Test-Driven Development",
+    "desc": "先に失敗するテストを書き、それを通す実装をしてから整える進め方",
+    "section": "testing",
+    "group": "テスト自動化と開発手法",
+    "related": [
+      "BDD",
+      "レッド・グリーン・リファクタ",
+      "リファクタリング"
+    ]
+  },
+  {
+    "term": "レッド・グリーン・リファクタ",
+    "en": "Red-Green-Refactor",
+    "desc": "TDD の3拍子。失敗させる→通す→整える",
+    "section": "testing",
+    "group": "テスト自動化と開発手法",
+    "related": [
+      "TDD",
+      "リファクタリング",
+      "テスト自動化"
+    ]
+  },
+  {
+    "term": "BDD",
+    "en": "Behavior-Driven Development",
+    "desc": "「どう振る舞うべきか」を自然言語に近い形で書き、仕様とテストを兼ねる手法",
+    "section": "testing",
+    "group": "テスト自動化と開発手法",
+    "related": [
+      "TDD",
+      "Given-When-Then",
+      "ATDD"
+    ]
+  },
+  {
+    "term": "Given-When-Then",
+    "en": "Given-When-Then",
+    "desc": "BDD で使う記法。前提・操作・期待結果の3段で書く",
+    "section": "testing",
+    "group": "テスト自動化と開発手法",
+    "related": [
+      "BDD",
+      "受け入れ基準",
+      "テストケース"
+    ]
+  },
+  {
+    "term": "ATDD",
+    "en": "Acceptance Test-Driven Development",
+    "desc": "受け入れ条件を先に決め、それをテストとして開発を進める手法",
+    "section": "testing",
+    "group": "テスト自動化と開発手法",
+    "related": [
+      "BDD",
+      "受け入れテスト（UAT）",
+      "受け入れ基準"
+    ]
+  },
+  {
+    "term": "テストピラミッド",
+    "en": "Test Pyramid",
+    "desc": "単体を厚く、E2E を薄くという自動テストの配分の指針",
+    "section": "testing",
+    "group": "テスト自動化と開発手法",
+    "related": [
+      "単体テスト",
+      "E2E テスト",
+      "テスト自動化"
+    ]
+  },
+  {
+    "term": "テストダブル",
+    "en": "Test Double",
+    "desc": "本物の代わりに差し込む偽物の総称",
+    "section": "testing",
+    "group": "テスト自動化と開発手法",
+    "related": [
+      "モック / スタブ",
+      "スパイ / フェイク",
+      "単体テスト"
+    ]
+  },
+  {
+    "term": "モック / スタブ",
+    "en": "Mock / Stub",
+    "desc": "呼ばれ方を検証する偽物 / 決まった値を返すだけの偽物",
+    "section": "testing",
+    "group": "テスト自動化と開発手法",
+    "related": [
+      "テストダブル",
+      "スパイ / フェイク",
+      "モックする（mock）"
+    ]
+  },
+  {
+    "term": "スパイ / フェイク",
+    "en": "Spy / Fake",
+    "desc": "呼び出しを記録する偽物 / 簡易実装を持つ偽物",
+    "section": "testing",
+    "group": "テスト自動化と開発手法",
+    "related": [
+      "テストダブル",
+      "モック / スタブ",
+      "単体テスト"
+    ]
+  },
+  {
+    "term": "フィクスチャ",
+    "en": "Fixture",
+    "desc": "テストの前提として毎回用意する初期データや状態",
+    "section": "testing",
+    "group": "テスト自動化と開発手法",
+    "related": [
+      "テストデータ",
+      "単体テスト",
+      "アサーション"
+    ]
+  },
+  {
+    "term": "アサーション",
+    "en": "Assertion",
+    "desc": "「こうなっているはず」をコードで宣言し、違えば失敗させる仕組み",
+    "section": "testing",
+    "group": "テスト自動化と開発手法",
+    "related": [
+      "単体テスト",
+      "フィクスチャ",
+      "テストケース"
+    ]
+  },
+  {
+    "term": "フレーキーテスト",
+    "en": "Flaky Test",
+    "desc": "同じコードなのに通ったり落ちたりする、信用できないテスト",
+    "section": "testing",
+    "group": "テスト自動化と開発手法",
+    "related": [
+      "テスト自動化",
+      "E2E テスト",
+      "レースコンディション"
+    ]
+  },
+  {
+    "term": "スナップショットテスト",
+    "en": "Snapshot Test",
+    "desc": "出力を丸ごと記録し、差分が出たら知らせるテスト",
+    "section": "testing",
+    "group": "テスト自動化と開発手法",
+    "related": [
+      "回帰テスト",
+      "アサーション",
+      "テスト自動化"
+    ]
+  },
+  {
+    "term": "契約テスト",
+    "en": "Contract Test",
+    "desc": "呼ぶ側と呼ばれる側の取り決めが守られているか確かめるテスト",
+    "section": "testing",
+    "group": "テスト自動化と開発手法",
+    "related": [
+      "契約",
+      "結合テスト",
+      "マイクロサービス"
+    ]
+  },
+  {
+    "term": "ミューテーションテスト",
+    "en": "Mutation Testing",
+    "desc": "わざとコードを壊し、テストが気づけるかでテストの質を測る手法",
+    "section": "testing",
+    "group": "テスト自動化と開発手法",
+    "related": [
+      "カバレッジ",
+      "テスト自動化",
+      "品質ゲート"
+    ]
+  },
+  {
+    "term": "品質保証（QA）",
+    "en": "Quality Assurance",
+    "desc": "作り方の仕組みから品質を担保する活動",
+    "section": "testing",
+    "group": "品質保証と不具合管理",
+    "related": [
+      "品質管理（QC）",
+      "QA エンジニア / テスター",
+      "品質特性"
+    ]
+  },
+  {
+    "term": "品質管理（QC）",
+    "en": "Quality Control",
+    "desc": "できあがった成果物を検査し、基準を満たすか確認する活動",
+    "section": "testing",
+    "group": "品質保証と不具合管理",
+    "related": [
+      "品質保証（QA）",
+      "品質ゲート",
+      "バグ密度"
+    ]
+  },
+  {
+    "term": "品質特性",
+    "en": "Quality Characteristics",
+    "desc": "機能適合性・性能・信頼性など、品質を測る観点の分類（ISO/IEC 25010）",
+    "section": "testing",
+    "group": "品質保証と不具合管理",
+    "related": [
+      "信頼性 / 移植性",
+      "機能要件 / 非機能要件",
+      "品質保証（QA）"
+    ]
+  },
+  {
+    "term": "信頼性 / 移植性",
+    "en": "Reliability / Portability",
+    "desc": "止まらず正しく動き続ける度合い / 別環境へ移しやすい度合い",
+    "section": "testing",
+    "group": "品質保証と不具合管理",
+    "related": [
+      "品質特性",
+      "可用性",
+      "SLA / SLO / SLI"
+    ]
+  },
+  {
+    "term": "バグ票 / チケット",
+    "en": "Bug Report / Ticket",
+    "desc": "不具合1件を記録・追跡するための起票単位",
+    "section": "testing",
+    "group": "品質保証と不具合管理",
+    "related": [
+      "起票",
+      "再現手順",
+      "トリアージ"
+    ]
+  },
+  {
+    "term": "起票",
+    "en": "Filing",
+    "desc": "不具合や作業をチケットとして登録すること",
+    "section": "testing",
+    "group": "品質保証と不具合管理",
+    "related": [
+      "バグ票 / チケット",
+      "課題管理表",
+      "トリアージ"
+    ]
+  },
+  {
+    "term": "再現手順",
+    "en": "Steps to Reproduce",
+    "desc": "その不具合を確実に再現させるための操作の手順",
+    "section": "testing",
+    "group": "品質保証と不具合管理",
+    "related": [
+      "バグ票 / チケット",
+      "再現しない",
+      "デバッグ"
+    ]
+  },
+  {
+    "term": "再現しない",
+    "en": "Not Reproducible",
+    "desc": "報告どおりに操作しても同じ症状が出ない状態",
+    "section": "testing",
+    "group": "品質保証と不具合管理",
+    "related": [
+      "再現手順",
+      "バグ票 / チケット",
+      "フレーキーテスト"
+    ]
+  },
+  {
+    "term": "優先度 / 重要度",
+    "en": "Priority / Severity",
+    "desc": "いつ直すか / どれだけ深刻か。分けて管理する",
+    "section": "testing",
+    "group": "品質保証と不具合管理",
+    "related": [
+      "トリアージ",
+      "バグ票 / チケット",
+      "既知の不具合"
+    ]
+  },
+  {
+    "term": "トリアージ",
+    "en": "Triage",
+    "desc": "報告された不具合を仕分けし、対応順を決めること",
+    "section": "testing",
+    "group": "品質保証と不具合管理",
+    "related": [
+      "優先度 / 重要度",
+      "バグ票 / チケット",
+      "起票"
+    ]
+  },
+  {
+    "term": "RCA（根本原因分析）",
+    "en": "Root Cause Analysis",
+    "desc": "表面の症状ではなく、真の原因まで掘り下げる分析。なぜなぜ分析など",
+    "section": "testing",
+    "group": "品質保証と不具合管理",
+    "related": [
+      "トリアージ",
+      "ポストモーテム",
+      "デバッグ"
+    ]
+  },
+  {
+    "term": "既知の不具合",
+    "en": "Known Issue",
+    "desc": "把握済みで、今回は直さないと合意された不具合",
+    "section": "testing",
+    "group": "品質保証と不具合管理",
+    "related": [
+      "トリアージ",
+      "リリース判定",
+      "バグ票 / チケット"
+    ]
+  },
+  {
+    "term": "リリース判定",
+    "en": "Release Criteria / Go-No-Go",
+    "desc": "出して良いかを基準に照らして判断する会議・工程",
+    "section": "testing",
+    "group": "品質保証と不具合管理",
+    "related": [
+      "品質ゲート",
+      "既知の不具合",
+      "デプロイ"
+    ]
+  },
+  {
+    "term": "バグ密度",
+    "en": "Defect Density",
+    "desc": "規模あたりの不具合件数。品質の目安に使う",
+    "section": "testing",
+    "group": "品質保証と不具合管理",
+    "related": [
+      "品質管理（QC）",
+      "カバレッジ",
+      "品質ゲート"
+    ]
+  },
+  {
+    "term": "テスト計画書 / テスト仕様書",
+    "en": "Test Plan / Test Specification",
+    "desc": "何をどこまで試すかの計画 / 具体的な手順書",
+    "section": "testing",
+    "group": "品質保証と不具合管理",
+    "related": [
+      "テストケース",
+      "テスト観点",
+      "エビデンス"
+    ]
+  },
+  {
+    "term": "エビデンス",
+    "en": "Evidence",
+    "desc": "テストを実施した証拠として残す画面や記録",
+    "section": "testing",
+    "group": "品質保証と不具合管理",
+    "related": [
+      "テストケース",
+      "テスト計画書 / テスト仕様書",
+      "検収"
+    ]
+  },
+  {
+    "term": "品質ゲート",
+    "en": "Quality Gate",
+    "desc": "この基準を満たさないと次工程へ進めない、という関門",
+    "section": "testing",
+    "group": "品質保証と不具合管理",
+    "related": [
+      "リリース判定",
+      "CI / CD",
+      "カバレッジ"
+    ]
+  },
+  {
+    "term": "Four Keys",
+    "en": "Four Keys",
+    "desc": "デプロイ頻度・変更のリードタイム・変更障害率・復旧時間の4指標",
+    "section": "testing",
+    "group": "品質保証と不具合管理",
+    "related": [
+      "品質ゲート",
+      "CI / CD",
+      "リードタイム / サイクルタイム"
+    ]
+  },
+  {
+    "term": "パブリッククラウド",
+    "en": "Public Cloud",
+    "desc": "事業者の設備を不特定多数で共有して使う一般的なクラウド",
+    "section": "cloud",
+    "group": "クラウドの形態と考え方",
+    "related": [
+      "プライベートクラウド",
+      "クラウド",
+      "マルチクラウド / ハイブリッドクラウド"
+    ]
+  },
+  {
+    "term": "プライベートクラウド",
+    "en": "Private Cloud",
+    "desc": "自社専用に構築・占有するクラウド環境",
+    "section": "cloud",
+    "group": "クラウドの形態と考え方",
+    "related": [
+      "パブリッククラウド",
+      "オンプレミス",
+      "仮想化"
+    ]
+  },
+  {
+    "term": "クラウドネイティブ",
+    "en": "Cloud Native",
+    "desc": "最初からクラウド前提で、コンテナや自動スケールを活かす作り方",
+    "section": "cloud",
+    "group": "クラウドの形態と考え方",
+    "related": [
+      "コンテナ",
+      "マイクロサービス",
+      "サーバーレス"
+    ]
+  },
+  {
+    "term": "リフト＆シフト",
+    "en": "Lift and Shift",
+    "desc": "既存システムをほぼそのままクラウドへ移す移行方式",
+    "section": "cloud",
+    "group": "クラウドの形態と考え方",
+    "related": [
+      "クラウド移行",
+      "オンプレミス",
+      "仮想マシン"
+    ]
+  },
+  {
+    "term": "クラウド移行",
+    "en": "Cloud Migration",
+    "desc": "オンプレミスの資産をクラウドへ移す取り組み全体",
+    "section": "cloud",
+    "group": "クラウドの形態と考え方",
+    "related": [
+      "リフト＆シフト",
+      "オンプレミス",
+      "クラウドネイティブ"
+    ]
+  },
+  {
+    "term": "責任共有モデル",
+    "en": "Shared Responsibility Model",
+    "desc": "事業者と利用者で守る範囲を分担する考え方。設定ミスは利用者責任",
+    "section": "cloud",
+    "group": "クラウドの形態と考え方",
+    "related": [
+      "CSPM",
+      "IAM",
+      "クラウド"
+    ]
+  },
+  {
+    "term": "ベンダーロックイン",
+    "en": "Vendor Lock-in",
+    "desc": "特定事業者の仕組みに依存し、乗り換えが難しくなる状態",
+    "section": "cloud",
+    "group": "クラウドの形態と考え方",
+    "related": [
+      "マルチクラウド / ハイブリッドクラウド",
+      "オープンソース",
+      "コンテナ"
+    ]
+  },
+  {
+    "term": "FaaS",
+    "en": "Function as a Service",
+    "desc": "関数単位でコードを預け、呼ばれたときだけ実行される形態",
+    "section": "cloud",
+    "group": "クラウドの形態と考え方",
+    "related": [
+      "サーバーレス",
+      "Lambda",
+      "Azure Functions"
+    ]
+  },
+  {
+    "term": "BaaS / mBaaS",
+    "en": "Backend as a Service",
+    "desc": "認証やDBなどバックエンド一式をサービスとして借りる形態",
+    "section": "cloud",
+    "group": "クラウドの形態と考え方",
+    "related": [
+      "Firebase",
+      "SaaS",
+      "FaaS"
+    ]
+  },
+  {
+    "term": "CaaS（コンテナ as a Service）",
+    "en": "Container as a Service",
+    "desc": "コンテナの実行基盤をサービスとして借りる形態",
+    "section": "cloud",
+    "group": "クラウドの形態と考え方",
+    "related": [
+      "コンテナ",
+      "ECS / EKS",
+      "Cloud Run"
+    ]
+  },
+  {
+    "term": "DaaS（デスクトップ）",
+    "en": "Desktop as a Service",
+    "desc": "仮想デスクトップをクラウドから配信する形態",
+    "section": "cloud",
+    "group": "クラウドの形態と考え方",
+    "related": [
+      "シンクライアント",
+      "仮想化",
+      "SaaS"
+    ]
+  },
+  {
+    "term": "XaaS",
+    "en": "Anything as a Service",
+    "desc": "あらゆるものをサービスとして提供する潮流の総称",
+    "section": "cloud",
+    "group": "クラウドの形態と考え方",
+    "related": [
+      "IaaS",
+      "PaaS",
+      "SaaS"
+    ]
+  },
+  {
+    "term": "エッジコンピューティング",
+    "en": "Edge Computing",
+    "desc": "利用者に近い場所で処理し、遅延と通信量を減らす方式",
+    "section": "cloud",
+    "group": "クラウドの形態と考え方",
+    "related": [
+      "CDN",
+      "レイテンシ",
+      "IoT"
+    ]
+  },
+  {
+    "term": "マネージドサービス",
+    "en": "Managed Service",
+    "desc": "運用（バックアップ・パッチ・冗長化）を事業者が担うサービス",
+    "section": "cloud",
+    "group": "クラウドの形態と考え方",
+    "related": [
+      "フルマネージド / セルフマネージド",
+      "RDS",
+      "クラウド"
+    ]
+  },
+  {
+    "term": "フルマネージド / セルフマネージド",
+    "en": "Fully / Self Managed",
+    "desc": "運用をすべて任せる / 自分で面倒を見る",
+    "section": "cloud",
+    "group": "クラウドの形態と考え方",
+    "related": [
+      "マネージドサービス",
+      "保守・運用フェーズ",
+      "オンプレミス"
+    ]
+  },
+  {
+    "term": "AWS",
+    "en": "Amazon Web Services",
+    "desc": "Amazon が提供する最大手のクラウドサービス群",
+    "section": "cloud",
+    "group": "AWS の主要サービス",
+    "related": [
+      "EC2",
+      "S3",
+      "Microsoft Azure",
+      "Google Cloud（GCP）"
+    ]
+  },
+  {
+    "term": "EC2",
+    "en": "Elastic Compute Cloud",
+    "desc": "仮想サーバーを立てて使う、AWS の基本の計算サービス",
+    "section": "cloud",
+    "group": "AWS の主要サービス",
+    "related": [
+      "インスタンス",
+      "Azure Virtual Machines",
+      "Compute Engine"
+    ]
+  },
+  {
+    "term": "S3",
+    "en": "Simple Storage Service",
+    "desc": "ファイルを大量に置けるオブジェクトストレージ",
+    "section": "cloud",
+    "group": "AWS の主要サービス",
+    "related": [
+      "Azure Blob Storage",
+      "Cloud Storage",
+      "ストレージ"
+    ]
+  },
+  {
+    "term": "EBS",
+    "en": "Elastic Block Store",
+    "desc": "EC2 に接続して使う、ディスクのようなブロックストレージ",
+    "section": "cloud",
+    "group": "AWS の主要サービス",
+    "related": [
+      "S3",
+      "ボリューム / マウント",
+      "ストレージ"
+    ]
+  },
+  {
+    "term": "RDS",
+    "en": "Relational Database Service",
+    "desc": "MySQL や PostgreSQL を運用込みで借りられるマネージド DB",
+    "section": "cloud",
+    "group": "AWS の主要サービス",
+    "related": [
+      "RDBMS",
+      "DynamoDB",
+      "マネージドサービス"
+    ]
+  },
+  {
+    "term": "DynamoDB",
+    "en": "DynamoDB",
+    "desc": "AWS のマネージド NoSQL（キーバリュー型）データベース",
+    "section": "cloud",
+    "group": "AWS の主要サービス",
+    "related": [
+      "NoSQL",
+      "RDS",
+      "KVS / ドキュメント指向"
+    ]
+  },
+  {
+    "term": "Lambda",
+    "en": "AWS Lambda",
+    "desc": "サーバーを持たずに関数を実行できる、AWS の FaaS",
+    "section": "cloud",
+    "group": "AWS の主要サービス",
+    "related": [
+      "FaaS",
+      "サーバーレス",
+      "Azure Functions"
+    ]
+  },
+  {
+    "term": "IAM",
+    "en": "Identity and Access Management",
+    "desc": "誰が何をしてよいかを定義する、権限管理の中核サービス",
+    "section": "cloud",
+    "group": "AWS の主要サービス",
+    "related": [
+      "認証 / 認可",
+      "最小権限の原則",
+      "責任共有モデル"
+    ]
+  },
+  {
+    "term": "IAM ロール / IAM ポリシー",
+    "en": "IAM Role / Policy",
+    "desc": "一時的に権限を借りる仕組み / 何を許すかを書いた定義",
+    "section": "cloud",
+    "group": "AWS の主要サービス",
+    "related": [
+      "IAM",
+      "最小権限の原則",
+      "サービスアカウント"
+    ]
+  },
+  {
+    "term": "セキュリティグループ",
+    "en": "Security Group",
+    "desc": "インスタンス単位で通信を許可・拒否する仮想ファイアウォール",
+    "section": "cloud",
+    "group": "AWS の主要サービス",
+    "related": [
+      "ファイアウォール",
+      "VPC",
+      "IAM"
+    ]
+  },
+  {
+    "term": "サービスアカウント",
+    "en": "Service Account",
+    "desc": "人ではなくプログラムに割り当てる、権限を持つアカウント",
+    "section": "cloud",
+    "group": "AWS の主要サービス",
+    "related": [
+      "IAM ロール / IAM ポリシー",
+      "IAM",
+      "API キー / ベアラートークン"
+    ]
+  },
+  {
+    "term": "CloudFront",
+    "en": "CloudFront",
+    "desc": "AWS の CDN。世界各地にコンテンツを配信する",
+    "section": "cloud",
+    "group": "AWS の主要サービス",
+    "related": [
+      "CDN",
+      "Route 53",
+      "S3"
+    ]
+  },
+  {
+    "term": "Route 53",
+    "en": "Route 53",
+    "desc": "AWS の DNS サービス。名前解決とルーティングを担う",
+    "section": "cloud",
+    "group": "AWS の主要サービス",
+    "related": [
+      "DNS",
+      "名前解決",
+      "CloudFront"
+    ]
+  },
+  {
+    "term": "ELB / ALB",
+    "en": "Elastic / Application Load Balancer",
+    "desc": "AWS のロードバランサ。複数サーバーへ通信を振り分ける。HTTP 向けが ALB",
+    "section": "cloud",
+    "group": "AWS の主要サービス",
+    "related": [
+      "ロードバランサ",
+      "ロードバランシング",
+      "オートスケーリング"
+    ]
+  },
+  {
+    "term": "ECS / EKS",
+    "en": "Elastic Container Service / Kubernetes Service",
+    "desc": "AWS のコンテナ実行基盤 / マネージド Kubernetes",
+    "section": "cloud",
+    "group": "AWS の主要サービス",
+    "related": [
+      "Kubernetes（K8s）",
+      "コンテナ",
+      "GKE"
+    ]
+  },
+  {
+    "term": "CloudWatch",
+    "en": "CloudWatch",
+    "desc": "AWS の監視サービス。メトリクス・ログ・アラームを扱う",
+    "section": "cloud",
+    "group": "AWS の主要サービス",
+    "related": [
+      "モニタリング",
+      "オブザーバビリティ",
+      "アラート / 閾値"
+    ]
+  },
+  {
+    "term": "CloudFormation",
+    "en": "CloudFormation",
+    "desc": "AWS 構成をテンプレートで管理する IaC サービス",
+    "section": "cloud",
+    "group": "AWS の主要サービス",
+    "related": [
+      "IaC",
+      "プロビジョニング",
+      "ランディングゾーン"
+    ]
+  },
+  {
+    "term": "SQS / SNS",
+    "en": "Simple Queue / Notification Service",
+    "desc": "AWS のメッセージキュー / 通知配信サービス",
+    "section": "cloud",
+    "group": "AWS の主要サービス",
+    "related": [
+      "メッセージキュー",
+      "Pub/Sub",
+      "イベント駆動アーキテクチャ"
+    ]
+  },
+  {
+    "term": "API Gateway",
+    "en": "Amazon API Gateway",
+    "desc": "API の受け口を作り、認証・流量制御・転送をまとめて担う",
+    "section": "cloud",
+    "group": "AWS の主要サービス",
+    "related": [
+      "API",
+      "レートリミット",
+      "BFF"
+    ]
+  },
+  {
+    "term": "Microsoft Azure",
+    "en": "Azure",
+    "desc": "Microsoft のクラウド。企業向け製品との連携が強い",
+    "section": "cloud",
+    "group": "Azure と Google Cloud",
+    "related": [
+      "AWS",
+      "Google Cloud（GCP）",
+      "Microsoft Entra ID"
+    ]
+  },
+  {
+    "term": "Azure Virtual Machines",
+    "en": "Azure VM",
+    "desc": "Azure の仮想サーバー。AWS の EC2 に相当",
+    "section": "cloud",
+    "group": "Azure と Google Cloud",
+    "related": [
+      "EC2",
+      "Compute Engine",
+      "仮想マシン"
+    ]
+  },
+  {
+    "term": "Azure Blob Storage",
+    "en": "Blob Storage",
+    "desc": "Azure のオブジェクトストレージ。S3 に相当",
+    "section": "cloud",
+    "group": "Azure と Google Cloud",
+    "related": [
+      "S3",
+      "Cloud Storage",
+      "ストレージ"
+    ]
+  },
+  {
+    "term": "Azure Functions",
+    "en": "Azure Functions",
+    "desc": "Azure の FaaS。Lambda に相当",
+    "section": "cloud",
+    "group": "Azure と Google Cloud",
+    "related": [
+      "Lambda",
+      "FaaS",
+      "サーバーレス"
+    ]
+  },
+  {
+    "term": "Microsoft Entra ID",
+    "en": "Entra ID",
+    "desc": "Microsoft の ID 基盤（旧 Azure Active Directory）",
+    "section": "cloud",
+    "group": "Azure と Google Cloud",
+    "related": [
+      "シングルサインオン",
+      "IDaaS",
+      "IAM"
+    ]
+  },
+  {
+    "term": "Google Cloud（GCP）",
+    "en": "Google Cloud Platform",
+    "desc": "Google のクラウド。データ分析と機械学習に強み",
+    "section": "cloud",
+    "group": "Azure と Google Cloud",
+    "related": [
+      "AWS",
+      "Microsoft Azure",
+      "BigQuery"
+    ]
+  },
+  {
+    "term": "Compute Engine",
+    "en": "Compute Engine",
+    "desc": "Google Cloud の仮想サーバー。EC2 に相当",
+    "section": "cloud",
+    "group": "Azure と Google Cloud",
+    "related": [
+      "EC2",
+      "Azure Virtual Machines",
+      "仮想マシン"
+    ]
+  },
+  {
+    "term": "Cloud Storage",
+    "en": "Cloud Storage",
+    "desc": "Google Cloud のオブジェクトストレージ。S3 に相当",
+    "section": "cloud",
+    "group": "Azure と Google Cloud",
+    "related": [
+      "S3",
+      "Azure Blob Storage",
+      "ストレージ"
+    ]
+  },
+  {
+    "term": "BigQuery",
+    "en": "BigQuery",
+    "desc": "巨大データを高速に集計できる Google Cloud のデータウェアハウス",
+    "section": "cloud",
+    "group": "Azure と Google Cloud",
+    "related": [
+      "DWH",
+      "データレイク",
+      "OLTP / OLAP"
+    ]
+  },
+  {
+    "term": "Cloud Run",
+    "en": "Cloud Run",
+    "desc": "コンテナをリクエスト単位で動かす Google Cloud のサーバーレス実行環境",
+    "section": "cloud",
+    "group": "Azure と Google Cloud",
+    "related": [
+      "サーバーレス",
+      "コンテナ",
+      "CaaS（コンテナ as a Service）"
+    ]
+  },
+  {
+    "term": "GKE",
+    "en": "Google Kubernetes Engine",
+    "desc": "Google Cloud のマネージド Kubernetes",
+    "section": "cloud",
+    "group": "Azure と Google Cloud",
+    "related": [
+      "Kubernetes（K8s）",
+      "ECS / EKS",
+      "コンテナ"
+    ]
+  },
+  {
+    "term": "Firebase",
+    "en": "Firebase",
+    "desc": "認証・DB・ホスティングをまとめて使える Google の BaaS",
+    "section": "cloud",
+    "group": "Azure と Google Cloud",
+    "related": [
+      "BaaS / mBaaS",
+      "認証 / 認可",
+      "PaaS"
+    ]
+  },
+  {
+    "term": "オンデマンド",
+    "en": "On-demand",
+    "desc": "使った分だけ都度課金される、標準の利用形態",
+    "section": "cloud",
+    "group": "運用・コスト・組織",
+    "related": [
+      "従量課金",
+      "リザーブドインスタンス",
+      "スポットインスタンス"
+    ]
+  },
+  {
+    "term": "リザーブドインスタンス",
+    "en": "Reserved Instance / Savings Plans",
+    "desc": "長期利用を約束して割引を受ける契約形態",
+    "section": "cloud",
+    "group": "運用・コスト・組織",
+    "related": [
+      "オンデマンド",
+      "スポットインスタンス",
+      "コスト最適化"
+    ]
+  },
+  {
+    "term": "スポットインスタンス",
+    "en": "Spot Instance",
+    "desc": "空き容量を安く使えるが、途中で回収されうる形態",
+    "section": "cloud",
+    "group": "運用・コスト・組織",
+    "related": [
+      "オンデマンド",
+      "リザーブドインスタンス",
+      "オートスケーリング"
+    ]
+  },
+  {
+    "term": "FinOps",
+    "en": "FinOps",
+    "desc": "クラウド費用を可視化し、開発と経理が協力して最適化する取り組み",
+    "section": "cloud",
+    "group": "運用・コスト・組織",
+    "related": [
+      "コスト最適化",
+      "課金アラート",
+      "タグ付け"
+    ]
+  },
+  {
+    "term": "コスト最適化",
+    "en": "Cost Optimization",
+    "desc": "不要資源の停止や適正サイズ化で費用を下げること",
+    "section": "cloud",
+    "group": "運用・コスト・組織",
+    "related": [
+      "FinOps",
+      "オートスケーリング",
+      "リザーブドインスタンス"
+    ]
+  },
+  {
+    "term": "タグ付け",
+    "en": "Tagging",
+    "desc": "資源にラベルを付け、費用や所有者を分類・集計できるようにすること",
+    "section": "cloud",
+    "group": "運用・コスト・組織",
+    "related": [
+      "FinOps",
+      "コスト最適化",
+      "ランディングゾーン"
+    ]
+  },
+  {
+    "term": "クォータ",
+    "en": "Quota / Service Limit",
+    "desc": "アカウントごとに決まった利用上限。緩和申請で引き上げる",
+    "section": "cloud",
+    "group": "運用・コスト・組織",
+    "related": [
+      "レートリミット",
+      "オートスケーリング",
+      "キャパシティ"
+    ]
+  },
+  {
+    "term": "コントロールプレーン / データプレーン",
+    "en": "Control / Data Plane",
+    "desc": "設定や制御を担う層 / 実際の通信・処理を担う層",
+    "section": "cloud",
+    "group": "運用・コスト・組織",
+    "related": [
+      "Kubernetes（K8s）",
+      "サービスメッシュ",
+      "ロードバランサ"
+    ]
+  },
+  {
+    "term": "マルチテナント / シングルテナント",
+    "en": "Multi / Single Tenant",
+    "desc": "複数利用者で基盤を共有 / 利用者ごとに専有",
+    "section": "cloud",
+    "group": "運用・コスト・組織",
+    "related": [
+      "SaaS",
+      "パブリッククラウド",
+      "VPC"
+    ]
+  },
+  {
+    "term": "ゾーン冗長 / リージョン冗長",
+    "en": "Zonal / Regional Redundancy",
+    "desc": "同一地域内で分散 / 地域をまたいで分散し災害に備える",
+    "section": "cloud",
+    "group": "運用・コスト・組織",
+    "related": [
+      "リージョン / AZ",
+      "冗長化",
+      "フェイルオーバー"
+    ]
+  },
+  {
+    "term": "データレジデンシー",
+    "en": "Data Residency",
+    "desc": "データを置く国・地域の制約。法規制で指定されることがある",
+    "section": "cloud",
+    "group": "運用・コスト・組織",
+    "related": [
+      "コンプライアンス",
+      "個人情報保護法",
+      "リージョン / AZ"
+    ]
+  },
+  {
+    "term": "CSPM",
+    "en": "Cloud Security Posture Management",
+    "desc": "クラウド設定の危険な状態を継続的に検出・是正する仕組み",
+    "section": "cloud",
+    "group": "運用・コスト・組織",
+    "related": [
+      "責任共有モデル",
+      "DevSecOps / シフトレフト",
+      "IAM"
+    ]
+  },
+  {
+    "term": "課金アラート",
+    "en": "Billing Alert",
+    "desc": "費用が閾値を超えたら通知する設定。事故的な高額請求を防ぐ",
+    "section": "cloud",
+    "group": "運用・コスト・組織",
+    "related": [
+      "FinOps",
+      "コスト最適化",
+      "アラート / 閾値"
+    ]
+  },
+  {
+    "term": "ランディングゾーン",
+    "en": "Landing Zone",
+    "desc": "アカウント構成や権限・監査の初期設計をひな形化したもの",
+    "section": "cloud",
+    "group": "運用・コスト・組織",
+    "related": [
+      "IaC",
+      "IAM",
+      "タグ付け"
+    ]
+  },
+  {
+    "term": "Vercel / Netlify",
+    "en": "Vercel / Netlify",
+    "desc": "Git 連携でフロントエンドを自動デプロイできるホスティングサービス",
+    "section": "cloud",
+    "group": "運用・コスト・組織",
+    "related": [
+      "PaaS",
+      "Cloudflare Workers",
+      "SSG / ISR"
+    ]
+  },
+  {
+    "term": "Cloudflare Workers",
+    "en": "Cloudflare Workers",
+    "desc": "世界中のエッジで JavaScript を実行できるサーバーレス基盤",
+    "section": "cloud",
+    "group": "運用・コスト・組織",
+    "related": [
+      "エッジコンピューティング",
+      "FaaS",
+      "Vercel / Netlify"
+    ]
+  },
+  {
+    "term": "フロントエンドエンジニア",
+    "en": "Frontend Engineer",
+    "desc": "利用者が触れる画面側を作るエンジニア",
+    "section": "roles",
+    "group": "開発の職種",
+    "related": [
+      "バックエンドエンジニア",
+      "フルスタックエンジニア",
+      "UI デザイナー / UX デザイナー"
+    ]
+  },
+  {
+    "term": "バックエンドエンジニア",
+    "en": "Backend Engineer",
+    "desc": "サーバー側の処理・API・DB を作るエンジニア",
+    "section": "roles",
+    "group": "開発の職種",
+    "related": [
+      "フロントエンドエンジニア",
+      "データベースエンジニア（DBA）",
+      "API"
+    ]
+  },
+  {
+    "term": "フルスタックエンジニア",
+    "en": "Full-stack Engineer",
+    "desc": "画面からサーバーまで一通り担当できるエンジニア",
+    "section": "roles",
+    "group": "開発の職種",
+    "related": [
+      "フロントエンドエンジニア",
+      "バックエンドエンジニア",
+      "テックリード"
+    ]
+  },
+  {
+    "term": "モバイルエンジニア",
+    "en": "Mobile Engineer",
+    "desc": "iOS / Android のアプリを作るエンジニア",
+    "section": "roles",
+    "group": "開発の職種",
+    "related": [
+      "フロントエンドエンジニア",
+      "フルスタックエンジニア",
+      "組み込みエンジニア"
+    ]
+  },
+  {
+    "term": "インフラエンジニア",
+    "en": "Infrastructure Engineer",
+    "desc": "サーバー・ネットワーク・クラウド基盤を設計・運用する人",
+    "section": "roles",
+    "group": "開発の職種",
+    "related": [
+      "ネットワークエンジニア",
+      "DevOps エンジニア",
+      "SRE"
+    ]
+  },
+  {
+    "term": "ネットワークエンジニア",
+    "en": "Network Engineer",
+    "desc": "回線・ルータ・スイッチなど通信網を設計・運用する人",
+    "section": "roles",
+    "group": "開発の職種",
+    "related": [
+      "インフラエンジニア",
+      "ルータ",
+      "セキュリティエンジニア"
+    ]
+  },
+  {
+    "term": "データベースエンジニア（DBA）",
+    "en": "Database Administrator",
+    "desc": "DB の設計・チューニング・運用を担う人",
+    "section": "roles",
+    "group": "開発の職種",
+    "related": [
+      "バックエンドエンジニア",
+      "データエンジニア",
+      "RDBMS"
+    ]
+  },
+  {
+    "term": "DevOps エンジニア",
+    "en": "DevOps Engineer",
+    "desc": "開発と運用をつなぎ、CI/CD や自動化を整える人",
+    "section": "roles",
+    "group": "開発の職種",
+    "related": [
+      "SRE",
+      "CI / CD",
+      "インフラエンジニア"
+    ]
+  },
+  {
+    "term": "プラットフォームエンジニア",
+    "en": "Platform Engineer",
+    "desc": "開発者が使う社内基盤（CI/CD・環境払い出し）を整える人",
+    "section": "roles",
+    "group": "開発の職種",
+    "related": [
+      "DevOps エンジニア",
+      "SRE",
+      "インフラエンジニア"
+    ]
+  },
+  {
+    "term": "セキュリティエンジニア",
+    "en": "Security Engineer",
+    "desc": "脅威分析・防御設計・診断・インシデント対応を担う人",
+    "section": "roles",
+    "group": "開発の職種",
+    "related": [
+      "CSIRT（CERT）",
+      "ペネトレーションテスト",
+      "SOC"
+    ]
+  },
+  {
+    "term": "QA エンジニア / テスター",
+    "en": "QA Engineer / Tester",
+    "desc": "品質を作り込み、テストを設計・実施する人",
+    "section": "roles",
+    "group": "開発の職種",
+    "related": [
+      "品質保証（QA）",
+      "SET",
+      "テストケース"
+    ]
+  },
+  {
+    "term": "SET",
+    "en": "Software Engineer in Test",
+    "desc": "テスト自動化の仕組みそのものを作るエンジニア",
+    "section": "roles",
+    "group": "開発の職種",
+    "related": [
+      "テスト自動化",
+      "QA エンジニア / テスター",
+      "CI / CD"
+    ]
+  },
+  {
+    "term": "データエンジニア",
+    "en": "Data Engineer",
+    "desc": "データ基盤やパイプラインを作り、使える形で届ける人",
+    "section": "roles",
+    "group": "開発の職種",
+    "related": [
+      "データサイエンティスト",
+      "ETL",
+      "DWH"
+    ]
+  },
+  {
+    "term": "データサイエンティスト",
+    "en": "Data Scientist",
+    "desc": "統計・機械学習でデータから示唆やモデルを作る人",
+    "section": "roles",
+    "group": "開発の職種",
+    "related": [
+      "機械学習エンジニア",
+      "データアナリスト",
+      "機械学習"
+    ]
+  },
+  {
+    "term": "機械学習エンジニア",
+    "en": "ML Engineer",
+    "desc": "モデルを製品に組み込み、学習と推論を回す人",
+    "section": "roles",
+    "group": "開発の職種",
+    "related": [
+      "データサイエンティスト",
+      "MLOps",
+      "AI エージェント"
+    ]
+  },
+  {
+    "term": "MLOps エンジニア",
+    "en": "MLOps Engineer",
+    "desc": "モデルの学習・配信・監視のパイプラインを整備し運用する人",
+    "section": "roles",
+    "group": "開発の職種",
+    "related": [
+      "MLOps",
+      "機械学習エンジニア",
+      "データエンジニア"
+    ]
+  },
+  {
+    "term": "組み込みエンジニア",
+    "en": "Embedded Engineer",
+    "desc": "機器に内蔵されるソフトウェアを開発する人",
+    "section": "roles",
+    "group": "開発の職種",
+    "related": [
+      "ファームウェア",
+      "IoT",
+      "モバイルエンジニア"
+    ]
+  },
+  {
+    "term": "情シス（社内SE）",
+    "en": "Corporate IT",
+    "desc": "社内のIT環境・アカウント・機器を整備・運用する人",
+    "section": "roles",
+    "group": "開発の職種",
+    "related": [
+      "ヘルプデスク / サポート",
+      "シャドー IT",
+      "MDM"
+    ]
+  },
+  {
+    "term": "ヘルプデスク / サポート",
+    "en": "Help Desk / Support",
+    "desc": "利用者からの問い合わせを受け、解決まで導く人",
+    "section": "roles",
+    "group": "開発の職種",
+    "related": [
+      "情シス（社内SE）",
+      "エスカレーション",
+      "カスタマーサクセス"
+    ]
+  },
+  {
+    "term": "テックリード",
+    "en": "Tech Lead",
+    "desc": "技術的な意思決定を引き受け、実装の方向性を示す人",
+    "section": "roles",
+    "group": "リード・マネジメントの役割",
+    "related": [
+      "アーキテクト",
+      "エンジニアリングマネージャー（EM）",
+      "レビュー"
+    ]
+  },
+  {
+    "term": "アーキテクト",
+    "en": "Architect",
+    "desc": "システム全体の骨格を設計し、技術選定に責任を持つ人",
+    "section": "roles",
+    "group": "リード・マネジメントの役割",
+    "related": [
+      "ソフトウェアアーキテクチャ",
+      "テックリード",
+      "ADR"
+    ]
+  },
+  {
+    "term": "エンジニアリングマネージャー（EM）",
+    "en": "Engineering Manager",
+    "desc": "採用・育成・評価などチームと人に責任を持つ管理職",
+    "section": "roles",
+    "group": "リード・マネジメントの役割",
+    "related": [
+      "テックリード",
+      "1on1",
+      "CTO / VPoE"
+    ]
+  },
+  {
+    "term": "CTO / VPoE",
+    "en": "CTO / VP of Engineering",
+    "desc": "技術戦略の最高責任者 / 開発組織運営の責任者",
+    "section": "roles",
+    "group": "リード・マネジメントの役割",
+    "related": [
+      "エンジニアリングマネージャー（EM）",
+      "アーキテクト",
+      "ステークホルダー"
+    ]
+  },
+  {
+    "term": "プロダクトマネージャー（PdM）",
+    "en": "Product Manager",
+    "desc": "何を作るか、なぜ作るかを決めてプロダクトの成功に責任を持つ人",
+    "section": "roles",
+    "group": "リード・マネジメントの役割",
+    "related": [
+      "プロダクトオーナー（PO）",
+      "プロジェクトマネージャー（PM）",
+      "ロードマップ"
+    ]
+  },
+  {
+    "term": "プロダクトオーナー（PO）",
+    "en": "Product Owner",
+    "desc": "スクラムでバックログの優先順位を決める責任者",
+    "section": "roles",
+    "group": "リード・マネジメントの役割",
+    "related": [
+      "スクラムマスター",
+      "プロダクトバックログ / スプリントバックログ",
+      "プロダクトマネージャー（PdM）"
+    ]
+  },
+  {
+    "term": "プロジェクトマネージャー（PM）",
+    "en": "Project Manager",
+    "desc": "納期・コスト・品質・スコープを管理し、完遂に責任を持つ人",
+    "section": "roles",
+    "group": "リード・マネジメントの役割",
+    "related": [
+      "プロダクトマネージャー（PdM）",
+      "WBS",
+      "スコープ"
+    ]
+  },
+  {
+    "term": "PL（プロジェクトリーダー）",
+    "en": "Project Leader",
+    "desc": "現場で作業を仕切り、チームを技術面から牽引する役割",
+    "section": "roles",
+    "group": "リード・マネジメントの役割",
+    "related": [
+      "プロジェクトマネージャー（PM）",
+      "テックリード",
+      "PMO"
+    ]
+  },
+  {
+    "term": "PMO",
+    "en": "Project Management Office",
+    "desc": "複数プロジェクトの標準化・支援・監督を担う組織",
+    "section": "roles",
+    "group": "リード・マネジメントの役割",
+    "related": [
+      "プロジェクトマネージャー（PM）",
+      "PL（プロジェクトリーダー）",
+      "ステークホルダー"
+    ]
+  },
+  {
+    "term": "スクラムマスター",
+    "en": "Scrum Master",
+    "desc": "スクラムが機能するよう支援し、障害を取り除く人",
+    "section": "roles",
+    "group": "リード・マネジメントの役割",
+    "related": [
+      "スクラム",
+      "プロダクトオーナー（PO）",
+      "レトロスペクティブ"
+    ]
+  },
+  {
+    "term": "ディレクター",
+    "en": "Director",
+    "desc": "制作の進行と品質を取りまとめる役割（Web 制作で多い呼称）",
+    "section": "roles",
+    "group": "リード・マネジメントの役割",
+    "related": [
+      "プロジェクトマネージャー（PM）",
+      "UI デザイナー / UX デザイナー",
+      "ステークホルダー"
+    ]
+  },
+  {
+    "term": "ステークホルダー",
+    "en": "Stakeholder",
+    "desc": "そのプロジェクトに利害・関心を持つ全ての関係者",
+    "section": "roles",
+    "group": "リード・マネジメントの役割",
+    "related": [
+      "プロジェクトマネージャー（PM）",
+      "要件定義",
+      "エスカレーション"
+    ]
+  },
+  {
+    "term": "UI デザイナー / UX デザイナー",
+    "en": "UI / UX Designer",
+    "desc": "見た目と操作性を設計する人 / 体験全体を設計する人",
+    "section": "roles",
+    "group": "デザイン・ビジネス側の職種",
+    "related": [
+      "UX リサーチャー",
+      "ワイヤーフレーム / モックアップ",
+      "a11y（アクセシビリティ）"
+    ]
+  },
+  {
+    "term": "UX リサーチャー",
+    "en": "UX Researcher",
+    "desc": "利用者調査から課題やニーズを明らかにする人",
+    "section": "roles",
+    "group": "デザイン・ビジネス側の職種",
+    "related": [
+      "UI デザイナー / UX デザイナー",
+      "ユーザビリティテスト",
+      "ユーザーストーリー"
+    ]
+  },
+  {
+    "term": "ビジネスアナリスト",
+    "en": "Business Analyst",
+    "desc": "業務を分析し、要求をシステム要件に翻訳する人",
+    "section": "roles",
+    "group": "デザイン・ビジネス側の職種",
+    "related": [
+      "要件定義",
+      "ユースケース",
+      "ステークホルダー"
+    ]
+  },
+  {
+    "term": "データアナリスト",
+    "en": "Data Analyst",
+    "desc": "データを集計・可視化し、意思決定を支える人",
+    "section": "roles",
+    "group": "デザイン・ビジネス側の職種",
+    "related": [
+      "BI ツール",
+      "データサイエンティスト",
+      "KPI / KGI"
+    ]
+  },
+  {
+    "term": "セールスエンジニア / プリセールス",
+    "en": "Sales Engineer / Pre-sales",
+    "desc": "技術面から提案・デモを行い、受注を支援する人",
+    "section": "roles",
+    "group": "デザイン・ビジネス側の職種",
+    "related": [
+      "カスタマーサクセス",
+      "RFP",
+      "PoC（概念実証）"
+    ]
+  },
+  {
+    "term": "カスタマーサクセス",
+    "en": "Customer Success",
+    "desc": "導入後の活用を支援し、継続利用と成果に責任を持つ人",
+    "section": "roles",
+    "group": "デザイン・ビジネス側の職種",
+    "related": [
+      "セールスエンジニア / プリセールス",
+      "ヘルプデスク / サポート",
+      "OKR"
+    ]
+  },
+  {
+    "term": "テクニカルライター",
+    "en": "Technical Writer",
+    "desc": "マニュアルや API ドキュメントを書く専門職",
+    "section": "roles",
+    "group": "デザイン・ビジネス側の職種",
+    "related": [
+      "OpenAPI / Swagger",
+      "議事録",
+      "オンボーディング"
+    ]
+  },
+  {
+    "term": "自社開発 / 受託開発",
+    "en": "In-house / Contract Development",
+    "desc": "自社サービスを作る / 他社の依頼で作る",
+    "section": "roles",
+    "group": "体制・契約・働き方",
+    "related": [
+      "SIer",
+      "準委任 / 請負",
+      "業務委託"
+    ]
+  },
+  {
+    "term": "SIer",
+    "en": "System Integrator",
+    "desc": "システムの企画から構築・運用までを請け負う事業者",
+    "section": "roles",
+    "group": "体制・契約・働き方",
+    "related": [
+      "SES",
+      "多重下請け構造",
+      "自社開発 / 受託開発"
+    ]
+  },
+  {
+    "term": "SES",
+    "en": "System Engineering Service",
+    "desc": "技術者の労働力を提供する契約形態。指揮命令は原則自社にある",
+    "section": "roles",
+    "group": "体制・契約・働き方",
+    "related": [
+      "SIer",
+      "客先常駐",
+      "準委任 / 請負"
+    ]
+  },
+  {
+    "term": "ビジネスパートナー（BP）",
+    "en": "Business Partner",
+    "desc": "協力会社の要員を指す呼び方。SIer / SES の文脈で使われる",
+    "section": "roles",
+    "group": "体制・契約・働き方",
+    "related": [
+      "SES",
+      "SIer",
+      "多重下請け構造"
+    ]
+  },
+  {
+    "term": "客先常駐",
+    "en": "On-site Work",
+    "desc": "取引先のオフィスに出向いて働く勤務形態",
+    "section": "roles",
+    "group": "体制・契約・働き方",
+    "related": [
+      "SES",
+      "SIer",
+      "稼働"
+    ]
+  },
+  {
+    "term": "多重下請け構造",
+    "en": "Multi-layered Subcontracting",
+    "desc": "元請から二次・三次へと発注が連なる業界構造",
+    "section": "roles",
+    "group": "体制・契約・働き方",
+    "related": [
+      "SIer",
+      "SES",
+      "オフショア / ニアショア"
+    ]
+  },
+  {
+    "term": "業務委託",
+    "en": "Outsourcing Contract",
+    "desc": "社外に仕事を委託する契約の総称",
+    "section": "roles",
+    "group": "体制・契約・働き方",
+    "related": [
+      "準委任 / 請負",
+      "SES",
+      "自社開発 / 受託開発"
+    ]
+  },
+  {
+    "term": "準委任 / 請負",
+    "en": "Quasi-mandate / Contract for Work",
+    "desc": "作業の遂行に責任を持つ契約 / 完成した成果物に責任を持つ契約",
+    "section": "roles",
+    "group": "体制・契約・働き方",
+    "related": [
+      "業務委託",
+      "検収",
+      "工数（人月）"
+    ]
+  },
+  {
+    "term": "オフショア / ニアショア",
+    "en": "Offshore / Nearshore",
+    "desc": "海外に開発を委託 / 国内の地方拠点に委託",
+    "section": "roles",
+    "group": "体制・契約・働き方",
+    "related": [
+      "多重下請け構造",
+      "業務委託",
+      "工数（人月）"
+    ]
+  },
+  {
+    "term": "工数（人月）",
+    "en": "Man-month",
+    "desc": "作業量の見積り単位。1人が1か月働く量を1人月とする",
+    "section": "roles",
+    "group": "体制・契約・働き方",
+    "related": [
+      "見積り",
+      "稼働",
+      "アサイン"
+    ]
+  },
+  {
+    "term": "稼働",
+    "en": "Utilization",
+    "desc": "その人がどれだけの時間その案件に割けるか",
+    "section": "roles",
+    "group": "体制・契約・働き方",
+    "related": [
+      "アサイン",
+      "工数（人月）",
+      "リソース管理"
+    ]
+  },
+  {
+    "term": "アサイン",
+    "en": "Assign",
+    "desc": "人を案件やタスクに割り当てること",
+    "section": "roles",
+    "group": "体制・契約・働き方",
+    "related": [
+      "稼働",
+      "リソース管理",
+      "オンボーディング"
+    ]
+  },
+  {
+    "term": "オンボーディング",
+    "en": "Onboarding",
+    "desc": "新しく入った人が立ち上がるまでの受け入れ支援",
+    "section": "roles",
+    "group": "体制・契約・働き方",
+    "related": [
+      "メンター / メンティー",
+      "属人化",
+      "アサイン"
+    ]
+  },
+  {
+    "term": "メンター / メンティー",
+    "en": "Mentor / Mentee",
+    "desc": "助言し伴走する側 / 受ける側",
+    "section": "roles",
+    "group": "体制・契約・働き方",
+    "related": [
+      "1on1",
+      "オンボーディング",
+      "ペアプログラミング / モブプログラミング"
+    ]
+  },
+  {
+    "term": "1on1",
+    "en": "One-on-one",
+    "desc": "上長とメンバーが定期的に1対1で話す場",
+    "section": "roles",
+    "group": "体制・契約・働き方",
+    "related": [
+      "メンター / メンティー",
+      "エンジニアリングマネージャー（EM）",
+      "レトロスペクティブ"
+    ]
+  },
+  {
+    "term": "クロスファンクショナルチーム",
+    "en": "Cross-functional Team",
+    "desc": "設計・開発・テストなど必要な職能を1チームに揃えた編成",
+    "section": "roles",
+    "group": "体制・契約・働き方",
+    "related": [
+      "フィーチャーチーム / コンポーネントチーム",
+      "スクラム",
+      "アジャイル"
+    ]
+  },
+  {
+    "term": "フィーチャーチーム / コンポーネントチーム",
+    "en": "Feature / Component Team",
+    "desc": "機能単位で縦に持つ編成 / 技術層ごとに分かれた編成",
+    "section": "roles",
+    "group": "体制・契約・働き方",
+    "related": [
+      "クロスファンクショナルチーム",
+      "マイクロサービス",
+      "スクラム"
+    ]
+  },
+  {
+    "term": "属人化",
+    "en": "Knowledge Silo",
+    "desc": "特定の人にしか分からない状態になり、代われなくなること",
+    "section": "roles",
+    "group": "体制・契約・働き方",
+    "related": [
+      "バス係数",
+      "オンボーディング",
+      "レビュー"
+    ]
+  },
+  {
+    "term": "バス係数",
+    "en": "Bus Factor",
+    "desc": "何人抜けるとプロジェクトが止まるかを表す指標",
+    "section": "roles",
+    "group": "体制・契約・働き方",
+    "related": [
+      "属人化",
+      "ペアプログラミング / モブプログラミング",
+      "ランブック / 手順書"
+    ]
+  },
+  {
+    "term": "ウォーターフォール",
+    "en": "Waterfall",
+    "desc": "要件→設計→実装→テストと順に流す、後戻りしない前提の進め方",
+    "section": "pm",
+    "group": "開発プロセス",
+    "related": [
+      "アジャイル",
+      "WBS",
+      "要件定義"
+    ]
+  },
+  {
+    "term": "アジャイル",
+    "en": "Agile",
+    "desc": "短い周期で作って見せて直す、変化を前提にした進め方の総称",
+    "section": "pm",
+    "group": "開発プロセス",
+    "related": [
+      "ウォーターフォール",
+      "スクラム",
+      "アジャイルソフトウェア開発宣言"
+    ]
+  },
+  {
+    "term": "アジャイルソフトウェア開発宣言",
+    "en": "Agile Manifesto",
+    "desc": "アジャイルの価値観をまとめた4つの価値と12の原則",
+    "section": "pm",
+    "group": "開発プロセス",
+    "related": [
+      "アジャイル",
+      "リーン開発",
+      "XP（エクストリームプログラミング）"
+    ]
+  },
+  {
+    "term": "インクリメンタル / イテレーティブ",
+    "en": "Incremental / Iterative",
+    "desc": "少しずつ足していく / 同じ範囲を作り直して磨いていく",
+    "section": "pm",
+    "group": "開発プロセス",
+    "related": [
+      "アジャイル",
+      "スプリント",
+      "MVP（実用最小限の製品）"
+    ]
+  },
+  {
+    "term": "スクラム",
+    "en": "Scrum",
+    "desc": "役割・イベント・成果物を定めた、代表的なアジャイルの枠組み",
+    "section": "pm",
+    "group": "開発プロセス",
+    "related": [
+      "スプリント",
+      "スクラムマスター",
+      "プロダクトオーナー（PO）"
+    ]
+  },
+  {
+    "term": "スプリント",
+    "en": "Sprint",
+    "desc": "1〜4週間の固定の開発サイクル。終わりに動くものを出す",
+    "section": "pm",
+    "group": "開発プロセス",
+    "related": [
+      "スクラム",
+      "スプリントプランニング",
+      "ベロシティ"
+    ]
+  },
+  {
+    "term": "スプリントプランニング",
+    "en": "Sprint Planning",
+    "desc": "そのスプリントで何をどうやるかを決める会議",
+    "section": "pm",
+    "group": "開発プロセス",
+    "related": [
+      "スプリント",
+      "プロダクトバックログ / スプリントバックログ",
+      "ストーリーポイント"
+    ]
+  },
+  {
+    "term": "デイリースクラム",
+    "en": "Daily Scrum",
+    "desc": "毎日短時間で進捗と障害を共有する朝会",
+    "section": "pm",
+    "group": "開発プロセス",
+    "related": [
+      "スクラム",
+      "スプリント",
+      "バーンダウンチャート"
+    ]
+  },
+  {
+    "term": "スプリントレビュー",
+    "en": "Sprint Review",
+    "desc": "できたものを関係者に見せ、フィードバックを得る場",
+    "section": "pm",
+    "group": "開発プロセス",
+    "related": [
+      "レトロスペクティブ",
+      "スプリント",
+      "ステークホルダー"
+    ]
+  },
+  {
+    "term": "レトロスペクティブ",
+    "en": "Retrospective",
+    "desc": "チームの進め方そのものを振り返り、次の改善を決める場",
+    "section": "pm",
+    "group": "開発プロセス",
+    "related": [
+      "KPT",
+      "スプリントレビュー",
+      "スクラム"
+    ]
+  },
+  {
+    "term": "プロダクトバックログ / スプリントバックログ",
+    "en": "Product / Sprint Backlog",
+    "desc": "やることの優先順位付き一覧 / 今回のスプリントで取る分",
+    "section": "pm",
+    "group": "開発プロセス",
+    "related": [
+      "ユーザーストーリー",
+      "プロダクトオーナー（PO）",
+      "スプリントプランニング"
+    ]
+  },
+  {
+    "term": "ユーザーストーリー",
+    "en": "User Story",
+    "desc": "「誰が / 何をしたい / なぜ」の形で書く要求の単位",
+    "section": "pm",
+    "group": "開発プロセス",
+    "related": [
+      "受け入れ基準",
+      "プロダクトバックログ / スプリントバックログ",
+      "ユースケース"
+    ]
+  },
+  {
+    "term": "受け入れ基準",
+    "en": "Acceptance Criteria",
+    "desc": "その項目が完成したと言える条件",
+    "section": "pm",
+    "group": "開発プロセス",
+    "related": [
+      "完成の定義（DoD）",
+      "ユーザーストーリー",
+      "ATDD"
+    ]
+  },
+  {
+    "term": "完成の定義（DoD）",
+    "en": "Definition of Done",
+    "desc": "チーム共通の「これを満たしたら完成」の取り決め",
+    "section": "pm",
+    "group": "開発プロセス",
+    "related": [
+      "受け入れ基準",
+      "品質ゲート",
+      "スクラム"
+    ]
+  },
+  {
+    "term": "ストーリーポイント",
+    "en": "Story Point",
+    "desc": "作業量を相対的な大きさで見積もる単位",
+    "section": "pm",
+    "group": "開発プロセス",
+    "related": [
+      "プランニングポーカー",
+      "ベロシティ",
+      "見積り"
+    ]
+  },
+  {
+    "term": "プランニングポーカー",
+    "en": "Planning Poker",
+    "desc": "全員が同時に見積りを出し、差を議論して揃える手法",
+    "section": "pm",
+    "group": "開発プロセス",
+    "related": [
+      "ストーリーポイント",
+      "見積り",
+      "スプリントプランニング"
+    ]
+  },
+  {
+    "term": "ベロシティ",
+    "en": "Velocity",
+    "desc": "1スプリントで消化できるポイント量。計画の目安に使う",
+    "section": "pm",
+    "group": "開発プロセス",
+    "related": [
+      "ストーリーポイント",
+      "バーンダウンチャート",
+      "スプリント"
+    ]
+  },
+  {
+    "term": "バーンダウンチャート",
+    "en": "Burndown Chart",
+    "desc": "残作業量が日々どう減るかを描く進捗グラフ",
+    "section": "pm",
+    "group": "開発プロセス",
+    "related": [
+      "ベロシティ",
+      "進捗管理",
+      "ガントチャート"
+    ]
+  },
+  {
+    "term": "カンバン",
+    "en": "Kanban",
+    "desc": "作業を可視化し、流れを整えることに重きを置く手法",
+    "section": "pm",
+    "group": "開発プロセス",
+    "related": [
+      "WIP 制限",
+      "リードタイム / サイクルタイム",
+      "リーン開発"
+    ]
+  },
+  {
+    "term": "WIP 制限",
+    "en": "Work In Progress Limit",
+    "desc": "同時に進める作業数に上限を設け、詰まりを防ぐ仕組み",
+    "section": "pm",
+    "group": "開発プロセス",
+    "related": [
+      "カンバン",
+      "ボトルネック",
+      "リードタイム / サイクルタイム"
+    ]
+  },
+  {
+    "term": "リードタイム / サイクルタイム",
+    "en": "Lead / Cycle Time",
+    "desc": "依頼から完了までの時間 / 着手から完了までの時間",
+    "section": "pm",
+    "group": "開発プロセス",
+    "related": [
+      "カンバン",
+      "WIP 制限",
+      "ボトルネック"
+    ]
+  },
+  {
+    "term": "XP（エクストリームプログラミング）",
+    "en": "Extreme Programming",
+    "desc": "テスト・ペア作業・頻繁な統合を重視するアジャイル手法",
+    "section": "pm",
+    "group": "開発プロセス",
+    "related": [
+      "ペアプログラミング / モブプログラミング",
+      "TDD",
+      "アジャイル"
+    ]
+  },
+  {
+    "term": "ペアプログラミング / モブプログラミング",
+    "en": "Pair / Mob Programming",
+    "desc": "2人で / チーム全員で1つのコードを一緒に書く進め方",
+    "section": "pm",
+    "group": "開発プロセス",
+    "related": [
+      "XP（エクストリームプログラミング）",
+      "レビュー",
+      "バス係数"
+    ]
+  },
+  {
+    "term": "リーン開発",
+    "en": "Lean Development",
+    "desc": "ムダを削り、価値の流れを速くすることを重視する考え方",
+    "section": "pm",
+    "group": "開発プロセス",
+    "related": [
+      "カンバン",
+      "MVP（実用最小限の製品）",
+      "アジャイル"
+    ]
+  },
+  {
+    "term": "MVP（実用最小限の製品）",
+    "en": "Minimum Viable Product",
+    "desc": "仮説を確かめられる、最小限の機能だけを備えた製品",
+    "section": "pm",
+    "group": "開発プロセス",
+    "related": [
+      "PoC（概念実証）",
+      "プロトタイプ",
+      "リーン開発"
+    ]
+  },
+  {
+    "term": "PoC（概念実証）",
+    "en": "Proof of Concept",
+    "desc": "実現できるかを小さく試して確かめる検証",
+    "section": "pm",
+    "group": "開発プロセス",
+    "related": [
+      "MVP（実用最小限の製品）",
+      "プロトタイプ",
+      "RFP"
+    ]
+  },
+  {
+    "term": "スコープ",
+    "en": "Scope",
+    "desc": "そのプロジェクトでやると決めた範囲",
+    "section": "pm",
+    "group": "計画と進捗の管理",
+    "related": [
+      "スコープクリープ",
+      "QCD",
+      "WBS"
+    ]
+  },
+  {
+    "term": "スコープクリープ",
+    "en": "Scope Creep",
+    "desc": "合意なく作業範囲がじわじわ膨らんでいく現象",
+    "section": "pm",
+    "group": "計画と進捗の管理",
+    "related": [
+      "スコープ",
+      "変更管理",
+      "QCD"
+    ]
+  },
+  {
+    "term": "QCD",
+    "en": "Quality / Cost / Delivery",
+    "desc": "品質・コスト・納期。3つは互いに引っ張り合う",
+    "section": "pm",
+    "group": "計画と進捗の管理",
+    "related": [
+      "スコープ",
+      "納期",
+      "品質保証（QA）"
+    ]
+  },
+  {
+    "term": "WBS",
+    "en": "Work Breakdown Structure",
+    "desc": "作業を階層的に分解し、抜けなく洗い出した一覧",
+    "section": "pm",
+    "group": "計画と進捗の管理",
+    "related": [
+      "ガントチャート",
+      "見積り",
+      "スコープ"
+    ]
+  },
+  {
+    "term": "ガントチャート",
+    "en": "Gantt Chart",
+    "desc": "作業を横棒で並べ、期間と重なりを可視化する図",
+    "section": "pm",
+    "group": "計画と進捗の管理",
+    "related": [
+      "WBS",
+      "マイルストーン",
+      "クリティカルパス"
+    ]
+  },
+  {
+    "term": "マイルストーン",
+    "en": "Milestone",
+    "desc": "節目となる到達点。日付で管理する",
+    "section": "pm",
+    "group": "計画と進捗の管理",
+    "related": [
+      "ガントチャート",
+      "ロードマップ",
+      "納期"
+    ]
+  },
+  {
+    "term": "クリティカルパス",
+    "en": "Critical Path",
+    "desc": "最も余裕がなく、遅れると全体が遅れる作業の連なり",
+    "section": "pm",
+    "group": "計画と進捗の管理",
+    "related": [
+      "依存関係",
+      "ガントチャート",
+      "ボトルネック"
+    ]
+  },
+  {
+    "term": "依存関係",
+    "en": "Dependency",
+    "desc": "Aが終わらないとBが始められない、という作業間の前後関係",
+    "section": "pm",
+    "group": "計画と進捗の管理",
+    "related": [
+      "クリティカルパス",
+      "WBS",
+      "ボトルネック"
+    ]
+  },
+  {
+    "term": "見積り",
+    "en": "Estimation",
+    "desc": "必要な工数・期間・費用を事前に見積もること",
+    "section": "pm",
+    "group": "計画と進捗の管理",
+    "related": [
+      "三点見積り",
+      "ストーリーポイント",
+      "工数（人月）"
+    ]
+  },
+  {
+    "term": "三点見積り",
+    "en": "Three-point Estimation",
+    "desc": "楽観・最頻・悲観の3値から見積りを算出する手法",
+    "section": "pm",
+    "group": "計画と進捗の管理",
+    "related": [
+      "見積り",
+      "バッファ",
+      "リスク管理"
+    ]
+  },
+  {
+    "term": "バッファ",
+    "en": "Buffer / Slack",
+    "desc": "遅れに備えてあらかじめ確保しておく余裕",
+    "section": "pm",
+    "group": "計画と進捗の管理",
+    "related": [
+      "見積り",
+      "リスク管理",
+      "クリティカルパス"
+    ]
+  },
+  {
+    "term": "リソース管理",
+    "en": "Resource Management",
+    "desc": "人・機材・予算の割り当てと過不足の調整",
+    "section": "pm",
+    "group": "計画と進捗の管理",
+    "related": [
+      "アサイン",
+      "稼働",
+      "進捗管理"
+    ]
+  },
+  {
+    "term": "進捗管理",
+    "en": "Progress Tracking",
+    "desc": "計画に対する実績を追い、ずれを早く見つけること",
+    "section": "pm",
+    "group": "計画と進捗の管理",
+    "related": [
+      "バーンダウンチャート",
+      "課題管理表",
+      "定例会議"
+    ]
+  },
+  {
+    "term": "課題管理表",
+    "en": "Issue List",
+    "desc": "未解決の課題を担当と期限つきで一覧管理する表",
+    "section": "pm",
+    "group": "計画と進捗の管理",
+    "related": [
+      "起票",
+      "リスク台帳",
+      "進捗管理"
+    ]
+  },
+  {
+    "term": "リスク管理",
+    "en": "Risk Management",
+    "desc": "起こりうる問題を先に洗い出し、備えを決めておくこと",
+    "section": "pm",
+    "group": "計画と進捗の管理",
+    "related": [
+      "リスク台帳",
+      "バッファ",
+      "変更管理"
+    ]
+  },
+  {
+    "term": "リスク台帳",
+    "en": "Risk Register",
+    "desc": "リスクと発生確率・影響・対応策を記録した一覧",
+    "section": "pm",
+    "group": "計画と進捗の管理",
+    "related": [
+      "リスク管理",
+      "課題管理表",
+      "脅威 / 脆弱性 / リスク"
+    ]
+  },
+  {
+    "term": "変更管理",
+    "en": "Change Management",
+    "desc": "仕様変更を記録・審議し、影響を合意してから反映する手続き",
+    "section": "pm",
+    "group": "計画と進捗の管理",
+    "related": [
+      "スコープクリープ",
+      "リスク管理",
+      "検収"
+    ]
+  },
+  {
+    "term": "エスカレーション",
+    "en": "Escalation",
+    "desc": "自分の裁量を超える判断を、上位者へ引き上げること",
+    "section": "pm",
+    "group": "計画と進捗の管理",
+    "related": [
+      "報連相",
+      "ステークホルダー",
+      "オンコール"
+    ]
+  },
+  {
+    "term": "キックオフ",
+    "en": "Kick-off",
+    "desc": "プロジェクト開始時に目的と体制を共有する会",
+    "section": "pm",
+    "group": "計画と進捗の管理",
+    "related": [
+      "ステークホルダー",
+      "ロードマップ",
+      "定例会議"
+    ]
+  },
+  {
+    "term": "定例会議",
+    "en": "Regular Meeting",
+    "desc": "決まった間隔で進捗と課題を確認する会議",
+    "section": "pm",
+    "group": "計画と進捗の管理",
+    "related": [
+      "議事録",
+      "進捗管理",
+      "デイリースクラム"
+    ]
+  },
+  {
+    "term": "議事録",
+    "en": "Meeting Minutes",
+    "desc": "決定事項と宿題を記録し、後から参照できるようにした記録",
+    "section": "pm",
+    "group": "計画と進捗の管理",
+    "related": [
+      "定例会議",
+      "ADR",
+      "報連相"
+    ]
+  },
+  {
+    "term": "プロジェクト管理ツール",
+    "en": "Project Management Tool",
+    "desc": "課題と進捗を管理するツール。Jira / Backlog / Notion / Asana / Linear など",
+    "section": "pm",
+    "group": "計画と進捗の管理",
+    "related": [
+      "課題管理表",
+      "バグ票 / チケット",
+      "進捗管理"
+    ]
+  },
+  {
+    "term": "ドキュメンテーション",
+    "en": "Documentation",
+    "desc": "仕様や手順を文書として残し、共有できるようにする活動",
+    "section": "pm",
+    "group": "計画と進捗の管理",
+    "related": [
+      "議事録",
+      "ADR",
+      "ランブック / 手順書"
+    ]
+  },
+  {
+    "term": "ボトルネック",
+    "en": "Bottleneck",
+    "desc": "全体の速度を決めてしまっている、最も詰まっている箇所",
+    "section": "pm",
+    "group": "計画と進捗の管理",
+    "related": [
+      "クリティカルパス",
+      "WIP 制限",
+      "性能テスト"
+    ]
+  },
+  {
+    "term": "デスマーチ（炎上）",
+    "en": "Death March",
+    "desc": "無理な納期と負荷で疲弊しきった、破綻寸前の状態",
+    "section": "pm",
+    "group": "計画と進捗の管理",
+    "related": [
+      "ブルックスの法則",
+      "スコープクリープ",
+      "QCD"
+    ]
+  },
+  {
+    "term": "ブルックスの法則",
+    "en": "Brooks's Law",
+    "desc": "遅れているプロジェクトへ人を足すと、さらに遅れるという経験則",
+    "section": "pm",
+    "group": "計画と進捗の管理",
+    "related": [
+      "デスマーチ（炎上）",
+      "オンボーディング",
+      "工数（人月）"
+    ]
+  },
+  {
+    "term": "ロードマップ",
+    "en": "Roadmap",
+    "desc": "いつ頃どの価値を届けるかを大きな粒度で示した計画",
+    "section": "pm",
+    "group": "計画と進捗の管理",
+    "related": [
+      "マイルストーン",
+      "プロダクトマネージャー（PdM）",
+      "KPI / KGI"
+    ]
+  },
+  {
+    "term": "RFP",
+    "en": "Request for Proposal",
+    "desc": "発注側が要件を示し、提案を募るための提案依頼書",
+    "section": "pm",
+    "group": "契約・評価・運用フェーズ",
+    "related": [
+      "見積書 / 発注書",
+      "準委任 / 請負",
+      "PoC（概念実証）"
+    ]
+  },
+  {
+    "term": "見積書 / 発注書",
+    "en": "Quotation / Purchase Order",
+    "desc": "金額と条件の提示 / 正式に発注する書面",
+    "section": "pm",
+    "group": "契約・評価・運用フェーズ",
+    "related": [
+      "RFP",
+      "検収",
+      "見積り"
+    ]
+  },
+  {
+    "term": "検収",
+    "en": "Acceptance Inspection",
+    "desc": "納品物が条件を満たすか確認し、受け取りを確定する手続き",
+    "section": "pm",
+    "group": "契約・評価・運用フェーズ",
+    "related": [
+      "受け入れテスト（UAT）",
+      "契約不適合責任",
+      "見積書 / 発注書"
+    ]
+  },
+  {
+    "term": "納期",
+    "en": "Deadline / Due Date",
+    "desc": "成果物を引き渡すと約束した期限",
+    "section": "pm",
+    "group": "契約・評価・運用フェーズ",
+    "related": [
+      "QCD",
+      "マイルストーン",
+      "デスマーチ（炎上）"
+    ]
+  },
+  {
+    "term": "契約不適合責任",
+    "en": "Liability for Non-conformity",
+    "desc": "納品物が契約内容と違ったときに売主が負う責任（旧・瑕疵担保責任）",
+    "section": "pm",
+    "group": "契約・評価・運用フェーズ",
+    "related": [
+      "検収",
+      "準委任 / 請負",
+      "保守・運用フェーズ"
+    ]
+  },
+  {
+    "term": "保守・運用フェーズ",
+    "en": "Maintenance Phase",
+    "desc": "リリース後に不具合対応や改善を続ける期間",
+    "section": "pm",
+    "group": "契約・評価・運用フェーズ",
+    "related": [
+      "契約不適合責任",
+      "SRE",
+      "ITIL"
+    ]
+  },
+  {
+    "term": "KPT",
+    "en": "Keep / Problem / Try",
+    "desc": "続けること・問題・試すこと で振り返る型",
+    "section": "pm",
+    "group": "契約・評価・運用フェーズ",
+    "related": [
+      "レトロスペクティブ",
+      "ポストモーテム",
+      "議事録"
+    ]
+  },
+  {
+    "term": "KPI / KGI",
+    "en": "Key Performance / Goal Indicator",
+    "desc": "途中経過を測る指標 / 最終ゴールを測る指標",
+    "section": "pm",
+    "group": "契約・評価・運用フェーズ",
+    "related": [
+      "OKR",
+      "ROI",
+      "ロードマップ"
+    ]
+  },
+  {
+    "term": "OKR",
+    "en": "Objectives and Key Results",
+    "desc": "目標と、達成度を測る主要な結果をセットで置く目標管理手法",
+    "section": "pm",
+    "group": "契約・評価・運用フェーズ",
+    "related": [
+      "KPI / KGI",
+      "ROI",
+      "ロードマップ"
+    ]
+  },
+  {
+    "term": "ROI",
+    "en": "Return on Investment",
+    "desc": "かけた費用に対してどれだけの効果が返ったかの割合",
+    "section": "pm",
+    "group": "契約・評価・運用フェーズ",
+    "related": [
+      "KPI / KGI",
+      "コスト最適化",
+      "OKR"
+    ]
+  },
+  {
+    "term": "EVM",
+    "en": "Earned Value Management",
+    "desc": "出来高を金額換算し、コストと進捗のずれを同時に見る管理手法",
+    "section": "pm",
+    "group": "契約・評価・運用フェーズ",
+    "related": [
+      "進捗管理",
+      "PMBOK",
+      "見積り"
+    ]
+  },
+  {
+    "term": "PMBOK",
+    "en": "PMBOK Guide",
+    "desc": "プロジェクトマネジメントの知識体系をまとめた標準ガイド",
+    "section": "pm",
+    "group": "契約・評価・運用フェーズ",
+    "related": [
+      "ITIL",
+      "EVM",
+      "プロジェクトマネージャー（PM）"
+    ]
+  },
+  {
+    "term": "ITIL",
+    "en": "ITIL",
+    "desc": "IT サービスの運用管理に関するベストプラクティス集",
+    "section": "pm",
+    "group": "契約・評価・運用フェーズ",
+    "related": [
+      "PMBOK",
+      "保守・運用フェーズ",
+      "インシデント"
+    ]
+  },
+  {
+    "term": "ポストモーテム",
+    "en": "Postmortem",
+    "desc": "障害や失敗の後に、犯人捜しをせず原因と学びを残す振り返り",
+    "section": "pm",
+    "group": "契約・評価・運用フェーズ",
+    "related": [
+      "インシデント対応",
+      "KPT",
+      "SRE"
+    ]
+  },
+  {
+    "term": "報連相",
+    "en": "Report / Contact / Consult",
+    "desc": "報告・連絡・相談。日本の職場で共有の基本とされる型",
+    "section": "pm",
+    "group": "契約・評価・運用フェーズ",
+    "related": [
+      "エスカレーション",
+      "議事録",
+      "定例会議"
     ]
   }
 ];
