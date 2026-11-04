@@ -223,3 +223,96 @@ export const mapAnimeData = (rows: SheetRow[]): AnimeItem[] => {
         official_site_twitter_image_url: row.official_site_twitter_image_url || ""
     }));
 };
+
+// ---------------------------------------------------------------------------
+// Off-hours（趣味の記録）: OffHours シート date, category, title, subtitle, url, image
+// ⚠️ シートは公開されている（API キーがバンドルに入るため）。全年齢・公開してよい記録だけを書く。
+// ---------------------------------------------------------------------------
+
+export type OffHoursCategory = "anime" | "music" | "indie" | "event";
+
+export interface OffHoursItem {
+    category: OffHoursCategory;
+    /** "YYYY-MM-DD" */
+    date: string;
+    title: string;
+    subtitle?: string;
+    url?: string;
+    image?: string;
+}
+
+/** シートの category 列（ドロップダウンの日本語ラベル / 英字キーのどちらでも可）→ キー */
+const OFF_HOURS_CATEGORY: Record<string, OffHoursCategory> = {
+    anime: "anime", アニメ: "anime",
+    music: "music", 音楽: "music",
+    indie: "indie", dlsite: "indie", 同人作品: "indie",
+    event: "event", イベント: "event",
+};
+
+/** DLsite の全年齢フロアだけを許可する（成人向けフロアの URL を持つ行は行ごと捨てる）。 */
+const ALL_AGES_DLSITE_FLOORS = ["home", "comic", "soft"];
+
+/** "2026-10-12" / "2026/10/12" / "2026.10.12" / "2026年10月12日" → "2026-10-12"。日まで無いものは "" */
+const normalizeYmd = (v: string): string => {
+    const m = /^(\d{4})\s*[/.\-年]\s*(\d{1,2})\s*[/.\-月]\s*(\d{1,2})/.exec(v.trim());
+    if (!m) return "";
+    return `${m[1]}-${m[2].padStart(2, "0")}-${m[3].padStart(2, "0")}`;
+};
+
+/** 日本時間の今日 "YYYY-MM-DD" */
+const todayJst = (): string => new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10);
+
+const httpsUrl = (v?: string): URL | null => {
+    try {
+        const u = new URL((v || "").trim());
+        return u.protocol === "https:" ? u : null;
+    } catch {
+        return null;
+    }
+};
+
+/** image 列: https の URL か、public/off-hours/ 配下のパスだけを受け付ける。 */
+const offHoursImage = (v?: string): string | undefined => {
+    const t = (v || "").trim();
+    if (/^\/off-hours\/[\w./-]+$/.test(t) && !t.includes("..")) return t;
+    return httpsUrl(t)?.href;
+};
+
+/**
+ * OffHours シートを型付きの記録に変換し、日付の新しい順に並べる（同じ日付ならシートで後の行を先に）。
+ * - 未来の日付は出さない。イベントは当日も出さない（居場所を知らせないため、翌日以降に表示）
+ * - 同人作品: DLsite は全年齢フロアの URL だけ。画像は使わない
+ */
+export const mapOffHoursData = (rows: SheetRow[], today: string = todayJst()): OffHoursItem[] => {
+    const items: { item: OffHoursItem; order: number }[] = [];
+    rows.forEach((row, order) => {
+        const category = OFF_HOURS_CATEGORY[(row.category || "").trim().toLowerCase()];
+        const date = normalizeYmd(row.date || "");
+        const title = (row.title || "").trim();
+        if (!category || !date || !title) return;
+        if (date > today || (category === "event" && date >= today)) return;
+
+        const url = httpsUrl(row.url);
+        if (category === "indie" && url && /(^|\.)dlsite\.com$/.test(url.hostname)) {
+            const floor = url.pathname.split("/").filter(Boolean)[0] ?? "";
+            if (!ALL_AGES_DLSITE_FLOORS.includes(floor)) return;
+        }
+
+        items.push({
+            item: {
+                category,
+                date,
+                title,
+                subtitle: (row.subtitle || "").trim() || undefined,
+                url: url?.href,
+                image: category === "indie" ? undefined : offHoursImage(row.image),
+            },
+            order,
+        });
+    });
+    return items
+        .sort((a, b) =>
+            a.item.date === b.item.date ? b.order - a.order : a.item.date < b.item.date ? 1 : -1
+        )
+        .map((x) => x.item);
+};
