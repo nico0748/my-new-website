@@ -33,7 +33,8 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
   - 背景: `var(--bg)` `#111111`（ソフトブラック） / サーフェス `var(--surface)` `#181818`
   - テキスト（主）: `var(--text-primary)` `#ecebe8` / （本文）`var(--text-body)` `#cfcdc8`
   - テキスト（副）: `var(--text-secondary)` `#a4a29d` / （淡）`var(--text-muted)` `#6f6d69`
-  - アクセント: `var(--accent)` `#cbbf9f`（サンドベージュ。多用しない）
+  - アクセント（主）: `var(--accent)` `#cbbf9f`（サンドベージュ）。セクション見出しと左の短い線・「すべて見る →」（`.link-accent`）・ソーシャルリンクのアイコン
+  - アクセント（従）: `var(--accent-2)` `#8fb59b`（セージ）/ `var(--accent-3)` `#86a7cf`（ダスティブルー）/ `var(--accent-4)` `#d48c6c`（テラコッタ）。スキルのチャートはカテゴリ順に `src/lib/skillColors.ts` の `SKILL_COLORS`（サンド→セージ→ブルー→テラコッタ）で塗り分け。ソーシャルリンクの ID 文字は `--accent-2`
   - 罫線: `var(--border-color)` `rgba(255,255,255,0.08)`
 - **リンク**: 通常は `.link-quiet`（副テキスト色 → ホバーで主テキスト色）。外部リンクは `↗`
 

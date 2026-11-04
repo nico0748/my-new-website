@@ -51,12 +51,25 @@ const SocialLinks: React.FC<{ links: SocialLink[]; className?: string }> = ({ li
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`${NAMES[l.kind]}: ${l.label ?? handleFromUrl(l.kind, l.url)}`}
-          className="link-quiet inline-flex items-center gap-2"
+          className="group inline-flex items-center gap-2"
         >
-          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden className="shrink-0">
+          <svg
+            viewBox="0 0 24 24"
+            width="15"
+            height="15"
+            fill="currentColor"
+            aria-hidden
+            className="shrink-0"
+            style={{ color: "var(--accent)" }}
+          >
             {ICONS[l.kind]}
           </svg>
-          <span>{l.label ?? handleFromUrl(l.kind, l.url)}</span>
+          <span
+            className="transition-colors group-hover:text-[color:var(--text-primary)]"
+            style={{ color: "var(--accent-2)" }}
+          >
+            {l.label ?? handleFromUrl(l.kind, l.url)}
+          </span>
         </a>
       </li>
     ))}

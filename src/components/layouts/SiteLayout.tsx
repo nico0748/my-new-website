@@ -91,9 +91,10 @@ const SiteLayout: React.FC<SiteLayoutProps> = ({ children, wide }) => (
 export const SectionHeading: React.FC<{ id?: string; children: React.ReactNode }> = ({ id, children }) => (
   <h2
     id={id}
-    className="text-[13px] font-medium uppercase tracking-[0.18em] mb-8 scroll-mt-12"
-    style={{ color: "var(--text-muted)" }}
+    className="flex items-center gap-3 text-[13px] font-medium uppercase tracking-[0.18em] mb-8 scroll-mt-12"
+    style={{ color: "var(--accent)" }}
   >
+    <span aria-hidden className="h-px w-[18px]" style={{ background: "var(--accent)" }} />
     {children}
   </h2>
 );
@@ -104,7 +105,7 @@ export const MoreLink: React.FC<{ to: string; children: React.ReactNode; externa
   children,
   external,
 }) => {
-  const cls = "inline-flex items-center gap-1.5 mt-8 text-sm link-quiet";
+  const cls = "inline-flex items-center gap-1.5 mt-8 text-sm link-accent";
   return external ? (
     <a href={to} target="_blank" rel="noopener noreferrer" className={cls}>
       {children} <span aria-hidden>↗</span>

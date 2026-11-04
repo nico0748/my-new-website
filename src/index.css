@@ -27,6 +27,10 @@
 
   /* アクセント — サンドベージュ（強く主張しない差し色） */
   --accent: #cbbf9f;
+  /* 2色目以降（サンドを主役に、スキルのカテゴリ色分けやアクセント文字に使う） */
+  --accent-2: #8fb59b; /* セージグリーン */
+  --accent-3: #86a7cf; /* ダスティブルー */
+  --accent-4: #d48c6c; /* テラコッタ */
   --accent-hover: #e3d9bd;
   --accent-bg: rgba(203, 191, 159, 0.07);
   --accent-border: rgba(203, 191, 159, 0.24);
@@ -405,6 +409,16 @@ pre, code {
 .link-quiet {
   color: var(--text-secondary);
   transition: color 0.2s ease;
+}
+
+/* サンドの差し色リンク（「すべて見る →」など） */
+.link-accent {
+  color: var(--accent);
+  transition: color 0.2s ease;
+}
+
+.link-accent:hover {
+  color: var(--accent-hover);
 }
 
 .link-quiet:hover {

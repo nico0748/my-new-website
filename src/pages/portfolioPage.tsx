@@ -6,6 +6,7 @@ import SiteLayout, { SectionHeading, MoreLink } from "../components/layouts/Site
 import ArticleList from "../components/ui/ArticleList";
 import WorkList from "../components/ui/WorkList";
 import SkillRadarChart from "../components/ui/SkillRadarChart";
+import { SKILL_COLORS } from "../lib/skillColors";
 import Timeline from "../components/ui/Timeline";
 import SocialLinks from "../components/ui/SocialLinks";
 import type { SocialLink } from "../components/ui/SocialLinks";
@@ -80,8 +81,13 @@ const PortfolioPage = () => {
         <section className="mt-32">
           <SectionHeading id="skills">Skills</SectionHeading>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {skills.slice(0, 4).map((c) => (
-              <SkillRadarChart key={c.category} category={c.category} skills={c.skills} />
+            {skills.slice(0, 4).map((c, i) => (
+              <SkillRadarChart
+                key={c.category}
+                category={c.category}
+                skills={c.skills}
+                color={SKILL_COLORS[i % SKILL_COLORS.length]}
+              />
             ))}
           </div>
           <MoreLink to="/skills">すべてのスキルを見る</MoreLink>

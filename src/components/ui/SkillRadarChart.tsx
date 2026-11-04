@@ -8,10 +8,12 @@ interface Skill {
 interface SkillRadarChartProps {
   category: string;
   skills: Skill[];
+  /** チャートとバーの色（CSS 変数）。カテゴリごとに塗り分ける。 */
+  color?: string;
 }
 
 /** カテゴリごとのスキルレーダーチャート（ボックス）。Calm Dark に合わせて線と面は控えめに。 */
-const SkillRadarChart = ({ category, skills }: SkillRadarChartProps) => {
+const SkillRadarChart = ({ category, skills, color = "var(--accent)" }: SkillRadarChartProps) => {
   const chartData = skills.map((s) => ({ subject: s.name, value: s.level, fullMark: 5 }));
 
   return (
@@ -24,13 +26,13 @@ const SkillRadarChart = ({ category, skills }: SkillRadarChartProps) => {
         <ResponsiveContainer width="100%" height={240}>
           <RadarChart data={chartData} outerRadius="68%">
             <PolarGrid stroke="rgba(255,255,255,0.08)" />
-            <PolarAngleAxis dataKey="subject" tick={{ fill: "#a4a29d", fontSize: 11 }} />
+            <PolarAngleAxis dataKey="subject" tick={{ fill: "var(--text-secondary)", fontSize: 11 }} />
             <PolarRadiusAxis angle={90} domain={[0, 5]} tick={false} axisLine={false} />
             <Radar
               name={category}
               dataKey="value"
-              stroke="#cbbf9f"
-              fill="#cbbf9f"
+              stroke={color}
+              fill={color}
               fillOpacity={0.14}
               strokeWidth={1.5}
               isAnimationActive={false}
@@ -50,7 +52,7 @@ const SkillRadarChart = ({ category, skills }: SkillRadarChartProps) => {
                 <span
                   key={i}
                   className="h-[3px] flex-1 rounded-full"
-                  style={{ background: i < s.level ? "var(--accent)" : "var(--skill-bar-empty)" }}
+                  style={{ background: i < s.level ? color : "var(--skill-bar-empty)" }}
                 />
               ))}
             </span>
