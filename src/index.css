@@ -14,6 +14,7 @@
   --surface: #161a21;                       /* パネル面 */
   --surface-hover: #1b2029;                 /* パネル面（ホバー） */
   --card-bg: #141820;
+  --overlay: rgba(6, 8, 12, 0.72);         /* ポップアップの背景（ページを暗くする） */
   --card-border: rgba(160, 180, 210, 0.1);
   --card-shadow: rgba(0, 0, 0, 0.35);
 
@@ -402,6 +403,23 @@ pre, code {
 ::view-transition-new(.project-title):only-child {
   animation: 420ms cubic-bezier(0, 0, 0.2, 1) 80ms both vt-fade-in-up;
 }
+
+/* アニメのカード ↔ ポップアップ: 画像・タイトルは Works と同じモーフ（.project-img / .project-title の
+   時間・カーブ・新旧の消し方をそのまま使う）。ポップアップの背景・パネルより手前で動くよう anime-morph を足す */
+.vt-anime-img { view-transition-class: project-img anime-morph; }
+.vt-anime-title { view-transition-class: project-title anime-morph; }
+::view-transition-group(.anime-morph) { z-index: 2; }
+
+/* ポップアップの開閉（同じページの中の遷移。AnimePage が html[data-vt="modal"] を付ける）:
+   ページ全体は動かさず、背景を暗くし、パネルを下から浮かべる。閉じるときはその逆を短く */
+html[data-vt="modal"]::view-transition-old(root) { animation: none; opacity: 0; }
+html[data-vt="modal"]::view-transition-new(root) { animation: none; }
+::view-transition-group(anime-backdrop),
+::view-transition-group(anime-panel) { z-index: 1; }
+::view-transition-new(anime-backdrop) { animation: 320ms ease-out both vt-fade-in; }
+::view-transition-old(anime-backdrop) { animation: 260ms ease-in both vt-fade-out; }
+::view-transition-new(anime-panel) { animation: 420ms cubic-bezier(0, 0, 0.2, 1) 60ms both vt-fade-in-up; }
+::view-transition-old(anime-panel) { animation: 200ms cubic-bezier(0.4, 0, 1, 1) both vt-fade-out; }
 
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(*),
