@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import type { PortfolioItem } from "../../lib/dataMapper";
-
-const vtName = (prefix: string, id: string) => `${prefix}-${String(id).replace(/[^\w-]/g, "-")}`;
+import { projectVtName } from "../../lib/projects";
 
 /** サムネイル。画像が無い / 読み込めない場合はタイトルの頭文字を置いた静かなプレースホルダー。 */
 const Thumb: React.FC<{ item: PortfolioItem }> = ({ item }) => {
@@ -17,7 +16,7 @@ const Thumb: React.FC<{ item: PortfolioItem }> = ({ item }) => {
           loading="lazy"
           onError={() => setFailed(true)}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-          style={{ viewTransitionName: vtName("project-img", item.id) }}
+          style={{ viewTransitionName: projectVtName("img", item.id) }}
         />
       ) : (
         <div
@@ -45,7 +44,10 @@ const WorkList: React.FC<{ items: PortfolioItem[] }> = ({ items }) => (
         >
           <Thumb item={w} />
           <div className="flex flex-1 flex-col p-5">
-            <span className="text-[15px] font-medium" style={{ color: "var(--text-primary)" }}>
+            <span
+              className="self-start text-[15px] font-medium"
+              style={{ color: "var(--text-primary)", viewTransitionName: projectVtName("title", w.id) }}
+            >
               {w.title}
             </span>
             {w.description && (

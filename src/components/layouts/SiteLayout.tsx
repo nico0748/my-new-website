@@ -5,6 +5,8 @@ import { QIITA_PROFILE_URL } from "../../lib/articles";
 
 /** 本文の最大幅。1カラムで読ませるため狭めに取る。 */
 export const CONTENT_WIDTH = "max-w-[720px]";
+/** 表や作品詳細など、横幅が要るページ用。 */
+const WIDE_WIDTH = "max-w-[960px]";
 
 const NAV = [
   { to: "/projects", label: "Works" },
@@ -12,8 +14,10 @@ const NAV = [
   { to: "/skills", label: "Skills" },
 ];
 
-export const SiteHeader: React.FC = () => (
-  <header className={`${CONTENT_WIDTH} w-full mx-auto px-6 pt-10 pb-6 flex items-center justify-between`}>
+export const SiteHeader: React.FC<{ wide?: boolean }> = ({ wide }) => (
+  <header className={`${wide ? WIDE_WIDTH : CONTENT_WIDTH} w-full mx-auto px-6 pt-10 pb-6 flex items-center justify-between`}
+    style={{ viewTransitionName: "site-header" }}
+  >
     <Link
       to="/"
       className="text-[15px] font-semibold tracking-tight transition-opacity hover:opacity-70"
@@ -26,6 +30,7 @@ export const SiteHeader: React.FC = () => (
         <NavLink
           key={n.to}
           to={n.to}
+          viewTransition
           className="text-sm transition-colors"
           style={({ isActive }) => ({
             color: isActive ? "var(--text-primary)" : "var(--text-muted)",
@@ -38,8 +43,8 @@ export const SiteHeader: React.FC = () => (
   </header>
 );
 
-export const SiteFooter: React.FC = () => (
-  <footer className={`${CONTENT_WIDTH} w-full mx-auto px-6 pt-12 pb-16 mt-32`}>
+export const SiteFooter: React.FC<{ wide?: boolean }> = ({ wide }) => (
+  <footer className={`${wide ? WIDE_WIDTH : CONTENT_WIDTH} w-full mx-auto px-6 pt-12 pb-16 mt-32`}>
     <div className="h-px mb-10" style={{ background: "var(--border-color)" }} />
     <div className="flex flex-col sm:flex-row sm:justify-between gap-8 text-sm">
       <ul className="flex flex-wrap gap-x-6 gap-y-2">
@@ -80,9 +85,9 @@ interface SiteLayoutProps {
 const SiteLayout: React.FC<SiteLayoutProps> = ({ children, wide }) => (
   <SiteBackground>
     <div className="antialiased min-h-screen flex flex-col">
-      <SiteHeader />
-      <main className={`${wide ? "max-w-[960px]" : CONTENT_WIDTH} w-full mx-auto px-6 flex-1`}>{children}</main>
-      <SiteFooter />
+      <SiteHeader wide={wide} />
+      <main className={`${wide ? WIDE_WIDTH : CONTENT_WIDTH} w-full mx-auto px-6 flex-1`}>{children}</main>
+      <SiteFooter wide={wide} />
     </div>
   </SiteBackground>
 );
