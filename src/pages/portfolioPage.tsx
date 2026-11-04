@@ -20,6 +20,8 @@ import { fetchProjects, getCachedProjects } from "../lib/projects";
 import type { ProfileData, SkillCategory, TimelineItem, PortfolioItem, ArticleItem } from "../lib/dataMapper";
 import { fetchArticles, QIITA_PROFILE_URL } from "../lib/articles";
 import { fetchOffHours, getCachedOffHours } from "../lib/offHours";
+import { fetchTopTracks, getCachedTopTracks } from "../lib/spotify";
+import type { SpotifyTrack } from "../lib/spotify";
 import type { OffHoursItem } from "../lib/dataMapper";
 
 const REAL_NAME = "細澤 悠真";
@@ -32,6 +34,7 @@ const PortfolioPage = () => {
   const [articles, setArticles] = useState<ArticleItem[]>([]);
   const [articlesLoaded, setArticlesLoaded] = useState(false);
   const [offHours, setOffHours] = useState<OffHoursItem[]>(() => getCachedOffHours() ?? []);
+  const [topTracks, setTopTracks] = useState<SpotifyTrack[]>(() => getCachedTopTracks() ?? []);
   // Profile シートを読み終えたか（ソーシャルリンクを全件そろってからフェードインさせるため）
   const [profileReady, setProfileReady] = useState(!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY);
 
@@ -41,6 +44,7 @@ const PortfolioPage = () => {
       .finally(() => setArticlesLoaded(true));
     // 趣味の記録は Profile 等とは別に読む（待たせるとソーシャルリンクの表示まで遅れるため）
     fetchOffHours().then(setOffHours);
+    fetchTopTracks().then(setTopTracks);
 
     if (!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY) return;
     (async () => {
@@ -118,7 +122,7 @@ const PortfolioPage = () => {
         </section>
       )}
 
-      {offHours.length > 0 && (
+      {(offHours.length > 0 || topTracks.length > 0) && (
         <section className="mt-24 md:mt-32">
           <Reveal>
             <SectionHeading id="off-hours">Off-hours</SectionHeading>
@@ -129,7 +133,7 @@ const PortfolioPage = () => {
           >
             <p>コードの外で、観て、聴いて、手に取って、足を運んだもの。</p>
           </Reveal>
-          <OffHoursBoard items={offHours} />
+          <OffHoursBoard items={offHours} topTracks={topTracks} />
         </section>
       )}
     </SiteLayout>

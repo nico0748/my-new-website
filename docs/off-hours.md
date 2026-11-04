@@ -42,8 +42,11 @@ Google Sheets の **`OffHours`** タブに 1 行ずつ足します（行の順�
 | 旧 `/hobbys`・アニメ 3 ページ | この変更では触らない | 撤去は別の PR で行う |
 | DLsite の表記 | 「同人作品」 | サイト名だけで成人向けを連想されやすいため |
 
+## Spotify の「最近よく聴いている曲」
+
+音楽の箱の下段に、直近 4 週間のトップトラックを最大 3 曲出します（Vercel Function `api/spotify.js` が 1 日 1 回だけ取得）。再生中の曲や再生履歴は取りません（生活時間が分かってしまうため）。権限は `user-top-read` だけで、explicit の曲は除きます。設定するまでは何も出ません。手順は [spotify-setup.md](./spotify-setup.md)。
+
 ## 今後
 
-- **Spotify の「最近よく聴いている曲」**: Vercel Function（`api/spotify.js`）で、直近 4 週間のトップトラックを 1 日 1 回だけ取得します。再生中の曲や再生履歴は取りません（生活時間が分かってしまうため）。権限は `user-top-read` だけです。Spotify の Development Mode では、アプリの持ち主が Premium 会員である必要があります。
 - **旧ページの撤去**: `/hobbys`（送信先の無いお問い合わせフォームを含む）とアニメ 3 ページ、旧部品を削除します。
 - **一覧ページ**: 記録が増えたら `/off-hours` を足します（`noindex` にする）。
