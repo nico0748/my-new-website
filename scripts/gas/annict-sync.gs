@@ -19,8 +19,9 @@
  *   - 作品は Annict の work id で照合する。期・クール・劇場版は id が別なので別作品として扱う。
  *   - シートに既に値が入っているセルは上書きしない（手で調べて埋めた値を守るため）。
  *     空のセルだけ Annict の値で埋める。title と release_season は Annict を正とする。
- *   - media 以降（詳細の列）は GraphQL API でまとめて取り、取れた値を正とする（話数・記録数は変わるため）。
- *     詳細の取得に失敗しても、一覧の同期は続け、詳細の列は前回の値を残す。
+ *   - media 以降（詳細の列）は取れた値を正とする（話数・記録数は変わるため）。取れなかった列は前回の値を残す。
+ *       media / episodes_count / watchers_count / wikipedia_url / twitter_hashtag … 一覧と同じ REST API で取る
+ *       original / director / studio / cast … GraphQL API でまとめて取る。失敗した分は飛ばし、一覧の同期は続ける
  *   - 「見てる」→「見た」のようにステータスが移った作品も、id で全シートから値を引き継ぐ。
  *   - 取得に失敗したとき・0件が返ったときはシートを書き換えない。
  *   - cast は 1 行に 1 人「キャラクター名：声優名」（セル内改行区切り）。
@@ -32,23 +33,26 @@ const HEADER = [
   'id', 'title', 'official_site_url', 'release_season', 'twitter_avatar_url', 'official_site_twitter_image_url',
   'media', 'episodes_count', 'watchers_count', 'original', 'director', 'studio', 'cast', 'wikipedia_url', 'twitter_hashtag',
 ];
-const DETAIL_FROM = 6; // この列から右が詳細（GraphQL で取る）
-const DETAIL_COLUMNS = HEADER.length - DETAIL_FROM;
+const DETAIL_FROM = HEADER.indexOf('media'); // この列から右が詳細（取れた値を正とする）
+const CREDIT_FROM = HEADER.indexOf('original'); // original / director / studio / cast（GraphQL で取る）
+const CREDIT_COLUMNS = 4;
 const TARGETS = [
   { status: 'watched',     sheet: 'all-watched-anime' },
   { status: 'watching',    sheet: 'all-watching-anime' },
   { status: 'wanna_watch', sheet: 'all-wanna-watch-anime' },
 ];
 const TRIGGER_HOURS = 6;
-const DETAIL_BATCH = 25; // GraphQL 1 回で取る作品数
+const CREDIT_BATCH = 25; // GraphQL 1 回で取る作品数
 const STAFF_LIMIT = 30;
 const CAST_LIMIT = 6;
-const MEDIA_LABEL = { TV: 'TV', OVA: 'OVA', MOVIE: '映画', WEB: 'Web', OTHER: 'その他' };
+const CREDIT_BUDGET_MS = 4 * 60 * 1000; // 実行開始からこの時間を過ぎたら、残りのスタッフ・キャストは次回に回す（1 回の実行は 6 分まで）
+const CREDIT_MAX_FAILURES = 3; // 続けてこの回数失敗したら、スタッフ・キャストの取得をやめる
 // Annict 側の画像が非公式・無関係と確認済みで、意図的に空にしている作品 id（空でも Annict の値で埋め直さない）
 const IGNORE_ANNICT_IMAGE_IDS = ['4089', '15792', '4328', '4777', '4385', '1744', '5587', '3637', '1090', '5735'];
 
 /** 定期実行の本体 */
 function syncAnnict() {
+  const startedAt = Date.now();
   const lock = LockService.getScriptLock();
   if (!lock.tryLock(30 * 1000)) {
     console.warn('前回の同期がまだ実行中のためスキップしました');
@@ -61,19 +65,13 @@ function syncAnnict() {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     const known = collectExistingRows_(ss); // id -> 既存行（全シート横断）
 
-    // 1. 状態ごとの作品一覧（REST）
+    // 1. 状態ごとの作品一覧と、話数・記録数などの詳細（REST）
     const lists = TARGETS.map(t => Object.assign({}, t, { works: fetchAllWorks_(token, t.status) }));
 
-    // 2. 詳細（GraphQL）。失敗しても一覧の同期は続ける
-    let details = {};
-    try {
-      const ids = [];
-      lists.forEach(l => l.works.forEach(w => ids.push(Number(w.id))));
-      details = fetchDetails_(token, ids);
-      console.log(`詳細: ${Object.keys(details).length}/${ids.length}件を取得しました`);
-    } catch (e) {
-      console.warn(`詳細の取得に失敗しました（詳細の列は前回の値を残します）: ${e.message}`);
-    }
+    // 2. 原作・監督・制作・キャスト（GraphQL）。取れなかった作品は前回の値を残す
+    const ids = [];
+    lists.forEach(l => l.works.forEach(w => ids.push(String(w.id))));
+    const credits = fetchCredits_(token, missingCreditsFirst_(ids, known), startedAt + CREDIT_BUDGET_MS);
 
     // 3. シートへ書き込み
     lists.forEach(({ sheet, works }) => {
@@ -85,7 +83,7 @@ function syncAnnict() {
         return;
       }
 
-      const rows = works.map(w => mergeRow_(toRow_(w, details[String(w.id)]), known[String(w.id)]));
+      const rows = works.map(w => mergeRow_(toRow_(w, credits[String(w.id)]), known[String(w.id)]));
       writeSheet_(sh, rows);
       console.log(`${sheet}: ${rows.length}件を同期しました（前回 ${currentCount}件）`);
     });
@@ -115,7 +113,10 @@ function removeTrigger() {
 // ---------------------------------------------------------------------------
 
 function fetchAllWorks_(token, status) {
-  const fields = 'id,title,official_site_url,season_name_text,twitter_username,images';
+  const fields = [
+    'id', 'title', 'official_site_url', 'season_name_text', 'twitter_username', 'images',
+    'media_text', 'episodes_count', 'no_episodes', 'watchers_count', 'wikipedia_url', 'twitter_hashtag',
+  ].join(',');
   let page = 1;
   const all = [];
   while (page) {
@@ -129,46 +130,77 @@ function fetchAllWorks_(token, status) {
   return all;
 }
 
-const DETAIL_QUERY = `query ($ids: [Int!]) {
-  searchWorks(annictIds: $ids, first: ${DETAIL_BATCH}) {
+// Staff.roleOther は取らない（スキーマ上は null にならない項目なのに Annict のデータに null があり、
+// 1 件でも当たるとクエリ全体がエラーになるため）。役職は roleText（原作・監督・アニメーション制作など）で見る。
+const CREDIT_QUERY = `query ($ids: [Int!]) {
+  searchWorks(annictIds: $ids, first: ${CREDIT_BATCH}) {
     nodes {
       annictId
-      media
-      episodesCount
-      noEpisodes
-      watchersCount
-      wikipediaUrl
-      twitterHashtag
-      staffs(first: ${STAFF_LIMIT}, orderBy: { field: SORT_NUMBER, direction: ASC }) { nodes { name roleText roleOther } }
+      staffs(first: ${STAFF_LIMIT}, orderBy: { field: SORT_NUMBER, direction: ASC }) { nodes { name roleText } }
       casts(first: ${CAST_LIMIT}, orderBy: { field: SORT_NUMBER, direction: ASC }) { nodes { name character { name } } }
     }
   }
 }`;
 
-/** 作品 id → 詳細の列（DETAIL_COLUMNS 個）。並び順の指定が通らない場合は指定なしで取り直す */
-function fetchDetails_(token, ids) {
+/**
+ * 作品 id → [原作, 監督, アニメーション制作, キャスト]。
+ * 失敗したバッチは飛ばして続ける（その作品は前回の値を残す）。時間の上限に達したら残りは次回に回す。
+ */
+function fetchCredits_(token, ids, deadline) {
   const out = {};
-  let query = DETAIL_QUERY;
-  for (let i = 0; i < ids.length; i += DETAIL_BATCH) {
-    const batch = ids.slice(i, i + DETAIL_BATCH);
-    let data;
-    try {
-      data = graphql_(token, query, { ids: batch });
-    } catch (e) {
-      if (query === DETAIL_QUERY && /orderBy|SORT_NUMBER|field/i.test(e.message)) {
-        console.warn(`並び順の指定なしで取り直します: ${e.message}`);
-        query = DETAIL_QUERY.replace(/, orderBy: \{[^}]*\}/g, '');
-        data = graphql_(token, query, { ids: batch });
-      } else {
-        throw e;
-      }
+  let query = CREDIT_QUERY;
+  let failures = 0;
+  let streak = 0;
+  let lastError = '';
+  let stopped = '';
+  const partial = [];
+  for (let i = 0; i < ids.length; i += CREDIT_BATCH) {
+    if (streak >= CREDIT_MAX_FAILURES) {
+      stopped = `${CREDIT_MAX_FAILURES}回続けて失敗したため、残り ${ids.length - i}件の取得をやめました`;
+      break;
     }
-    const nodes = (data.searchWorks && data.searchWorks.nodes) || [];
-    nodes.forEach(n => { out[String(n.annictId)] = toDetail_(n); });
+    if (Date.now() > deadline) {
+      stopped = `時間の上限に達したため、残り ${ids.length - i}件は次回に回します`;
+      break;
+    }
+    const batch = ids.slice(i, i + CREDIT_BATCH).map(Number);
+    try {
+      let res;
+      try {
+        res = graphql_(token, query, { ids: batch });
+      } catch (e) {
+        if (query !== CREDIT_QUERY || !/orderBy|SORT_NUMBER|StaffOrder|CastOrder/.test(e.message)) throw e;
+        console.warn(`並び順の指定なしで取り直します: ${e.message}`);
+        query = CREDIT_QUERY.replace(/, orderBy: \{[^}]*\}/g, '');
+        res = graphql_(token, query, { ids: batch });
+      }
+      partial.push(...res.errors);
+      const nodes = ((res.data.searchWorks && res.data.searchWorks.nodes) || []).filter(Boolean);
+      nodes.forEach(n => { out[String(n.annictId)] = toCredits_(n); });
+      streak = 0;
+    } catch (e) {
+      failures++;
+      streak++;
+      lastError = e.message;
+    }
   }
+  console.log(`スタッフ・キャスト: ${Object.keys(out).length}/${ids.length}件を取得しました`);
+  if (partial.length) console.warn(`一部の値が欠けた作品があります（${partial.length}件）: ${partial[0]}`);
+  if (failures) console.warn(`取得に${failures}回失敗しました（その作品は前回の値を残します）: ${lastError}`);
+  if (stopped) console.warn(stopped);
   return out;
 }
 
+/** スタッフ・キャストがまだ空の作品を先に取る（時間切れで残りが次回に回っても、空の作品から埋まるように） */
+function missingCreditsFirst_(ids, known) {
+  const missing = id => {
+    const row = known[id];
+    return !row || row.slice(CREDIT_FROM, CREDIT_FROM + CREDIT_COLUMNS).every(v => !v);
+  };
+  return ids.filter(missing).concat(ids.filter(id => !missing(id)));
+}
+
+/** GraphQL を呼ぶ。一部の値だけのエラー（data が返っているとき）は errors として返し、取れた分は使う */
 function graphql_(token, query, variables) {
   const res = fetchWithRetry_(ANNICT_GRAPHQL, {
     method: 'post',
@@ -177,29 +209,24 @@ function graphql_(token, query, variables) {
     payload: JSON.stringify({ query, variables }),
   });
   const body = JSON.parse(res.getContentText());
-  if (body.errors && body.errors.length) throw new Error(`Annict GraphQL: ${body.errors[0].message}`);
-  return body.data || {};
+  const errors = (body.errors || []).map(e => String(e.message));
+  if (!body.data) throw new Error(`Annict GraphQL: ${errors[0] || '応答に data がありません'}`);
+  return { data: body.data, errors };
 }
 
-function toDetail_(n) {
-  const staffs = (n.staffs && n.staffs.nodes) || [];
-  const byRole = role => unique_(
-    staffs.filter(s => s.roleText === role || s.roleOther === role).map(s => s.name)
-  ).join('、');
+function toCredits_(n) {
+  const staffs = ((n.staffs && n.staffs.nodes) || []).filter(Boolean);
+  const byRole = role => unique_(staffs.filter(s => s.roleText === role).map(s => s.name)).join('、');
+  const chief = byRole('総監督');
   const cast = ((n.casts && n.casts.nodes) || [])
-    .map(c => (c.character && c.character.name ? `${c.character.name}：` : '') + (c.name || ''))
-    .filter(Boolean)
+    .filter(c => c && c.name)
+    .map(c => (c.character && c.character.name ? `${c.character.name}：` : '') + c.name)
     .join('\n');
   return [
-    MEDIA_LABEL[n.media] || '',
-    !n.noEpisodes && n.episodesCount ? String(n.episodesCount) : '',
-    n.watchersCount ? String(n.watchersCount) : '',
     byRole('原作'),
-    byRole('監督') || byRole('総監督'),
+    byRole('監督') || (chief ? `${chief}（総監督）` : ''),
     byRole('アニメーション制作'),
     cast,
-    n.wikipediaUrl || '',
-    String(n.twitterHashtag || '').replace(/^#/, ''),
   ];
 }
 
@@ -225,15 +252,23 @@ function fetchWithRetry_(url, options) {
   throw lastErr;
 }
 
-function toRow_(w, detail) {
+function toRow_(w, credits) {
   const site = normalizeUrl_(w.official_site_url || '');
   const tw = (w.images && w.images.twitter) || {};
   const fb = (w.images && w.images.facebook) || {};
   const avatar = tw.original_avatar_url ||
     (w.twitter_username ? `https://twitter.com/${w.twitter_username}/profile_image?size=original` : '');
   const image = absolutize_(tw.image_url || fb.og_image_url || '', site);
-  const base = [String(w.id), w.title || '', site, w.season_name_text || '', avatar, image];
-  return base.concat(detail || new Array(DETAIL_COLUMNS).fill(''));
+  const c = credits || new Array(CREDIT_COLUMNS).fill('');
+  return [
+    String(w.id), w.title || '', site, w.season_name_text || '', avatar, image,
+    w.media_text || '',
+    !w.no_episodes && w.episodes_count ? String(w.episodes_count) : '',
+    w.watchers_count ? String(w.watchers_count) : '',
+    c[0], c[1], c[2], c[3],
+    toHttps_(w.wikipedia_url),
+    String(w.twitter_hashtag || '').trim().replace(/^#/, ''),
+  ];
 }
 
 /**
@@ -274,6 +309,11 @@ function writeSheet_(sh, rows) {
 
 function normalizeUrl_(url) {
   return String(url || '').trim();
+}
+
+/** Wikipedia などの http の URL を https にする（サイトは https のリンクだけを出すため） */
+function toHttps_(url) {
+  return String(url || '').trim().replace(/^http:\/\//i, 'https://');
 }
 
 /** "/wp/.../ogp.png" のような相対パスを公式サイト基準の絶対URLにする */
