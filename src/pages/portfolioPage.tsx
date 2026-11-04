@@ -149,7 +149,7 @@ const Intro = ({ profile, ready }: { profile: ProfileData; ready: boolean }) => 
         <img
           src={profile.image || "/sns_icon_round.png"}
           alt=""
-          className="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover mb-8 md:mb-10"
+          className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover mb-8 md:mb-10"
           style={{ border: "1px solid var(--avatar-border)" }}
         />
       </Reveal>
