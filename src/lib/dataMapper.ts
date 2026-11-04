@@ -296,3 +296,58 @@ export const mapOffHoursData = (rows: SheetRow[], today: string = todayJst()): O
         )
         .map((x) => x.item);
 };
+
+// ---------------------------------------------------------------------------
+// アニメの視聴記録（Annict から同期しているシート all-watched-anime / all-watching-anime）
+// 列: id, title, official_site_url, release_season, twitter_avatar_url, official_site_twitter_image_url
+// 同期は Apps Script（annict-sync.gs）が 6 時間ごとに行う。サイトは読むだけ。
+// ---------------------------------------------------------------------------
+
+export interface AnimeWork {
+    id: string;
+    title: string;
+    /** 放送クール（例 "2026年夏"）。年だけのこともある */
+    season: string;
+    /** 視聴中なら true（all-watching-anime） */
+    watching: boolean;
+    url?: string;
+    image?: string;
+}
+
+const SEASON_ORDER: Record<string, number> = { 冬: 1, 春: 2, 夏: 3, 秋: 4 };
+
+/** "2026年夏" → 20263（年 × 10 + 季節）。季節が無ければ 0、年も無ければ -1。並べ替え用。 */
+export const seasonRank = (season: string): number => {
+    const m = /(\d{4})\s*年?\s*(冬|春|夏|秋)?/.exec(season);
+    if (!m) return -1;
+    return Number(m[1]) * 10 + (m[2] ? SEASON_ORDER[m[2]] : 0);
+};
+
+/**
+ * Annict のシートを作品の一覧にする。放送クールの新しい順（同じクールなら Annict の ID の大きい順）。
+ * URL と画像は https のものだけ残す（http の画像は混在コンテンツになるため）。
+ */
+export const mapAnimeWorks = (watchingRows: SheetRow[], watchedRows: SheetRow[]): AnimeWork[] => {
+    const seen = new Set<string>();
+    const toWork = (row: SheetRow, watching: boolean): AnimeWork | null => {
+        const id = (row.id || "").trim();
+        const title = (row.title || "").trim();
+        if (!id || !title || seen.has(id)) return null;
+        seen.add(id);
+        return {
+            id,
+            title,
+            season: (row.release_season || "").trim(),
+            watching,
+            url: httpsUrl(row.official_site_url)?.href,
+            image: httpsUrl(row.official_site_twitter_image_url)?.href,
+        };
+    };
+    const works = [
+        ...watchingRows.map((r) => toWork(r, true)),
+        ...watchedRows.map((r) => toWork(r, false)),
+    ].filter((w): w is AnimeWork => w !== null);
+    return works.sort(
+        (a, b) => seasonRank(b.season) - seasonRank(a.season) || Number(b.id) - Number(a.id)
+    );
+};

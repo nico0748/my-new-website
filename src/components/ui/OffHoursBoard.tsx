@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Music2, Package, Ticket, Tv } from "lucide-react";
-import type { OffHoursCategory, OffHoursItem } from "../../lib/dataMapper";
+import type { AnimeWork, OffHoursCategory, OffHoursItem } from "../../lib/dataMapper";
 import { OFF_HOURS_LABEL, OFF_HOURS_ORDER } from "../../lib/offHours";
 import type { SpotifyTrack } from "../../lib/spotify";
 import Reveal from "./Reveal";
@@ -15,25 +15,42 @@ const ICON: Record<OffHoursCategory, React.ComponentType<{ size?: number; stroke
   indie: Package,
 };
 
+/** カテゴリごとの表示件数（PC は 4 列なので 4 の倍数）と、スマホ（1 列）で出す件数。 */
+const LIMIT: Record<OffHoursCategory, { all: number; mobile: number }> = {
+  anime: { all: 8, mobile: 4 },
+  music: { all: 12, mobile: 6 },
+  event: { all: 8, mobile: 4 },
+  indie: { all: 4, mobile: 4 },
+};
+
 /** "2026-10-12" → イベントは "2026.10.12"、それ以外は年月だけの "2026.10" */
 const formatDate = (category: OffHoursCategory, date: string) =>
   (category === "event" ? date : date.slice(0, 7)).replace(/-/g, ".");
 
-/** 56px 角のサムネイル。画像が無い / 読み込めないときはカテゴリのピクトグラム。 */
+interface Card {
+  key: string;
+  category: OffHoursCategory;
+  title: string;
+  sub?: React.ReactNode;
+  url?: string;
+  image?: string | null;
+}
+
+/** 64px 角のサムネイル（ジャケット・作品画像）。画像が無い / 読み込めないときはカテゴリのピクトグラム。 */
 const Thumb: React.FC<{ category: OffHoursCategory; image?: string | null }> = ({ category, image }) => {
   const [failed, setFailed] = useState(false);
   const Icon = ICON[category];
   return (
     <span
-      className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-md"
+      className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-md"
       style={{ background: "var(--surface)", border: "1px solid var(--border-color)", color: "var(--text-muted)" }}
     >
       {image && !failed ? (
         <img
           src={image}
           alt=""
-          width={56}
-          height={56}
+          width={64}
+          height={64}
           loading="lazy"
           decoding="async"
           referrerPolicy="no-referrer"
@@ -41,147 +58,178 @@ const Thumb: React.FC<{ category: OffHoursCategory; image?: string | null }> = (
           className="h-full w-full object-cover"
         />
       ) : (
-        <Icon size={20} strokeWidth={1.75} />
+        <Icon size={22} strokeWidth={1.75} />
       )}
     </span>
   );
 };
 
-const Row: React.FC<{ item: OffHoursItem }> = ({ item }) => (
-  <li className="flex items-start gap-4">
-    <Thumb category={item.category} image={item.image} />
-    <div className="min-w-0 pt-0.5">
-      {item.url ? (
+/** 1 件 1 枚のカード（サムネイル + タイトル + 補足）。URL があればカード全体がリンク。 */
+const CardView: React.FC<{ card: Card }> = ({ card }) => {
+  const body = (
+    <>
+      <Thumb category={card.category} image={card.image} />
+      <div className="min-w-0 flex-1 pt-0.5">
+        <p className="line-clamp-2 text-[15px] font-medium leading-snug" style={{ color: "var(--text-primary)" }}>
+          <span className="row-title">{card.title}</span>
+          {card.url && (
+            <span aria-hidden className="ml-1.5 text-[13px]" style={{ color: "var(--text-muted)" }}>
+              ↗
+            </span>
+          )}
+        </p>
+        {card.sub && (
+          <p className="mt-1.5 truncate text-[13px] tracking-wide" style={{ color: "var(--text-secondary)" }}>
+            {card.sub}
+          </p>
+        )}
+      </div>
+    </>
+  );
+  const cls = "flex h-full items-start gap-4 rounded-xl border border-white/[0.08] p-4 transition-colors duration-300";
+  return card.url ? (
+    <a
+      href={card.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`row-link ${cls} hover:border-white/[0.22]`}
+      style={{ background: "var(--card-bg)" }}
+    >
+      {body}
+    </a>
+  ) : (
+    <div className={cls} style={{ background: "var(--card-bg)" }}>
+      {body}
+    </div>
+  );
+};
+
+/** 手入力の記録の補足行: 「日付 · subtitle」 */
+const recordSub = (it: OffHoursItem) => (
+  <>
+    <time dateTime={it.date} className="tabular-nums">
+      {formatDate(it.category, it.date)}
+    </time>
+    {it.subtitle && (
+      <>
+        <span className="mx-2" aria-hidden>
+          ·
+        </span>
+        {it.subtitle}
+      </>
+    )}
+  </>
+);
+
+const fromRecord = (it: OffHoursItem, i: number): Card => ({
+  key: `rec-${it.date}-${i}`,
+  category: it.category,
+  title: it.title,
+  sub: recordSub(it),
+  url: it.url,
+  image: it.image,
+});
+
+const fromAnime = (w: AnimeWork): Card => ({
+  key: `annict-${w.id}`,
+  category: "anime",
+  title: w.title,
+  sub: [w.season, w.watching ? "視聴中" : ""].filter(Boolean).join(" · ") || undefined,
+  url: w.url,
+  image: w.image,
+});
+
+const fromTrack = (t: SpotifyTrack): Card => ({
+  key: `spotify-${t.url}`,
+  category: "music",
+  title: t.title,
+  sub: t.artists || undefined,
+  url: t.url,
+  image: t.image,
+});
+
+/** 見出し右の出典（Spotify はロゴとリンクを添える）。 */
+const SourceNote: React.FC<{ category: OffHoursCategory; hasTracks: boolean; hasAnime: boolean }> = ({
+  category,
+  hasTracks,
+  hasAnime,
+}) => {
+  const cls = "flex items-center gap-2 text-[13px] tracking-wide";
+  if (category === "music" && hasTracks)
+    return (
+      <p className={cls} style={{ color: "var(--text-secondary)" }}>
+        最近よく聴いている
+        <span aria-hidden>·</span>
         <a
-          href={item.url}
+          href="https://open.spotify.com/"
           target="_blank"
           rel="noopener noreferrer"
-          className="row-link line-clamp-2 text-[16px] leading-snug"
-          style={{ color: "var(--text-primary)" }}
+          className="link-quiet inline-flex items-center gap-1.5"
         >
-          <span className="row-title">{item.title}</span>{" "}
-          <span aria-hidden className="text-[13px]" style={{ color: "var(--text-muted)" }}>
-            ↗
-          </span>
+          <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden style={{ color: "var(--brand-spotify)" }} fill="currentColor">
+            <path d={SPOTIFY_ICON} />
+          </svg>
+          Spotify
         </a>
-      ) : (
-        <p className="line-clamp-2 text-[16px] leading-snug" style={{ color: "var(--text-primary)" }}>
-          {item.title}
-        </p>
-      )}
-      <p className="mt-1 truncate text-[13px] tabular-nums tracking-wide" style={{ color: "var(--text-secondary)" }}>
-        <time dateTime={item.date}>{formatDate(item.category, item.date)}</time>
-        {item.subtitle && (
-          <>
-            <span className="mx-2" aria-hidden>
-              ·
-            </span>
-            {item.subtitle}
-          </>
-        )}
       </p>
-    </div>
-  </li>
-);
-
-/** Spotify の曲。ジャケットは 1:1 のまま（切り抜かない・上に重ねない）、Spotify の曲ページへリンクする。 */
-const TrackRow: React.FC<{ track: SpotifyTrack }> = ({ track }) => (
-  <li className="flex items-start gap-4">
-    <Thumb category="music" image={track.image} />
-    <div className="min-w-0 pt-0.5">
-      <a
-        href={track.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="row-link line-clamp-2 text-[16px] leading-snug"
-        style={{ color: "var(--text-primary)" }}
-      >
-        <span className="row-title">{track.title}</span>{" "}
-        <span aria-hidden className="text-[13px]" style={{ color: "var(--text-muted)" }}>
-          ↗
-        </span>
-      </a>
-      {track.artists && (
-        <p className="mt-1 truncate text-[13px] tracking-wide" style={{ color: "var(--text-secondary)" }}>
-          {track.artists}
-        </p>
-      )}
-    </div>
-  </li>
-);
-
-/** 音楽の箱の下段: 直近 4 週間によく聴いている曲（Spotify から 1 日 1 回取得）。 */
-const SpotifyTop: React.FC<{ tracks: SpotifyTrack[]; divided: boolean }> = ({ tracks, divided }) => (
-  <div className={divided ? "mt-6 pt-6 border-t" : "mt-5"} style={{ borderColor: "var(--border-color)" }}>
-    <p className="flex items-center gap-2 text-[13px] tracking-wide" style={{ color: "var(--text-secondary)" }}>
-      最近よく聴いている
-      <span aria-hidden>·</span>
-      <a
-        href="https://open.spotify.com/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="link-quiet inline-flex items-center gap-1.5"
-      >
-        <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden style={{ color: "var(--brand-spotify)" }} fill="currentColor">
-          <path d={SPOTIFY_ICON} />
-        </svg>
-        Spotify
-      </a>
-    </p>
-    <ul className="mt-4 flex flex-col gap-5">
-      {tracks.map((t) => (
-        <TrackRow key={t.url} track={t} />
-      ))}
-    </ul>
-  </div>
-);
+    );
+  if (category === "anime" && hasAnime)
+    return (
+      <p className="text-[13px] tracking-wide" style={{ color: "var(--text-secondary)" }}>
+        <a href="https://annict.com/" target="_blank" rel="noopener noreferrer" className="link-quiet">
+          Annict
+        </a>{" "}
+        の視聴記録より
+      </p>
+    );
+  return null;
+};
 
 /**
- * 趣味の記録（OFF-HOURS）。カテゴリごとの箱に新しい順で数件ずつ並べる。
- * 記録が 1 件も無いカテゴリの箱は出さない（音楽は Spotify の曲があれば出す）。
+ * 趣味の記録（OFF-HOURS）。カテゴリごとに見出しを立て、1 件 1 枚のカードを 4 列（タブレット 2 列・スマホ 1 列）で並べる。
+ * - アニメ: 手入力の記録 → Annict の視聴記録（放送クールの新しい順）
+ * - 音楽: 手入力の記録 → Spotify の「最近よく聴いている曲」
+ * - イベント・同人作品: 手入力の記録（OffHours シート）
+ * 記録が 1 件も無いカテゴリは出さない。
  */
-const OffHoursBoard: React.FC<{ items: OffHoursItem[]; topTracks?: SpotifyTrack[]; perCategory?: number }> = ({
+const OffHoursBoard: React.FC<{ items: OffHoursItem[]; topTracks?: SpotifyTrack[]; anime?: AnimeWork[] }> = ({
   items,
   topTracks = [],
-  perCategory = 3,
+  anime = [],
 }) => {
-  const tracks = topTracks.slice(0, perCategory);
-  const groups = OFF_HOURS_ORDER.map((category) => ({
-    category,
-    items: items.filter((it) => it.category === category).slice(0, perCategory),
-  })).filter((g) => g.items.length > 0 || (g.category === "music" && tracks.length > 0));
+  const groups = OFF_HOURS_ORDER.map((category) => {
+    const records = items.filter((it) => it.category === category).map(fromRecord);
+    const extra = category === "anime" ? anime.map(fromAnime) : category === "music" ? topTracks.map(fromTrack) : [];
+    return { category, cards: [...records, ...extra].slice(0, LIMIT[category].all) };
+  }).filter((g) => g.cards.length > 0);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
+    <div className="flex flex-col gap-12 md:gap-14">
       {groups.map((g) => {
         const Icon = ICON[g.category];
         return (
-          <Reveal key={g.category} className="h-full">
-            <section
-              aria-labelledby={`off-hours-${g.category}`}
-              className="h-full rounded-lg p-5 md:p-6 border border-white/[0.08]"
-              style={{ background: "var(--card-bg)" }}
-            >
-              <h3
-                id={`off-hours-${g.category}`}
-                className="flex items-center gap-2.5 text-[17px] font-medium"
-                style={{ color: "var(--text-primary)" }}
-              >
-                <span aria-hidden style={{ color: "var(--text-secondary)" }}>
-                  <Icon size={18} strokeWidth={1.75} />
-                </span>
-                {OFF_HOURS_LABEL[g.category]}
-              </h3>
-              {g.items.length > 0 && (
-                <ul className="mt-5 flex flex-col gap-5">
-                  {g.items.map((it, i) => (
-                    <Row key={`${it.date}-${i}`} item={it} />
-                  ))}
-                </ul>
-              )}
-              {g.category === "music" && tracks.length > 0 && (
-                <SpotifyTop tracks={tracks} divided={g.items.length > 0} />
-              )}
+          <Reveal key={g.category}>
+            <section aria-labelledby={`off-hours-${g.category}`}>
+              <div className="mb-4 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+                <h3
+                  id={`off-hours-${g.category}`}
+                  className="flex items-center gap-2.5 text-[17px] font-medium"
+                  style={{ color: "var(--text-primary)" }}
+                >
+                  <span aria-hidden className="self-center" style={{ color: "var(--text-secondary)" }}>
+                    <Icon size={18} strokeWidth={1.75} />
+                  </span>
+                  {OFF_HOURS_LABEL[g.category]}
+                </h3>
+                <SourceNote category={g.category} hasTracks={topTracks.length > 0} hasAnime={anime.length > 0} />
+              </div>
+              <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
+                {g.cards.map((c, i) => (
+                  <li key={c.key} className={i >= LIMIT[g.category].mobile ? "max-sm:hidden" : undefined}>
+                    <CardView card={c} />
+                  </li>
+                ))}
+              </ul>
             </section>
           </Reveal>
         );
