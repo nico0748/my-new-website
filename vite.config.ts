@@ -96,18 +96,6 @@ export default defineConfig({
               cacheableResponse: { statuses: [0, 200] },
             },
           },
-          // Topics / Study 記事本文（id ごとに内容不変 → CacheFirst で高速化・オフライン可）
-          // ※ 記事の「索引」は上の Google Sheets（NetworkFirst）が常に最新を取りにいくため、
-          //   新規記事は index 経由で即座に反映され、本文だけキャッシュされる。
-          {
-            urlPattern: /\/(topics|study)\/.*\.md$/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'article-md-cache',
-              expiration: { maxEntries: 300, maxAgeSeconds: 60 * 60 * 24 * 30 },
-              cacheableResponse: { statuses: [0, 200] },
-            },
-          },
         ],
       },
     }),
