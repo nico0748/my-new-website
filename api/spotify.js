@@ -8,8 +8,8 @@
 // 設定手順は docs/spotify-setup.md。環境変数が無ければ空の配列を返す（ローカルの npm run dev では関数自体が動かない）。
 
 const TOKEN_URL = "https://accounts.spotify.com/api/token";
-const TOP_TRACKS_URL = "https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=20";
-const LIMIT = 5;
+const TOP_TRACKS_URL = "https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=50";
+const LIMIT = 12;
 
 const send = (res, status, body, cache) => {
   res.setHeader("Cache-Control", cache);
