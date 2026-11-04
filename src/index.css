@@ -53,6 +53,9 @@
 
   /* View Transitions（画面遷移）の共通チューニング */
   --view-transition-duration: 0.35s;
+  /* 共有要素（作品の画像・タイトル）のモーフ。長めの時間で、終わり際にゆっくり減速させる */
+  --vt-morph-duration: 0.6s;
+  --vt-morph-easing: cubic-bezier(0.2, 0, 0, 1);
   --overlay: rgba(0, 0, 0, 0.88);
   --view-transition-easing: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -394,8 +397,24 @@ pre, code {
 
 /* ─── View Transitions（画面遷移アニメの共通設定） ────────────────
    React Router v7 の viewTransition:true で発火。共有要素（一覧カードの
-   サムネイル/タイトル ↔ 詳細ページのヒーロー/見出し）は同じ
-   view-transition-name でモーフする。低モーション時はアニメを無効化。 */
+   サムネイル/タイトル ↔ 詳細ページの画像/見出し）は同じ
+   view-transition-name でモーフする。低モーション時はアニメを無効化。
+
+   - ページ全体（root）: 旧ページをすっと消し、新ページを少し遅らせて下から浮かべる
+     （同時にクロスフェードさせると文字が二重に見えるため）
+   - 作品の画像・タイトル（view-transition-class: project-img / project-title）:
+     ゆっくり減速するカーブで位置と大きさを移す。旧スナップショットは早めに消し、
+     拡大でぼやける旧画像が残らないようにする */
+
+@keyframes vt-fade-out {
+  to { opacity: 0; }
+}
+@keyframes vt-fade-in {
+  from { opacity: 0; }
+}
+@keyframes vt-fade-in-up {
+  from { opacity: 0; transform: translate3d(0, 14px, 0); }
+}
 
 ::view-transition-group(*),
 ::view-transition-old(*),
@@ -404,11 +423,83 @@ pre, code {
   animation-timing-function: var(--view-transition-easing);
 }
 
+::view-transition-old(root) {
+  animation: 180ms cubic-bezier(0.4, 0, 1, 1) both vt-fade-out;
+}
+::view-transition-new(root) {
+  animation: 420ms cubic-bezier(0, 0, 0.2, 1) 80ms both vt-fade-in-up;
+}
+
+.vt-project-img { view-transition-class: project-img; }
+.vt-project-title { view-transition-class: project-title; }
+
+::view-transition-group(.project-img),
+::view-transition-group(.project-title) {
+  animation-duration: var(--vt-morph-duration);
+  animation-timing-function: var(--vt-morph-easing);
+}
+/* 画像: 新しい（大きく鮮明な）画像を最初から不透明で縮めて見せ、旧画像はすぐ消す */
+::view-transition-old(.project-img) {
+  animation: 200ms ease-out both vt-fade-out;
+}
+::view-transition-new(.project-img) {
+  animation: none;
+}
+/* タイトル: 文字は高さ基準で拡縮して縦横比を保ち、新旧を短くクロスフェード */
+::view-transition-old(.project-title),
+::view-transition-new(.project-title) {
+  height: 100%;
+  width: auto;
+}
+::view-transition-old(.project-title) {
+  animation: 200ms ease-out both vt-fade-out;
+}
+::view-transition-new(.project-title) {
+  animation: 280ms ease-out 40ms both vt-fade-in;
+}
+/* 片方のページにしか無い作品（遷移先の一覧に並ぶ他のカードなど）は動かさず、
+   ページ全体と同じタイミングで消える / 浮かぶ（先に出てちらつかないように） */
+::view-transition-old(.project-img):only-child,
+::view-transition-old(.project-title):only-child {
+  animation: 180ms cubic-bezier(0.4, 0, 1, 1) both vt-fade-out;
+}
+::view-transition-new(.project-img):only-child,
+::view-transition-new(.project-title):only-child {
+  animation: 420ms cubic-bezier(0, 0, 0.2, 1) 80ms both vt-fade-in-up;
+}
+
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(*),
   ::view-transition-old(*),
   ::view-transition-new(*) {
     animation: none !important;
+  }
+}
+
+/* ─── スクロールで下からフェードイン（Reveal コンポーネント） ───────── */
+
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0s);
+}
+.reveal.is-shown,
+.reveal.is-instant {
+  opacity: 1;
+  transform: none;
+}
+.reveal.is-instant {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
 

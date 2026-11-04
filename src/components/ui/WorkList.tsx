@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import type { PortfolioItem } from "../../lib/dataMapper";
 import { projectVtName } from "../../lib/projects";
+import Reveal from "./Reveal";
 
 /** サムネイル。画像が無い / 読み込めない場合はタイトルの頭文字を置いた静かなプレースホルダー。 */
 const Thumb: React.FC<{ item: PortfolioItem }> = ({ item }) => {
@@ -15,7 +16,7 @@ const Thumb: React.FC<{ item: PortfolioItem }> = ({ item }) => {
           alt=""
           loading="lazy"
           onError={() => setFailed(true)}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+          className="vt-project-img h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
           style={{ viewTransitionName: projectVtName("img", item.id) }}
         />
       ) : (
@@ -35,7 +36,7 @@ const Thumb: React.FC<{ item: PortfolioItem }> = ({ item }) => {
 const WorkList: React.FC<{ items: PortfolioItem[] }> = ({ items }) => (
   <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
     {items.map((w) => (
-      <li key={w.id}>
+      <Reveal as="li" key={w.id}>
         <Link
           to={`/projects/${w.id}`}
           viewTransition
@@ -45,7 +46,7 @@ const WorkList: React.FC<{ items: PortfolioItem[] }> = ({ items }) => (
           <Thumb item={w} />
           <div className="flex flex-1 flex-col p-5">
             <span
-              className="self-start text-[17px] font-medium"
+              className="vt-project-title self-start text-[17px] font-medium"
               style={{ color: "var(--text-primary)", viewTransitionName: projectVtName("title", w.id) }}
             >
               {w.title}
@@ -62,7 +63,7 @@ const WorkList: React.FC<{ items: PortfolioItem[] }> = ({ items }) => (
             )}
           </div>
         </Link>
-      </li>
+      </Reveal>
     ))}
   </ul>
 );

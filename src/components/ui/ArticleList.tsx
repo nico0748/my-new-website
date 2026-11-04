@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import type { ArticleItem } from "../../lib/dataMapper";
 import { formatJaDate } from "../../lib/articles";
 import { fetchOgpImage } from "../../lib/ogp";
+import Reveal from "./Reveal";
 
 /** OGP 画像。取得中・取得できない場合はタイトルを置いた静かなプレースホルダー。 */
 const OgpImage: React.FC<{ item: ArticleItem }> = ({ item }) => {
@@ -42,7 +43,7 @@ const OgpImage: React.FC<{ item: ArticleItem }> = ({ item }) => {
 const ArticleList: React.FC<{ items: ArticleItem[] }> = ({ items }) => (
   <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
     {items.map((a) => (
-      <li key={a.id}>
+      <Reveal as="li" key={a.id}>
         <a
           href={a.url}
           target="_blank"
@@ -65,7 +66,7 @@ const ArticleList: React.FC<{ items: ArticleItem[] }> = ({ items }) => (
             </span>
           </div>
         </a>
-      </li>
+      </Reveal>
     ))}
   </ul>
 );

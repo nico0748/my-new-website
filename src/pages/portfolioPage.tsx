@@ -8,6 +8,7 @@ import WorkList from "../components/ui/WorkList";
 import SkillRadarChart from "../components/ui/SkillRadarChart";
 import { skillColor } from "../lib/skillColors";
 import Timeline from "../components/ui/Timeline";
+import Reveal from "../components/ui/Reveal";
 import SocialLinks from "../components/ui/SocialLinks";
 import type { SocialLink } from "../components/ui/SocialLinks";
 
@@ -20,12 +21,6 @@ import { fetchArticles, QIITA_PROFILE_URL } from "../lib/articles";
 
 const REAL_NAME = "細澤 悠真";
 
-const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 8 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] as const },
-});
-
 const PortfolioPage = () => {
   const [profile, setProfile] = useState<ProfileData>({ name: "", title: "", description: "", image: "" });
   const [works, setWorks] = useState<PortfolioItem[]>(() => getCachedProjects() ?? []);
@@ -33,6 +28,8 @@ const PortfolioPage = () => {
   const [timeline, setTimeline] = useState<TimelineItem[]>([]);
   const [articles, setArticles] = useState<ArticleItem[]>([]);
   const [articlesLoaded, setArticlesLoaded] = useState(false);
+  // Profile シートを読み終えたか（ソーシャルリンクを全件そろってからフェードインさせるため）
+  const [profileReady, setProfileReady] = useState(!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY);
 
   useEffect(() => {
     fetchArticles()
@@ -54,50 +51,63 @@ const PortfolioPage = () => {
         if (timelineRows.length > 0) setTimeline(mapTimelineData(timelineRows));
       } catch (error) {
         console.error("Failed to fetch data from Google Sheets", error);
+      } finally {
+        setProfileReady(true);
       }
     })();
   }, []);
 
   return (
     <SiteLayout>
-      <Intro profile={profile} />
+      <Intro profile={profile} ready={profileReady} />
 
       <section className="mt-24 md:mt-32">
-        <SectionHeading id="works">Works</SectionHeading>
+        <Reveal>
+          <SectionHeading id="works">Works</SectionHeading>
+        </Reveal>
         {works.length > 0 ? <WorkList items={works.slice(0, 6)} /> : <Empty text="作品を読み込んでいます" />}
-        <MoreLink to="/projects">すべての作品を見る</MoreLink>
+        <Reveal>
+          <MoreLink to="/projects">すべての作品を見る</MoreLink>
+        </Reveal>
       </section>
 
       <section className="mt-24 md:mt-32">
-        <SectionHeading id="articles">Articles</SectionHeading>
+        <Reveal>
+          <SectionHeading id="articles">Articles</SectionHeading>
+        </Reveal>
         {articles.length > 0 ? (
           <ArticleList items={articles.slice(0, 6)} />
         ) : (
           <Empty text={articlesLoaded ? "記事を取得できませんでした。Qiita から直接ご覧ください。" : "記事を読み込んでいます"} />
         )}
-        <MoreLink to="/articles">すべての記事を見る</MoreLink>
+        <Reveal>
+          <MoreLink to="/articles">すべての記事を見る</MoreLink>
+        </Reveal>
       </section>
 
       {skills.length > 0 && (
         <section className="mt-24 md:mt-32">
-          <SectionHeading id="skills">Skills</SectionHeading>
+          <Reveal>
+            <SectionHeading id="skills">Skills</SectionHeading>
+          </Reveal>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
             {skills.slice(0, 4).map((c, i) => (
-              <SkillRadarChart
-                key={c.category}
-                category={c.category}
-                skills={c.skills}
-                color={skillColor(c.category, i)}
-              />
+              <Reveal key={c.category} className="h-full">
+                <SkillRadarChart category={c.category} skills={c.skills} color={skillColor(c.category, i)} />
+              </Reveal>
             ))}
           </div>
-          <MoreLink to="/skills">すべてのスキルを見る</MoreLink>
+          <Reveal>
+            <MoreLink to="/skills">すべてのスキルを見る</MoreLink>
+          </Reveal>
         </section>
       )}
 
       {timeline.length > 0 && (
         <section className="mt-24 md:mt-32">
-          <SectionHeading id="timeline">Timeline</SectionHeading>
+          <Reveal>
+            <SectionHeading id="timeline">Timeline</SectionHeading>
+          </Reveal>
           <Timeline items={timeline} />
         </section>
       )}
@@ -106,7 +116,7 @@ const PortfolioPage = () => {
 };
 
 /** 冒頭の自己紹介。名前クリックで nico ⇄ 本名を切り替える隠し機能（?id=real）を維持。 */
-const Intro = ({ profile }: { profile: ProfileData }) => {
+const Intro = ({ profile, ready }: { profile: ProfileData; ready: boolean }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const isReal = searchParams.get("id") === "real";
   const displayName = isReal ? REAL_NAME : profile.name || "nico";
@@ -134,40 +144,44 @@ const Intro = ({ profile }: { profile: ProfileData }) => {
 
   return (
     <section className="pt-12 md:pt-20">
-      <motion.img
-        {...fadeUp(0)}
-        src={profile.image || "/sns_icon_round.png"}
-        alt=""
-        className="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover mb-8 md:mb-10"
-        style={{ border: "1px solid var(--avatar-border)" }}
-      />
+      {/* Profile → WORKS → … の順に、画面に入ったものから下からフェードインする（Reveal） */}
+      <Reveal>
+        <img
+          src={profile.image || "/sns_icon_round.png"}
+          alt=""
+          className="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover mb-8 md:mb-10"
+          style={{ border: "1px solid var(--avatar-border)" }}
+        />
+      </Reveal>
       {/* 左: 名前・肩書・紹介文 / 右: ソーシャルリンクのカード（名前と同じ高さから始める）。タブレット未満では下に回す */}
       <div className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,1fr)_300px] md:gap-14 lg:gap-20 md:items-start">
         <div>
-          <motion.h1 {...fadeUp(0.05)} className="text-[2.75rem] sm:text-[3.5rem] font-semibold tracking-tight leading-tight">
-            <button
-              type="button"
-              onClick={toggleName}
-              aria-label={`名前を${isReal ? "nico" : REAL_NAME}に切り替える`}
-              className="text-left cursor-pointer"
-              style={{ color: "var(--text-primary)" }}
-            >
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.span
-                  key={displayName}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.25 }}
-                  className="inline-block"
-                >
-                  {displayName}
-                </motion.span>
-              </AnimatePresence>
-            </button>
-          </motion.h1>
+          <Reveal>
+            <h1 className="text-[2.75rem] sm:text-[3.5rem] font-semibold tracking-tight leading-tight">
+              <button
+                type="button"
+                onClick={toggleName}
+                aria-label={`名前を${isReal ? "nico" : REAL_NAME}に切り替える`}
+                className="text-left cursor-pointer"
+                style={{ color: "var(--text-primary)" }}
+              >
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.span
+                    key={displayName}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.25 }}
+                    className="inline-block"
+                  >
+                    {displayName}
+                  </motion.span>
+                </AnimatePresence>
+              </button>
+            </h1>
+          </Reveal>
           {profile.title && (
-            <motion.p {...fadeUp(0.1)} className="mt-4 text-[17px]" style={{ color: "var(--text-muted)" }}>
+            <Reveal className="mt-4 text-[17px]" style={{ color: "var(--text-muted)" }}>
               {/* 「A | B」の肩書は区切りの位置で折り返す（単語の途中で改行しない） */}
               {profile.title.split("|").map((part, i) => (
                 <span key={i}>
@@ -175,16 +189,15 @@ const Intro = ({ profile }: { profile: ProfileData }) => {
                   <span className="inline-block">{part.trim()}</span>
                 </span>
               ))}
-            </motion.p>
+            </Reveal>
           )}
           {profile.description && (
-            <motion.p
-              {...fadeUp(0.15)}
+            <Reveal
               className={`mt-8 md:mt-10 ${READABLE_WIDTH} text-[17px] leading-[2.1] whitespace-pre-line`}
               style={{ color: "var(--text-body)" }}
             >
-              {profile.description}
-            </motion.p>
+              <p>{profile.description}</p>
+            </Reveal>
           )}
           {profile.blogUrl && (
             <a href={profile.blogUrl} target="_blank" rel="noopener noreferrer" className="link-quiet mt-8 inline-block text-[15px]">
@@ -192,9 +205,11 @@ const Intro = ({ profile }: { profile: ProfileData }) => {
             </a>
           )}
         </div>
-        <motion.div {...fadeUp(0.2)}>
-          <SocialLinks links={socials} />
-        </motion.div>
+        {ready && (
+          <Reveal>
+            <SocialLinks links={socials} />
+          </Reveal>
+        )}
       </div>
     </section>
   );

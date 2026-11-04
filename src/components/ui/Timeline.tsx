@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import type { TimelineItem } from "../../lib/dataMapper";
+import Reveal from "./Reveal";
 
 const TYPE_LABEL: Record<TimelineItem["type"], string> = {
   education: "学歴",
@@ -50,7 +51,7 @@ const Timeline: React.FC<{ items: TimelineItem[] }> = ({ items }) => {
   return (
     <div className="flex flex-col gap-12">
       {groups.map((g) => (
-        <section key={g.year} className="grid grid-cols-1 sm:grid-cols-[6rem_1fr] gap-x-8 gap-y-4">
+        <Reveal as="section" key={g.year} className="grid grid-cols-1 sm:grid-cols-[6rem_1fr] gap-x-8 gap-y-4">
           <h3
             className="text-[17px] font-medium tabular-nums sm:pt-[3px]"
             style={{ color: "var(--text-primary)" }}
@@ -89,7 +90,7 @@ const Timeline: React.FC<{ items: TimelineItem[] }> = ({ items }) => {
               );
             })}
           </ol>
-        </section>
+        </Reveal>
       ))}
     </div>
   );
