@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
-import SiteLayout, { SectionHeading, MoreLink } from "../components/layouts/SiteLayout";
+import SiteLayout, { SectionHeading, MoreLink, READABLE_WIDTH } from "../components/layouts/SiteLayout";
 import ArticleList from "../components/ui/ArticleList";
 import WorkList from "../components/ui/WorkList";
 import SkillRadarChart from "../components/ui/SkillRadarChart";
@@ -62,16 +62,16 @@ const PortfolioPage = () => {
     <SiteLayout>
       <Intro profile={profile} />
 
-      <section className="mt-32">
+      <section className="mt-24 md:mt-32">
         <SectionHeading id="works">Works</SectionHeading>
-        {works.length > 0 ? <WorkList items={works.slice(0, 4)} /> : <Empty text="作品を読み込んでいます" />}
+        {works.length > 0 ? <WorkList items={works.slice(0, 6)} /> : <Empty text="作品を読み込んでいます" />}
         <MoreLink to="/projects">すべての作品を見る</MoreLink>
       </section>
 
-      <section className="mt-32">
+      <section className="mt-24 md:mt-32">
         <SectionHeading id="articles">Articles</SectionHeading>
         {articles.length > 0 ? (
-          <ArticleList items={articles.slice(0, 4)} />
+          <ArticleList items={articles.slice(0, 6)} />
         ) : (
           <Empty text={articlesLoaded ? "記事を取得できませんでした。Qiita から直接ご覧ください。" : "記事を読み込んでいます"} />
         )}
@@ -79,9 +79,9 @@ const PortfolioPage = () => {
       </section>
 
       {skills.length > 0 && (
-        <section className="mt-32">
+        <section className="mt-24 md:mt-32">
           <SectionHeading id="skills">Skills</SectionHeading>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
             {skills.slice(0, 4).map((c, i) => (
               <SkillRadarChart
                 key={c.category}
@@ -96,7 +96,7 @@ const PortfolioPage = () => {
       )}
 
       {timeline.length > 0 && (
-        <section className="mt-32">
+        <section className="mt-24 md:mt-32">
           <SectionHeading id="timeline">Timeline</SectionHeading>
           <Timeline items={timeline} />
         </section>
@@ -133,16 +133,16 @@ const Intro = ({ profile }: { profile: ProfileData }) => {
   const socials = candidates.filter((l): l is SocialLink => !!l.url);
 
   return (
-    <section className="pt-20 sm:pt-28">
+    <section className="pt-12 md:pt-20">
       <motion.img
         {...fadeUp(0)}
         src={profile.image || "/sns_icon_round.png"}
         alt=""
-        className="w-16 h-16 rounded-full object-cover mb-10"
+        className="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover mb-8 md:mb-10"
         style={{ border: "1px solid var(--avatar-border)" }}
       />
-      {/* 左: 名前・肩書・紹介文 / 右: ソーシャルリンクのカード（名前と同じ高さから始める）。スマホでは下に回す */}
-      <div className="grid grid-cols-1 gap-12 sm:grid-cols-[minmax(0,1fr)_240px] sm:gap-10 sm:items-start">
+      {/* 左: 名前・肩書・紹介文 / 右: ソーシャルリンクのカード（名前と同じ高さから始める）。タブレット未満では下に回す */}
+      <div className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(0,1fr)_300px] md:gap-14 lg:gap-20 md:items-start">
         <div>
           <motion.h1 {...fadeUp(0.05)} className="text-[2.75rem] sm:text-[3.5rem] font-semibold tracking-tight leading-tight">
             <button
@@ -180,7 +180,7 @@ const Intro = ({ profile }: { profile: ProfileData }) => {
           {profile.description && (
             <motion.p
               {...fadeUp(0.15)}
-              className="mt-10 text-[17px] leading-[2.1] whitespace-pre-line"
+              className={`mt-8 md:mt-10 ${READABLE_WIDTH} text-[17px] leading-[2.1] whitespace-pre-line`}
               style={{ color: "var(--text-body)" }}
             >
               {profile.description}

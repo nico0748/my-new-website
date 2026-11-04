@@ -33,6 +33,11 @@
   --accent-3: #86a7cf; /* ダスティブルー */
   --accent-4: #d9b65a; /* マスタードイエロー */
   --accent-5: #a89be0; /* ラベンダー */
+  /* 外部サービスのブランド色（ソーシャルリンクのアイコン）。X / GitHub は暗い地では白が公式 */
+  --brand-x: #ffffff;
+  --brand-github: #ffffff;
+  --brand-qiita: #55c500;
+  --brand-linkedin: #0a66c2;
   --accent-hover: #e3d9bd;
   --accent-bg: rgba(203, 191, 159, 0.07);
   --accent-border: rgba(203, 191, 159, 0.24);

@@ -50,7 +50,7 @@ const Timeline: React.FC<{ items: TimelineItem[] }> = ({ items }) => {
   return (
     <div className="flex flex-col gap-12">
       {groups.map((g) => (
-        <section key={g.year} className="grid grid-cols-1 sm:grid-cols-[5rem_1fr] gap-x-6 gap-y-4">
+        <section key={g.year} className="grid grid-cols-1 sm:grid-cols-[6rem_1fr] gap-x-8 gap-y-4">
           <h3
             className="text-[17px] font-medium tabular-nums sm:pt-[3px]"
             style={{ color: "var(--text-primary)" }}
@@ -81,7 +81,7 @@ const Timeline: React.FC<{ items: TimelineItem[] }> = ({ items }) => {
                     <Title item={it} />
                   </div>
                   {it.description && (
-                    <p className="mt-1.5 text-[14px] leading-[1.9]" style={{ color: "var(--text-secondary)" }}>
+                    <p className="mt-1.5 max-w-[680px] text-[14px] leading-[1.9]" style={{ color: "var(--text-secondary)" }}>
                       {it.description}
                     </p>
                   )}

@@ -3,10 +3,10 @@ import { Link, NavLink } from "react-router-dom";
 import SiteBackground from "../ui/SiteBackground";
 import { QIITA_PROFILE_URL } from "../../lib/articles";
 
-/** 本文の最大幅。1カラムで読ませるため狭めに取る。 */
-export const CONTENT_WIDTH = "max-w-[720px]";
-/** 表や作品詳細など、横幅が要るページ用。 */
-const WIDE_WIDTH = "max-w-[960px]";
+/** ページ全体のコンテナ幅と左右の余白。カードの一覧はこの幅いっぱいに並べる。 */
+export const CONTENT_WIDTH = "max-w-[1080px] px-5 sm:px-8 lg:px-10";
+/** 文章ブロックの最大幅。日本語で1行おおよそ 38〜42 字に収め、読みやすい行長を保つ。 */
+export const READABLE_WIDTH = "max-w-[680px]";
 
 const NAV = [
   { to: "/projects", label: "Works" },
@@ -14,8 +14,8 @@ const NAV = [
   { to: "/skills", label: "Skills" },
 ];
 
-export const SiteHeader: React.FC<{ wide?: boolean }> = ({ wide }) => (
-  <header className={`${wide ? WIDE_WIDTH : CONTENT_WIDTH} w-full mx-auto px-6 pt-10 pb-6 flex items-center justify-between`}
+export const SiteHeader: React.FC = () => (
+  <header className={`${CONTENT_WIDTH} w-full mx-auto pt-8 pb-6 sm:pt-10 flex items-center justify-between`}
     style={{ viewTransitionName: "site-header" }}
   >
     <Link
@@ -43,8 +43,8 @@ export const SiteHeader: React.FC<{ wide?: boolean }> = ({ wide }) => (
   </header>
 );
 
-export const SiteFooter: React.FC<{ wide?: boolean }> = ({ wide }) => (
-  <footer className={`${wide ? WIDE_WIDTH : CONTENT_WIDTH} w-full mx-auto px-6 pt-12 pb-16 mt-32`}>
+export const SiteFooter: React.FC = () => (
+  <footer className={`${CONTENT_WIDTH} w-full mx-auto pt-12 pb-16 mt-24 md:mt-32`}>
     <div className="h-px mb-10" style={{ background: "var(--border-color)" }} />
     <div className="flex flex-col sm:flex-row sm:justify-between gap-8 text-[15px]">
       <ul className="flex flex-wrap gap-x-6 gap-y-2">
@@ -77,17 +77,15 @@ export const SiteFooter: React.FC<{ wide?: boolean }> = ({ wide }) => (
 
 interface SiteLayoutProps {
   children: React.ReactNode;
-  /** 本文幅を広げたいページ用（Skills の表など）。 */
-  wide?: boolean;
 }
 
-/** ポートフォリオ側の共通レイアウト（ヘッダー + 1カラム本文 + フッター）。 */
-const SiteLayout: React.FC<SiteLayoutProps> = ({ children, wide }) => (
+/** ポートフォリオ側の共通レイアウト（ヘッダー + 本文 + フッター）。全ページ同じコンテナ幅に揃える。 */
+const SiteLayout: React.FC<SiteLayoutProps> = ({ children }) => (
   <SiteBackground>
     <div className="antialiased min-h-screen flex flex-col">
-      <SiteHeader wide={wide} />
-      <main className={`${wide ? WIDE_WIDTH : CONTENT_WIDTH} w-full mx-auto px-6 flex-1`}>{children}</main>
-      <SiteFooter wide={wide} />
+      <SiteHeader />
+      <main className={`${CONTENT_WIDTH} w-full mx-auto flex-1`}>{children}</main>
+      <SiteFooter />
     </div>
   </SiteBackground>
 );
@@ -124,12 +122,12 @@ export const MoreLink: React.FC<{ to: string; children: React.ReactNode; externa
 
 /** ページタイトル（下層ページ用）。 */
 export const PageTitle: React.FC<{ title: string; lead?: string }> = ({ title, lead }) => (
-  <div className="pt-16 pb-14">
+  <div className="pt-10 pb-10 md:pt-16 md:pb-14">
     <h1 className="text-[2.125rem] font-semibold tracking-tight" style={{ color: "var(--text-primary)" }}>
       {title}
     </h1>
     {lead && (
-      <p className="mt-4 text-[17px] leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+      <p className={`mt-4 ${READABLE_WIDTH} text-[17px] leading-relaxed`} style={{ color: "var(--text-secondary)" }}>
         {lead}
       </p>
     )}

@@ -33,7 +33,7 @@ const Thumb: React.FC<{ item: PortfolioItem }> = ({ item }) => {
 
 /** 作品のボックス一覧（サムネイル + タイトル + 一行説明 + 技術タグ）。詳細ページへ遷移する。 */
 const WorkList: React.FC<{ items: PortfolioItem[] }> = ({ items }) => (
-  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+  <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
     {items.map((w) => (
       <li key={w.id}>
         <Link

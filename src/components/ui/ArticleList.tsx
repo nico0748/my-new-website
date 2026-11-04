@@ -40,7 +40,7 @@ const OgpImage: React.FC<{ item: ArticleItem }> = ({ item }) => {
 
 /** 記事のボックス一覧（OGP 画像 + タイトル + 掲載先 · 日付）。クリックで外部の記事ページへ遷移する。 */
 const ArticleList: React.FC<{ items: ArticleItem[] }> = ({ items }) => (
-  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+  <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
     {items.map((a) => (
       <li key={a.id}>
         <a

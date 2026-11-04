@@ -30,6 +30,14 @@ const ICONS: Record<SocialKind, React.ReactNode> = {
 
 const NAMES: Record<SocialKind, string> = { qiita: "Qiita", github: "GitHub", x: "X", linkedin: "LinkedIn" };
 
+/** 各サービス本来の色（index.css の --brand-*）。 */
+const BRAND_COLORS: Record<SocialKind, string> = {
+  x: "var(--brand-x)",
+  github: "var(--brand-github)",
+  qiita: "var(--brand-qiita)",
+  linkedin: "var(--brand-linkedin)",
+};
+
 /** URL の最後のパスから表示用 ID を作る（X / Qiita は @ を付ける。LinkedIn は末尾の英数字 ID を省く）。 */
 const handleFromUrl = (kind: SocialKind, url: string): string => {
   try {
@@ -42,7 +50,7 @@ const handleFromUrl = (kind: SocialKind, url: string): string => {
 };
 
 /** サービス名・ユーザー ID・アイコンを1枚のカードにして縦に積むソーシャルリンク。
- *  ID とアイコンは同じ差し色（サンド）で揃え、サービス名は副テキスト色。 */
+ *  アイコンは各サービス本来の色、ID は主テキスト色、サービス名は副テキスト色。 */
 const SocialLinks: React.FC<{ links: SocialLink[]; className?: string }> = ({ links, className = "" }) => (
   <ul className={`flex flex-col gap-2.5 ${className}`}>
     {links.map((l) => {
@@ -63,7 +71,7 @@ const SocialLinks: React.FC<{ links: SocialLink[]; className?: string }> = ({ li
               <span className="block text-[13px]" style={{ color: "var(--text-secondary)" }}>
                 {NAMES[l.kind]}
               </span>
-              <span className="mt-0.5 block truncate text-[17px] font-semibold" style={{ color: "var(--accent)" }}>
+              <span className="mt-0.5 block truncate text-[17px] font-semibold" style={{ color: "var(--text-primary)" }}>
                 {handle}
               </span>
             </span>
@@ -73,8 +81,8 @@ const SocialLinks: React.FC<{ links: SocialLink[]; className?: string }> = ({ li
               height="22"
               fill="currentColor"
               aria-hidden
-              className="shrink-0 transition-opacity opacity-90 group-hover:opacity-100"
-              style={{ color: "var(--accent)" }}
+              className="shrink-0"
+              style={{ color: BRAND_COLORS[l.kind] }}
             >
               {ICONS[l.kind]}
             </svg>

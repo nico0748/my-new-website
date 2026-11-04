@@ -165,21 +165,21 @@ const ProjectDetailPage = () => {
 
   if (!projects) {
     return (
-      <SiteLayout wide>
+      <SiteLayout>
         <Loading />
       </SiteLayout>
     );
   }
 
   return (
-    <SiteLayout wide>
-      <article className="pt-12">
+    <SiteLayout>
+      <article className="pt-8 md:pt-12">
         <Link to="/projects" viewTransition className="text-[15px] link-quiet">
           ← Works
         </Link>
 
         {project ? (
-          <header className="mt-10 grid gap-8 md:grid-cols-[minmax(0,1fr)_260px] md:gap-12 items-start">
+          <header className="mt-8 md:mt-10 grid gap-8 md:grid-cols-[minmax(0,1fr)_280px] md:gap-12 lg:gap-16 items-start">
             <div className="order-2 md:order-1">
               <Gallery key={project.id} project={project} />
             </div>
@@ -249,7 +249,7 @@ const ProjectDetailPage = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: markdown || mdError ? 1 : 0 }}
           transition={{ duration: 0.4 }}
-          className="max-w-[720px] min-h-[40vh]"
+          className="max-w-[760px] min-h-[40vh]"
         >
           {mdError ? (
             <p className="text-[15px]" style={{ color: "var(--text-muted)" }}>
