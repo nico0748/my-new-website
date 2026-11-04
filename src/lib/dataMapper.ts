@@ -26,13 +26,12 @@ export interface SkillCategory {
 }
 
 export interface TimelineItem {
-    year: string;
-    yearLabel?: string;
-    month?: string;
+    start: string;           // "YYYY-MM" または "YYYY"
+    end?: string;            // "YYYY-MM" / "YYYY" / "present"（継続中）。単発なら空
     title: string;
     description: string;
     type: "education" | "work" | "project" | "other" | "certification";
-    href?: string;
+    href?: string;           // 外部 URL、または "/projects/xxx" のようなサイト内パス
     status?: "done" | "upcoming";
 }
 
@@ -44,6 +43,8 @@ export interface ProfileData {
     blogUrl?: string;
     githubUrl?: string;
     qiitaUrl?: string;
+    xUrl?: string;
+    linkedinUrl?: string;
 }
 
 export interface ArticleItem {
@@ -54,6 +55,7 @@ export interface ArticleItem {
   date: string;            // YYYY-MM-DD
   tags: string[];
   likes?: number;
+  image?: string;          // OGP 画像を上書きしたい場合のみ（Articles シートの image 列）
 }
 
 export interface AnimeItem {
@@ -80,6 +82,8 @@ export const mapProfileData = (rows: SheetRow[]): ProfileData => {
         blogUrl: profile.blogUrl || undefined,
         githubUrl: profile.githubUrl || undefined,
         qiitaUrl: profile.qiitaUrl || undefined,
+        xUrl: profile.xUrl || undefined,
+        linkedinUrl: profile.linkedinUrl || undefined,
     };
 };
 
@@ -113,17 +117,47 @@ export const mapSkillsData = (rows: SheetRow[]): SkillCategory[] => {
     }));
 };
 
+/** "2025/04", "2025-4", "2025.04", "2025" などを "YYYY-MM" / "YYYY" に正規化する。 */
+const normalizeYm = (v: string): string => {
+    const m = /^(\d{4})(?:\s*[/.\-年]\s*(\d{1,2}))?/.exec(v.trim());
+    if (!m) return "";
+    return m[2] ? `${m[1]}-${m[2].padStart(2, "0")}` : m[1];
+};
+
+const normalizeEnd = (v: string): string | undefined => {
+    const t = v.trim().toLowerCase();
+    if (!t) return undefined;
+    if (["present", "now", "現在", "~", "〜"].includes(t)) return "present";
+    return normalizeYm(t) || undefined;
+};
+
+/** 旧形式の year 列（"2026/05~" / "2025/04~07" / "2025/02"）を start / end に分解する。 */
+const parseLegacyYear = (v: string): { start: string; end?: string } => {
+    const m = /^(\d{4})\s*[/.-]?\s*(\d{1,2})?\s*([~〜-])?\s*(\d{1,2})?/.exec(v.trim());
+    if (!m) return { start: "" };
+    const start = m[2] ? `${m[1]}-${m[2].padStart(2, "0")}` : m[1];
+    if (m[4]) return { start, end: `${m[1]}-${m[4].padStart(2, "0")}` };
+    return { start, end: m[3] ? "present" : undefined };
+};
+
+/** Timeline シート: start, end, title, description, type, href（旧 year 列にも対応）。新しい順に並べる。 */
 export const mapTimelineData = (rows: SheetRow[]): TimelineItem[] => {
-    return rows.map(row => ({
-        year: row.year || "",
-        yearLabel: row.yearLabel || undefined,
-        month: row.month || undefined,
-        title: row.title,
-        description: row.description,
-        type: (row.type as TimelineItem["type"]) || "other",
-        href: row.href || undefined,
-        status: (row.status as TimelineItem["status"]) || "done",
-    }));
+    return rows
+        .filter(row => row.title && (row.start || row.year))
+        .map(row => {
+            const period = row.start
+                ? { start: normalizeYm(row.start), end: normalizeEnd(row.end || "") }
+                : parseLegacyYear(row.year);
+            return {
+                ...period,
+                title: row.title.trim(),
+                description: (row.description || "").trim(),
+                type: (row.type as TimelineItem["type"]) || "other",
+                href: row.href || undefined,
+                status: (row.status as TimelineItem["status"]) || "done",
+            };
+        })
+        .sort((a, b) => (a.start < b.start ? 1 : a.start > b.start ? -1 : 0));
 };
 
 export const mapPortfolioData = (rows: SheetRow[]): PortfolioItem[] => {
@@ -166,6 +200,7 @@ export const mapArticleData = (rows: SheetRow[]): ArticleItem[] => {
             platform: row.platform || detectPlatform(row.url),
             date: (row.date || "").slice(0, 10),
             tags: row.tags ? row.tags.split(',').map(t => t.trim()).filter(Boolean) : [],
+            image: row.image || undefined,
         }));
 };
 

@@ -23,7 +23,10 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 
 - **レイアウト**: `src/components/layouts/SiteLayout.tsx` の `SiteLayout` でページをラップする（ヘッダー＋本文＋フッター込み）。本文幅は `CONTENT_WIDTH`（`max-w-[720px]`）。セクション間は `mt-32` 程度の大きな余白
 - **部品**: `SectionHeading`（小さな大文字見出し）/ `MoreLink`（「すべて見る →」）/ `PageTitle`（下層ページのタイトル）/ `Loading`
-- **一覧は「カード」ではなく「行リスト」**: `WorkList` / `ArticleList`（`src/components/ui/`）。ホバーでタイトルに細い下線（`.row-link` / `.row-title`）
+- **Works / Articles は画像付きのボックス（2カラム）**: `WorkList`（サムネイル）/ `ArticleList`（OGP 画像）。枠線は `border-white/[0.08]`、ホバーで少し明るく。画像が無い場合は静かなプレースホルダー
+- **Skills** はカテゴリごとのレーダーチャート（`SkillRadarChart`、recharts）をボックスで並べる
+- **Timeline** は `Timeline`（年見出し + 縦線 + 「期間 · 種別」→ タイトル → 説明）。継続中の項目は差し色のドット
+- **ソーシャルリンク** は `SocialLinks`（アイコン + ユーザー ID）。URL は Profile シートの `xUrl` / `githubUrl` / `qiitaUrl` / `linkedinUrl`
 - **背景**: `SiteBackground`（黒一色＋上部にごく僅かな明るさ）。`SiteLayout` が内部で使う
 - **テーマモード**: ダーク単独
 - **カラーパレット（CSS 変数経由で参照）**:
@@ -98,6 +101,14 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 - **Qiita**: `src/lib/articles.ts` の `fetchArticles()` が Qiita API v2（`/api/v2/users/nico0748/items`、CORS 対応・未認証 60req/h）からクライアント側で取得。sessionStorage に 30 分キャッシュ
 - **Qiita 以外（Zenn / note 等）**: Google Sheets の **「Articles」シート**（`id, title, url, platform, date, tags`）に手で追記。`platform` が空なら URL から自動判定（`detectPlatform`）
 - 両者をマージして日付の新しい順に表示。型は `src/lib/dataMapper.ts` の `ArticleItem`
+- **OGP 画像**: `api/ogp.js`（Vercel Function）が記事ページの `og:image` を取り出して返す（`/api/ogp?url=...`、CDN キャッシュ 1 週間）。SSRF 対策で取得先は記事プラットフォームのホストに限定（新しい掲載先を足すときは `ALLOWED_HOSTS` に追加）。Articles シートの `image` 列で上書き可。ローカルの `npm run dev` では関数が動かないためプレースホルダー表示になる
+
+## Timeline シート
+
+- 列: `start, end, title, description, type, href`
+- `start` / `end` は **`YYYY-MM`**（年だけなら `YYYY`）。`end` は継続中なら `present`、単発なら空欄。セルは書式「書式なしテキスト」にして日付への自動変換を防ぐ
+- `type`: `education` / `work` / `project` / `certification` / `other`。`href` は外部 URL か `/projects/xxx` のようなサイト内パス
+- 並び順はサイト側で `start` の新しい順に並べ替える（旧形式の `year` 列 "2025/04~07" も読めるが、新規は start/end で書く）
 - Topics / Study シートと `scripts/gas/` の GAS はサイトからは参照しない（残置）
 
 ---

@@ -32,7 +32,7 @@ const ArticlesPage = () => {
           記事を取得できませんでした。
         </p>
       ) : (
-        <div className="flex flex-col gap-16">
+        <div className="flex flex-col gap-14">
           {years.map((y) => (
             <section key={y}>
               <h2 className="text-[13px] font-medium tracking-[0.18em] mb-4" style={{ color: "var(--text-muted)" }}>

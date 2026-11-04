@@ -5,6 +5,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import SiteLayout, { SectionHeading, MoreLink } from "../components/layouts/SiteLayout";
 import ArticleList from "../components/ui/ArticleList";
 import WorkList from "../components/ui/WorkList";
+import SkillRadarChart from "../components/ui/SkillRadarChart";
+import Timeline from "../components/ui/Timeline";
+import SocialLinks from "../components/ui/SocialLinks";
+import type { SocialLink } from "../components/ui/SocialLinks";
 
 import { fetchSheetData } from "../lib/googleSheets";
 import type { SheetRow } from "../lib/googleSheets";
@@ -58,14 +62,14 @@ const PortfolioPage = () => {
 
       <section className="mt-32">
         <SectionHeading id="works">Works</SectionHeading>
-        {works.length > 0 ? <WorkList items={works.slice(0, 5)} /> : <Empty text="作品を読み込んでいます" />}
+        {works.length > 0 ? <WorkList items={works.slice(0, 4)} /> : <Empty text="作品を読み込んでいます" />}
         <MoreLink to="/projects">すべての作品を見る</MoreLink>
       </section>
 
       <section className="mt-32">
         <SectionHeading id="articles">Articles</SectionHeading>
         {articles.length > 0 ? (
-          <ArticleList items={articles.slice(0, 5)} />
+          <ArticleList items={articles.slice(0, 4)} />
         ) : (
           <Empty text={articlesLoaded ? "記事を取得できませんでした。Qiita から直接ご覧ください。" : "記事を読み込んでいます"} />
         )}
@@ -75,19 +79,12 @@ const PortfolioPage = () => {
       {skills.length > 0 && (
         <section className="mt-32">
           <SectionHeading id="skills">Skills</SectionHeading>
-          <dl className="flex flex-col gap-5">
-            {skills.map((c) => (
-              <div key={c.category} className="grid grid-cols-1 sm:grid-cols-[9rem_1fr] gap-1 sm:gap-6">
-                <dt className="text-[13px]" style={{ color: "var(--text-muted)" }}>
-                  {c.category}
-                </dt>
-                <dd className="text-[14px] leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-                  {c.skills.map((s) => s.name).join(", ")}
-                </dd>
-              </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {skills.slice(0, 4).map((c) => (
+              <SkillRadarChart key={c.category} category={c.category} skills={c.skills} />
             ))}
-          </dl>
-          <MoreLink to="/skills">詳しく見る</MoreLink>
+          </div>
+          <MoreLink to="/skills">すべてのスキルを見る</MoreLink>
         </section>
       )}
 
@@ -118,11 +115,13 @@ const Intro = ({ profile }: { profile: ProfileData }) => {
       { replace: true }
     );
 
-  const links = [
-    { label: "Qiita", href: profile.qiitaUrl || QIITA_PROFILE_URL },
-    { label: "GitHub", href: profile.githubUrl || "https://github.com/nico0748" },
-    ...(profile.blogUrl ? [{ label: "Blog", href: profile.blogUrl }] : []),
-  ];
+  // Profile シートの各 URL から表示。Qiita だけは記事取得と同じユーザーを既定値にする
+  const socials: SocialLink[] = [
+    { kind: "x" as const, url: profile.xUrl },
+    { kind: "github" as const, url: profile.githubUrl },
+    { kind: "qiita" as const, url: profile.qiitaUrl || QIITA_PROFILE_URL },
+    { kind: "linkedin" as const, url: profile.linkedinUrl },
+  ].filter((l): l is SocialLink => !!l.url);
 
   return (
     <section className="pt-20 sm:pt-28">
@@ -169,83 +168,16 @@ const Intro = ({ profile }: { profile: ProfileData }) => {
           {profile.description}
         </motion.p>
       )}
-      <motion.ul {...fadeUp(0.2)} className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-sm">
-        {links.map((l) => (
-          <li key={l.label}>
-            <a href={l.href} target="_blank" rel="noopener noreferrer" className="link-quiet">
-              {l.label} <span aria-hidden>↗</span>
-            </a>
-          </li>
-        ))}
-      </motion.ul>
+      <motion.div {...fadeUp(0.2)} className="mt-10">
+        <SocialLinks links={socials} />
+        {profile.blogUrl && (
+          <a href={profile.blogUrl} target="_blank" rel="noopener noreferrer" className="link-quiet mt-3 inline-block text-sm">
+            Blog ↗
+          </a>
+        )}
+      </motion.div>
     </section>
   );
-};
-
-/** 年ごとにまとめた静かな年表。year 列は "2026/05~" のような表記を想定。 */
-const Timeline = ({ items }: { items: TimelineItem[] }) => {
-  const groups: { year: string; rows: (TimelineItem & { when: string })[] }[] = [];
-  items.forEach((item) => {
-    const m = /^(\d{4})[/.-]?(.*)$/.exec(item.year.trim());
-    const year = m ? m[1] : item.year;
-    const when = (item.month || (m ? m[2] : "")).trim();
-    const last = groups[groups.length - 1];
-    const row = { ...item, when };
-    if (last && last.year === year) last.rows.push(row);
-    else groups.push({ year, rows: [row] });
-  });
-
-  return (
-    <div className="flex flex-col gap-14">
-      {groups.map((g) => (
-        <div key={g.year}>
-          <h3 className="text-[15px] font-medium mb-5" style={{ color: "var(--text-primary)" }}>
-            {g.year}
-          </h3>
-          <ol className="flex flex-col gap-6">
-            {g.rows.map((r, i) => {
-              const title = r.title.trim();
-              return (
-                <li key={i} className="grid grid-cols-[4.5rem_1fr] gap-4">
-                  <span className="text-[13px] tabular-nums pt-0.5" style={{ color: "var(--text-muted)" }}>
-                    {formatWhen(r.when)}
-                    {r.status === "upcoming" && " 予定"}
-                  </span>
-                  <div>
-                    {r.href ? (
-                      <a href={r.href} target="_blank" rel="noopener noreferrer" className="row-link text-[15px]">
-                        <span className="row-title" style={{ color: "var(--text-primary)" }}>
-                          {title}
-                        </span>
-                      </a>
-                    ) : (
-                      <p className="text-[15px]" style={{ color: "var(--text-primary)" }}>
-                        {title}
-                      </p>
-                    )}
-                    {r.description && (
-                      <p className="mt-1.5 text-[13px] leading-relaxed" style={{ color: "var(--text-muted)" }}>
-                        {r.description}
-                      </p>
-                    )}
-                  </div>
-                </li>
-              );
-            })}
-          </ol>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-/** "05~" → "5月〜", "04~07" → "4〜7月", "10" → "10月" */
-const formatWhen = (when: string): string => {
-  const m = /^(\d{1,2})\s*([~〜-])?\s*(\d{1,2})?$/.exec(when);
-  if (!m) return when;
-  const from = Number(m[1]);
-  if (m[3]) return `${from}〜${Number(m[3])}月`;
-  return m[2] ? `${from}月〜` : `${from}月`;
 };
 
 const Empty = ({ text }: { text: string }) => (
