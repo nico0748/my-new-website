@@ -26,7 +26,7 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 - **Works / Articles は画像付きのボックス（スマホ1段・タブレット2段・PC 3段、`gap-5 lg:gap-6`。トップには最大6件）**: `WorkList`（サムネイル）/ `ArticleList`（OGP 画像）。枠線は `border-white/[0.08]`、ホバーで少し明るく。画像が無い場合は静かなプレースホルダー
 - **Skills** はカテゴリごとのレーダーチャート（`SkillRadarChart`、recharts）をボックスで並べる
 - **Timeline** は `Timeline`（年見出し + 縦線 + 「期間 · 種別」→ タイトル → 説明）。継続中の項目は差し色のドット
-- **Off-hours**（趣味の記録、TIMELINE の下）は `OffHoursBoard`。カテゴリごとの箱（`grid-cols-1 md:grid-cols-2`、Skills と同じ枠）に、56px 角のサムネイル＋タイトル＋「日付 · subtitle」を新しい順に 3 件。画像が無ければ lucide-react のアイコン（stroke 1.75）。リードは「コードの外で、観て、聴いて、手に取って、足を運んだもの。」
+- **Off-hours**（趣味の記録、TIMELINE の下）は `OffHoursBoard`。カテゴリ（アニメ → 音楽 → イベント → 同人作品）ごとに見出し（アイコン＋名前、右に出典）を立て、1 件 1 枚のカード（64px 角のサムネイル＋タイトル `↗`＋補足行）を **PC 4 列・タブレット 2 列・スマホ 1 列**で並べる。件数はアニメ 8 / 音楽 12 / イベント 8 / 同人作品 4（スマホは 4 / 6 / 4 / 4）。URL があればカード全体がリンクで、ホバーで枠が明るくなる。画像が無い・読めなければ lucide-react のアイコン（stroke 1.75）。リードは「コードの外で、観て、聴いて、手に取って、足を運んだもの。」
 - **ソーシャルリンク** は `SocialLinks`。1件1枚のカード（サービス名＋ユーザー ID、右端にアイコン）を縦に積み、トップの自己紹介では**名前と同じ高さから右側に**置く（タブレット未満では紹介文の下。右カラムは 300px）。**アイコンは各サービス本来の色**（`--brand-x` / `--brand-github` / `--brand-qiita` / `--brand-linkedin`）、ID は主テキスト色、サービス名は副テキスト色。URL は Profile シートの `xUrl` / `githubUrl` / `qiitaUrl` / `linkedinUrl`。ID は URL から自動で取り出すが、LinkedIn は `linkedinLabel`（例 `細澤 悠真`）で表示名を上書きできる。アイコンは各サービス公式のロゴマーク（Qiita も公式マーク。Simple Icons 由来）。自己紹介のアバターは `w-24`（md 以上 `w-32`）。Profile シートの取得とリンクの組み立ては `src/lib/profile.ts`（`fetchProfile()` はモジュール内キャッシュ、`socialLinksOf()`）に一本化し、トップとフッターで共有する
 - **フッター**（`SiteLayout` 内の `SiteFooter`）: 罫線の下に、左はサイト内リンク（Home / Works / Articles / Skills。ヘッダーの NAV と同じ）、右は SNS のテキストリンク（自己紹介と同じ X / GitHub / Qiita / LinkedIn、`↗` 付き）、最下段に `© 年 NICOLABO`。SNS は Profile シートを読み終えてから出す。ページを足したら `NAV` に足せばヘッダーとフッターの両方に出る
 - **背景**: `SiteBackground`（インクネイビー一色＋上部にごく僅かな青い明るさ）。`SiteLayout` が内部で使う
@@ -134,7 +134,8 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
   - 同人作品は全年齢のみ。DLsite の URL は全年齢フロア（`home` / `comic` / `soft`）以外なら行ごと捨てる。同人作品の画像は使わない
   - `url` は `https://` のみ、`image` は `https://` か `/off-hours/...`（写真は `public/off-hours/`、EXIF を消す。PWA の precache からは除外済み）
   - 価格・購入数・私的なメモの列は作らない
-- **Spotify**: 音楽の箱の下段に「最近よく聴いている」曲（直近 4 週間のトップトラック、最大 3 曲、explicit 除外）。`api/spotify.js`（Vercel Function、権限は `user-top-read` のみ、CDN 1 日キャッシュ）→ `src/lib/spotify.ts` の `fetchTopTracks()`。再生中・再生履歴は取らない。環境変数 `SPOTIFY_CLIENT_ID` / `SPOTIFY_CLIENT_SECRET` / `SPOTIFY_REFRESH_TOKEN`（`VITE_` を付けない）。未設定なら空配列で、曲の欄は出ない。手順は `docs/spotify-setup.md`。ジャケットは切り抜かず、Spotify のロゴ（`--brand-spotify`）とリンクを添える
+- **アニメ**: 手入力の記録のあとに、Annict から 6 時間ごとに同期している `all-watching-anime`（見てる）/ `all-watched-anime`（見た）のシートを並べる（`src/lib/anime.ts` の `fetchAnime()`、変換は `mapAnimeWorks()`）。視聴日は無いので放送クール（`release_season`）の新しい順。補足行は「2026年夏 · 視聴中」、画像は `official_site_twitter_image_url`、リンクは `official_site_url`。見出しの右に「Annict の視聴記録より」
+- **Spotify**: 音楽は手入力の記録のあとに「最近よく聴いている」曲（直近 4 週間のトップトラック、最大 12 曲、explicit 除外）。`api/spotify.js`（Vercel Function、権限は `user-top-read` のみ、CDN 1 日キャッシュ）→ `src/lib/spotify.ts` の `fetchTopTracks()`。再生中・再生履歴は取らない。環境変数 `SPOTIFY_CLIENT_ID` / `SPOTIFY_CLIENT_SECRET` / `SPOTIFY_REFRESH_TOKEN`（`VITE_` を付けない）。未設定なら空配列で、曲の欄は出ない。手順は `docs/spotify-setup.md`。ジャケットは切り抜かず、Spotify のロゴ（`--brand-spotify`）とリンクを添える
 
 ## Timeline シート
 
@@ -142,7 +143,7 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 - `start` / `end` は **`YYYY-MM`**（年だけなら `YYYY`）。`end` は継続中なら `present`、単発なら空欄。セルは書式「書式なしテキスト」にして日付への自動変換を防ぐ
 - `type`: `education` / `work` / `project` / `certification` / `other`。`href` は外部 URL か `/projects/xxx` のようなサイト内パス
 - 並び順はサイト側で `start` の新しい順に並べ替える（旧形式の `year` 列 "2025/04~07" も読めるが、新規は start/end で書く）
-- Topics / Study シート、旧アニメのシート（`all-watched-anime` 等）と `scripts/gas/` の GAS はサイトからは参照しない（残置）
+- Topics / Study シート、`all-wanna-watch-anime`（見たい）と `scripts/gas/` の GAS はサイトからは参照しない（残置）
 
 ---
 
