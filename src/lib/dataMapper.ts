@@ -358,6 +358,12 @@ export const sortAnime = (works: AnimeWork[]): AnimeWork[] =>
 const animeImage = (v?: string): string | undefined =>
     httpsUrl((v || "").trim().replace(/^http:\/\//i, "https://"))?.href;
 
+/** Wikipedia の URL。Annict には http のものが多いので https に読み替える（Wikipedia 以外の URL は出さない）。 */
+const wikiUrl = (v?: string): string | undefined => {
+    const u = httpsUrl((v || "").trim().replace(/^http:\/\//i, "https://"));
+    return u && /(^|\.)wikipedia\.org$/i.test(u.hostname) ? u.href : undefined;
+};
+
 const positiveInt = (v?: string): number | undefined => {
     const n = Number((v || "").replace(/[,\s]/g, ""));
     return Number.isInteger(n) && n > 0 ? n : undefined;
@@ -401,7 +407,7 @@ export const mapAnimeRows = (rows: SheetRow[], status: AnimeStatus): AnimeWork[]
             director: text(row.director),
             studio: text(row.studio),
             cast: parseCast(row.cast),
-            wikipediaUrl: httpsUrl(row.wikipedia_url)?.href,
+            wikipediaUrl: wikiUrl(row.wikipedia_url),
             hashtag: text((row.twitter_hashtag || "").replace(/^#/, "")),
         });
     });
