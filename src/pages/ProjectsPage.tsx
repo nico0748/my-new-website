@@ -1,27 +1,17 @@
 import { useEffect, useState } from "react";
 import SiteLayout, { PageTitle, Loading } from "../components/layouts/SiteLayout";
 import WorkList from "../components/ui/WorkList";
-import { fetchSheetData } from "../lib/googleSheets";
-import { mapPortfolioData } from "../lib/dataMapper";
+import { fetchProjects, getCachedProjects } from "../lib/projects";
 import type { PortfolioItem } from "../lib/dataMapper";
-import type { SheetRow } from "../lib/googleSheets";
 
 const ProjectsPage = () => {
-  const [works, setWorks] = useState<PortfolioItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [works, setWorks] = useState<PortfolioItem[]>(() => getCachedProjects() ?? []);
+  const [loading, setLoading] = useState(() => getCachedProjects() === null);
 
   useEffect(() => {
-    (async () => {
-      if (import.meta.env.VITE_GOOGLE_SHEETS_API_KEY) {
-        try {
-          const rows = await fetchSheetData<SheetRow>("Projects");
-          if (rows.length > 0) setWorks(mapPortfolioData(rows));
-        } catch {
-          // fallback: 空のまま
-        }
-      }
-      setLoading(false);
-    })();
+    fetchProjects()
+      .then(setWorks)
+      .finally(() => setLoading(false));
   }, []);
 
   return (

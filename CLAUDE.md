@@ -65,7 +65,17 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 | `/learn/:domain/:id` | LearnDetailPage | 記事詳細（本文は TSX コンポーネント） |
 | `/watched-anime` 等 | アニメページ群 | 既存 |
 
-- 新しいページを追加する場合は `src/App.tsx` にルートを追加し、`src/pages/` 以下にページコンポーネントを作成する。
+- 新しいページを追加する場合は `src/App.tsx` の `appRoutes` にルートを追加し、`src/pages/` 以下にページコンポーネントを作成する。
+- ルーターは **data router（`createBrowserRouter`、`src/main.tsx`）**。`<Link viewTransition>` による一覧 → 詳細の共有要素モーフは data router でしか効かないため、`BrowserRouter` / `<Routes>` に戻さないこと
+
+## Works（Projects シート）
+
+- 列: `id, title, description, thumbnail, tags, liveUrl, repoUrl, period, images`
+  - `period`: 制作期間（例 `2025.04 - 2025.07`、継続中は `2026.10 -`）
+  - `images`: 詳細ページのギャラリーに並べる追加画像（カンマ区切り。画像は `public/projects/images/`）
+- 取得は `src/lib/projects.ts` の `fetchProjects()` に一本化（モジュール内キャッシュ）。詳細ページが最初の描画から画像とタイトルを出せるようにするためで、これが無いと View Transition のモーフが効かない
+- 一覧カードと詳細ページは `projectVtName("img" | "title", id)` で同じ `view-transition-name` を付ける
+- 詳細ページ（`/projects/:id`）は 画像ギャラリー＋右サイドバー（タイトル・期間・技術構成・リンク）→ 本文 Markdown（`public/projects/<id>.md`）→ 前後の作品ナビ
 
 ### データフロー
 

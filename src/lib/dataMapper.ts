@@ -9,6 +9,10 @@ export interface PortfolioItem {
   liveUrl?: string;
   repoUrl?: string;
   markdownFile?: string; // /projects/<id>.md など
+  /** 制作期間。例: "2025.04 - 2025.07" / "2026.10 -"（継続中） */
+  period?: string;
+  /** 詳細ページのギャラリー（サムネイルの後ろに並ぶ追加画像）。シートではカンマ区切り */
+  images?: string[];
 }
 
 export interface Skill {
@@ -170,6 +174,8 @@ export const mapPortfolioData = (rows: SheetRow[]): PortfolioItem[] => {
         liveUrl: row.liveUrl,
         repoUrl: row.repoUrl,
         markdownFile: row.markdownFile || `/projects/${row.id}.md`,
+        period: row.period?.trim() || undefined,
+        images: row.images ? row.images.split(',').map(t => t.trim()).filter(Boolean) : [],
     }));
 };
 
