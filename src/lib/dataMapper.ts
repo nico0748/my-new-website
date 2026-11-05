@@ -300,9 +300,10 @@ export const mapOffHoursData = (rows: SheetRow[], today: string = todayJst()): O
 // ---------------------------------------------------------------------------
 // アニメの視聴記録（Annict から同期しているシート all-watching-anime / all-watched-anime / all-wanna-watch-anime）
 // 列: id, title, official_site_url, release_season, twitter_avatar_url, official_site_twitter_image_url,
-//     media, episodes_count, watchers_count, original, director, studio, cast, wikipedia_url, twitter_hashtag
+//     media, episodes_count, watchers_count, original, director, studio, cast, wikipedia_url, twitter_hashtag,
+//     isFavorite（「見てる」「見た」のシートだけ。チェックボックス）
 // 同期は Apps Script（scripts/gas/annict-sync.gs）が 6 時間ごとに行う。サイトは読むだけ。
-// media 以降の詳細の列は、同期スクリプトを更新するまで空のことがある（空なら表示しない）。
+// 詳細の列が空の作品もある（空なら表示しない）。
 // ---------------------------------------------------------------------------
 
 /** Annict の記録の状態。watching = 見てる / watched = 見た / wanna = 見たい */
@@ -339,15 +340,36 @@ export interface AnimeWork {
     wikipediaUrl?: string;
     /** 公式ハッシュタグ（# は付けない） */
     hashtag?: string;
+    /** お気に入り（シートの isFavorite にチェック） */
+    favorite: boolean;
 }
 
-const SEASON_ORDER: Record<string, number> = { 冬: 1, 春: 2, 夏: 3, 秋: 4 };
+export type AnimeSeasonKey = "winter" | "spring" | "summer" | "autumn";
 
-/** "2026年夏" → 20263（年 × 10 + 季節）。季節が無ければ 0、年も無ければ -1。並べ替え用。 */
-export const seasonRank = (season: string): number => {
-    const m = /(\d{4})\s*年?\s*(冬|春|夏|秋)?/.exec(season);
-    if (!m) return -1;
-    return Number(m[1]) * 10 + (m[2] ? SEASON_ORDER[m[2]] : 0);
+/**
+ * 1 年の中の季節の順（Annict の区分: 冬 = 1〜3 月、春 = 4〜6 月、夏 = 7〜9 月、秋 = 10〜12 月）。
+ * 文字の並び（夏・冬・春・秋）で並べると崩れるので、季節の比較は必ずこの順を使う。
+ */
+export const ANIME_SEASONS: readonly { key: AnimeSeasonKey; label: string }[] = [
+    { key: "winter", label: "冬" },
+    { key: "spring", label: "春" },
+    { key: "summer", label: "夏" },
+    { key: "autumn", label: "秋" },
+];
+
+/** "2026年夏" → { year: 2026, season: "summer" }。年だけ（"2027年"）なら season なし、年も無ければ null。 */
+export const parseSeason = (text: string): { year: number; season?: AnimeSeasonKey } | null => {
+    const m = /(\d{4})\s*年?\s*(冬|春|夏|秋)?/.exec(text || "");
+    if (!m) return null;
+    const season = ANIME_SEASONS.find((s) => s.label === m[2])?.key;
+    return season ? { year: Number(m[1]), season } : { year: Number(m[1]) };
+};
+
+/** "2026年夏" → 20263（年 × 10 + 季節の順 1〜4）。年だけなら 0、年も無ければ -1。並べ替え用。 */
+export const seasonRank = (text: string): number => {
+    const p = parseSeason(text);
+    if (!p) return -1;
+    return p.year * 10 + (p.season ? ANIME_SEASONS.findIndex((s) => s.key === p.season) + 1 : 0);
 };
 
 /** 放送クールの新しい順（同じクールなら Annict の ID の大きい順）。 */
@@ -409,6 +431,7 @@ export const mapAnimeRows = (rows: SheetRow[], status: AnimeStatus): AnimeWork[]
             cast: parseCast(row.cast),
             wikipediaUrl: wikiUrl(row.wikipedia_url),
             hashtag: text((row.twitter_hashtag || "").replace(/^#/, "")),
+            favorite: /^(true|1)$/i.test((row.isFavorite || "").trim()),
         });
     });
     return sortAnime(works);
