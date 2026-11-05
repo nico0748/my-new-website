@@ -21,9 +21,10 @@ import { fetchArticles } from "../lib/articles";
 import { fetchProfile, getCachedProfile, socialLinksOf } from "../lib/profile";
 import { fetchOffHours, getCachedOffHours } from "../lib/offHours";
 import { fetchTopTracks, getCachedTopTracks } from "../lib/spotify";
-import { fetchAnime, getCachedAnime } from "../lib/anime";
+import { fetchTopAnime, getCachedTopAnime } from "../lib/anime";
+import type { TopAnime } from "../lib/anime";
 import type { SpotifyTrack } from "../lib/spotify";
-import type { AnimeWork, OffHoursItem } from "../lib/dataMapper";
+import type { OffHoursItem } from "../lib/dataMapper";
 
 const REAL_NAME = "細澤 悠真";
 
@@ -38,7 +39,7 @@ const PortfolioPage = () => {
   const [articlesLoaded, setArticlesLoaded] = useState(false);
   const [offHours, setOffHours] = useState<OffHoursItem[]>(() => getCachedOffHours() ?? []);
   const [topTracks, setTopTracks] = useState<SpotifyTrack[]>(() => getCachedTopTracks() ?? []);
-  const [anime, setAnime] = useState<AnimeWork[]>(() => getCachedAnime() ?? []);
+  const [anime, setAnime] = useState<TopAnime>(() => getCachedTopAnime() ?? { works: [], favorites: false });
   // Profile シートを読み終えたか（ソーシャルリンクを全件そろってからフェードインさせるため）
   const [profileReady, setProfileReady] = useState(!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY || !!getCachedProfile());
 
@@ -49,7 +50,7 @@ const PortfolioPage = () => {
     // 趣味の記録は Profile 等とは別に読む（待たせるとソーシャルリンクの表示まで遅れるため）
     fetchOffHours().then(setOffHours);
     fetchTopTracks().then(setTopTracks);
-    fetchAnime().then(setAnime);
+    fetchTopAnime().then(setAnime);
 
     if (!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY) return;
     (async () => {
@@ -128,7 +129,7 @@ const PortfolioPage = () => {
         </section>
       )}
 
-      {(offHours.length > 0 || topTracks.length > 0 || anime.length > 0) && (
+      {(offHours.length > 0 || topTracks.length > 0 || anime.works.length > 0) && (
         <section className="mt-24 md:mt-32">
           <Reveal>
             <SectionHeading id="off-hours">Off-hours</SectionHeading>
@@ -139,7 +140,7 @@ const PortfolioPage = () => {
           >
             <p>コードの外で、観て、聴いて、手に取って、足を運んだもの。</p>
           </Reveal>
-          <OffHoursBoard items={offHours} topTracks={topTracks} anime={anime} />
+          <OffHoursBoard items={offHours} topTracks={topTracks} anime={anime.works} animeFavorites={anime.favorites} />
         </section>
       )}
     </SiteLayout>

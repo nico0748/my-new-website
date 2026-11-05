@@ -146,8 +146,9 @@ const fromAnime = (w: AnimeWork): Card => ({
 /**
  * アニメは横長のサムネイルを上に置いたカード（一覧ページと同じ）。Annict の作品は一覧ページのポップアップを開き、
  * 画像とタイトルがそのままモーフする（トップに出るのは数件なので、全カードに名前を付けておく）。
+ * お気に入りを出しているときは、閉じるとお気に入りのタブに戻る。
  */
-const AnimeTile: React.FC<{ card: Card }> = ({ card }) => {
+const AnimeTile: React.FC<{ card: Card; favorites: boolean }> = ({ card, favorites }) => {
   const w = card.work;
   if (w)
     return (
@@ -156,7 +157,7 @@ const AnimeTile: React.FC<{ card: Card }> = ({ card }) => {
         title={w.title}
         sub={card.sub}
         sources={[w.image, w.avatar]}
-        link={{ to: animeHref(w), state: { from: "top" } }}
+        link={{ to: animeHref(w, favorites ? "favorite" : w.status), state: { from: "top" } }}
         vtNames={{ img: animeVtName("img", w.id), title: animeVtName("title", w.id) }}
       />
     );
@@ -181,11 +182,12 @@ const fromTrack = (t: SpotifyTrack): Card => ({
 });
 
 /** 見出し右の出典（Spotify はロゴとリンクを添える）。 */
-const SourceNote: React.FC<{ category: OffHoursCategory; hasTracks: boolean; hasAnime: boolean }> = ({
-  category,
-  hasTracks,
-  hasAnime,
-}) => {
+const SourceNote: React.FC<{
+  category: OffHoursCategory;
+  hasTracks: boolean;
+  hasAnime: boolean;
+  animeFavorites: boolean;
+}> = ({ category, hasTracks, hasAnime, animeFavorites }) => {
   const cls = "flex items-center gap-2 text-[13px] tracking-wide";
   if (category === "music" && hasTracks)
     return (
@@ -208,6 +210,14 @@ const SourceNote: React.FC<{ category: OffHoursCategory; hasTracks: boolean; has
   if (category === "anime" && hasAnime)
     return (
       <p className="text-[13px] tracking-wide" style={{ color: "var(--text-secondary)" }}>
+        {animeFavorites && (
+          <>
+            お気に入り
+            <span aria-hidden className="mx-2">
+              ·
+            </span>
+          </>
+        )}
         <a href="https://annict.com/" target="_blank" rel="noopener noreferrer" className="link-quiet">
           Annict
         </a>{" "}
@@ -219,16 +229,18 @@ const SourceNote: React.FC<{ category: OffHoursCategory; hasTracks: boolean; has
 
 /**
  * 趣味の記録（OFF-HOURS）。カテゴリごとに見出しを立て、1 件 1 枚のカードを 4 列（タブレット 2 列・スマホ 1 列）で並べる。
- * - アニメ: 手入力の記録 → Annict の視聴記録（放送クールの新しい順）
+ * - アニメ: 手入力の記録 → Annict の視聴記録（お気に入りがあればお気に入りだけ。どちらも放送クールの新しい順）
  * - 音楽: 手入力の記録 → Spotify の「最近よく聴いている曲」
  * - イベント・同人作品: 手入力の記録（OffHours シート）
  * 記録が 1 件も無いカテゴリは出さない。
  */
-const OffHoursBoard: React.FC<{ items: OffHoursItem[]; topTracks?: SpotifyTrack[]; anime?: AnimeWork[] }> = ({
-  items,
-  topTracks = [],
-  anime = [],
-}) => {
+const OffHoursBoard: React.FC<{
+  items: OffHoursItem[];
+  topTracks?: SpotifyTrack[];
+  anime?: AnimeWork[];
+  /** anime がお気に入りだけのとき true */
+  animeFavorites?: boolean;
+}> = ({ items, topTracks = [], anime = [], animeFavorites = false }) => {
   const groups = OFF_HOURS_ORDER.map((category) => {
     const records = items.filter((it) => it.category === category).map(fromRecord);
     const extra = category === "anime" ? anime.map(fromAnime) : category === "music" ? topTracks.map(fromTrack) : [];
@@ -253,14 +265,19 @@ const OffHoursBoard: React.FC<{ items: OffHoursItem[]; topTracks?: SpotifyTrack[
                   </span>
                   {OFF_HOURS_LABEL[g.category]}
                 </h3>
-                <SourceNote category={g.category} hasTracks={topTracks.length > 0} hasAnime={anime.length > 0} />
+                <SourceNote
+                  category={g.category}
+                  hasTracks={topTracks.length > 0}
+                  hasAnime={anime.length > 0}
+                  animeFavorites={animeFavorites}
+                />
               </div>
               <ul
                 className={`grid gap-3 lg:grid-cols-4 lg:gap-4 ${g.category === "anime" ? "grid-cols-2" : "grid-cols-1 sm:grid-cols-2"}`}
               >
                 {g.cards.map((c, i) => (
                   <li key={c.key} className={i >= LIMIT[g.category].mobile ? "max-sm:hidden" : undefined}>
-                    {g.category === "anime" ? <AnimeTile card={c} /> : <CardView card={c} />}
+                    {g.category === "anime" ? <AnimeTile card={c} favorites={animeFavorites} /> : <CardView card={c} />}
                   </li>
                 ))}
               </ul>

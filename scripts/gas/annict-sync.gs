@@ -8,12 +8,14 @@
  *   all-wanna-watch-anime  … 見たい
  * 列: id | title | official_site_url | release_season | twitter_avatar_url | official_site_twitter_image_url
  *     | media | episodes_count | watchers_count | original | director | studio | cast | wikipedia_url | twitter_hashtag
+ *     | isFavorite（「見てる」「見た」のシートだけ。P 列のチェックボックス。サイトのお気に入り）
  *
  * 使い方
  *   1. スクリプトプロパティ ANNICT_TOKEN に Annict の個人用アクセストークン（read スコープ）を入れる
  *      （エディタ左の「プロジェクトの設定」→「スクリプト プロパティ」）
  *   2. setupTrigger() を一度だけ手動実行 → 6時間ごとに syncAnnict() が自動実行される
  *   3. 今すぐ反映したいときは syncAnnict() を手動実行
+ *   4. お気に入りは「見てる」「見た」のシートの isFavorite 列にチェックを付ける（列は同期のときに自動で作られる）
  *
  * 方針
  *   - 作品は Annict の work id で照合する。期・クール・劇場版は id が別なので別作品として扱う。
@@ -25,6 +27,9 @@
  *   - 「見てる」→「見た」のようにステータスが移った作品も、id で全シートから値を引き継ぐ。
  *   - 取得に失敗したとき・0件が返ったときはシートを書き換えない。
  *   - cast は 1 行に 1 人「キャラクター名：声優名」（セル内改行区切り）。
+ *   - isFavorite のチェックは作品 id に付けて書き戻す（同期のたびに行の並びが変わっても、印は作品について動く）。
+ *     書き込む直前に読み直すので、同期の途中で付けたチェックも残る。作品が「見たい」に戻るなどして
+ *     「見てる」「見た」から外れても、スクリプトプロパティ FAVORITE_IDS に控えておき、戻ってきたら印を戻す。
  */
 
 const ANNICT_API = 'https://api.annict.com/v1/me/works';
@@ -37,10 +42,12 @@ const DETAIL_FROM = HEADER.indexOf('media'); // この列から右が詳細（�
 const CREDIT_FROM = HEADER.indexOf('original'); // original / director / studio / cast（GraphQL で取る）
 const CREDIT_COLUMNS = 4;
 const TARGETS = [
-  { status: 'watched',     sheet: 'all-watched-anime' },
-  { status: 'watching',    sheet: 'all-watching-anime' },
-  { status: 'wanna_watch', sheet: 'all-wanna-watch-anime' },
+  { status: 'watched',     sheet: 'all-watched-anime',     favorite: true },
+  { status: 'watching',    sheet: 'all-watching-anime',    favorite: true },
+  { status: 'wanna_watch', sheet: 'all-wanna-watch-anime', favorite: false },
 ];
+const FAVORITE_HEADER = 'isFavorite'; // favorite: true のシートの、HEADER の右隣の列（チェックボックス）
+const FAVORITE_PROPERTY = 'FAVORITE_IDS'; // お気に入りの作品 id の控え（JSON の配列）
 const TRIGGER_HOURS = 6;
 const CREDIT_BATCH = 25; // GraphQL 1 回で取る作品数
 const STAFF_LIMIT = 30;
@@ -73,8 +80,9 @@ function syncAnnict() {
     lists.forEach(l => l.works.forEach(w => ids.push(String(w.id))));
     const credits = fetchCredits_(token, missingCreditsFirst_(ids, known), startedAt + CREDIT_BUDGET_MS);
 
-    // 3. シートへ書き込み
-    lists.forEach(({ sheet, works }) => {
+    // 3. シートへ書き込み。お気に入りの印は書き込む直前に読み直す（同期の途中で付けたチェックも残すため）
+    const favorites = collectFavorites_(ss);
+    lists.forEach(({ sheet, works, favorite }) => {
       const sh = ss.getSheetByName(sheet) || ss.insertSheet(sheet);
       const currentCount = Math.max(sh.getLastRow() - 1, 0);
 
@@ -84,11 +92,14 @@ function syncAnnict() {
       }
 
       const rows = works.map(w => mergeRow_(toRow_(w, credits[String(w.id)]), known[String(w.id)]));
-      writeSheet_(sh, rows);
+      writeSheet_(sh, rows, favorite ? favorites : null);
       console.log(`${sheet}: ${rows.length}件を同期しました（前回 ${currentCount}件）`);
     });
+    console.log(`お気に入り: ${favorites.size}件`);
 
-    PropertiesService.getScriptProperties().setProperty('LAST_SYNCED_AT', new Date().toISOString());
+    const props = PropertiesService.getScriptProperties();
+    props.setProperty(FAVORITE_PROPERTY, JSON.stringify(Array.from(favorites)));
+    props.setProperty('LAST_SYNCED_AT', new Date().toISOString());
   } finally {
     lock.releaseLock();
   }
@@ -296,14 +307,67 @@ function collectExistingRows_(ss) {
   return map;
 }
 
-function writeSheet_(sh, rows) {
+/**
+ * お気に入りの作品 id。「見てる」「見た」のシートの isFavorite 列（チェックボックス）を正とし、
+ * どちらのシートにも今は無い作品（「見たい」に戻した・一時的に一覧から外れた）は、前回の控えから印を引き継ぐ。
+ */
+function collectFavorites_(ss) {
+  const checked = new Set();
+  const present = new Set();
+  TARGETS.filter(t => t.favorite).forEach(({ sheet }) => {
+    const sh = ss.getSheetByName(sheet);
+    if (!sh || sh.getLastRow() < 2) return;
+    const n = sh.getLastRow() - 1;
+    const header = sh.getRange(1, 1, 1, sh.getLastColumn()).getDisplayValues()[0];
+    const col = header.indexOf(FAVORITE_HEADER) + 1;
+    const ids = sh.getRange(2, 1, n, 1).getDisplayValues();
+    const marks = col ? sh.getRange(2, col, n, 1).getValues() : [];
+    ids.forEach((r, i) => {
+      const id = String(r[0] || '').trim();
+      if (!id) return;
+      present.add(id);
+      if (col && isChecked_(marks[i][0])) checked.add(id);
+    });
+  });
+  savedFavorites_().forEach(id => {
+    if (!present.has(id)) checked.add(id);
+  });
+  return checked;
+}
+
+/** 前回の控え（壊れていたら空として扱い、同期は止めない） */
+function savedFavorites_() {
+  try {
+    const v = JSON.parse(PropertiesService.getScriptProperties().getProperty(FAVORITE_PROPERTY) || '[]');
+    return Array.isArray(v) ? v.map(String) : [];
+  } catch (e) {
+    console.warn(`${FAVORITE_PROPERTY} が読めないため空として扱います: ${e.message}`);
+    return [];
+  }
+}
+
+function isChecked_(v) {
+  return v === true || /^(true|1)$/i.test(String(v).trim());
+}
+
+/** favorites（Set）を渡したシートは、HEADER の右隣に isFavorite のチェックボックス列を作って印を書く */
+function writeSheet_(sh, rows, favorites) {
+  const width = HEADER.length + (favorites ? 1 : 0);
+  if (sh.getMaxColumns() < width) sh.insertColumnsAfter(sh.getMaxColumns(), width - sh.getMaxColumns());
   const lastRow = sh.getLastRow();
-  if (lastRow > 1) sh.getRange(2, 1, lastRow - 1, HEADER.length).clearContent();
-  sh.getRange(1, 1, 1, HEADER.length).setValues([HEADER]);
-  if (rows.length) {
-    const range = sh.getRange(2, 1, rows.length, HEADER.length);
-    range.setNumberFormat('@'); // id を文字列のまま保つ
-    range.setValues(rows);
+  if (lastRow > 1) {
+    sh.getRange(2, 1, lastRow - 1, width).clearContent();
+    if (favorites) sh.getRange(2, width, lastRow - 1, 1).clearDataValidations();
+  }
+  sh.getRange(1, 1, 1, width).setValues([favorites ? HEADER.concat(FAVORITE_HEADER) : HEADER]);
+  if (!rows.length) return;
+  const range = sh.getRange(2, 1, rows.length, HEADER.length);
+  range.setNumberFormat('@'); // id を文字列のまま保つ
+  range.setValues(rows);
+  if (favorites) {
+    const marks = sh.getRange(2, width, rows.length, 1);
+    marks.setDataValidation(SpreadsheetApp.newDataValidation().requireCheckbox().build());
+    marks.setValues(rows.map(r => [favorites.has(String(r[0]))]));
   }
 }
 
