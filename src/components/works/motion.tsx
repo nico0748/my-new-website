@@ -51,11 +51,14 @@ function useFigurePlay(totalSec: number) {
           const rootH = e.rootBounds?.height ?? window.innerHeight;
           const passed = e.boundingClientRect.bottom < 0;
           const enough = e.intersectionRatio >= 0.5 || e.intersectionRect.height >= rootH * 0.5;
-          if (!passed && !enough) continue;
+          // 遷移の最中に少しでも見えた図は、半分未満でも終状態で出す（空のまま見せない）
+          const duringTransition = transitioningRef.current && e.isIntersecting;
+          if (!passed && !enough && !duringTransition) continue;
           observer.disconnect();
-          if (transitioningRef.current || passed) {
+          if (duringTransition || passed) {
             // 戻る / 進むで復元された位置で見えている・すでに通り過ぎた図は終状態で出す
             setArmed(false);
+            setPlayed(true);
           } else {
             setPlaying(true);
           }

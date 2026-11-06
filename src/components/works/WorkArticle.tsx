@@ -21,6 +21,10 @@ const WorkArticle: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     setItems(
       hs.map((h) => ({ id: h.id, no: h.dataset.no || undefined, label: h.dataset.toc || h.textContent || "" }))
     );
+    // #見出し 付きの URL を直接開いたとき: 本文は lazy なので、ページ側が先頭へ戻したあとにここで飛ぶ
+    const hash = decodeURIComponent(window.location.hash.slice(1));
+    const target = hash ? document.getElementById(hash) : null;
+    if (target && el.contains(target) && window.scrollY < 1) target.scrollIntoView({ block: "start" });
   }, []);
 
   // 現在地: 画面の上から 30% の線を最後に越えた見出し
@@ -53,8 +57,22 @@ const WorkArticle: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const activeIndex = items.findIndex((i) => i.id === active);
 
+  // 記事内のリンク（目次・脚注・節への参照）はまとめてここで受ける。素の #リンクは React Router の
+  // 履歴（state）を持たない項目を積み、戻る / 進むのスクロール復元が壊れるため、履歴は置き換えにする
+  const onClick = (e: React.MouseEvent) => {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="#"]');
+    if (!a) return;
+    const target = document.getElementById(decodeURIComponent(a.getAttribute("href")!.slice(1)));
+    if (!target) return;
+    e.preventDefault();
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    history.replaceState(history.state, "", `#${target.id}`);
+  };
+
   return (
-    <div className="work-layout">
+    <div className="work-layout" onClick={onClick}>
       <div ref={bodyRef} className="work-article">
         {items.length > 1 && (
           <details className="work-toc-inline">
@@ -90,18 +108,7 @@ const TocList: React.FC<{ items: TocItem[]; active: string | null }> = ({ items,
   <ol className="work-toc-list">
     {items.map((i) => (
       <li key={i.id}>
-        <a
-          href={`#${i.id}`}
-          aria-current={i.id === active ? "location" : undefined}
-          onClick={(e) => {
-            const target = document.getElementById(i.id);
-            if (!target) return;
-            e.preventDefault();
-            const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-            target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
-            history.replaceState(history.state, "", `#${i.id}`);
-          }}
-        >
+        <a href={`#${i.id}`} aria-current={i.id === active ? "location" : undefined}>
           {i.no && <span className="work-toc-no">{i.no}</span>}
           <span className="work-toc-label">{i.label}</span>
         </a>

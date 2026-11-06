@@ -1,4 +1,5 @@
-import { Suspense, lazy, useEffect, useMemo, useState } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
+import type { ComponentType, LazyExoticComponent } from "react";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -6,6 +7,26 @@ import remarkGfm from "remark-gfm";
 import { getWorkArticleLoader, preloadWorkArticle } from "../../lib/worksRegistry";
 import type { PortfolioItem } from "../../lib/dataMapper";
 import WorkArticle from "./WorkArticle";
+
+/**
+ * 作品 id ごとの lazy コンポーネントをモジュール内に持っておく。
+ * 2 回目以降（戻る / 進む・前後の作品から戻る）は読み込み済みとして同期で描画されるので、
+ * ScrollRestoration がスクロール位置を戻す時点で本文の高さがそろっている。
+ * 記事のチャンクが読めない（デプロイ直後の古いタブなど）ときは、エラー画面ではなく Markdown / 準備中に戻す。
+ */
+const lazyArticles = new Map<string, LazyExoticComponent<ComponentType>>();
+const getLazyArticle = (id: string, markdownFile?: string) => {
+  const loader = getWorkArticleLoader(id);
+  if (!loader) return null;
+  let Article = lazyArticles.get(id);
+  if (!Article) {
+    Article = lazy(() =>
+      loader().catch(() => ({ default: () => <MarkdownBody id={id} markdownFile={markdownFile} /> }))
+    );
+    lazyArticles.set(id, Article);
+  }
+  return Article;
+};
 
 /**
  * 作品詳細の本文。表示の優先順位は
@@ -20,8 +41,7 @@ const WorkBody: React.FC<{ id: string; project: PortfolioItem | null; preload?: 
   project,
   preload = [],
 }) => {
-  const loader = getWorkArticleLoader(id);
-  const Article = useMemo(() => (loader ? lazy(loader) : null), [loader]);
+  const Article = getLazyArticle(id, project?.markdownFile);
 
   // 前後の作品の記事を先読みしておく（同じルートで id だけ変わる遷移で、旧記事が居残らないように）
   const preloadKey = preload.join(",");

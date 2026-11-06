@@ -9,6 +9,11 @@ import { highlightCode } from "../../lib/highlight";
 
 /* ─── 文 ─────────────────────────────────────── */
 
+/** 記事そのものの題。作品名とは別の副題がある記事だけ、Lead の前に置く（h1 はページ側の作品名）。 */
+export const ArticleTitle: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <p className="wa-title">{children}</p>
+);
+
 /** 冒頭の要約。ひとこと目に置く。 */
 export const Lead: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <p className="wa-lead">{children}</p>

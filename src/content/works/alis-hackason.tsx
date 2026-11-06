@@ -1,9 +1,10 @@
-import { Lead, Section, Sub, H4, Callout, Quote, Table, Code, Fn, Footnotes } from "../../components/works/kit";
+import { ArticleTitle, Lead, Section, Sub, H4, Callout, Quote, Table, Code, Fn, Footnotes } from "../../components/works/kit";
 import { Flow } from "../../components/works/motion";
 
 export default function Article() {
   return (
     <>
+      <ArticleTitle>「二度とやらない」と思ったはずのデスマーチから、今振り返って思うこと</ArticleTitle>
       <Lead>
         あの思い出したくもない「ハッカソン」という名のデスマーチからそろそろ1年経ち、3年生になった自分たちには「ハッカソン2」という授業が顔を覗かせていた。今度は自分たちが2年生のチームのPMとして見る側に回っていた。最後の3週間はとんでもないデスマーチで、開発と成果報告書を同時並行で殴り書きしてたなと苦い記憶を想起しつつ、そのあたりの記憶が薄れる前に、ちゃんと書き残しておこうと思う。
         <strong>ハードウェアを真面目に触ったことがなかった情報系の学生4人が、大学のハッカソン授業で光の無線通信システムを作った</strong>
