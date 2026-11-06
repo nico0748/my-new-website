@@ -33,12 +33,24 @@ const SiteHeader: React.FC = () => (
           key={n.to}
           to={n.to}
           viewTransition
-          className="text-[14px] sm:text-[15px] transition-colors"
+          className="relative text-[14px] sm:text-[15px] transition-colors"
           style={({ isActive }) => ({
             color: isActive ? "var(--text-primary)" : "var(--text-muted)",
           })}
         >
-          {n.label}
+          {({ isActive }) => (
+            <>
+              {n.label}
+              {/* 現在地の短い線。ページを移ると View Transition で隣の項目へ滑る（名前は 1 つだけ） */}
+              {isActive && (
+                <span
+                  aria-hidden
+                  className="absolute inset-x-0 -bottom-[7px] mx-auto h-px w-[16px]"
+                  style={{ background: "var(--accent)", viewTransitionName: "nav-indicator" }}
+                />
+              )}
+            </>
+          )}
         </NavLink>
       ))}
     </nav>
@@ -126,7 +138,8 @@ export const SectionHeading: React.FC<{ id?: string; children: React.ReactNode }
     className="flex items-center gap-3.5 text-[19px] md:text-[21px] font-semibold uppercase tracking-[0.14em] mb-8 md:mb-10 scroll-mt-12"
     style={{ color: "var(--accent)" }}
   >
-    <span aria-hidden className="h-px w-[24px]" style={{ background: "var(--accent)" }} />
+    {/* 見出しの文字のあとに、左から伸びる（Reveal の中だけ。index.css の .draw-x） */}
+    <span aria-hidden className="draw-x h-px w-[24px]" style={{ background: "var(--accent)" }} />
     {children}
   </h2>
 );

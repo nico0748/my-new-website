@@ -59,18 +59,23 @@ const Timeline: React.FC<{ items: TimelineItem[] }> = ({ items }) => {
             {g.year}
           </h3>
           <ol className="relative flex flex-col gap-8 pl-6">
-            <span aria-hidden className="absolute left-[3px] top-2 bottom-2 w-px" style={{ background: "var(--border-color)" }} />
+            {/* 縦線は年ごとの Reveal で上から伸びる（index.css の .draw-y） */}
+            <span aria-hidden className="draw-y absolute left-[3px] top-2 bottom-2 w-px" style={{ background: "var(--border-color)" }} />
             {g.items.map((it, i) => {
               const ongoing = it.end === "present";
               return (
                 <li key={`${it.start}-${i}`} className="relative">
+                  {/* 過去の項目の点は線に続いて上から順に点く（.draw-dot）。継続中の差し色の点は状態なので最初から出す */}
                   <span
                     aria-hidden
-                    className="absolute -left-6 top-[7px] h-[7px] w-[7px] rounded-full"
-                    style={{
-                      background: ongoing ? "var(--accent)" : "var(--bg)",
-                      border: `1px solid ${ongoing ? "var(--accent)" : "var(--text-muted)"}`,
-                    }}
+                    className={`absolute -left-6 top-[7px] h-[7px] w-[7px] rounded-full${ongoing ? "" : " draw-dot"}`}
+                    style={
+                      {
+                        background: ongoing ? "var(--accent)" : "var(--bg)",
+                        border: `1px solid ${ongoing ? "var(--accent)" : "var(--text-muted)"}`,
+                        "--i": Math.min(i, 4),
+                      } as React.CSSProperties
+                    }
                   />
                   <p className="text-[13px] tabular-nums tracking-wide" style={{ color: "var(--text-muted)" }}>
                     {formatPeriod(it.start, it.end)}
