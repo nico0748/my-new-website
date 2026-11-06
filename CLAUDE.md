@@ -43,11 +43,16 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
   - 罫線: `var(--border-color)` `rgba(160,180,210,0.1)`（青みを帯びた薄い線）
 - **リンク**: 通常は `.link-quiet`（副テキスト色 → ホバーで主テキスト色）。外部リンクは `↗`
 - **アニメーション**:
+  - **動きの型は 2 つだけ**: 内容は `Reveal` のフェードアップ、構造は **1px の線が起点から伸びる**形（線を使うのは見出しの印・時間軸・現在地など構造を表すものだけ）。イージングは `index.css` の `--motion-ease`（`cubic-bezier(.22, 1, .36, 1)`）1 本で、`--view-transition-easing` もこれを参照する。文字が先・飾りは後、遅延は `min()` で 0.8s まで
+  - **一度きり**: ポートフォリオでは無限ループ（点滅・パルス・走り続ける動き）を使わない。繰り返すのは利用者が操作したときだけ。本文段落・数値・ヘッダー・背景・アバターは動かさない
   - **スクロールで下からフェードイン**は `src/components/ui/Reveal.tsx` の `Reveal` で包む（一度だけ・同じフレームで入った要素は DOM 順に 0.1 秒ずつずらす）。トップでは Profile → WORKS → ARTICLES → SKILLS → TIMELINE → OFF-HOURS の各見出し・カード・年ごとの Timeline・Off-hours の箱を個別に包んでいる。`WorkList` / `ArticleList` のカードは常に Reveal 付き
-  - ページ遷移（View Transition）で入ってきたときは、最初の画面に入る Reveal は**アニメせず即表示**する（遷移アニメとの二重化と、共有要素のモーフ後のちらつきを防ぐ）。新しく Reveal を足すときもこの仕組みに乗せ、framer-motion の `initial={{ opacity: 0 }}` を共有要素の祖先に付けないこと
+  - ページ遷移（View Transition）で入ってきたときは、最初の画面に入る Reveal は**アニメせず即表示**する（遷移アニメとの二重化と、共有要素のモーフ後のちらつきを防ぐ）。**戻る / 進む**でスクロール位置が復元されたときも、遷移アニメの最中に画面へ入った Reveal は即表示（IntersectionObserver のコールバックで `useViewTransitionState` を見る）。新しく Reveal を足すときもこの仕組みに乗せ、framer-motion の `initial={{ opacity: 0 }}` や新しい初期 transform を `view-transition-name` を持つ要素（作品・アニメの画像とタイトル、`site-header`、`nav-indicator`）とその祖先に付けないこと
+  - **線の演出**は `index.css` の「線の演出」節のクラスを、一番近い Reveal の中の要素に付ける（新しい IntersectionObserver は増やさず、Reveal の `.is-shown` / `.is-instant` と `--reveal-delay` に乗る。Reveal の外では最初から終状態）: `.draw-x`（横線を左から）/ `.draw-y`（縦線を上から）/ `.draw-dot`（線上の点を `--i` の順に）/ `.brighten`（文の一部を `--i` の順に副テキスト色 → 主テキスト色へ）。使っている所は `SectionHeading` の短い線（文字の 0.25s 後に 0.6s）、Timeline の縦線（年ごとに 0.9s）と過去の項目の点（継続中の差し色の点は最初から出す）、OFF-HOURS のリードの 4 つの動詞（0.4s・120ms 間隔）。framer-motion の `reducedMotion` は opacity や線を止めないので、線の演出は CSS で書く
+  - **ヘッダーの現在地**: 選択中の NavLink の下に 16px のサンドの線（`view-transition-name: nav-indicator`）。ページを移ると View Transition で隣の項目へ滑る（名前は常に 1 つだけ）
+  - **名前の切替**（nico ⇄ 本名）は切り替えたときだけ、枠の中で古い語が上へ抜け、新しい語が下から入る（0.35s。ページを開いたときは動かさない）。見出しの名前は表示中の名前から取り、ボタンに `aria-label` は付けない（本名が読み上げられるため）。操作の説明は本名を含まない `aria-describedby`（「表示名を切り替えます」）
   - 画面遷移は `index.css` の View Transitions 節で制御。ページ全体は「旧ページを先に消し、新ページを少し遅らせて下から浮かべる」。作品の画像・タイトルは `vt-project-img` / `vt-project-title`（`view-transition-class`）＋ `projectVtName()` の名前でモーフし、時間とカーブは `--vt-morph-duration` / `--vt-morph-easing`
   - サイト内リンクは `<Link viewTransition>` にする（ヘッダー・フッター・「すべて見る →」も対応済み）。スクロール位置は `RootLayout` の `<ScrollRestoration />` が管理（新しいページは先頭から、戻る / 進むは復元）
-  - `prefers-reduced-motion: reduce` では Reveal も画面遷移も動かさない
+  - `prefers-reduced-motion: reduce` では Reveal も線の演出も画面遷移も動かさず、最初から終状態を出す（`index.css` のグローバル規則は時間を縮めるだけで遅延が残るので、遅延のある演出は個別に `transition: none` にする）
 
 ### タイポグラフィ
 
