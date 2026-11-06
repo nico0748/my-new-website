@@ -10,6 +10,7 @@ import SkillRadarChart from "../components/ui/SkillRadarChart";
 import { skillColor } from "../lib/skillColors";
 import Timeline from "../components/ui/Timeline";
 import OffHoursBoard from "../components/ui/OffHoursBoard";
+import GitHubActivity from "../components/ui/GitHubActivity";
 import Reveal from "../components/ui/Reveal";
 import SocialLinks from "../components/ui/SocialLinks";
 
@@ -25,6 +26,8 @@ import { fetchTopTracks, getCachedTopTracks } from "../lib/spotify";
 import { fetchTopAnime, getCachedTopAnime } from "../lib/anime";
 import type { TopAnime } from "../lib/anime";
 import type { SpotifyTrack } from "../lib/spotify";
+import { EMPTY_GITHUB_ACTIVITY, fetchGitHubActivity, getCachedGitHubActivity, githubReposUrl, pickRepos } from "../lib/github";
+import type { GitHubActivity as GitHubActivityData } from "../lib/github";
 import type { OffHoursItem } from "../lib/dataMapper";
 
 const REAL_NAME = "細澤 悠真";
@@ -41,6 +44,9 @@ const PortfolioPage = () => {
   const [offHours, setOffHours] = useState<OffHoursItem[]>(() => getCachedOffHours() ?? []);
   const [topTracks, setTopTracks] = useState<SpotifyTrack[]>(() => getCachedTopTracks() ?? []);
   const [anime, setAnime] = useState<TopAnime>(() => getCachedTopAnime() ?? { works: [], favorites: false });
+  const [github, setGitHub] = useState<GitHubActivityData>(() => getCachedGitHubActivity() ?? EMPTY_GITHUB_ACTIVITY);
+  // Projects シートを読み終えたか（WORKS に載っているリポジトリを除いてから ACTIVITY のリポジトリを出すため）
+  const [worksReady, setWorksReady] = useState(!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY || getCachedProjects() !== null);
   // Profile シートを読み終えたか（ソーシャルリンクを全件そろってからフェードインさせるため）
   const [profileReady, setProfileReady] = useState(!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY || !!getCachedProfile());
 
@@ -51,6 +57,7 @@ const PortfolioPage = () => {
     // 趣味の記録は Profile 等とは別に読む（待たせるとソーシャルリンクの表示まで遅れるため）
     fetchOffHours().then(setOffHours);
     fetchTopTracks().then(setTopTracks);
+    fetchGitHubActivity().then(setGitHub);
     fetchTopAnime().then(setAnime);
 
     if (!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY) return;
@@ -71,9 +78,14 @@ const PortfolioPage = () => {
         console.error("Failed to fetch data from Google Sheets", error);
       } finally {
         setProfileReady(true);
+        setWorksReady(true);
       }
     })();
   }, []);
+
+  // ACTIVITY: WORKS 以外のリポジトリ（Projects を読み終えるまでは出さない）と、活動のあるカレンダー
+  const repos = worksReady ? pickRepos(github.repos, works.map((w) => w.repoUrl)) : [];
+  const calendar = github.calendar && github.calendar.total > 0 ? github.calendar : null;
 
   return (
     <SiteLayout>
@@ -117,6 +129,20 @@ const PortfolioPage = () => {
           </div>
           <Reveal>
             <MoreLink to="/skills">すべてのスキルを見る</MoreLink>
+          </Reveal>
+        </section>
+      )}
+
+      {(calendar || repos.length > 0) && (
+        <section className="mt-24 md:mt-32">
+          <Reveal>
+            <SectionHeading id="activity">Activity</SectionHeading>
+          </Reveal>
+          <GitHubActivity calendar={calendar} repos={repos} />
+          <Reveal>
+            <MoreLink to={githubReposUrl(profile.githubUrl)} external>
+              すべてのリポジトリを見る
+            </MoreLink>
           </Reveal>
         </section>
       )}
