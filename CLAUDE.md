@@ -74,7 +74,7 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 | パス | ページ | 備考 |
 |---|---|---|
 | `/` | PortfolioPage | メインポートフォリオ |
-| `/projects/:id` | ProjectDetailPage | Markdownで詳細を表示 |
+| `/projects/:id` | ProjectDetailPage | 作品の詳細（本文は記事テンプレートの TSX、無ければ Markdown） |
 | `/projects` | ProjectsPage | 作品一覧（行リスト） |
 | `/articles` | ArticlesPage | 自分が書いた記事の一覧（Qiita + Articles シート）。各記事は外部サイトへ遷移 |
 | `/topics/*` | → `/` | 廃止（リダイレクト） |
@@ -99,7 +99,7 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
   - `thumbnail`: 自作アプリ（PaperLens / SecOwl）は「左にアプリ名、右に Mac の画面に映したアプリ」の 16:10 画像（2000×1250 の WebP）。元の画面スクリーンショットは `public/projects/images/<id>-*.webp` に置く
 - 取得は `src/lib/projects.ts` の `fetchProjects()` に一本化（モジュール内キャッシュ）。詳細ページが最初の描画から画像とタイトルを出せるようにするためで、これが無いと View Transition のモーフが効かない
 - 一覧カードと詳細ページは `projectVtName("img" | "title", id)` で同じ `view-transition-name` を付ける
-- 詳細ページ（`/projects/:id`）は 画像ギャラリー＋右サイドバー（タイトル・期間・技術構成・リンク）→ 本文 Markdown（`public/projects/<id>.md`）→ 前後の作品ナビ
+- 詳細ページ（`/projects/:id`）は 画像ギャラリー＋右サイドバー（タイトル・期間・技術構成・リンク）→ 本文（「Works 記事」節。`src/content/works/<id>.tsx`、無ければ `public/projects/<id>.md`）→ 前後の作品ナビ
 
 ### データフロー
 
@@ -120,11 +120,23 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 
 ---
 
-## プロジェクト詳細ページ（Markdown）
+## Works 記事（作品詳細の本文）
 
-- `public/projects/<プロジェクトID>.md` にMarkdownファイルを置くと自動表示される
-- Markdownのスタイルは `src/index.css` の `.prose-custom` クラスで定義
-- `react-markdown` + `remark-gfm` でレンダリング（GFM対応: テーブル・チェックボックス等）
+作品詳細（`/projects/:id`）の本文は、独自コンポーネントの記事テンプレートで書く（2026-11 に Markdown から移行。理由は読みやすさと、アプリの説明に動く図を入れるため）。
+
+- **本文**: `src/content/works/<作品 id>.tsx` に default export の記事コンポーネントを 1 つ置くだけ（ファイル名 = Projects シートの id）。`src/lib/worksRegistry.ts` が lazy の `import.meta.glob` で自動索引する（eager の glob と併用しない。本文がメインチャンクに入る）。タイトル・期間・タグはシートが正なので、TSX に meta は置かない
+- **表示の優先順位**: TSX → シートの `markdownFile` / `public/projects/<id>.md`（従来の `.prose-custom`）→ 「詳しい紹介は準備中です。」。切り替えは `src/components/works/WorkBody.tsx`。Suspense は本文だけに巻く（ヘッダーの View Transition のモーフを壊さないため）。前後の作品の本文は先読み
+- **外枠** `WorkArticle`: 本文 680px（1 行 38〜42 字）、lg 以上で右に sticky の目次（`Section` の h2 だけ。現在地はサンドの 1px の線）。lg 未満は本文の先頭に折りたたみの目次
+- **部品** `src/components/works/kit.tsx`: `Lead`（冒頭 19px）/ `Section`（h2。`id` 必須、`no` で淡色の章番号、`toc` で目次の短い名前。見出しの前にサンドの短い線）/ `Sub`（h3、`no="2-1"`）/ `H4` / `Figure`（スクリーンショット＋13px のキャプション、押すと拡大）/ `Table`（横スクロール。4 列以上は `stack` で md 未満を縦積み）/ `Stats`（数字は動かさない）/ `Code`（highlight.js）/ `Callout` / `Quote` / `Fn`＋`Footnotes`。素の `p` `ul` `ol` `strong` `code` `a` もそのまま整形される
+- **動く図** `src/components/works/motion.tsx`: `Flow`（処理の流れ。PC はステップ 4 つまで横並び、それより多いかスマホは縦。各ノードに `value` の札）/ `Layers`（構成図。層を積み、`aside` で別経路、`boundary` で「端末の中」などの枠）
+  - 動きはノードのフェードと 1px の線の 2 つだけ、`--motion-ease`。見えたら（半分以上）1 回だけ描いて止まり、終わると「もう一度再生」を出す。ループ・点滅・数字のカウントアップ・線上を走る点はしない
+  - **遅延の上限の例外**: 図は 1 ステップ 0.45s、間隔 `min(0.3s, 2.0s / (n - 1))`、図全体 2.5s 前後（サイト全体の「遅延 0.8s まで」は図には当てはめない）
+  - 図は `Reveal` で包まない（再生管理は図ごとに 1 つ）。View Transition の最中（戻る / 進む）に見えた図は描かずに終状態。`prefers-reduced-motion: reduce`・JS 無し・印刷は最初から終状態（初期状態の CSS は no-preference の `.is-armed` の中だけ）
+  - 図の内容は本文かキャプションでも文章で書く（`label` は読み上げ用の 1 文）
+- **スタイル**は `src/styles/works-article.css`（`.work-layout` / `.work-article` / `.wfig` スコープ）。`index.css` の変数を参照するだけで、Learn（`.learn-docs`）のスタイルは持ち込まない
+- 書き方は doujin-pp・paperlens の記事が見本（H1 は書かない。ページ側に作品名の h1 がある。太字は 1 段落に 1 つまで、400 字を超える段落は分ける）
+- 画像は `public/projects/images/<id>-*.webp`
+- `portfolio` はまだ Markdown（`public/projects/portfolio.md`）。TSX を足せば自動で切り替わる
 
 ---
 
@@ -292,7 +304,7 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
 
 - ターミナル演出（`$` プロンプト・点滅カーソル・グリッド/走査線背景・ネオン色・グロー）やグラスモーフィズムのカードをポートフォリオに持ち込まない（Calm Dark に統一）
 - 和風パレットや明朝体・手書き体を新規採用しない。見出し・本文は `var(--font-sans)`（Inter + Noto Sans JP）
-- ハードコードされたデータを `src/` 以下に置かない（Google Sheets に移行済み。記事は Qiita API）。※例外は Learn 教材のみ（`src/content/learn/` の TSX 記事。詳細は「Learn コンテンツ」節）
+- ハードコードされたデータを `src/` 以下に置かない（Google Sheets に移行済み。記事は Qiita API）。※例外は Learn 教材（`src/content/learn/` の TSX 記事。詳細は「Learn コンテンツ」節）と Works 記事（`src/content/works/`。「Works 記事」節）。どちらも本文はデータではなく表現なので
 - **Learn（`/learn`）UI で絵文字（emoji / ピクトグラム）を使わない**。コース・カテゴリのアイコンは `public/learn/covers/` のカバー画像か SVG アイコンで表現する（矢印記号 `←`/`→` は可）
 - **絵文字（emoji / ピクトグラム文字）をサイト全体で使わない**。カテゴリ・状態の記号は `src/components/ui/CategoryIcon.tsx` のピクトグラム（Lucide 相当の 24 viewBox / stroke 2）で表す。矢印記号 `←`/`→`/`↗`/`❯`/`▸` は可
 - Learn のデザインにポートフォリオの Calm Dark 調（`SiteBackground`・`--accent` 等の portfolio 変数）を持ち込まない。Learn は `.learn-docs` スコープの専用スタイル（`src/styles/learn.css`・Progate 系ライトテーマ）で統一する
