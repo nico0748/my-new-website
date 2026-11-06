@@ -178,6 +178,10 @@ Web・インフラ・セキュリティを分野ごとに体系立ててまと�
   - **`/learn`（ランディング）= `LearnPage`**: サイドバーなしの Progate 系マーケティング面。ヒーロー＋ミント帯＋**コースカード（`.course-grid` / `.course-card`）**。body 背景は `useEffect` で白に切替
   - **`/learn/:domain`・`/learn/:domain/:id` = `LearnDomainPage` / `LearnDetailPage`**: `LearnLayout`（固定ヘッダー＋進捗バー＋左サイドバー `DomainNav` ＋ 780px 本文）。詳細は本文 h2 から「On this page」自動生成＋前後ナビ
 - **⚠️ 絵文字（emoji / ピクトグラム）は Learn UI 全体で使わない**。分野アイコンは `public/learn/covers/<domain>.svg` の**カバー画像**で表現する（`←`/`→` 等の矢印記号は可）
+- **図解の動きは「見えたときに 1 回描いて止まる」**（`src/components/learn/diagrams.tsx`）。図の半分以上が見えたら `usePlayOnce`（同ディレクトリ）が `.is-playing` を付け、各要素の animation を 1 回だけ流して終状態で止める。**無限ループ（`infinite`・SMIL の `repeatCount="indefinite"`・マーチングアント）は使わない**（WCAG 2.2.2）。タイミングは線 1 本 0.45s・間隔 `min(0.3s, 2.0s/(n-1))`・図全体 2.5s 以内。走るドットは描き終えた後に 1 回だけ
+  - 繰り返すのは利用者が「もう一度再生」を押したときだけ。再生はクラスの付け直しで行い、**再マウントや要素の後挿入をしない**（`LearnLayout` の目次は本文の MutationObserver で組み立てているため）。ボタンも最初から置き、CSS で出し入れする
+  - **`prefers-reduced-motion: reduce` では最初から終状態**（線は描き終えた状態・ドットと再生ボタンは出さない）。index.css のグローバル規則は delay を残すので、動きの指定は `@media screen and (prefers-reduced-motion: no-preference)` の中にだけ書く
+  - 読了チェックはクリックした瞬間だけ印を描く（localStorage からの復元では動かさない）。ロゴのカーソルは 3 回点滅して点いたまま止まる
 - 「分野」は UI 上 **「コース」** と表記する（内部キーは `domain` のまま）
 
 ### 区分（コース・章・レベル）
