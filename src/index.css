@@ -37,9 +37,19 @@
   --brand-qiita: #55c500;
   --brand-linkedin: #0a66c2;
   --brand-spotify: #1ed760;
+  /* GitHub のコントリビューション（ACTIVITY のヒートマップ）。地色に混ぜて作るので、カードの上ではなく地の上に置く。
+     0 は淡色を少しだけ、1〜4 はセージ（--accent-2）を段階的に濃くする */
+  --heat-0: color-mix(in srgb, var(--text-muted) 18%, var(--bg));
+  --heat-1: color-mix(in srgb, var(--accent-2) 30%, var(--bg));
+  --heat-2: color-mix(in srgb, var(--accent-2) 50%, var(--bg));
+  --heat-3: color-mix(in srgb, var(--accent-2) 72%, var(--bg));
+  --heat-4: color-mix(in srgb, var(--accent-2) 100%, var(--bg));
   --accent-hover: #e3d9bd;
   --accent-bg: rgba(203, 191, 159, 0.07);
   --accent-border: rgba(203, 191, 159, 0.24);
+
+  /* 動きのイージング（サイト全体で 1 本。Reveal・線の演出・画面遷移で共有する） */
+  --motion-ease: cubic-bezier(.22, 1, .36, 1);
 
   /* View Transitions（画面遷移）の共通チューニング */
   --view-transition-duration: 0.35s;
@@ -47,7 +57,7 @@
   --vt-morph-duration: 0.6s;
   --vt-morph-easing: cubic-bezier(0.2, 0, 0, 1);
   --overlay: rgba(0, 0, 0, 0.88);
-  --view-transition-easing: cubic-bezier(0.22, 1, 0.36, 1);
+  --view-transition-easing: var(--motion-ease);
 
   /* 罫線 */
   --border-color: rgba(160, 180, 210, 0.1);
@@ -435,8 +445,8 @@ html[data-vt="modal"]::view-transition-new(root) { animation: none; }
   opacity: 0;
   transform: translate3d(0, 28px, 0);
   transition:
-    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.9s var(--motion-ease),
+    transform 0.9s var(--motion-ease);
   transition-delay: var(--reveal-delay, 0s);
 }
 .reveal.is-shown,
@@ -452,6 +462,70 @@ html[data-vt="modal"]::view-transition-new(root) { animation: none; }
   .reveal {
     opacity: 1;
     transform: none;
+    transition: none;
+  }
+}
+
+/* ─── 線の演出（構造を表す 1px の線が起点から伸びる。一度だけ） ─────────
+   新しい IntersectionObserver は増やさず、Reveal が付ける .is-shown / .is-instant と、
+   子に継承される --reveal-delay に乗せる。文字（Reveal のフェードアップ）が先、線は後。
+   初期状態（線が無い・点が消えている）は .reveal の中に限るので、Reveal の外で使えば最初から終状態。
+   対象は一番近い Reveal の中に置く（Reveal を入れ子にすると外側の表示で先に動いてしまう）。
+   遅延は min() で 0.8s を上限にする。
+   - .draw-x   横線を左から伸ばす（セクション見出しの短い線）
+   - .draw-y   縦線を上から伸ばす（Timeline の縦線）
+   - .draw-dot 線の上の点を --i（0〜4）の順に 80ms ずつ点ける（Timeline の過去の項目）
+   - .brighten 文の一部を --i の順に 120ms ずつ、副テキスト色から主テキスト色へ明るくする（OFF-HOURS のリード） */
+
+.reveal .draw-x {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s var(--motion-ease) min(calc(var(--reveal-delay, 0s) + 0.25s), 0.8s);
+}
+.reveal .draw-y {
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.9s var(--motion-ease) min(calc(var(--reveal-delay, 0s) + 0.1s), 0.8s);
+}
+.reveal .draw-dot {
+  opacity: 0;
+  transition: opacity 0.3s var(--motion-ease) min(calc(var(--reveal-delay, 0s) + 0.15s + var(--i, 0) * 80ms), 0.8s);
+}
+.reveal:is(.is-shown, .is-instant) :is(.draw-x, .draw-y) {
+  transform: none;
+}
+.reveal:is(.is-shown, .is-instant) .draw-dot {
+  opacity: 1;
+}
+
+.brighten {
+  color: var(--text-primary);
+}
+.reveal .brighten {
+  color: inherit;
+  transition: color 0.4s var(--motion-ease) min(calc(var(--reveal-delay, 0s) + 0.3s + var(--i, 0) * 120ms), 0.8s);
+}
+.reveal:is(.is-shown, .is-instant) .brighten {
+  color: var(--text-primary);
+}
+
+/* 画面遷移で入ってきたときは最初から終状態（遷移アニメと二重にしない） */
+.reveal.is-instant :is(.draw-x, .draw-y, .draw-dot, .brighten) {
+  transition: none;
+}
+
+/* 動きを減らす設定では最初から終状態。上のグローバル規則は時間を縮めるだけで遅延が残るので、個別に止める */
+@media (prefers-reduced-motion: reduce) {
+  .reveal :is(.draw-x, .draw-y) {
+    transform: none;
+    transition: none;
+  }
+  .reveal .draw-dot {
+    opacity: 1;
+    transition: none;
+  }
+  .reveal .brighten {
+    color: var(--text-primary);
     transition: none;
   }
 }

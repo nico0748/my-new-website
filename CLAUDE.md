@@ -25,9 +25,13 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 - **部品**: `SectionHeading`（小さな大文字見出し）/ `MoreLink`（「すべて見る →」）/ `PageTitle`（下層ページのタイトル）/ `Loading`
 - **Works / Articles は画像付きのボックス（スマホ1段・タブレット2段・PC 3段、`gap-5 lg:gap-6`。トップには最大6件）**: `WorkList`（サムネイル）/ `ArticleList`（OGP 画像）。枠線は `border-white/[0.08]`、ホバーで少し明るく。画像が無い場合は静かなプレースホルダー
 - **Skills** はカテゴリごとのレーダーチャート（`SkillRadarChart`、recharts）をボックスで並べる
+- **Activity**（GitHub の活動。SKILLS と TIMELINE のあいだ、`<SectionHeading id="activity">`）は `GitHubActivity`（`src/components/ui/GitHubActivity.tsx`）。専用ページ・NAV 追加は無し。中は OFF-HOURS と同じ形の小見出し（アイコン＋名前、右に 13px 淡色の補足）が 2 つ。データは「GitHub（ACTIVITY）」節
+  - **コントリビューション**（`CalendarDays`、右に「過去 1 年 · N 件」、md 未満は「直近半年 · N 件」＝見えている 26 週の合計）: 枠の箱に入れず**地の上にじかに**置くヒートマップ。左に曜日ラベル（月 / 水 / 金）、右に週ごとの列（`weeks.length` 個。53 と決め打ちしない。各列は `flex-1 min-w-0`、中は `weekday` で行を決める 7 行で、最初・最後の欠けた週は空ける）。マス目は `aspect-ratio: 1`・角丸 2px・間 3px（md 未満 2px）で幅に合わせて伸び縮みし、全体の max-width（週数 × 17px − 3px ＋ 曜日ラベル幅）で **14px を超えない**（lg で 14px・md で約 10px・390px で約 10px）。横スクロールはしない。**md 未満は直近 26 週だけ**（古い列に `max-md:hidden`。月ラベルは各週の列の中に absolute で置くので列と一緒に消える）。月ラベル（13px 淡色）は週の最初の日の `date.slice(5,7)` が前の列と変わる列に「11月」（1 列目は次のラベルまで 2 列以内なら出さない。日付は文字列のまま扱い Date で読み直さない）。色は `index.css` の `--heat-0`〜`--heat-4`（`--bg` に淡色 / セージ `--accent-2` を混ぜたもの。`--card-bg` の上では沈む）で、段階は GitHub の `contributionLevel` のまま（しきい値を持たない）。セルの `title` は「2026.11.05 · 3 件」（フォーカスは付けない）。グリッドに `role="img"` と `aria-label`、凡例「少ない ■■■■■ 多い」は aria-hidden。今日の強調・streak・活動日数・最多の日は出さない
+  - **リポジトリ**（`FolderGit2`、右に「最近更新した順」）: `ArticleList` のカードから画像を外した形（名前 17px / 説明 14px 2 行まで / 下段 13px 淡色「TypeScript · 2026.10.28 更新」、↗ は下段の右端にホバーで）。カード全体が外部リンク。選び方は `src/lib/github.ts` の `pickRepos()`: Projects シートの `repoUrl` に載っているものを除く（小文字にし末尾の `/` と `.git` を外して比べる。WORKS 以外のコードを見せる欄）→ 説明のあるものを優先（3 件に満たないときだけ説明の無いもので埋める）→ 先頭から 3 件。**PC 3 列 3 件 / タブレット 2 列 2 件（3 件目を隠す）/ スマホ 1 列 3 件**。Projects を読み終えるまでは小見出しごと出さない（後から入れ替わらないように）。言語の色の点・スター・フォーク数は出さない
+  - 締めに `MoreLink external`「すべてのリポジトリを見る」（Profile シートの `githubUrl`、無ければ `https://github.com/nico0748` に `?tab=repositories`）。出典の注記は付けない（自己紹介とフッターに同じリンクがある）。カレンダーが無い / 0 件ならコントリビューションの欄、リポジトリが 0 件ならリポジトリの欄を出さず、両方無ければセクション（見出し・MoreLink 含む）ごと出さない。読み込み中の文言は出さない
 - **Timeline** は `Timeline`（年見出し + 縦線 + 「期間 · 種別」→ タイトル → 説明）。継続中の項目は差し色のドット
 - **Off-hours**（趣味の記録、TIMELINE の下）は `OffHoursBoard`。カテゴリ（アニメ → 音楽 → イベント → 同人作品）ごとに見出し（アイコン＋名前、右に出典）を立て、1 件 1 枚のカード（64px 角のサムネイル＋タイトル `↗`＋補足行）を **PC 4 列・タブレット 2 列・スマホ 1 列**で並べる。件数はアニメ 8 / 音楽 12 / イベント 8 / 同人作品 4（スマホは 4 / 6 / 4 / 4）。URL があればカード全体がリンクで、ホバーで枠が明るくなる。アニメだけは `/anime` と同じ `AnimeCard`（横長サムネイルが上、スマホも 2 列）で、押すと `/anime` のポップアップへ（下に「すべてのアニメを見る →」）。**お気に入り（`isFavorite`）が 1 件でもあればお気に入りだけ**を出し（見出しの右は「お気に入り · Annict の視聴記録より」、押すと `/anime?tab=favorite` のポップアップ）、1 件も無ければ最近の作品。画像が無い・読めなければ lucide-react のアイコン（stroke 1.75）。リードは「コードの外で、観て、聴いて、手に取って、足を運んだもの。」
-- **アニメ**（`/anime`）: タブは お気に入り → 見てる → 見た → 見たい。**最初に開くのはお気に入り**（1 件も無ければタブごと出さず 見てる から）。スマホでタブが収まらないときは横スクロール。タブの下に**放送時期の絞り込み** `AnimeSeasonFilter`（年のセレクト → その年の季節のボタン「すべて / 冬 / 春 / 夏 / 秋」、件数付き。`?season=2024-winter` / `?season=2024` で URL に残し、タブを切り替えても保つ）。⚠️ 季節は文字順で並べない。年の中は 冬 → 春 → 夏 → 秋（Annict の区分）で、比較は `dataMapper.ts` の `ANIME_SEASONS` / `parseSeason()` / `seasonRank()` を使う。`AnimeCard`（`src/components/ui/AnimeCard.tsx`）を PC 4 列・タブレット 3 列・スマホ 2 列で 48 件ずつ。サムネイル `AnimeThumb` は **40:21 の横長の枠**に揃え、横長の画像（幅/高さ ≥ 1.5）は枠いっぱい、縦長・正方形は全体を収めて左右を同じ画像のぼかしで埋める。画像が読めなければ公式 X のアイコン → Tv アイコン。カードを押すと `AnimeModal`（画像・タイトル・状態・放送時期・種別・話数、公式サイト / Annict / Wikipedia / ハッシュタグのリンク、原作・監督・アニメーション制作・キャスト・Annict の記録数）
+- **アニメ**（`/anime`）: タブは お気に入り → 見てる → 見た → 見たい。**最初に開くのはお気に入り**（1 件も無ければタブごと出さず 見てる から）。スマホでタブが収まらないときは横スクロール。選んだタブの下線（2px）は中央から左右へ伸びる。タブの下に**放送時期の絞り込み** `AnimeSeasonFilter`（年のセレクト → その年の季節のボタン「すべて / 冬 / 春 / 夏 / 秋」、件数付き。`?season=2024-winter` / `?season=2024` で URL に残し、タブを切り替えても保つ）。⚠️ 季節は文字順で並べない。年の中は 冬 → 春 → 夏 → 秋（Annict の区分）で、比較は `dataMapper.ts` の `ANIME_SEASONS` / `parseSeason()` / `seasonRank()` を使う。`AnimeCard`（`src/components/ui/AnimeCard.tsx`）を PC 4 列・タブレット 3 列・スマホ 2 列で 48 件ずつ。サムネイル `AnimeThumb` は **40:21 の横長の枠**に揃え、横長の画像（幅/高さ ≥ 1.5）は枠いっぱい、縦長・正方形は全体を収めて左右を同じ画像のぼかしで埋める。画像が読めなければ公式 X のアイコン → Tv アイコン。カードを押すと `AnimeModal`（画像・タイトル・状態・放送時期・種別・話数、公式サイト / Annict / Wikipedia / ハッシュタグのリンク、原作・監督・アニメーション制作・キャスト・Annict の記録数）
   - **画像とタイトルは Works と同じモーフ**: `.vt-anime-img` / `.vt-anime-title` が `view-transition-class: project-img / project-title` に `anime-morph`（ポップアップより手前に出す z-index）を足したもの。名前は `animeVtName()`。一覧では**最後に開いた作品のカードだけ**に名前を付ける（数百件に付けるとスナップショットが重いため。押した瞬間に `flushSync` で付けてから遷移）。トップの OFF-HOURS のアニメは全カードに付ける
   - 開閉は `<Link viewTransition>` / `navigate(-1)` による同じページ内の遷移。その間だけ `html[data-vt="modal"]` が付き（`AnimePage` の `useModalTransitionFlag`、`UNSAFE_ViewTransitionContext` で判定）、ページ全体のフェードを止めて背景（`anime-backdrop`）とパネル（`anime-panel`）だけを動かす
 - **ソーシャルリンク** は `SocialLinks`。1件1枚のカード（サービス名＋ユーザー ID、右端にアイコン）を縦に積み、トップの自己紹介では**名前と同じ高さから右側に**置く（タブレット未満では紹介文の下。右カラムは 300px）。**アイコンは各サービス本来の色**（`--brand-x` / `--brand-github` / `--brand-qiita` / `--brand-linkedin`）、ID は主テキスト色、サービス名は副テキスト色。URL は Profile シートの `xUrl` / `githubUrl` / `qiitaUrl` / `linkedinUrl`。ID は URL から自動で取り出すが、LinkedIn は `linkedinLabel`（例 `細澤 悠真`）で表示名を上書きできる。アイコンは各サービス公式のロゴマーク（Qiita も公式マーク。Simple Icons 由来）。自己紹介のアバターは `w-24`（md 以上 `w-32`）。Profile シートの取得とリンクの組み立ては `src/lib/profile.ts`（`fetchProfile()` はモジュール内キャッシュ、`socialLinksOf()`）に一本化し、トップとフッターで共有する
@@ -39,15 +43,20 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
   - テキスト（主）: `var(--text-primary)` `#e8eaee` / （本文）`var(--text-body)` `#c9cdd4`
   - テキスト（副）: `var(--text-secondary)` `#9ba2ad` / （淡）`var(--text-muted)` `#666d78`
   - アクセント（主）: `var(--accent)` `#cbbf9f`（サンドベージュ）。セクション見出しと左の短い線・「すべて見る →」（`.link-accent`）
-  - アクセント（従）: `var(--accent-2)` `#8fb59b`（セージ）/ `var(--accent-3)` `#86a7cf`（ダスティブルー）/ `var(--accent-4)` `#d9b65a`（マスタードイエロー）/ `var(--accent-5)` `#a89be0`（ラベンダー）。スキルのチャートは `src/lib/skillColors.ts` の `skillColor()` でカテゴリ名から色を決める（Frontend=緑 / Backend=青 / Database=黄 / Infrastructure=紫）。サンドは見出しの色なのでチャートには使わない
+  - アクセント（従）: `var(--accent-2)` `#8fb59b`（セージ）/ `var(--accent-3)` `#86a7cf`（ダスティブルー）/ `var(--accent-4)` `#d9b65a`（マスタードイエロー）/ `var(--accent-5)` `#a89be0`（ラベンダー）。スキルのチャートと `/skills` のカテゴリ（件数・選択中のスキルの枠線）は `src/lib/skillColors.ts` の `skillColor()` でカテゴリ名から色を決める（Frontend=緑 / Backend=青 / Database=黄 / Infrastructure=紫）。サンドは見出しの色なのでチャートには使わない
   - 罫線: `var(--border-color)` `rgba(160,180,210,0.1)`（青みを帯びた薄い線）
 - **リンク**: 通常は `.link-quiet`（副テキスト色 → ホバーで主テキスト色）。外部リンクは `↗`
 - **アニメーション**:
-  - **スクロールで下からフェードイン**は `src/components/ui/Reveal.tsx` の `Reveal` で包む（一度だけ・同じフレームで入った要素は DOM 順に 0.1 秒ずつずらす）。トップでは Profile → WORKS → ARTICLES → SKILLS → TIMELINE → OFF-HOURS の各見出し・カード・年ごとの Timeline・Off-hours の箱を個別に包んでいる。`WorkList` / `ArticleList` のカードは常に Reveal 付き
-  - ページ遷移（View Transition）で入ってきたときは、最初の画面に入る Reveal は**アニメせず即表示**する（遷移アニメとの二重化と、共有要素のモーフ後のちらつきを防ぐ）。新しく Reveal を足すときもこの仕組みに乗せ、framer-motion の `initial={{ opacity: 0 }}` を共有要素の祖先に付けないこと
+  - **動きの型は 2 つだけ**: 内容は `Reveal` のフェードアップ、構造は **1px の線が起点から伸びる**形（線を使うのは見出しの印・時間軸・現在地など構造を表すものだけ）。イージングは `index.css` の `--motion-ease`（`cubic-bezier(.22, 1, .36, 1)`）1 本で、`--view-transition-easing` もこれを参照する。文字が先・飾りは後、遅延は `min()` で 0.8s まで
+  - **一度きり**: ポートフォリオでは無限ループ（点滅・パルス・走り続ける動き）を使わない。繰り返すのは利用者が操作したときだけ。本文段落・数値・ヘッダー・背景・アバターは動かさない
+  - **スクロールで下からフェードイン**は `src/components/ui/Reveal.tsx` の `Reveal` で包む（一度だけ・同じフレームで入った要素は DOM 順に 0.1 秒ずつずらす）。トップでは Profile → WORKS → ARTICLES → SKILLS → ACTIVITY → TIMELINE → OFF-HOURS の各見出し・カード・Activity のヒートマップ（小見出しごと 1 つ。セルを順に点ける演出はしない）・年ごとの Timeline・Off-hours の箱を個別に包んでいる。`WorkList` / `ArticleList` のカードは常に Reveal 付き
+  - ページ遷移（View Transition）で入ってきたときは、最初の画面に入る Reveal は**アニメせず即表示**する（遷移アニメとの二重化と、共有要素のモーフ後のちらつきを防ぐ）。**戻る / 進む**でスクロール位置が復元されたときも、遷移アニメの最中に画面へ入った Reveal は即表示（IntersectionObserver のコールバックで `useViewTransitionState` を見る）。新しく Reveal を足すときもこの仕組みに乗せ、framer-motion の `initial={{ opacity: 0 }}` や新しい初期 transform を `view-transition-name` を持つ要素（作品・アニメの画像とタイトル、`site-header`、`nav-indicator`）とその祖先に付けないこと
+  - **線の演出**は `index.css` の「線の演出」節のクラスを、一番近い Reveal の中の要素に付ける（新しい IntersectionObserver は増やさず、Reveal の `.is-shown` / `.is-instant` と `--reveal-delay` に乗る。Reveal の外では最初から終状態）: `.draw-x`（横線を左から）/ `.draw-y`（縦線を上から）/ `.draw-dot`（線上の点を `--i` の順に）/ `.brighten`（文の一部を `--i` の順に副テキスト色 → 主テキスト色へ）。使っている所は `SectionHeading` の短い線（文字の 0.25s 後に 0.6s）、Timeline の縦線（年ごとに 0.9s）と過去の項目の点（継続中の差し色の点は最初から出す）、OFF-HOURS のリードの 4 つの動詞（0.4s・120ms 間隔）。framer-motion の `reducedMotion` は opacity や線を止めないので、線の演出は CSS で書く
+  - **ヘッダーの現在地**: 選択中の NavLink の下に 16px のサンドの線（`view-transition-name: nav-indicator`）。ページを移ると View Transition で隣の項目へ滑る（名前は常に 1 つだけ）
+  - **名前の切替**（nico ⇄ 本名）は切り替えたときだけ、枠の中で古い語が上へ抜け、新しい語が下から入る（0.35s。ページを開いたときは動かさない）。見出しの名前は表示中の名前から取り、ボタンに `aria-label` は付けない（本名が読み上げられるため）。操作の説明は本名を含まない `aria-describedby`（「表示名を切り替えます」）
   - 画面遷移は `index.css` の View Transitions 節で制御。ページ全体は「旧ページを先に消し、新ページを少し遅らせて下から浮かべる」。作品の画像・タイトルは `vt-project-img` / `vt-project-title`（`view-transition-class`）＋ `projectVtName()` の名前でモーフし、時間とカーブは `--vt-morph-duration` / `--vt-morph-easing`
   - サイト内リンクは `<Link viewTransition>` にする（ヘッダー・フッター・「すべて見る →」も対応済み）。スクロール位置は `RootLayout` の `<ScrollRestoration />` が管理（新しいページは先頭から、戻る / 進むは復元）
-  - `prefers-reduced-motion: reduce` では Reveal も画面遷移も動かさない
+  - `prefers-reduced-motion: reduce` では Reveal も線の演出も画面遷移も動かさず、最初から終状態を出す（`index.css` のグローバル規則は時間を縮めるだけで遅延が残るので、遅延のある演出は個別に `transition: none` にする）
 
 ### タイポグラフィ
 
@@ -142,6 +151,18 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 - **アニメ**: 手入力の記録のあとに、Annict から 6 時間ごとに同期している `all-watching-anime`（見てる）/ `all-watched-anime`（見た）のシートを並べる（`src/lib/anime.ts` の `fetchTopAnime()`。お気に入りがあればお気に入りだけ、無ければ 見てる＋見た。シートごとの取得は `fetchAnimeList(status)`、変換は `mapAnimeRows()`）。**お気に入り**は 見てる・見た のシートの `isFavorite` 列（P 列のチェックボックス）。列は同期スクリプトが作り、印は作品 id について書き戻す（行の並びが変わってもずれない。見てる・見た から外れた作品の印はスクリプトプロパティ `FAVORITE_IDS` に控える）。見たい のシートには列を作らない（未視聴なのでお気に入りの対象外）。`/anime` は `all-wanna-watch-anime`（見たい）も読む。同期は Apps Script `scripts/gas/annict-sync.gs`（参照コピー。実体はシートに紐づく Apps Script）で、`media` 以降の詳細の列のうち `media, episodes_count, watchers_count, wikipedia_url, twitter_hashtag` は一覧と同じ REST API、`original, director, studio, cast` は GraphQL API でまとめて取る（GraphQL は失敗したバッチを飛ばして続け、その作品は前回の値を残す。`Staff.roleOther` は Annict のデータに null があり 1 件でクエリ全体が落ちるので取らない）。`cast` は 1 行 1 人「キャラクター名：声優名」。視聴日は無いので放送クール（`release_season`）の新しい順。補足行は「2026年夏 · 視聴中」、画像は `official_site_twitter_image_url`、リンクは `official_site_url`。見出しの右に「Annict の視聴記録より」
 - **Spotify**: 音楽は手入力の記録のあとに「最近よく聴いている」曲（直近 4 週間のトップトラック、最大 12 曲、explicit 除外）。`api/spotify.js`（Vercel Function、権限は `user-top-read` のみ、CDN 1 日キャッシュ）→ `src/lib/spotify.ts` の `fetchTopTracks()`。再生中・再生履歴は取らない。環境変数 `SPOTIFY_CLIENT_ID` / `SPOTIFY_CLIENT_SECRET` / `SPOTIFY_REFRESH_TOKEN`（`VITE_` を付けない）。未設定なら空配列で、曲の欄は出ない。手順は `docs/spotify-setup.md`。ジャケットは切り抜かず、Spotify のロゴ（`--brand-spotify`）とリンクを添える
 
+## GitHub（ACTIVITY）
+
+トップの ACTIVITY（コントリビューションのヒートマップと、WORKS 以外のリポジトリ）。手順は `docs/github-setup.md`。
+
+- `api/github.js`（Vercel Function）が GraphQL API v4 にクエリ 1 本（1 point）で、`nico0748`（関数内の定数 `LOGIN`）の公開・非 fork・非アーカイブのリポジトリ（push の新しい順に 30 件）とコントリビューションのカレンダーを取り、`{ repos: { name, description, url, language, pushedOn }[], calendar: { total, weeks: { date, weekday, count, level }[][] } | null }` に絞って返す（GraphQL の応答をそのまま返さない）。`isPrivate` の確かめ直し・`nico0748/nico0748`（プロフィール README）の除外・説明の絵文字除去（`:rocket:` の略記も）・push 日の JST の日付化（`2026.10.28`）は関数側
+- **取らないもの**: 言語の hex 色・stargazerCount・totalCount・`commitContributionsByRepository` などリポジトリ名を含むコントリビューション・時刻
+- 環境変数 `GITHUB_READ_TOKEN`（`VITE_` を付けない。`GITHUB_TOKEN` は gh CLI 等の広いトークンを拾う恐れがあるので使わない）。fine-grained PAT・Public repositories の読み取りのみ・期限付き。未設定なら 200 の `{ repos: [], calendar: null }`（`s-maxage=300`）で、セクションは出ない
+- キャッシュ: 成功は `public, s-maxage=21600, stale-while-revalidate=604800`（6 時間・1 週間）。失敗（非 200・`errors`・`user` が null・タイムアウト 5 秒・例外）は **502 + `no-store`**（CDN の正常なキャッシュを空で上書きしない）。GET 以外は 405、クエリ付きは 400。トークンは応答にもログにも出さない
+- クライアントは `src/lib/github.ts` の `fetchGitHubActivity()`（モジュール内で pending を共有、`getCachedGitHubActivity()`）。JSON 以外（`npm run dev` では関数が動かず関数のソースが、古い SW では index.html が返る）・非 ok・形が違うものは空として扱い、**失敗したあとはそのタブでは取り直さない**。`portfolioPage` の useEffect で `fetchTopTracks` と並べて呼ぶ（Sheets の `Promise.all` には入れない）
+- 型（`GitHubRepo` / `ContributionDay` / `ContributionCalendar` / `GitHubActivity`）は `src/lib/github.ts` に置く（API 由来の型は lib 側。`dataMapper.ts` はシートの行用）
+- PWA の Service Worker は `/api/*` を index.html に差し替えない（`vite.config.ts` の `navigateFallbackDenylist`。/api/spotify・/api/ogp も同じ）
+
 ## Timeline シート
 
 - 列: `start, end, title, description, type, href`
@@ -173,6 +194,10 @@ Web・インフラ・セキュリティを分野ごとに体系立ててまと�
   - **`/learn`（ランディング）= `LearnPage`**: サイドバーなしの Progate 系マーケティング面。ヒーロー＋ミント帯＋**コースカード（`.course-grid` / `.course-card`）**。body 背景は `useEffect` で白に切替
   - **`/learn/:domain`・`/learn/:domain/:id` = `LearnDomainPage` / `LearnDetailPage`**: `LearnLayout`（固定ヘッダー＋進捗バー＋左サイドバー `DomainNav` ＋ 780px 本文）。詳細は本文 h2 から「On this page」自動生成＋前後ナビ
 - **⚠️ 絵文字（emoji / ピクトグラム）は Learn UI 全体で使わない**。分野アイコンは `public/learn/covers/<domain>.svg` の**カバー画像**で表現する（`←`/`→` 等の矢印記号は可）
+- **図解の動きは「見えたときに 1 回描いて止まる」**（`src/components/learn/diagrams.tsx`）。図の半分以上が見えたら `usePlayOnce`（同ディレクトリ）が `.is-playing` を付け、各要素の animation を 1 回だけ流して終状態で止める。**無限ループ（`infinite`・SMIL の `repeatCount="indefinite"`・マーチングアント）は使わない**（WCAG 2.2.2）。タイミングは線 1 本 0.45s・間隔 `min(0.3s, 2.0s/(n-1))`・図全体 2.5s 以内。走るドットは描き終えた後に 1 回だけ
+  - 繰り返すのは利用者が「もう一度再生」を押したときだけ。再生はクラスの付け直しで行い、**再マウントや要素の後挿入をしない**（`LearnLayout` の目次は本文の MutationObserver で組み立てているため）。ボタンも最初から置き、CSS で出し入れする
+  - **`prefers-reduced-motion: reduce` では最初から終状態**（線は描き終えた状態・ドットと再生ボタンは出さない）。index.css のグローバル規則は delay を残すので、動きの指定は `@media screen and (prefers-reduced-motion: no-preference)` の中にだけ書く
+  - 読了チェックはクリックした瞬間だけ印を描く（localStorage からの復元では動かさない）。ロゴのカーソルは 3 回点滅して点いたまま止まる
 - 「分野」は UI 上 **「コース」** と表記する（内部キーは `domain` のまま）
 
 ### 区分（コース・章・レベル）

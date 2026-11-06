@@ -42,6 +42,9 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2}'],
         // 趣味の記録（OFF-HOURS）の写真は増え続けるので precache せず、表示されたものだけ runtime でキャッシュする
         globIgnores: ['off-hours/**'],
+        // /api/*（Vercel Function）は SPA の index.html に差し替えない。SW の入ったブラウザで /api/github などを直接開くと
+        // 関数の応答ではなく index.html が返ってしまうため
+        navigateFallbackDenylist: [/^\/api\//],
         // Learn 教材（多数の TSX 記事 + highlight.js）でメイン JS が肥大し、
         // 既定の precache 上限 2 MiB を超えてビルドが失敗するため引き上げる。
         // ※ 恒久対策は Learn ルートのコード分割（React.lazy）でメインチャンクを縮小すること。

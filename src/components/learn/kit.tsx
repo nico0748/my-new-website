@@ -60,6 +60,8 @@ export const Section: React.FC<{ children: ReactNode; id?: string; label?: strin
 }) => {
   const anchor = id ?? (typeof children === "string" ? slugify(children) : undefined);
   const [read, toggle] = useSectionRead(anchor);
+  // チェックした瞬間だけ印を描く（localStorage からの復元では描かない）。描き終えたら外す
+  const [justChecked, setJustChecked] = useState(false);
   return (
     <>
       {label && <span className="section-number">{label}</span>}
@@ -69,7 +71,12 @@ export const Section: React.FC<{ children: ReactNode; id?: string; label?: strin
             type="checkbox"
             className="h2-check"
             checked={read}
-            onChange={(e) => toggle(e.target.checked)}
+            data-just-checked={justChecked || undefined}
+            onChange={(e) => {
+              setJustChecked(e.target.checked);
+              toggle(e.target.checked);
+            }}
+            onAnimationEnd={() => setJustChecked(false)}
             aria-label="このセクションを読了にする"
           />
         )}
