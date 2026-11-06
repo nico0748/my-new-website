@@ -57,6 +57,8 @@
   /* ヘッダーのタイトル（nicoTech ロゴ）用のディスプレイ書体。Bevan は 400 のみ */
   --font-display: 'Bevan', 'JetBrains Mono', Georgia, serif;
   --radius: 8px;
+  /* 動きのイージング（Learn 内で 1 本に揃える。linear は図の中を動く点だけ） */
+  --learn-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
   --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
 
@@ -153,11 +155,12 @@
 .learn-docs .nt-tech {
   font-size: 24px; font-weight: 400; letter-spacing: 0.01em; color: #fff;
 }
-/* 末尾のターミナル風カーソル（ブロック）。ゆっくり点滅させる */
+/* 末尾のターミナル風カーソル（ブロック）。3 回だけ点滅し、その後は点いたまま止める
+   （fill なしなので、終わると基底の opacity: 1 に戻る） */
 .learn-docs .nt-cursor {
   width: 11px; height: 22px; margin-left: 5px; background: #fff;
   display: inline-block; transform: translateY(2px);
-  animation: nt-blink 1.2s step-end infinite;
+  animation: nt-blink 1.2s step-end 3;
 }
 @keyframes nt-blink { 0%, 55% { opacity: 1; } 56%, 100% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) {
@@ -185,10 +188,11 @@
   position: fixed; top: var(--header-height); left: 0; right: 0;
   height: 3px; background: var(--color-border-light); z-index: 99;
 }
+/* 幅は LearnLayout が transform: scaleX() で直接書き換える（スクロールごとの再描画をしない） */
 .learn-docs .progress-bar .progress-fill {
-  height: 100%;
+  height: 100%; width: 100%;
   background: linear-gradient(90deg, var(--color-primary), var(--color-mint));
-  width: 0%; transition: width 0.2s ease;
+  transform: scaleX(0); transform-origin: left center; will-change: transform;
 }
 
 /* ---- Layout ---- */
@@ -859,6 +863,19 @@
   content: ""; position: absolute; left: 6px; top: 2px; width: 5px; height: 10px;
   border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg);
 }
+/* チェックした瞬間だけ印を描く（data-just-checked は kit.tsx が onChange で付け、animationend で外す。
+   :checked だけをきっかけにすると localStorage からの復元でも動いてしまう）。
+   ::after は rotate(45deg) した L 字なので、clip-path で 下辺（短い画）→ 右辺（長い画）の順に見せる */
+@media (prefers-reduced-motion: no-preference) {
+  .learn-docs .h2-check[data-just-checked]:checked::after {
+    animation: h2CheckDraw 0.3s var(--learn-ease) both;
+  }
+}
+@keyframes h2CheckDraw {
+  0%   { clip-path: inset(100% 100% 0 0); }
+  40%  { clip-path: inset(80% 0 0 0); }
+  100% { clip-path: inset(0 0 0 0); }
+}
 .learn-docs h2.is-read .h2-text { color: var(--color-text-secondary); }
 
 /* ---- Sidebar: On this page（読了反映） ---- */
@@ -959,6 +976,13 @@
 /* ================================================================
    図解アニメーション（diagrams.tsx 用・すべて .learn-docs スコープ）
    構造 / 通信 / フローを動きで見せる。控えめで Docs 調。
+   動きは「見えたときに 1 回描いて止まる」。無限ループはしない（WCAG 2.2.2）。
+   - 基底のスタイル＝描き終えた終状態（reduced-motion・印刷はこれをそのまま出す）
+   - .dgm-play（未再生）… 再生前の状態。usePlayOnce が図の半分以上が見えたら .is-playing を付ける
+   - .is-playing … 各要素の animation を 1 回だけ流す（fill: both で終状態に止まる）
+   - .is-played  … 1 回描き終えた。「もう一度再生」ボタンを出す（再生はクラスの付け直し）
+   動きの指定はすべて「screen かつ prefers-reduced-motion: no-preference」の中に置く
+   （index.css のグローバル規則は duration だけ縮めて delay を残すため、reduce では宣言自体をしない）
    ================================================================ */
 .learn-docs .dgm {
   margin: 28px 0;
@@ -972,6 +996,12 @@
   text-align: center; font-size: 13px; color: var(--color-text-secondary); margin-top: 12px;
 }
 
+/* --- キャプション行＋「もう一度再生」 --- */
+.learn-docs .dgm-foot { margin-top: 12px; }
+.learn-docs .dgm-foot > .dgm-caption { margin-top: 0; }
+/* 再生ボタンは動きがある環境でだけ出す（reduced-motion・印刷では消す） */
+.learn-docs .dgm-replay { display: none; }
+
 /* --- SVG 共通パーツ --- */
 .learn-docs .dgm-box { fill: var(--color-primary-light); stroke: var(--color-primary); stroke-width: 1.5; }
 .learn-docs .dgm-box-alt { fill: #eef2f7; stroke: var(--color-navy); stroke-width: 1.5; }
@@ -979,20 +1009,23 @@
 .learn-docs .dgm-label { fill: var(--color-navy); font-family: var(--font-sans); font-weight: 600; font-size: 14px; }
 .learn-docs .dgm-sub   { fill: var(--color-text-secondary); font-family: var(--font-sans); font-size: 11px; }
 .learn-docs .dgm-lifeline { stroke: var(--color-border); stroke-width: 1.5; stroke-dasharray: 3 4; }
+/* 矢印は実線。以前の破線はマーチングアント用の飾りで、意味（応答・非同期など）は持たせていなかった。
+   応答の区別は cta の色（ピンク）で付ける */
 .learn-docs .dgm-arrow { stroke: var(--color-primary); stroke-width: 2; fill: none; }
 .learn-docs .dgm-arrow-cta { stroke: var(--color-cta); stroke-width: 2; fill: none; }
 .learn-docs .dgm-arrowhead { fill: var(--color-primary); }
 .learn-docs .dgm-arrowhead-cta { fill: var(--color-cta); }
-.learn-docs .dgm-dash { stroke-dasharray: 5 6; animation: dgmDash 0.9s linear infinite; }
 .learn-docs .dgm-dot { fill: var(--color-cta); }
 .learn-docs .dgm-dot-primary { fill: var(--color-primary); }
+/* 走るドットは再生中だけ現れる飾り。止まっているときは見せない */
+.learn-docs .dgm-runner { opacity: 0; }
 .learn-docs .dgm-msg-label { fill: var(--color-text-secondary); font-family: var(--font-sans); font-size: 12px; }
-@keyframes dgmDash { to { stroke-dashoffset: -22; } }
 
 /* --- ステップ（縦フロー） --- */
 .learn-docs .dgm-steps { list-style: none; margin: 0; padding: 0; position: relative; }
 .learn-docs .dgm-steps::before {
   content: ""; position: absolute; left: 18px; top: 10px; bottom: 10px; width: 2px; background: var(--color-border);
+  transform-origin: top;
 }
 .learn-docs .dgm-step { position: relative; padding: 4px 0 20px 54px; }
 .learn-docs .dgm-step:last-child { padding-bottom: 2px; }
@@ -1000,11 +1033,6 @@
   position: absolute; left: 0; top: 0; width: 38px; height: 38px; border-radius: 50%;
   background: var(--color-primary-light); border: 2px solid var(--color-primary); color: var(--color-primary-dark);
   display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--font-mono); font-size: 14px;
-  animation: dgmStepPulse 3s ease-in-out infinite;
-}
-@keyframes dgmStepPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(34,176,160,0.0); }
-  50%      { box-shadow: 0 0 0 7px rgba(34,176,160,0.13); }
 }
 .learn-docs .dgm-step-title { font-weight: 600; color: var(--color-navy); }
 .learn-docs .dgm-step-desc  { color: var(--color-text-secondary); font-size: 14px; margin-top: 2px; }
@@ -1014,21 +1042,92 @@
 .learn-docs .dgm-stack.rev { flex-direction: column-reverse; }
 .learn-docs .dgm-layer {
   border: 1px solid var(--color-primary); border-radius: var(--radius); padding: 12px 16px; text-align: center;
-  animation: dgmLayerSweep 3.6s ease-in-out infinite;
+  background: var(--color-surface);
 }
 .learn-docs .dgm-layer .t { font-weight: 600; color: var(--color-navy); }
 .learn-docs .dgm-layer .s { display: block; font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+
+/* --- 再生（見えたら 1 回だけ） --- */
+@media screen and (prefers-reduced-motion: no-preference) {
+  /* 「もう一度再生」: 描き終えるまでは場所だけ取って隠す（後から DOM に足さない）。
+     1fr auto 1fr でキャプションは中央に置き、長いキャプションのときだけ左へ寄って幅を譲る */
+  .learn-docs .dgm-foot {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto 1fr; align-items: center; column-gap: 12px;
+  }
+  .learn-docs .dgm-foot > .dgm-caption { grid-column: 2; }
+  .learn-docs .dgm-replay {
+    grid-column: 3; justify-self: end;
+    display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;
+    padding: 2px 10px; font: inherit; font-size: 12px; font-weight: 500; line-height: 18px;
+    color: var(--color-text-secondary); background: var(--color-surface);
+    border: 1px solid var(--color-border); border-radius: 999px; cursor: pointer;
+    visibility: hidden; opacity: 0;
+    transition: opacity 0.2s var(--learn-ease), visibility 0s linear 0.2s, color 0.15s, border-color 0.15s;
+  }
+  .learn-docs .dgm-replay svg { width: 12px; height: 12px; }
+  .learn-docs .dgm-replay:hover { color: var(--color-primary-dark); border-color: var(--color-primary); }
+  .learn-docs .dgm-replay:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+  .learn-docs .dgm.is-played .dgm-replay {
+    visibility: visible; opacity: 1;
+    transition: opacity 0.2s var(--learn-ease), color 0.15s, border-color 0.15s;
+  }
+
+  /* FlowChain / SequenceDiagram: 矢印を順に描く。長さ --len は inline で渡す（pathLength は使わない） */
+  .learn-docs .dgm-play .dgm-line { stroke-dasharray: var(--len) var(--len); }
+  .learn-docs .dgm-play:not(.is-playing) .dgm-line { stroke-dashoffset: var(--len); }
+  .learn-docs .dgm-play:not(.is-playing) .dgm-fade { opacity: 0; }
+  .learn-docs .dgm-play.is-playing .dgm-line {
+    animation: dgmDraw 0.45s var(--learn-ease) calc(var(--i) * var(--dgm-stagger)) both;
+  }
+  /* 矢じり・メッセージ名は、その線を描き終える所で 0.15s フェード */
+  .learn-docs .dgm-play.is-playing .dgm-fade {
+    animation: dgmFade 0.15s var(--learn-ease) calc(var(--i) * var(--dgm-stagger) + 0.35s) both;
+  }
+  /* 描き終えたら、ドットが線を 1 本ずつリレーして 1 回だけ流れる */
+  .learn-docs .dgm-play.is-playing .dgm-runner {
+    animation: dgmRun var(--dgm-hop) linear calc(var(--dgm-draw-end) + var(--i) * var(--dgm-hop)) both;
+  }
+
+  /* StepFlow: 縦線が上から伸び、番号が順に点灯して 1 回だけパルス */
+  .learn-docs .dgm-play:not(.is-playing) .dgm-steps::before { transform: scaleY(0); }
+  .learn-docs .dgm-play:not(.is-playing) .dgm-step-num {
+    background: var(--color-bg); border-color: var(--color-border); color: var(--color-text-secondary);
+  }
+  .learn-docs .dgm-play.is-playing .dgm-steps::before { animation: dgmGrowY 0.6s var(--learn-ease) both; }
+  .learn-docs .dgm-play.is-playing .dgm-step-num {
+    animation:
+      dgmStepOn 0.3s var(--learn-ease) calc(var(--i) * var(--dgm-stagger)) both,
+      dgmStepPulse 0.8s var(--learn-ease) calc(var(--i) * var(--dgm-stagger) + 0.2s) both;
+  }
+
+  /* LayerStack: ハイライトが層を 1 周だけ流れる（rev は並びが逆なので下→上） */
+  .learn-docs .dgm-play.is-playing .dgm-layer {
+    animation: dgmLayerSweep 0.9s var(--learn-ease) calc(var(--i) * var(--dgm-stagger)) both;
+  }
+}
+@keyframes dgmDraw { from { stroke-dashoffset: var(--len); } to { stroke-dashoffset: 0; } }
+@keyframes dgmFade { from { opacity: 0; } }
+@keyframes dgmRun {
+  0%       { opacity: 0; transform: translateX(0); }
+  15%, 85% { opacity: 1; }
+  100%     { opacity: 0; transform: translateX(var(--dx)); }
+}
+@keyframes dgmGrowY { from { transform: scaleY(0); } }
+@keyframes dgmStepOn {
+  from { background: var(--color-bg); border-color: var(--color-border); color: var(--color-text-secondary); }
+}
+@keyframes dgmStepPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(34,176,160,0.0); }
+  50%      { box-shadow: 0 0 0 7px rgba(34,176,160,0.13); }
+}
 @keyframes dgmLayerSweep {
   0%, 100% { background: var(--color-surface); }
   50%      { background: var(--color-primary-light); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .learn-docs .dgm-dash,
-  .learn-docs .dgm-step-num,
-  .learn-docs .dgm-layer { animation: none; }
-  .learn-docs .dgm-dot,
-  .learn-docs .dgm-dot-primary { display: none; }
+  /* 最初から終状態。ドットは出さない */
+  .learn-docs .dgm-runner { display: none; }
 }
 
 /* ================================================================
@@ -1039,6 +1138,12 @@
   .learn-docs .dgm { overflow-x: auto; padding: 16px 12px 10px; -webkit-overflow-scrolling: touch; }
   .learn-docs .dgm-svg { min-width: 440px; }
   .learn-docs .dgm-caption { min-width: 440px; }
+}
+/* 狭い画面では「もう一度再生」をキャプションの下・左端に置く（横スクロールしても見える位置） */
+@media screen and (max-width: 600px) and (prefers-reduced-motion: no-preference) {
+  .learn-docs .dgm-foot { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+  .learn-docs .dgm-foot > .dgm-caption { align-self: stretch; }
+  .learn-docs .dgm-replay { position: sticky; left: 0; }
 }
 /* Bridge の見出し（科目チップ）が長いと折り返す */
 .learn-docs .bridge-title { flex-wrap: wrap; }
@@ -1324,7 +1429,8 @@
 
 /* ================================================================
    VDomDiffFigure — 仮想DOM 差分検出のアニメ図解
-   静的（既定＝reduced-motion）で最終状態、no-preference で 6s ループ
+   静的（既定＝reduced-motion）で最終状態。no-preference では見えたら 1 周（--vd-dur）だけ流して
+   最終状態で止まる。「もう一度再生」で頭から（.dgm-play / .is-playing は図解共通の仕組み）
    ================================================================ */
 .learn-docs .vdiff { margin: 8px 0 4px; }
 .learn-docs .vdiff-stages { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
@@ -1365,18 +1471,29 @@
 .learn-docs .vt-old { opacity: 0; text-decoration: line-through; color: var(--color-text-secondary); }
 .learn-docs .vt-new { position: absolute; left: 0; top: 0; opacity: 1; color: #12907f; font-weight: 700; }
 
-@media (prefers-reduced-motion: no-preference) {
-  .learn-docs .vstage.s1 { animation: vdStage1 6s infinite; }
-  .learn-docs .vstage.s2 { animation: vdStage2 6s infinite; }
-  .learn-docs .vstage.s3 { animation: vdStage3 6s infinite; }
-  .learn-docs .vnew { animation: vdNew 6s infinite; }
-  .learn-docs .vbadge-diff { animation: vdDiffBadge 6s infinite; }
-  .learn-docs .vsame { animation: vdSame 6s infinite; }
-  .learn-docs .vapply { animation: vdApply 6s infinite; }
-  .learn-docs .vbadge-skip { animation: vdSkip 6s infinite; }
-  .learn-docs .vbadge-apply { animation: vdApplyBadge 6s infinite; }
-  .learn-docs .vt-old { animation: vdTextOld 6s infinite; }
-  .learn-docs .vt-new { animation: vdTextNew 6s infinite; }
+@media screen and (prefers-reduced-motion: no-preference) {
+  /* 再生前は各 keyframes の 0% と同じ見た目で待つ */
+  .learn-docs .dgm-play:not(.is-playing) .vstage { background: var(--color-bg-secondary); color: var(--color-text-secondary); }
+  .learn-docs .dgm-play:not(.is-playing) .vnew,
+  .learn-docs .dgm-play:not(.is-playing) .vapply { background: transparent; }
+  .learn-docs .dgm-play:not(.is-playing) .vbadge-diff,
+  .learn-docs .dgm-play:not(.is-playing) .vbadge-apply { opacity: 0; transform: scale(0.6); }
+  .learn-docs .dgm-play:not(.is-playing) .vbadge-skip,
+  .learn-docs .dgm-play:not(.is-playing) .vt-new { opacity: 0; }
+  .learn-docs .dgm-play:not(.is-playing) .vt-old { opacity: 1; }
+
+  /* 1 周だけ（fill: both で最終状態に止まる） */
+  .learn-docs .dgm-play.is-playing .vstage.s1 { animation: vdStage1 var(--vd-dur) both; }
+  .learn-docs .dgm-play.is-playing .vstage.s2 { animation: vdStage2 var(--vd-dur) both; }
+  .learn-docs .dgm-play.is-playing .vstage.s3 { animation: vdStage3 var(--vd-dur) both; }
+  .learn-docs .dgm-play.is-playing .vnew { animation: vdNew var(--vd-dur) both; }
+  .learn-docs .dgm-play.is-playing .vbadge-diff { animation: vdDiffBadge var(--vd-dur) both; }
+  .learn-docs .dgm-play.is-playing .vsame { animation: vdSame var(--vd-dur) both; }
+  .learn-docs .dgm-play.is-playing .vapply { animation: vdApply var(--vd-dur) both; }
+  .learn-docs .dgm-play.is-playing .vbadge-skip { animation: vdSkip var(--vd-dur) both; }
+  .learn-docs .dgm-play.is-playing .vbadge-apply { animation: vdApplyBadge var(--vd-dur) both; }
+  .learn-docs .dgm-play.is-playing .vt-old { animation: vdTextOld var(--vd-dur) both; }
+  .learn-docs .dgm-play.is-playing .vt-new { animation: vdTextNew var(--vd-dur) both; }
 }
 
 @keyframes vdStage1 {

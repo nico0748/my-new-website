@@ -30,7 +30,7 @@ const CheckIcon = () => (
 
 const LearnLayout = ({ sidebar, children, toc = false }: Props) => {
   const contentRef = useRef<HTMLDivElement>(null);
-  const [progress, setProgress] = useState(0);
+  const progressFillRef = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [tocItems, setTocItems] = useState<TocItem[]>([]);
   const [activeId, setActiveId] = useState<string>("");
@@ -52,15 +52,27 @@ const LearnLayout = ({ sidebar, children, toc = false }: Props) => {
     };
   }, []);
 
-  // スクロール進捗バー
+  // スクロール進捗バー。state を使わず、ref から transform: scaleX() を直接書き換える
+  // （スクロールのたびに再描画しない）。書き換えは 1 フレームに 1 回まで
   useEffect(() => {
-    const onScroll = () => {
+    let frame = 0;
+    const update = () => {
+      frame = 0;
       const h = document.documentElement.scrollHeight - window.innerHeight;
-      setProgress(h > 0 ? Math.min((window.scrollY / h) * 100, 100) : 0);
+      const ratio = h > 0 ? Math.min(Math.max(window.scrollY / h, 0), 1) : 0;
+      if (progressFillRef.current) progressFillRef.current.style.transform = `scaleX(${ratio})`;
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll);
+    update();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
   }, []);
 
   // 本文の h2[id] から目次生成（lazy 描画に対応して MutationObserver で追従）
@@ -174,9 +186,9 @@ const LearnLayout = ({ sidebar, children, toc = false }: Props) => {
       <LearnSearch />
       <OnboardingGuide />
 
-      {/* Progress bar */}
-      <div className="progress-bar" role="progressbar" aria-valuenow={Math.round(progress)} aria-valuemin={0} aria-valuemax={100}>
-        <div className="progress-fill" style={{ width: `${progress}%` }} />
+      {/* Progress bar（読んだ位置を示す飾り。支援技術には読ませない） */}
+      <div className="progress-bar" aria-hidden="true">
+        <div className="progress-fill" ref={progressFillRef} />
       </div>
 
       {/* Mobile overlay */}
