@@ -271,7 +271,7 @@ const ProjectDetailPage = () => {
                 to={`/projects/${prev.id}`}
                 viewTransition
                 rel="prev"
-                className="group rounded-lg px-4 py-3 border border-white/[0.08] hover:border-white/[0.18] transition-colors"
+                className="card-hover group rounded-lg px-4 py-3 border border-white/[0.08] hover:border-white/[0.18]"
               >
                 <span className="block text-[12px]" style={{ color: "var(--text-muted)" }}>
                   ← 前の作品
@@ -286,7 +286,7 @@ const ProjectDetailPage = () => {
             <Link
               to="/projects"
               viewTransition
-              className="flex items-center rounded-lg px-4 py-3 border border-white/[0.08] hover:border-white/[0.18] transition-colors"
+              className="card-hover flex items-center rounded-lg px-4 py-3 border border-white/[0.08] hover:border-white/[0.18]"
               style={{ color: "var(--text-body)" }}
             >
               すべての作品
@@ -296,7 +296,7 @@ const ProjectDetailPage = () => {
                 to={`/projects/${next.id}`}
                 viewTransition
                 rel="next"
-                className="group rounded-lg px-4 py-3 text-right border border-white/[0.08] hover:border-white/[0.18] transition-colors"
+                className="card-hover group rounded-lg px-4 py-3 text-right border border-white/[0.08] hover:border-white/[0.18]"
               >
                 <span className="block text-[12px]" style={{ color: "var(--text-muted)" }}>
                   次の作品 →

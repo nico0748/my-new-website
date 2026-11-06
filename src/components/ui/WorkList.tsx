@@ -40,7 +40,7 @@ const WorkList: React.FC<{ items: PortfolioItem[] }> = ({ items }) => (
         <Link
           to={`/projects/${w.id}`}
           viewTransition
-          className="group flex h-full flex-col overflow-hidden rounded-lg transition-colors duration-300 border border-white/[0.08] hover:border-white/[0.18]"
+          className="card-hover group flex h-full flex-col overflow-hidden rounded-lg border border-white/[0.08] hover:border-white/[0.18]"
           style={{ background: "var(--card-bg)" }}
         >
           <Thumb item={w} />
