@@ -128,7 +128,8 @@ const AnimePage = () => {
     <SiteLayout>
       <PageTitle title="Anime" lead="Annict に付けているアニメの記録です。放送された時期の新しい順に並べています。" />
 
-      {/* スマホで 4 つのタブが収まらないときは横にスクロール（下線は外側の罫線に重ねる） */}
+      {/* スマホで 4 つのタブが収まらないときは横にスクロール（下線は外側の罫線に重ねる）。
+          選んだタブの下線は中央から左右へ伸びる（外したタブの線はすぐ消し、動く線は 1 本だけにする） */}
       <div className="border-b" style={{ borderColor: "var(--border-color)" }}>
         <div
           role="tablist"
@@ -145,11 +146,9 @@ const AnimePage = () => {
                 role="tab"
                 aria-selected={selected}
                 onClick={() => selectTab(t)}
-                className="shrink-0 border-b-2 pb-3 text-[15px] transition-colors"
-                style={{
-                  borderColor: selected ? "var(--text-primary)" : "transparent",
-                  color: selected ? "var(--text-primary)" : "var(--text-secondary)",
-                }}
+                // pb は旧 border-b-2 の 2px ぶんを足して、タブの高さを変えない
+                className="relative shrink-0 pb-[14px] text-[15px] transition-colors"
+                style={{ color: selected ? "var(--text-primary)" : "var(--text-secondary)" }}
               >
                 {ANIME_TAB_LABEL[t]}
                 {count !== undefined && (
@@ -157,6 +156,15 @@ const AnimePage = () => {
                     {count}
                   </span>
                 )}
+                <span
+                  aria-hidden="true"
+                  className={`pointer-events-none absolute inset-x-0 bottom-0 h-[2px] origin-center ${
+                    selected
+                      ? "scale-x-100 transition-transform duration-200 ease-motion motion-reduce:transition-none"
+                      : "scale-x-0"
+                  }`}
+                  style={{ background: "var(--text-primary)" }}
+                />
               </button>
             );
           })}
