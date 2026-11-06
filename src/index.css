@@ -37,6 +37,13 @@
   --brand-qiita: #55c500;
   --brand-linkedin: #0a66c2;
   --brand-spotify: #1ed760;
+  /* GitHub のコントリビューション（ACTIVITY のヒートマップ）。地色に混ぜて作るので、カードの上ではなく地の上に置く。
+     0 は淡色を少しだけ、1〜4 はセージ（--accent-2）を段階的に濃くする */
+  --heat-0: color-mix(in srgb, var(--text-muted) 18%, var(--bg));
+  --heat-1: color-mix(in srgb, var(--accent-2) 30%, var(--bg));
+  --heat-2: color-mix(in srgb, var(--accent-2) 50%, var(--bg));
+  --heat-3: color-mix(in srgb, var(--accent-2) 72%, var(--bg));
+  --heat-4: color-mix(in srgb, var(--accent-2) 100%, var(--bg));
   --accent-hover: #e3d9bd;
   --accent-bg: rgba(203, 191, 159, 0.07);
   --accent-border: rgba(203, 191, 159, 0.24);
