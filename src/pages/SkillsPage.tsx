@@ -3,30 +3,27 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 
 import SiteLayout, { PageTitle, Loading } from "../components/layouts/SiteLayout";
+import Reveal from "../components/ui/Reveal";
 import { fetchSheetData } from "../lib/googleSheets";
 import { mapSkillsData, mapPortfolioData } from "../lib/dataMapper";
 import type { SkillCategory, Skill, PortfolioItem } from "../lib/dataMapper";
 import type { SheetRow } from "../lib/googleSheets";
+import { skillColor } from "../lib/skillColors";
 
-// 落ち着いた低彩度トーンでカテゴリを区別（Calm Dark）
-const categoryColors: Record<string, string> = {
-  Frontend: "#a9b7c0",        // ブルーグレー
-  Backend: "#a8b59c",         // セージ
-  Infrastructure: "#c8b48e",  // サンド
-  DevOps: "#b2a8c0",          // ラベンダーグレー
-  Database: "#c3a3a0",        // ローズグレー
-  Mobile: "#9fb8b0",          // ミストグリーン
-  Design: "#c0a8b6",          // モーブ
-  Other: "#9a9893",           // グレー
-};
+/** CSS 変数の色を薄めて使う（var() には 16 進の透明度を付け足せないため）。 */
+const tint = (color: string, percent: number) => `color-mix(in srgb, ${color} ${percent}%, transparent)`;
 
+// レベルは淡いグレー → 副テキストのグレー → サンドの順に明るくする（凡例も同じ色）
 const levelLabels: Record<number, { label: string; color: string }> = {
-  1: { label: "Introductory", color: "#6f6d69" },
-  2: { label: "Beginner", color: "#8a8883" },
-  3: { label: "Intermediate", color: "#a4a29d" },
-  4: { label: "Advanced", color: "#cbbf9f" },
-  5: { label: "Expert", color: "#e3d9bd" },
+  1: { label: "Introductory", color: "var(--text-muted)" },
+  2: { label: "Beginner", color: "color-mix(in srgb, var(--text-muted), var(--text-secondary))" },
+  3: { label: "Intermediate", color: "var(--text-secondary)" },
+  4: { label: "Advanced", color: "var(--accent)" },
+  5: { label: "Expert", color: "var(--accent-hover)" },
 };
+
+/** レベルリングの円周（2π × r28）。tailwind.config.js の ring-draw と同じ値。 */
+const RING_LENGTH = 175.9;
 
 const SkillsPage = () => {
   const [skills, setSkills] = useState<SkillCategory[]>([]);
@@ -96,29 +93,24 @@ const SkillsPage = () => {
           {/* Category Rows */}
           <div className="space-y-6">
             {skills.map((cat, catIdx) => {
-              const catColor =
-                categoryColors[cat.category] ?? categoryColors.Other;
+              // トップのレーダーチャートと同じ色（Frontend=緑 / Backend=青 / Database=黄 / Infrastructure=紫）
+              const catColor = skillColor(cat.category, catIdx);
 
               return (
-                <motion.div
+                <Reveal
                   key={cat.category}
                   className="relative rounded-lg overflow-hidden"
                   style={{
                     background: "var(--card-bg)",
-                                                            border: "1px solid var(--border-color)",
-                    boxShadow: "none",
+                    border: "1px solid var(--border-color)",
                   }}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: catIdx * 0.06 }}
                 >
 
                   <div className="pl-5 pr-5 py-5 sm:pl-6 sm:pr-6 sm:py-6">
                     {/* Category Header */}
                     <div className="flex items-center gap-3 mb-4">
                       <h2
-                        className="text-xl font-bold tracking-tight"
+                        className="text-[17px] font-semibold tracking-tight"
                         style={{ color: "var(--text-primary)" }}
                       >
                         {cat.category}
@@ -126,9 +118,9 @@ const SkillsPage = () => {
                       <span
                         className="text-[13px] font-medium px-2 py-0.5 rounded-full"
                         style={{
-                          background: `${catColor}12`,
+                          background: tint(catColor, 7),
                           color: catColor,
-                          border: `1px solid ${catColor}30`,
+                          border: `1px solid ${tint(catColor, 19)}`,
                           fontFamily:
                             "var(--font-sans)",
                         }}
@@ -144,18 +136,14 @@ const SkillsPage = () => {
                         return (
                           <button
                             key={skill.name}
+                            type="button"
+                            aria-pressed={selected}
                             onClick={() => toggleSkill(catIdx, skillIdx)}
-                            className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition-all duration-200 text-left"
+                            className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl transition-colors duration-200 text-left"
                             style={{
-                              background: selected
-                                ? `${catColor}12`
-                                : "var(--card-bg)",
-                              border: selected
-                                ? `1.5px solid ${catColor}50`
-                                : "1px solid var(--border-color)",
-                              boxShadow: selected
-                                ? `0 4px 16px ${catColor}18`
-                                : "0 1px 4px var(--card-shadow)",
+                              // 選択中は枠線の色だけで示す（影・光は付けない。太さも変えずに位置をずらさない）
+                              background: "var(--card-bg)",
+                              border: `1px solid ${selected ? catColor : "var(--border-color)"}`,
                             }}
                           >
                             {/* Logo or Fallback */}
@@ -167,17 +155,15 @@ const SkillsPage = () => {
                               />
                             ) : (
                               <div
-                                className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0 text-[13px] font-bold "
-                                style={{ background: `${catColor}22`, color: catColor }}
+                                className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0 text-[13px] font-semibold"
+                                style={{ background: tint(catColor, 13), color: catColor }}
                               >
                                 {skill.name.slice(0, 2)}
                               </div>
                             )}
                             <span
                               className="text-[15px] font-medium whitespace-nowrap"
-                              style={{
-                                color: selected ? catColor : "var(--text-primary)",
-                              }}
+                              style={{ color: "var(--text-primary)" }}
                             >
                               {skill.name}
                             </span>
@@ -226,7 +212,7 @@ const SkillsPage = () => {
                                       />
                                     )}
                                     <h3
-                                      className="text-xl font-bold tracking-tight"
+                                      className="text-[17px] font-semibold tracking-tight"
                                       style={{ color: "var(--text-primary)" }}
                                     >
                                       {skill.name}
@@ -235,8 +221,8 @@ const SkillsPage = () => {
                                       className="text-[13px] font-semibold px-2 py-0.5 rounded-full"
                                       style={{
                                         color: lvl.color,
-                                        background: `${lvl.color}15`,
-                                        border: `1px solid ${lvl.color}30`,
+                                        background: tint(lvl.color, 8),
+                                        border: `1px solid ${tint(lvl.color, 19)}`,
                                       }}
                                     >
                                       {lvl.label}
@@ -299,12 +285,12 @@ const SkillsPage = () => {
                                     <div
                                       className="rounded-lg px-4 py-3 mb-3"
                                       style={{
-                                        background: `${catColor}06`,
+                                        background: tint(catColor, 2),
                                         borderLeft: `3px solid ${catColor}`,
                                       }}
                                     >
                                       <div
-                                        className="text-[11px] font-semibold tracking-[0.2em] uppercase mb-1"
+                                        className="text-[13px] font-medium tracking-wide mb-1"
                                         style={{
                                           color: "var(--text-muted)",
                                           fontFamily:
@@ -327,7 +313,7 @@ const SkillsPage = () => {
                                     skill.libraries.length > 0 && (
                                       <div className="mb-3">
                                         <div
-                                          className="text-[11px] font-semibold tracking-[0.2em] uppercase mb-2"
+                                          className="text-[13px] font-medium tracking-wide mb-2"
                                           style={{
                                             color: "var(--text-muted)",
                                             fontFamily:
@@ -358,7 +344,7 @@ const SkillsPage = () => {
                                   {related.length > 0 && (
                                     <div>
                                       <div
-                                        className="text-[11px] font-semibold tracking-[0.2em] uppercase mb-2"
+                                        className="text-[13px] font-medium tracking-wide mb-2"
                                         style={{
                                           color: "var(--text-muted)",
                                           fontFamily:
@@ -412,12 +398,13 @@ const SkillsPage = () => {
                                     )}
                                 </div>
 
-                                {/* Right: Circle indicator */}
+                                {/* Right: Circle indicator（スマホでは出さない） */}
                                 <div className="hidden sm:flex flex-col items-center justify-center w-20 flex-shrink-0">
                                   <svg
                                     width="64"
                                     height="64"
                                     viewBox="0 0 64 64"
+                                    aria-hidden="true"
                                   >
                                     <circle
                                       cx="32"
@@ -435,12 +422,11 @@ const SkillsPage = () => {
                                       stroke={lvl.color}
                                       strokeWidth="4"
                                       strokeLinecap="round"
-                                      strokeDasharray={`${(skill.level / 5) * 175.9} 175.9`}
+                                      strokeDasharray={`${(skill.level / 5) * RING_LENGTH} ${RING_LENGTH}`}
                                       transform="rotate(-90 32 32)"
-                                      style={{
-                                        transition:
-                                          "stroke-dasharray 0.6s ease",
-                                      }}
+                                      // パネルが開くたび（スキルごとに key で作り直される）に 0 から今のレベルまで線を引く。
+                                      // 動きを減らす設定では遅延も残さず最初から表示する
+                                      className="animate-ring-draw motion-reduce:animate-none"
                                     />
                                     <text
                                       x="32"
@@ -448,7 +434,7 @@ const SkillsPage = () => {
                                       textAnchor="middle"
                                       fill={lvl.color}
                                       fontSize="16"
-                                      fontWeight="700"
+                                      fontWeight="600"
                                       fontFamily="var(--font-sans)"
                                     >
                                       {skill.level}
@@ -462,23 +448,18 @@ const SkillsPage = () => {
                       })()}
                     </AnimatePresence>
                   </div>
-                </motion.div>
+                </Reveal>
               );
             })}
           </div>
 
           {/* Level Legend */}
-          <motion.div
+          <Reveal
             className="relative rounded-lg p-6 sm:p-8 mt-12 max-w-4xl mx-auto"
             style={{
               background: "var(--card-bg)",
-                                          border: "1px solid var(--card-border)",
-              boxShadow: "none",
+              border: "1px solid var(--card-border)",
             }}
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
           >
             <div
               className="text-[13px] font-semibold tracking-[0.2em] uppercase mb-4"
@@ -496,36 +477,27 @@ const SkillsPage = () => {
               各スキルは 1〜5
               の5段階で自己評価しています。以下の基準に基づき、実務経験や学習状況を踏まえて設定しています。
             </p>
+            {/* 色と名前は levelLabels と共通 */}
             <div className="space-y-4">
               {[
                 {
                   level: 1,
-                  label: "Introductory",
-                  color: "#6f6d69",
                   desc: "基本的な概念や用語を理解している段階です。公式ドキュメントやチュートリアルを参照しながら、簡単なセットアップや基礎的な操作を行うことができます。個人の学習プロジェクトで触れた経験があります。",
                 },
                 {
                   level: 2,
-                  label: "Beginner",
-                  color: "#8a8883",
                   desc: "基本的な機能を使って小規模なタスクを自力で遂行できます。頻出するパターンやAPIを把握しており、先輩エンジニアのサポートがあれば実務プロジェクトに参加できるレベルです。個人開発や学習課題で複数回使用した経験があります。",
                 },
                 {
                   level: 3,
-                  label: "Intermediate",
-                  color: "#a4a29d",
                   desc: "一般的な開発業務を独力でこなせるレベルです。標準的な設計パターンや実装手法を理解し、日常的な機能開発・バグ修正・テスト作成を自走して進められます。チーム開発や実務プロジェクトでの使用経験があり、一定規模のアプリケーション構築に携わっています。",
                 },
                 {
                   level: 4,
-                  label: "Advanced",
-                  color: "#cbbf9f",
                   desc: "複雑な技術課題にも対応でき、設計判断やコードレビューを主導できるレベルです。ベストプラクティスを踏まえたアーキテクチャ設計、パフォーマンスを意識した実装、チームメンバーへの技術指導・ナレッジ共有ができます。複数の実務プロジェクトで中心的に活用した実績があります。",
                 },
                 {
                   level: 5,
-                  label: "Expert",
-                  color: "#e3d9bd",
                   desc: "深い専門知識を持ち、高度な課題解決に取り組めるレベルです。大規模なアーキテクチャ設計、パフォーマンス最適化、技術選定の意思決定を主導できます。内部実装への理解も深く、トラブルシューティングやチューニングにおいて的確な判断ができます。最も得意とする技術領域です。",
                 },
               ].map((item) => (
@@ -539,17 +511,17 @@ const SkillsPage = () => {
                           style={{
                             background:
                               i < item.level
-                                ? item.color
+                                ? levelLabels[item.level].color
                                 : "var(--skill-bar-empty)",
                           }}
                         />
                       ))}
                     </div>
                     <span
-                      className="text-[13px] font-bold whitespace-nowrap"
-                      style={{ color: item.color }}
+                      className="text-[13px] font-semibold whitespace-nowrap"
+                      style={{ color: levelLabels[item.level].color }}
                     >
-                      {item.label}
+                      {levelLabels[item.level].label}
                     </span>
                   </div>
                   <p
@@ -561,7 +533,7 @@ const SkillsPage = () => {
                 </div>
               ))}
             </div>
-          </motion.div>
+          </Reveal>
         </div>
     </SiteLayout>
   );
