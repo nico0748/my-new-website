@@ -17,6 +17,25 @@ const nextStagger = (): number => {
   return Math.min(batchCount++, 5) * STAGGER_SEC;
 };
 
+/**
+ * IntersectionObserver のコールバックはブラウザが呼ぶ順番が決まっていない（Chromium では毎回変わる）。
+ * 同じ通知でまとめて入った要素をいったん溜め、DOM 順に並べてから遅延を割り当てる。
+ * 通知はすべての Observer のコールバックを 1 つのタスクで呼ぶので、次のタスク（setTimeout 0）で並べればそろう。
+ */
+type PendingShow = { el: HTMLElement; show: (stagger: number) => void };
+let pendingShows: PendingShow[] = [];
+const queueShow = (el: HTMLElement, show: (stagger: number) => void) => {
+  pendingShows.push({ el, show });
+  if (pendingShows.length > 1) return;
+  setTimeout(() => {
+    const batch = pendingShows;
+    pendingShows = [];
+    batch
+      .sort((a, b) => (a.el.compareDocumentPosition(b.el) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1))
+      .forEach((p) => p.show(nextStagger()));
+  }, 0);
+};
+
 type RevealTag = "div" | "li" | "section";
 
 type RevealProps = {
@@ -81,8 +100,10 @@ const Reveal: React.FC<RevealProps> = ({ as = "div", delay = 0, className = "", 
             // 上の「先頭から表示」前提の判定では拾えず、モーフの直後に消えて浮かび直してしまうため
             setState("instant");
           } else {
-            setStagger(nextStagger());
-            setState("shown");
+            queueShow(el, (s) => {
+              setStagger(s);
+              setState("shown");
+            });
           }
           io.disconnect();
         }
