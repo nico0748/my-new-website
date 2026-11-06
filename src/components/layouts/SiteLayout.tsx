@@ -250,11 +250,11 @@ export const SectionHeading: React.FC<{ id?: string; children: React.ReactNode }
     id={id}
     // 移動メニューで飛んだとき、フォーカスを見出しへ移せるように（Tab の順番には入れない）
     tabIndex={id ? -1 : undefined}
-    className="flex items-center gap-3.5 outline-none text-[19px] md:text-[21px] font-semibold uppercase tracking-[0.14em] mb-8 md:mb-10"
+    className="flex items-center gap-4 outline-none text-[24px] md:text-[28px] font-semibold uppercase tracking-[0.12em] mb-8 md:mb-10"
     style={{ color: "var(--accent)" }}
   >
     {/* 見出しの文字のあとに、左から伸びる（Reveal の中だけ。index.css の .draw-x） */}
-    <span aria-hidden className="draw-x h-px w-[24px]" style={{ background: "var(--accent)" }} />
+    <span aria-hidden className="draw-x h-px w-[28px]" style={{ background: "var(--accent)" }} />
     {children}
   </h2>
 );

@@ -64,7 +64,7 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 - 本文・見出しとも `var(--font-sans)` = `Inter` + `Noto Sans JP`
 - 等幅 `JetBrains Mono` はコード（`pre` / `code`）のみ
 - 見出しは `font-semibold` 程度に留め、極端に太くしない。本文の行間は広め（`leading-[2.1]` 前後）
-- 文字サイズは大きめ（2026-11 に一段階拡大）。目安: 本文・自己紹介・カードのタイトル `17px` / カードの説明 `14px` / 補足（タグ・日付）`13px` / ナビ・リンク `15px` / セクション見出し（WORKS など）`19px`（md 以上 `21px`、`font-semibold`。「すべて見る →」の 15px と差を付ける）。`text-xs` `text-sm` は使わず px 指定で揃える。Markdown（`.prose-custom`）は `1.0625rem`
+- 文字サイズは大きめ（2026-11 に一段階拡大）。目安: 本文・自己紹介・カードのタイトル `17px` / カードの説明 `14px` / 補足（タグ・日付）`13px` / ナビ・リンク `15px` / セクション見出し（WORKS など）`24px`（md 以上 `28px`、`font-semibold`・字間 0.12em・左の線 28px。2026-11 に 19/21px から拡大。「すべて見る →」の 15px やカードのタイトル 17px とはっきり差を付ける）。`text-xs` `text-sm` は使わず px 指定で揃える。Markdown（`.prose-custom`）は `1.0625rem`
 
 ---
 
