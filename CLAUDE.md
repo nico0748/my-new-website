@@ -23,9 +23,9 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 
 - **レイアウト**: `src/components/layouts/SiteLayout.tsx` の `SiteLayout` でページをラップする（ヘッダー＋本文＋フッター込み）。コンテナは `CONTENT_WIDTH`（`max-w-[1080px]` ＋左右余白 `px-5 sm:px-8 lg:px-10`）で全ページ共通。**文章ブロックは `READABLE_WIDTH`（`max-w-[680px]`、日本語で1行 38〜42 字前後）に収める**（紹介文・ページのリード・Timeline の説明・作品詳細の Markdown は 760px まで）。セクション間は `mt-24 md:mt-32`、ヒーローの上は `pt-12 md:pt-20`
 - **部品**: `SectionHeading`（小さな大文字見出し）/ `MoreLink`（「すべて見る →」）/ `PageTitle`（下層ページのタイトル）/ `Loading`
-- **Works / Articles は画像付きのボックス（スマホ1段・タブレット2段・PC 3段、`gap-5 lg:gap-6`。トップには最大6件）**: `WorkList`（サムネイル）/ `ArticleList`（OGP 画像）。枠線は `border-white/[0.08]`、ホバーで少し明るく。画像が無い場合は静かなプレースホルダー
+- **Works / Articles は画像付きのボックス（スマホ1段・タブレット2段・PC 3段、`gap-5 lg:gap-6`。トップには最大6件）**: `WorkList`（サムネイル）/ `ArticleList`（OGP 画像）。枠線は `border-white/[0.08]`、ホバーで少し明るくなり、カーソルに合わせて少し傾いて浮く（下の「カードのホバー」）。画像が無い場合は静かなプレースホルダー
 - **Skills** はカテゴリごとのレーダーチャート（`SkillRadarChart`、recharts）をボックスで並べる
-- **Activity**（GitHub の活動。SKILLS と TIMELINE のあいだ、`<SectionHeading id="activity">`）は `GitHubActivity`（`src/components/ui/GitHubActivity.tsx`）。専用ページ・NAV 追加は無し。中は OFF-HOURS と同じ形の小見出し（アイコン＋名前、右に 13px 淡色の補足）が 2 つ。データは「GitHub（ACTIVITY）」節
+- **Activity**（GitHub の活動。SKILLS と TIMELINE のあいだ、`<SectionHeading id="activity">`）は `GitHubActivity`（`src/components/ui/GitHubActivity.tsx`）。専用ページは無し（ヘッダー・フッターの移動メニューには Activity として並ぶ）。中は OFF-HOURS と同じ形の小見出し（アイコン＋名前、右に 13px 淡色の補足）が 2 つ。データは「GitHub（ACTIVITY）」節
   - **コントリビューション**（`CalendarDays`、右に「過去 1 年 · N 件」、md 未満は「直近半年 · N 件」＝見えている 26 週の合計）: 枠の箱に入れず**地の上にじかに**置くヒートマップ。左に曜日ラベル（月 / 水 / 金）、右に週ごとの列（`weeks.length` 個。53 と決め打ちしない。各列は `flex-1 min-w-0`、中は `weekday` で行を決める 7 行で、最初・最後の欠けた週は空ける）。マス目は `aspect-ratio: 1`・角丸 2px・間 3px（md 未満 2px）で幅に合わせて伸び縮みし、全体の max-width（週数 × 17px − 3px ＋ 曜日ラベル幅）で **14px を超えない**（lg で 14px・md で約 10px・390px で約 10px）。横スクロールはしない。**md 未満は直近 26 週だけ**（古い列に `max-md:hidden`。月ラベルは各週の列の中に absolute で置くので列と一緒に消える）。月ラベル（13px 淡色）は週の最初の日の `date.slice(5,7)` が前の列と変わる列に「11月」（1 列目は次のラベルまで 2 列以内なら出さない。日付は文字列のまま扱い Date で読み直さない）。色は `index.css` の `--heat-0`〜`--heat-4`（`--bg` に淡色 / セージ `--accent-2` を混ぜたもの。`--card-bg` の上では沈む）で、段階は GitHub の `contributionLevel` のまま（しきい値を持たない）。セルの `title` は「2026.11.05 · 3 件」（フォーカスは付けない）。グリッドに `role="img"` と `aria-label`、凡例「少ない ■■■■■ 多い」は aria-hidden。今日の強調・streak・活動日数・最多の日は出さない
   - **リポジトリ**（`FolderGit2`、右に「最近更新した順」）: `ArticleList` のカードから画像を外した形（名前 17px / 説明 14px 2 行まで / 下段 13px 淡色「TypeScript · 2026.10.28 更新」、↗ は下段の右端にホバーで）。カード全体が外部リンク。選び方は `src/lib/github.ts` の `pickRepos()`: Projects シートの `repoUrl` に載っているものを除く（小文字にし末尾の `/` と `.git` を外して比べる。WORKS 以外のコードを見せる欄）→ 説明のあるものを優先（3 件に満たないときだけ説明の無いもので埋める）→ 先頭から 3 件。**PC 3 列 3 件 / タブレット 2 列 2 件（3 件目を隠す）/ スマホ 1 列 3 件**。Projects を読み終えるまでは小見出しごと出さない（後から入れ替わらないように）。言語の色の点・スター・フォーク数は出さない
   - 締めに `MoreLink external`「すべてのリポジトリを見る」（Profile シートの `githubUrl`、無ければ `https://github.com/nico0748` に `?tab=repositories`）。出典の注記は付けない（自己紹介とフッターに同じリンクがある）。カレンダーが無い / 0 件ならコントリビューションの欄、リポジトリが 0 件ならリポジトリの欄を出さず、両方無ければセクション（見出し・MoreLink 含む）ごと出さない。読み込み中の文言は出さない
@@ -35,7 +35,8 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
   - **画像とタイトルは Works と同じモーフ**: `.vt-anime-img` / `.vt-anime-title` が `view-transition-class: project-img / project-title` に `anime-morph`（ポップアップより手前に出す z-index）を足したもの。名前は `animeVtName()`。一覧では**最後に開いた作品のカードだけ**に名前を付ける（数百件に付けるとスナップショットが重いため。押した瞬間に `flushSync` で付けてから遷移）。トップの OFF-HOURS のアニメは全カードに付ける
   - 開閉は `<Link viewTransition>` / `navigate(-1)` による同じページ内の遷移。その間だけ `html[data-vt="modal"]` が付き（`AnimePage` の `useModalTransitionFlag`、`UNSAFE_ViewTransitionContext` で判定）、ページ全体のフェードを止めて背景（`anime-backdrop`）とパネル（`anime-panel`）だけを動かす
 - **ソーシャルリンク** は `SocialLinks`。1件1枚のカード（サービス名＋ユーザー ID、右端にアイコン）を縦に積み、トップの自己紹介では**名前と同じ高さから右側に**置く（タブレット未満では紹介文の下。右カラムは 300px）。**アイコンは各サービス本来の色**（`--brand-x` / `--brand-github` / `--brand-qiita` / `--brand-linkedin`）、ID は主テキスト色、サービス名は副テキスト色。URL は Profile シートの `xUrl` / `githubUrl` / `qiitaUrl` / `linkedinUrl`。ID は URL から自動で取り出すが、LinkedIn は `linkedinLabel`（例 `細澤 悠真`）で表示名を上書きできる。アイコンは各サービス公式のロゴマーク（Qiita も公式マーク。Simple Icons 由来）。自己紹介のアバターは `w-24`（md 以上 `w-32`）。Profile シートの取得とリンクの組み立ては `src/lib/profile.ts`（`fetchProfile()` はモジュール内キャッシュ、`socialLinksOf()`）に一本化し、トップとフッターで共有する
-- **フッター**（`SiteLayout` 内の `SiteFooter`）: 罫線の下に、左はサイト内リンク（Home / Works / Articles / Skills。ヘッダーの NAV と同じ）、右は SNS のテキストリンク（自己紹介と同じ X / GitHub / Qiita / LinkedIn、`↗` 付き）、最下段に `© 年 NICOLABO`。SNS は Profile シートを読み終えてから出す。ページを足したら `NAV` に足せばヘッダーとフッターの両方に出る
+- **ヘッダー**（`SiteLayout` 内の `SiteHeader`）: 左にサイト名（トップへ）、右に**トップページ内の移動メニュー**（Works / Articles / Skills / Activity / Timeline / Off-hours。`src/lib/sections.ts` の `SECTIONS`、id は各 `SectionHeading` の id）。md 以上は横に並べ、スマホは「Menu」ボタンで縦のパネルを開く（外側を押す・Esc・リンクを押すと閉じる）。リンクは `/#works` などで、トップにいるときは遷移せずにスクロール（動きを減らす設定では一気に）し、見出しにフォーカスを移す。他のページからは `/#id` へ遷移し、`portfolioPage` の `useScrollToHash` がページの高さが変わるたびに位置を合わせ直す（利用者がスクロールし始めるか 3 秒で終了。戻る / 進むは ScrollRestoration に任せる）。位置合わせは Reveal でずれた見出しではなく外側の `<section>` で行う（`scrollToSection()`、上に 48px）
+- **フッター**（`SiteLayout` 内の `SiteFooter`）: 罫線の下に 3 列。Home（ヘッダーと同じトップのセクションへの移動）/ Pages（一覧ページ `/projects` `/articles` `/skills`。`sections.ts` の `PAGES`）/ Social（自己紹介と同じ X / GitHub / Qiita / LinkedIn、`↗` 付き）。最下段に `© 年 NICOLABO`。SNS は Profile シートを読み終えてから出す。セクションを足したら `SECTIONS` に、一覧ページを足したら `PAGES` に足す
 - **背景**: `SiteBackground`（インクネイビー一色＋上部にごく僅かな青い明るさ）。`SiteLayout` が内部で使う
 - **テーマモード**: ダーク単独
 - **カラーパレット（CSS 変数経由で参照）**:
@@ -47,12 +48,13 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
   - 罫線: `var(--border-color)` `rgba(160,180,210,0.1)`（青みを帯びた薄い線）
 - **リンク**: 通常は `.link-quiet`（副テキスト色 → ホバーで主テキスト色）。外部リンクは `↗`
 - **アニメーション**:
-  - **動きの型は 2 つだけ**: 内容は `Reveal` のフェードアップ、構造は **1px の線が起点から伸びる**形（線を使うのは見出しの印・時間軸・現在地など構造を表すものだけ）。イージングは `index.css` の `--motion-ease`（`cubic-bezier(.22, 1, .36, 1)`）1 本で、`--view-transition-easing` もこれを参照する。文字が先・飾りは後、遅延は `min()` で 0.8s まで
+  - **動きの型は 2 つだけ**: 内容は `Reveal` のフェードアップ、構造は **1px の線が起点から伸びる**形（線を使うのは見出しの印・時間軸・現在地など構造を表すものだけ）。イージングは `index.css` の `--motion-ease`（`cubic-bezier(.22, 1, .36, 1)`）1 本で、`--view-transition-easing` もこれを参照する。文字が先・飾りは後、遅延は `min()` で 0.8s まで。ほかに利用者の操作に応じるものとして、カードのホバーがある（次項）
+  - **カードのホバー**: カード（Works / Articles / トップの Skills のチャート / Activity のリポジトリ / Off-hours / アニメ / ソーシャルリンク / 作品詳細の前後ナビ）には `card-hover` クラスを付ける。マウスを載せると、カーソルの位置に合わせて最大 4° 傾き 4px 浮き、離れると `--motion-ease` で戻る（`src/lib/cardHover.ts`。リスナーは `RootLayout` で document に 1 つだけ、位置は rAF で 1 フレーム 1 回）。押した瞬間に平らに戻す（`.is-pressed`。View Transition が旧ページを撮る前に傾きを消し、共有要素のモーフを傾いた状態から始めない）。transform は `.is-tilting` の間だけ付け、休んでいるカードには残さない。タッチ・キーボード・`prefers-reduced-motion: reduce` では動かさない。新しいカードにも `card-hover` を付け、`transition-colors` は付けない（`index.css` の「カードのホバー」節で上書きする）。光沢や影は足さない（グロー禁止）。`/skills` のカテゴリの枠は中に操作できるチップが並ぶ大きなパネルなので対象外
   - **一度きり**: ポートフォリオでは無限ループ（点滅・パルス・走り続ける動き）を使わない。繰り返すのは利用者が操作したときだけ。本文段落・数値・ヘッダー・背景・アバターは動かさない
   - **スクロールで下からフェードイン**は `src/components/ui/Reveal.tsx` の `Reveal` で包む（一度だけ・同じフレームで入った要素は DOM 順に 0.1 秒ずつずらす）。トップでは Profile → WORKS → ARTICLES → SKILLS → ACTIVITY → TIMELINE → OFF-HOURS の各見出し・カード・Activity のヒートマップ（小見出しごと 1 つ。セルを順に点ける演出はしない）・年ごとの Timeline・Off-hours の箱を個別に包んでいる。`WorkList` / `ArticleList` のカードは常に Reveal 付き
   - ページ遷移（View Transition）で入ってきたときは、最初の画面に入る Reveal は**アニメせず即表示**する（遷移アニメとの二重化と、共有要素のモーフ後のちらつきを防ぐ）。**戻る / 進む**でスクロール位置が復元されたときも、遷移アニメの最中に画面へ入った Reveal は即表示（IntersectionObserver のコールバックで `useViewTransitionState` を見る）。新しく Reveal を足すときもこの仕組みに乗せ、framer-motion の `initial={{ opacity: 0 }}` や新しい初期 transform を `view-transition-name` を持つ要素（作品・アニメの画像とタイトル、`site-header`、`nav-indicator`）とその祖先に付けないこと
   - **線の演出**は `index.css` の「線の演出」節のクラスを、一番近い Reveal の中の要素に付ける（新しい IntersectionObserver は増やさず、Reveal の `.is-shown` / `.is-instant` と `--reveal-delay` に乗る。Reveal の外では最初から終状態）: `.draw-x`（横線を左から）/ `.draw-y`（縦線を上から）/ `.draw-dot`（線上の点を `--i` の順に）/ `.brighten`（文の一部を `--i` の順に副テキスト色 → 主テキスト色へ）。使っている所は `SectionHeading` の短い線（文字の 0.25s 後に 0.6s）、Timeline の縦線（年ごとに 0.9s）と過去の項目の点（継続中の差し色の点は最初から出す）、OFF-HOURS のリードの 4 つの動詞（0.4s・120ms 間隔）。framer-motion の `reducedMotion` は opacity や線を止めないので、線の演出は CSS で書く
-  - **ヘッダーの現在地**: 選択中の NavLink の下に 16px のサンドの線（`view-transition-name: nav-indicator`）。ページを移ると View Transition で隣の項目へ滑る（名前は常に 1 つだけ）
+  - **ヘッダーの現在地**: 下層ページ（`/projects` 以下・`/articles`・`/skills`）では、同じ名前のセクションのリンクの下に 16px のサンドの線（`view-transition-name: nav-indicator`。`currentSectionOf()`）。トップでは出さない（名前は常に 1 つだけ）
   - **名前の切替**（nico ⇄ 本名）は切り替えたときだけ、枠の中で古い語が上へ抜け、新しい語が下から入る（0.35s。ページを開いたときは動かさない）。見出しの名前は表示中の名前から取り、ボタンに `aria-label` は付けない（本名が読み上げられるため）。操作の説明は本名を含まない `aria-describedby`（「表示名を切り替えます」）
   - 画面遷移は `index.css` の View Transitions 節で制御。ページ全体は「旧ページを先に消し、新ページを少し遅らせて下から浮かべる」。作品の画像・タイトルは `vt-project-img` / `vt-project-title`（`view-transition-class`）＋ `projectVtName()` の名前でモーフし、時間とカーブは `--vt-morph-duration` / `--vt-morph-easing`
   - サイト内リンクは `<Link viewTransition>` にする（ヘッダー・フッター・「すべて見る →」も対応済み）。スクロール位置は `RootLayout` の `<ScrollRestoration />` が管理（新しいページは先頭から、戻る / 進むは復元）
@@ -63,7 +65,7 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 - 本文・見出しとも `var(--font-sans)` = `Inter` + `Noto Sans JP`
 - 等幅 `JetBrains Mono` はコード（`pre` / `code`）のみ
 - 見出しは `font-semibold` 程度に留め、極端に太くしない。本文の行間は広め（`leading-[2.1]` 前後）
-- 文字サイズは大きめ（2026-11 に一段階拡大）。目安: 本文・自己紹介・カードのタイトル `17px` / カードの説明 `14px` / 補足（タグ・日付）`13px` / ナビ・リンク `15px` / セクション見出し（WORKS など）`19px`（md 以上 `21px`、`font-semibold`。「すべて見る →」の 15px と差を付ける）。`text-xs` `text-sm` は使わず px 指定で揃える。Markdown（`.prose-custom`）は `1.0625rem`
+- 文字サイズは大きめ（2026-11 に一段階拡大）。目安: 本文・自己紹介・カードのタイトル `17px` / カードの説明 `14px` / 補足（タグ・日付）`13px` / ナビ・リンク `15px` / セクション見出し（WORKS など）`24px`（md 以上 `28px`、`font-semibold`・字間 0.12em・左の線 28px。2026-11 に 19/21px から拡大。「すべて見る →」の 15px やカードのタイトル 17px とはっきり差を付ける）。`text-xs` `text-sm` は使わず px 指定で揃える。Markdown（`.prose-custom`）は `1.0625rem`
 
 ---
 
@@ -74,7 +76,7 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 | パス | ページ | 備考 |
 |---|---|---|
 | `/` | PortfolioPage | メインポートフォリオ |
-| `/projects/:id` | ProjectDetailPage | Markdownで詳細を表示 |
+| `/projects/:id` | ProjectDetailPage | 作品の詳細（本文は記事テンプレートの TSX、無ければ Markdown） |
 | `/projects` | ProjectsPage | 作品一覧（行リスト） |
 | `/articles` | ArticlesPage | 自分が書いた記事の一覧（Qiita + Articles シート）。各記事は外部サイトへ遷移 |
 | `/topics/*` | → `/` | 廃止（リダイレクト） |
@@ -99,7 +101,7 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
   - `thumbnail`: 自作アプリ（PaperLens / SecOwl）は「左にアプリ名、右に Mac の画面に映したアプリ」の 16:10 画像（2000×1250 の WebP）。元の画面スクリーンショットは `public/projects/images/<id>-*.webp` に置く
 - 取得は `src/lib/projects.ts` の `fetchProjects()` に一本化（モジュール内キャッシュ）。詳細ページが最初の描画から画像とタイトルを出せるようにするためで、これが無いと View Transition のモーフが効かない
 - 一覧カードと詳細ページは `projectVtName("img" | "title", id)` で同じ `view-transition-name` を付ける
-- 詳細ページ（`/projects/:id`）は 画像ギャラリー＋右サイドバー（タイトル・期間・技術構成・リンク）→ 本文 Markdown（`public/projects/<id>.md`）→ 前後の作品ナビ
+- 詳細ページ（`/projects/:id`）は 画像ギャラリー＋右サイドバー（タイトル・期間・技術構成・リンク）→ 本文（「Works 記事」節。`src/content/works/<id>.tsx`、無ければ `public/projects/<id>.md`）→ 前後の作品ナビ
 
 ### データフロー
 
@@ -120,11 +122,23 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 
 ---
 
-## プロジェクト詳細ページ（Markdown）
+## Works 記事（作品詳細の本文）
 
-- `public/projects/<プロジェクトID>.md` にMarkdownファイルを置くと自動表示される
-- Markdownのスタイルは `src/index.css` の `.prose-custom` クラスで定義
-- `react-markdown` + `remark-gfm` でレンダリング（GFM対応: テーブル・チェックボックス等）
+作品詳細（`/projects/:id`）の本文は、独自コンポーネントの記事テンプレートで書く（2026-11 に Markdown から移行。理由は読みやすさと、アプリの説明に動く図を入れるため）。
+
+- **本文**: `src/content/works/<作品 id>.tsx` に default export の記事コンポーネントを 1 つ置くだけ（ファイル名 = Projects シートの id）。`src/lib/worksRegistry.ts` が lazy の `import.meta.glob` で自動索引する（eager の glob と併用しない。本文がメインチャンクに入る）。タイトル・期間・タグはシートが正なので、TSX に meta は置かない
+- **表示の優先順位**: TSX → シートの `markdownFile` / `public/projects/<id>.md`（従来の `.prose-custom`）→ 「詳しい紹介は準備中です。」。切り替えは `src/components/works/WorkBody.tsx`。Suspense は本文だけに巻く（ヘッダーの View Transition のモーフを壊さないため）。前後の作品の本文は先読み
+- **外枠** `WorkArticle`: 本文 680px（1 行 38〜42 字）、lg 以上で右に sticky の目次（`Section` の h2 だけ。現在地はサンドの 1px の線）。lg 未満は本文の先頭に折りたたみの目次
+- **部品** `src/components/works/kit.tsx`: `Lead`（冒頭 19px）/ `Section`（h2。`id` 必須、`no` で淡色の章番号、`toc` で目次の短い名前。見出しの前にサンドの短い線）/ `Sub`（h3、`no="2-1"`）/ `H4` / `Figure`（スクリーンショット＋13px のキャプション、押すと拡大）/ `Table`（横スクロール。4 列以上は `stack` で md 未満を縦積み）/ `Stats`（数字は動かさない）/ `Code`（highlight.js）/ `Callout` / `Quote` / `Fn`＋`Footnotes`。素の `p` `ul` `ol` `strong` `code` `a` もそのまま整形される
+- **動く図** `src/components/works/motion.tsx`: `Flow`（処理の流れ。PC はステップ 4 つまで横並び、それより多いかスマホは縦。各ノードに `value` の札）/ `Layers`（構成図。層を積み、`aside` で別経路、`boundary` で「端末の中」などの枠）
+  - 動きはノードのフェードと 1px の線の 2 つだけ、`--motion-ease`。見えたら（半分以上）1 回だけ描いて止まり、終わると「もう一度再生」を出す。ループ・点滅・数字のカウントアップ・線上を走る点はしない
+  - **遅延の上限の例外**: 図は 1 ステップ 0.45s、間隔 `min(0.3s, 2.0s / (n - 1))`、図全体 2.5s 前後（サイト全体の「遅延 0.8s まで」は図には当てはめない）
+  - 図は `Reveal` で包まない（再生管理は図ごとに 1 つ）。View Transition の最中（戻る / 進む）に見えた図は描かずに終状態。`prefers-reduced-motion: reduce`・JS 無し・印刷は最初から終状態（初期状態の CSS は no-preference の `.is-armed` の中だけ）
+  - 図の内容は本文かキャプションでも文章で書く（`label` は読み上げ用の 1 文）
+- **スタイル**は `src/styles/works-article.css`（`.work-layout` / `.work-article` / `.wfig` スコープ）。`index.css` の変数を参照するだけで、Learn（`.learn-docs`）のスタイルは持ち込まない
+- 書き方は doujin-pp・paperlens の記事が見本（H1 は書かない。ページ側に作品名の h1 がある。太字は 1 段落に 1 つまで、400 字を超える段落は分ける）
+- 画像は `public/projects/images/<id>-*.webp`
+- `portfolio` はまだ Markdown（`public/projects/portfolio.md`）。TSX を足せば自動で切り替わる
 
 ---
 
@@ -292,7 +306,7 @@ Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
 
 - ターミナル演出（`$` プロンプト・点滅カーソル・グリッド/走査線背景・ネオン色・グロー）やグラスモーフィズムのカードをポートフォリオに持ち込まない（Calm Dark に統一）
 - 和風パレットや明朝体・手書き体を新規採用しない。見出し・本文は `var(--font-sans)`（Inter + Noto Sans JP）
-- ハードコードされたデータを `src/` 以下に置かない（Google Sheets に移行済み。記事は Qiita API）。※例外は Learn 教材のみ（`src/content/learn/` の TSX 記事。詳細は「Learn コンテンツ」節）
+- ハードコードされたデータを `src/` 以下に置かない（Google Sheets に移行済み。記事は Qiita API）。※例外は Learn 教材（`src/content/learn/` の TSX 記事。詳細は「Learn コンテンツ」節）と Works 記事（`src/content/works/`。「Works 記事」節）。どちらも本文はデータではなく表現なので
 - **Learn（`/learn`）UI で絵文字（emoji / ピクトグラム）を使わない**。コース・カテゴリのアイコンは `public/learn/covers/` のカバー画像か SVG アイコンで表現する（矢印記号 `←`/`→` は可）
 - **絵文字（emoji / ピクトグラム文字）をサイト全体で使わない**。カテゴリ・状態の記号は `src/components/ui/CategoryIcon.tsx` のピクトグラム（Lucide 相当の 24 viewBox / stroke 2）で表す。矢印記号 `←`/`→`/`↗`/`❯`/`▸` は可
 - Learn のデザインにポートフォリオの Calm Dark 調（`SiteBackground`・`--accent` 等の portfolio 変数）を持ち込まない。Learn は `.learn-docs` スコープの専用スタイル（`src/styles/learn.css`・Progate 系ライトテーマ）で統一する

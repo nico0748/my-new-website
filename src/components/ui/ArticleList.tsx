@@ -48,7 +48,7 @@ const ArticleList: React.FC<{ items: ArticleItem[] }> = ({ items }) => (
           href={a.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="group flex h-full flex-col overflow-hidden rounded-lg border border-white/[0.08] transition-colors duration-300 hover:border-white/[0.18]"
+          className="card-hover group flex h-full flex-col overflow-hidden rounded-lg border border-white/[0.08] hover:border-white/[0.18]"
           style={{ background: "var(--card-bg)" }}
         >
           <OgpImage item={a} />

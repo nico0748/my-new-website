@@ -17,7 +17,7 @@ const SkillRadarChart = ({ category, skills, color = "var(--accent-2)" }: SkillR
   const chartData = skills.map((s) => ({ subject: s.name, value: s.level, fullMark: 5 }));
 
   return (
-    <div className="h-full rounded-lg p-5 border border-white/[0.08]" style={{ background: "var(--card-bg)" }}>
+    <div className="card-hover h-full rounded-lg p-5 border border-white/[0.08]" style={{ background: "var(--card-bg)" }}>
       <h3 className="text-[17px] font-medium" style={{ color: "var(--text-primary)" }}>
         {category}
       </h3>

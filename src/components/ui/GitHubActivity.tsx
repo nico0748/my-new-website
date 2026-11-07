@@ -138,7 +138,7 @@ const RepoCard: React.FC<{ repo: GitHubRepo }> = ({ repo }) => (
     href={repo.url}
     target="_blank"
     rel="noopener noreferrer"
-    className="group flex h-full flex-col rounded-lg border border-white/[0.08] p-5 transition-colors duration-300 hover:border-white/[0.18]"
+    className="card-hover group flex h-full flex-col rounded-lg border border-white/[0.08] p-5 hover:border-white/[0.18]"
     style={{ background: "var(--card-bg)" }}
   >
     <span className="text-[17px] font-medium leading-snug break-words" style={{ color: "var(--text-primary)" }}>

@@ -91,7 +91,7 @@ const CardView: React.FC<{ card: Card }> = ({ card }) => {
       </div>
     </>
   );
-  const cls = "flex h-full items-start gap-4 rounded-xl border border-white/[0.08] p-4 transition-colors duration-300";
+  const cls = "card-hover flex h-full items-start gap-4 rounded-xl border border-white/[0.08] p-4";
   return card.url ? (
     <a
       href={card.url}

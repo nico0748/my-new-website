@@ -81,7 +81,8 @@
 /* ─── 既定タイポグラフィ ─────────────────────────────── */
 
 html, body {
-  overflow-x: hidden;
+  /* hidden だと html / body がスクロールコンテナになり、position: sticky（作品詳細の目次）が効かない */
+  overflow-x: clip;
   max-width: 100vw;
   margin: 0;
   padding: 0;
@@ -562,4 +563,37 @@ html[data-vt="modal"]::view-transition-new(root) { animation: none; }
 
 .row-link:hover .row-title {
   background-size: 100% 1px;
+}
+
+/* ─── カードのホバー（.card-hover。動きは src/lib/cardHover.ts） ─────────────
+   マウスを載せると、カーソルの位置に合わせて最大 4° 傾き、4px 浮く。離れると --motion-ease でゆっくり戻る。
+   押した瞬間は平らに戻す（.is-pressed。View Transition が旧ページを撮る前に傾きを消す）。
+   transform は .is-tilting の間だけ付ける（休んでいるカードに transform を残さず、共有要素のモーフに影響させない）。
+   Tailwind の transition-colors はここで上書きするので、.card-hover の要素には付けない。 */
+.card-hover {
+  transition:
+    transform 0.5s var(--motion-ease),
+    border-color 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.card-hover.is-tilting {
+  transform: perspective(800px) translateY(-4px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transition:
+    transform 0.15s ease-out,
+    border-color 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.card-hover.is-pressed {
+  transform: none;
+  transition:
+    border-color 0.3s ease,
+    background-color 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-hover.is-tilting {
+    transform: none;
+  }
 }

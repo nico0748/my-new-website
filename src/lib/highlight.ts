@@ -20,6 +20,7 @@ import swift from "highlight.js/lib/languages/swift";
 import graphql from "highlight.js/lib/languages/graphql";
 import protobuf from "highlight.js/lib/languages/protobuf";
 import http from "highlight.js/lib/languages/http";
+import cpp from "highlight.js/lib/languages/cpp";
 
 let registered = false;
 function ensureRegistered() {
@@ -41,6 +42,7 @@ function ensureRegistered() {
   hljs.registerLanguage("graphql", graphql);
   hljs.registerLanguage("protobuf", protobuf);
   hljs.registerLanguage("http", http);
+  hljs.registerLanguage("cpp", cpp); // Works 記事（ALiS の Arduino）
   registered = true;
 }
 
@@ -63,6 +65,7 @@ const LANG_MAP: Record<string, string> = {
   graphql: "graphql", gql: "graphql",
   protobuf: "protobuf", proto: "protobuf",
   http: "http",
+  cpp: "cpp", "c++": "cpp", c: "cpp", arduino: "cpp", ino: "cpp",
 };
 
 const escapeHtml = (s: string) =>

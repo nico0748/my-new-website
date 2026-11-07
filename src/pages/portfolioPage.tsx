@@ -1,6 +1,6 @@
 import { useEffect, useId, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useNavigationType, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence, useIsPresent } from "framer-motion";
 
 import SiteLayout, { SectionHeading, MoreLink, READABLE_WIDTH } from "../components/layouts/SiteLayout";
@@ -29,8 +29,42 @@ import type { SpotifyTrack } from "../lib/spotify";
 import { EMPTY_GITHUB_ACTIVITY, fetchGitHubActivity, getCachedGitHubActivity, githubReposUrl, pickRepos } from "../lib/github";
 import type { GitHubActivity as GitHubActivityData } from "../lib/github";
 import type { OffHoursItem } from "../lib/dataMapper";
+import { scrollToSection } from "../lib/sections";
 
 const REAL_NAME = "細澤 悠真";
+
+/**
+ * 他のページの移動メニューから /#works などで来たとき、そのセクションの見出しに位置を合わせる。
+ * セクションは Sheets や API を読み終えてから現れたり伸びたりするので、ページの高さが変わるたびに合わせ直す。
+ * 利用者が自分でスクロールし始めたら（または 3 秒たったら）やめる。戻る / 進むは ScrollRestoration に任せる。
+ */
+const useScrollToHash = () => {
+  const { hash, key } = useLocation();
+  const navigationType = useNavigationType();
+  useEffect(() => {
+    if (!hash || navigationType === "POP") return;
+    const id = decodeURIComponent(hash.slice(1));
+    let stopped = false;
+    const align = () => {
+      if (!stopped) scrollToSection(id);
+    };
+    const stop = () => {
+      stopped = true;
+    };
+    const events = ["wheel", "touchstart", "keydown", "pointerdown"] as const;
+    events.forEach((ev) => window.addEventListener(ev, stop, { passive: true }));
+    const observer = new ResizeObserver(align);
+    observer.observe(document.body);
+    align();
+    const timer = window.setTimeout(stop, 3000);
+    return () => {
+      stop();
+      observer.disconnect();
+      window.clearTimeout(timer);
+      events.forEach((ev) => window.removeEventListener(ev, stop));
+    };
+  }, [hash, key, navigationType]);
+};
 
 const PortfolioPage = () => {
   const [profile, setProfile] = useState<ProfileData>(
@@ -49,6 +83,7 @@ const PortfolioPage = () => {
   const [worksReady, setWorksReady] = useState(!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY || getCachedProjects() !== null);
   // Profile シートを読み終えたか（ソーシャルリンクを全件そろってからフェードインさせるため）
   const [profileReady, setProfileReady] = useState(!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY || !!getCachedProfile());
+  useScrollToHash();
 
   useEffect(() => {
     fetchArticles()
