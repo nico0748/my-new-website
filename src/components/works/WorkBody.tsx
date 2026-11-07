@@ -23,8 +23,12 @@ const getLazyArticle = (id: string) => {
   let Article = lazyArticles.get(id);
   if (!Article) {
     Article = lazy(() =>
-      loader().catch(() =>
-        reloadOnce() ? new Promise<never>(() => {}) : { default: ArticleLoadError }
+      loader().then(
+        (mod) => {
+          clearReloadMark();
+          return mod;
+        },
+        () => (reloadOnce() ? new Promise<never>(() => {}) : { default: ArticleLoadError })
       )
     );
     lazyArticles.set(id, Article);
@@ -32,18 +36,27 @@ const getLazyArticle = (id: string) => {
   return Article;
 };
 
-/** 直近 30 秒以内に読み込み直していなければ読み込み直す（失敗が続くときに繰り返さない）。 */
-const RELOAD_KEY = "works-article-reloaded-at";
+/**
+ * まだ読み込み直していなければ読み込み直す。印は記事が読めたときにだけ消す（時間では消さない）ので、
+ * 読み込み直したあとも読めなければ、失敗にどれだけ時間がかかってもエラー表示になり、読み込み直しを繰り返さない。
+ */
+const RELOAD_KEY = "works-article-reloaded";
 const reloadOnce = () => {
   try {
-    const last = Number(sessionStorage.getItem(RELOAD_KEY) ?? 0);
-    if (Date.now() - last < 30_000) return false;
-    sessionStorage.setItem(RELOAD_KEY, String(Date.now()));
+    if (sessionStorage.getItem(RELOAD_KEY)) return false;
+    sessionStorage.setItem(RELOAD_KEY, "1");
   } catch {
     return false;
   }
   window.location.reload();
   return true;
+};
+const clearReloadMark = () => {
+  try {
+    sessionStorage.removeItem(RELOAD_KEY);
+  } catch {
+    // sessionStorage が使えないときは印も付いていない
+  }
 };
 
 const ArticleLoadError: React.FC = () => (
