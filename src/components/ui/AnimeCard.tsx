@@ -99,7 +99,7 @@ const AnimeCard: React.FC<{
   vtNames?: { img: string; title: string };
 }> = ({ id, title, sub, sources, link, vtNames }) => {
   const cls =
-    "group flex h-full flex-col overflow-hidden rounded-lg border border-white/[0.08] transition-colors duration-300 hover:border-white/[0.2]";
+    "card-hover group flex h-full flex-col overflow-hidden rounded-lg border border-white/[0.08] hover:border-white/[0.2]";
   const body = (
     <>
       <AnimeThumb sources={sources} vtName={vtNames?.img} />

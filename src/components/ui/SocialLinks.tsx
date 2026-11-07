@@ -48,7 +48,7 @@ const SocialLinks: React.FC<{ links: SocialLink[]; className?: string }> = ({ li
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`${NAMES[l.kind]}: ${handle}`}
-            className="group flex items-center justify-between gap-4 rounded-xl border px-5 py-3.5 transition-colors
+            className="card-hover group flex items-center justify-between gap-4 rounded-xl border px-5 py-3.5
               bg-[color:var(--surface)] border-[color:var(--border-color)]
               hover:border-[color:var(--accent-border)] hover:bg-[color:var(--surface-hover)]
               focus-visible:outline-none focus-visible:border-[color:var(--accent)]"
