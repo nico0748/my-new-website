@@ -1,12 +1,11 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 
 import SiteLayout, { Loading } from "../components/layouts/SiteLayout";
 import { fetchProjects, getCachedProjects, projectVtName } from "../lib/projects";
 import type { PortfolioItem } from "../lib/dataMapper";
+import WorkBody from "../components/works/WorkBody";
 
 const isUrl = (u?: string): u is string => !!u && /^https?:\/\//.test(u);
 const isImage = (u?: string): u is string => !!u && /\.(png|jpe?g|webp|gif|svg|avif)$/i.test(u);
@@ -127,8 +126,6 @@ const ProjectDetailPage = () => {
 
   // 一覧から来た場合はキャッシュ済みなので、最初の描画から画像とタイトルを出せる（View Transition のモーフに必要）
   const [projects, setProjects] = useState<PortfolioItem[] | null>(() => getCachedProjects());
-  const [markdown, setMarkdown] = useState<string | null>(null);
-  const [mdError, setMdError] = useState(false);
 
   useEffect(() => {
     if (projects) return;
@@ -144,24 +141,6 @@ const ProjectDetailPage = () => {
   const prev = index > 0 ? projects![index - 1] : null;
   const next = projects && index >= 0 && index < projects.length - 1 ? projects[index + 1] : null;
 
-  useEffect(() => {
-    if (!projects) return;
-    let cancelled = false;
-    setMarkdown(null);
-    setMdError(false);
-    const mdPath = project?.markdownFile ?? `/projects/${id}.md`;
-    fetch(mdPath)
-      .then(async (res) => {
-        const text = await res.text();
-        // SPA リライトで index.html が返ってきた場合も「無い」とみなす
-        if (!res.ok || /^\s*<!doctype html/i.test(text)) throw new Error("not found");
-        if (!cancelled) setMarkdown(text);
-      })
-      .catch(() => !cancelled && setMdError(true));
-    return () => {
-      cancelled = true;
-    };
-  }, [projects, project?.markdownFile, id]);
 
   if (!projects) {
     return (
@@ -245,24 +224,7 @@ const ProjectDetailPage = () => {
 
         <div className="h-px my-16" style={{ background: "var(--border-color)" }} />
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: markdown || mdError ? 1 : 0 }}
-          transition={{ duration: 0.4 }}
-          className="max-w-[760px] min-h-[40vh]"
-        >
-          {mdError ? (
-            <p className="text-[15px]" style={{ color: "var(--text-muted)" }}>
-              詳しい紹介は準備中です。
-            </p>
-          ) : (
-            markdown && (
-              <div className="prose-custom">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>{markdown}</ReactMarkdown>
-              </div>
-            )
-          )}
-        </motion.div>
+        {id && <WorkBody key={id} id={id} project={project} preload={[prev?.id, next?.id]} />}
 
         {project && (
           <nav aria-label="作品ナビゲーション" className="mt-24 grid grid-cols-[1fr_auto_1fr] gap-3 text-[15px]">

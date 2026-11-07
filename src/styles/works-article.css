@@ -1,0 +1,997 @@
+/* ─── Works 記事テンプレート（src/components/works） ──────────────────
+   作品詳細（/projects/:id）の本文。.work-layout / .work-article / .wfig にスコープし、index.css は触らない。
+   色・イージングは index.css の変数（--text-* / --border-* / --accent-* / --motion-ease）を参照するだけ。
+   Learn（.learn-docs）のスタイルは持ち込まない。 */
+
+/* ─── 外枠: 本文 680px ＋ lg 以上で右に目次 ─────────── */
+
+.work-layout {
+  --toc-row: 2.125rem;
+}
+
+@media (min-width: 1024px) {
+  .work-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 680px) 208px;
+    justify-content: space-between;
+    gap: 48px;
+    align-items: start;
+  }
+}
+
+.work-article {
+  max-width: 680px;
+  color: var(--text-body);
+  font-size: 17px;
+  line-height: 2;
+  animation: wa-fade-in 0.4s var(--motion-ease) both;
+}
+
+@keyframes wa-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ─── 目次 ─────────────────────────────────── */
+
+.work-toc {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .work-toc {
+    display: block;
+    position: sticky;
+    top: 96px;
+    max-height: calc(100vh - 128px);
+    overflow-y: auto;
+  }
+  .work-toc-inline {
+    display: none;
+  }
+}
+
+.work-toc-title {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: var(--text-muted);
+  margin: 0 0 12px;
+}
+
+.work-toc-track {
+  position: relative;
+  border-left: 1px solid var(--border-color);
+}
+
+.work-toc-marker {
+  position: absolute;
+  left: -1px;
+  top: 0;
+  width: 1px;
+  height: var(--toc-row);
+  background: var(--accent);
+  transition: transform 0.45s var(--motion-ease), opacity 0.3s var(--motion-ease);
+}
+
+.work-toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.work-toc-list a {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  height: var(--toc-row);
+  line-height: var(--toc-row);
+  padding-left: 14px;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.work-toc-list a:hover,
+.work-toc-list a[aria-current] {
+  color: var(--text-primary);
+}
+
+.work-toc-no {
+  font-variant-numeric: tabular-nums;
+  min-width: 1.1em;
+}
+
+.work-toc-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* スマホ・タブレット: 本文の先頭に折りたたみ */
+.work-toc-inline {
+  margin: 0 0 40px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-size: 15px;
+}
+
+.work-toc-inline summary {
+  cursor: pointer;
+  color: var(--text-secondary);
+  list-style: none;
+}
+
+.work-toc-inline summary::before {
+  content: "▸";
+  display: inline-block;
+  margin-right: 8px;
+  transition: transform 0.2s var(--motion-ease);
+}
+
+.work-toc-inline[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.work-toc-inline .work-toc-list {
+  margin-top: 8px;
+}
+
+.work-article .work-toc-inline .work-toc-list a {
+  color: var(--text-muted);
+  text-decoration: none;
+  padding-left: 0;
+  font-size: 14px;
+  height: auto;
+  line-height: 1.7;
+  padding-block: 4px;
+}
+
+.work-toc-inline .work-toc-label {
+  white-space: normal;
+}
+
+/* ─── 文 ─────────────────────────────────── */
+
+.work-article p {
+  margin: 0 0 1.25em;
+}
+
+.work-article strong {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.work-article a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.work-article a:hover {
+  color: var(--accent-hover);
+}
+
+.work-article :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  color: var(--text-primary);
+}
+
+.work-article ul,
+.work-article ol:not([class]) {
+  margin: 0 0 1.25em;
+  padding-left: 1.5em;
+}
+
+.work-article ul:not([class]) {
+  list-style: "・";
+  padding-left: 1.1em;
+}
+
+.work-article ol:not([class]) {
+  list-style: decimal;
+}
+
+.work-article li:not([class]) {
+  margin: 0.5em 0;
+  padding-left: 0.2em;
+}
+
+/* 記事そのものの題（作品名と違う副題がある記事だけ。Lead の前に置く） */
+.work-article .wa-title {
+  margin: 0 0 20px;
+  font-size: 22px;
+  line-height: 1.6;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-wrap: balance;
+}
+
+.wa-lead {
+  font-size: 19px;
+  line-height: 1.95;
+  color: var(--text-secondary);
+}
+
+.work-article .wa-lead {
+  margin-bottom: 1.5em;
+}
+
+/* 見出し */
+.wa-h2 {
+  margin: 72px 0 20px;
+  font-size: 24px;
+  line-height: 1.5;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-wrap: balance;
+  scroll-margin-top: 96px;
+}
+
+@media (min-width: 768px) {
+  .wa-h2 {
+    margin-top: 96px;
+    font-size: 26px;
+  }
+}
+
+.work-article > .wa-h2:first-of-type,
+.work-toc-inline + .wa-h2,
+.wa-lead + .wa-h2 {
+  margin-top: 56px;
+}
+
+.wa-h2-rule {
+  display: block;
+  width: 24px;
+  height: 1px;
+  margin-bottom: 18px;
+  background: var(--accent);
+}
+
+.wa-no {
+  margin-right: 0.6em;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.wa-h2 .wa-no {
+  font-size: 0.7em;
+}
+
+.wa-h3 {
+  margin: 48px 0 12px;
+  font-size: 19px;
+  line-height: 1.6;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-wrap: balance;
+  scroll-margin-top: 96px;
+}
+
+.wa-h3 .wa-no {
+  font-size: 15px;
+}
+
+.wa-h4 {
+  margin: 32px 0 8px;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* 区切り線 */
+.work-article hr {
+  margin: 56px 0;
+  border: 0;
+  border-top: 1px solid var(--border-color);
+}
+
+/* 記事末の注記（画面写真の出典など） */
+.work-article .wa-note {
+  margin-top: 48px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* 囲み・引用 */
+.wa-callout {
+  margin: 32px 0;
+  padding: 16px 20px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: var(--surface);
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+.wa-callout-title {
+  margin: 0 0 4px !important;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.wa-callout-body > :last-child {
+  margin-bottom: 0;
+}
+
+.wa-quote {
+  margin: 32px 0;
+}
+
+.wa-quote blockquote {
+  margin: 0;
+  padding-left: 20px;
+  border-left: 2px solid var(--border-strong);
+  color: var(--text-secondary);
+}
+
+.wa-quote blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+.wa-quote figcaption {
+  margin-top: 8px;
+  padding-left: 22px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* ─── 画像 ─────────────────────────────────── */
+
+.wa-figure {
+  margin: 40px 0;
+}
+
+.wa-figure-btn {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--surface);
+  cursor: zoom-in;
+  transition: border-color 0.2s;
+}
+
+.wa-figure-btn:hover {
+  border-color: var(--border-strong);
+}
+
+.wa-figure-btn img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.wa-figure figcaption,
+.wa-table figcaption,
+.wfig figcaption {
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--text-muted);
+}
+
+.wa-zoom {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 16px;
+  background: var(--overlay);
+  cursor: zoom-out;
+  animation: wa-fade-in 0.2s var(--motion-ease) both;
+}
+
+.wa-zoom img {
+  max-width: 100%;
+  max-height: calc(100% - 48px);
+  border-radius: 6px;
+}
+
+.wa-zoom-hint {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* ─── 表 ───────────────────────────────────── */
+
+.wa-table {
+  margin: 32px 0;
+}
+
+.wa-table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.wa-table-scroll:focus-visible {
+  outline: 1px solid var(--border-strong);
+  outline-offset: 4px;
+}
+
+.wa-table table {
+  width: 100%;
+  min-width: 480px;
+  border-collapse: collapse;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.wa-table th,
+.wa-table td {
+  padding: 10px 14px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.wa-table th {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-bottom-color: var(--border-strong);
+  white-space: nowrap;
+}
+
+.wa-table td:first-child {
+  color: var(--text-primary);
+}
+
+.wa-table th:first-child,
+.wa-table td:first-child {
+  padding-left: 0;
+}
+
+/* stack: md 未満では 1 行を 1 枚の箱にする */
+@media (max-width: 767px) {
+  .wa-table.is-stack table {
+    min-width: 0;
+  }
+  .wa-table.is-stack thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+  .wa-table.is-stack tr {
+    display: block;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .wa-table.is-stack td {
+    display: block;
+    padding: 2px 0;
+    border: 0;
+  }
+  .wa-table.is-stack td[data-label]:not(:first-child)::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+  .wa-table.is-stack td:first-child {
+    font-weight: 600;
+  }
+}
+
+/* 数字 */
+.wa-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1px;
+  margin: 32px 0;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--border-color);
+}
+
+.wa-stats > div {
+  padding: 16px 18px;
+  background: var(--bg);
+}
+
+.wa-stats dt {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.wa-stats dd {
+  margin: 4px 0 0;
+}
+
+.wa-stats-value {
+  display: block;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.wa-stats-note {
+  display: block;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* ─── コード ───────────────────────────────── */
+
+.wa-code {
+  margin: 32px 0;
+}
+
+.wa-code figcaption {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.wa-code pre {
+  margin: 0;
+  padding: 18px 20px;
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--pre-bg);
+  color: var(--pre-text);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.wa-code .hljs-comment,
+.wa-code .hljs-quote { color: var(--text-muted); }
+.wa-code .hljs-keyword,
+.wa-code .hljs-selector-tag,
+.wa-code .hljs-built_in { color: var(--accent-5); }
+.wa-code .hljs-string,
+.wa-code .hljs-regexp,
+.wa-code .hljs-attr { color: var(--accent-2); }
+.wa-code .hljs-number,
+.wa-code .hljs-literal { color: var(--accent-4); }
+.wa-code .hljs-title,
+.wa-code .hljs-section,
+.wa-code .hljs-name { color: var(--accent-3); }
+.wa-code .hljs-type,
+.wa-code .hljs-meta { color: var(--accent); }
+
+/* ─── 脚注 ─────────────────────────────────── */
+
+.wa-fn-ref {
+  font-size: 0.7em;
+  line-height: 0;
+  margin-left: 0.1em;
+}
+
+.work-article .wa-fn-ref a {
+  text-decoration: none;
+}
+
+.wa-footnotes {
+  margin-top: 64px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--text-muted);
+}
+
+.wa-footnotes ol {
+  list-style: decimal;
+  padding-left: 1.4em;
+  margin: 0;
+}
+
+.wa-footnotes li {
+  margin: 0.4em 0;
+  scroll-margin-top: 96px;
+}
+
+.wa-fn-ref {
+  scroll-margin-top: 96px;
+}
+
+.work-article .wa-fn-back {
+  font-size: 12px;
+  text-decoration: none;
+  color: var(--text-muted);
+}
+
+/* ─── 動く図（motion.tsx） ─────────────────────────
+   既定（JS 無し・印刷・reduced-motion）は終状態。初期状態は no-preference の .is-armed の中にだけ書く。 */
+
+.wfig {
+  margin: 40px 0;
+}
+
+.wfig-canvas {
+  padding: 24px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+@media (max-width: 639px) {
+  .wfig-canvas {
+    padding: 18px 16px;
+  }
+}
+
+.wfig-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.wfig-foot figcaption {
+  flex: 1;
+}
+
+.wfig-replay {
+  margin-top: 8px;
+  flex-shrink: 0;
+  padding: 2px 0;
+  font-size: 13px;
+  color: var(--text-muted);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  visibility: hidden;
+  transition: color 0.2s;
+}
+
+.wfig-replay:hover {
+  color: var(--text-primary);
+}
+
+.wfig-replay:focus-visible {
+  outline: 1px solid var(--border-strong);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.wfig.is-played .wfig-replay {
+  visibility: visible;
+}
+
+@media print, (prefers-reduced-motion: reduce) {
+  .wfig-replay {
+    display: none;
+  }
+}
+
+/* ノード */
+.wfig-node {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  background: var(--bg);
+  line-height: 1.5;
+}
+
+.wfig-node-no {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+
+.wfig-node-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.wfig-node-detail {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.wfig-value {
+  align-self: flex-start;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  padding: 1px 8px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent-3);
+  background: color-mix(in srgb, var(--accent-3) 12%, transparent);
+}
+
+.wfig-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.wfig-chip {
+  padding: 1px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--text-body);
+  border: 1px solid var(--border-color);
+}
+
+.wfig-note {
+  margin: 18px 0 0 !important;
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+/* 線（1px）。縦が既定、横並びのときは横 */
+.wfig-link {
+  display: block;
+  background: var(--border-strong);
+}
+
+/* Flow: 縦並び（既定） */
+.wfig-flow-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 縦並びのノードは 1 行目に 番号・名前・札、2 行目に補足（背を低くする） */
+
+.wfig-flow .wfig-node {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 12px;
+  row-gap: 2px;
+  padding: 10px 14px;
+}
+
+.wfig-flow .wfig-node-detail {
+  flex-basis: 100%;
+}
+
+.wfig-flow-item .wfig-link {
+  width: 1px;
+  height: 16px;
+  margin-left: 20px;
+  transform-origin: top;
+}
+
+/* Flow: 横並び（md 以上・4 ステップまで） */
+@media (min-width: 768px) {
+  .wfig-flow.is-row .wfig-flow-list {
+    display: grid;
+    grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+    column-gap: 24px;
+  }
+  .wfig-flow.is-row .wfig-flow-item {
+    position: relative;
+  }
+  .wfig-flow.is-row .wfig-node {
+    height: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 12px 14px;
+  }
+  .wfig-flow.is-row .wfig-value {
+    align-self: flex-start;
+  }
+  .wfig-flow.is-row .wfig-node-detail {
+    flex-basis: auto;
+  }
+  .wfig-flow.is-row .wfig-link {
+    position: absolute;
+    top: 22px;
+    left: 100%;
+    width: 24px;
+    height: 1px;
+    margin: 0;
+    transform-origin: left;
+  }
+}
+
+/* Layers */
+.wfig-layer-list,
+.wfig-boundary > ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.wfig-layer-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+
+.wfig-layer-row > .wfig-node {
+  flex: 1;
+}
+
+.wfig-aside {
+  display: flex;
+  align-items: center;
+  flex: 0 0 40%;
+}
+
+.wfig-aside-link {
+  display: block;
+  flex: 0 0 24px;
+  height: 1px;
+  border-top: 1px dashed var(--border-strong);
+  transform-origin: left;
+}
+
+.wfig-aside .wfig-node {
+  flex: 1;
+  border-style: dashed;
+}
+
+@media (max-width: 639px) {
+  .wfig-layer-row {
+    flex-direction: column;
+  }
+  .wfig-aside {
+    flex-basis: auto;
+    flex-direction: column;
+    align-items: stretch;
+    padding-left: 20px;
+  }
+  .wfig-aside-link {
+    flex-basis: 14px;
+    width: 1px;
+    height: 14px;
+    border-top: 0;
+    border-left: 1px dashed var(--border-strong);
+    transform-origin: top;
+  }
+}
+
+.wfig-layer-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 28px;
+  padding-left: 20px;
+}
+
+.wfig-layer-link .wfig-link {
+  width: 1px;
+  height: 100%;
+  transform-origin: top;
+}
+
+.wfig-link-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.wfig-boundary {
+  position: relative;
+  padding: 30px 14px 14px;
+}
+
+/* 枠は疑似要素にして、中のノードとは別に最後に出す */
+.wfig-boundary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px dashed var(--accent-border);
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+.wfig-boundary-label {
+  position: absolute;
+  top: 6px;
+  left: 14px;
+  font-size: 12px;
+  color: var(--accent);
+}
+
+/* ─── 再生（初期状態と animation は no-preference の中だけ） ─── */
+
+@keyframes wfig-node-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes wfig-scale-y {
+  from { transform: scaleY(0); }
+  to { transform: none; }
+}
+
+@keyframes wfig-scale-x {
+  from { transform: scaleX(0); }
+  to { transform: none; }
+}
+
+@keyframes wfig-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media screen and (prefers-reduced-motion: no-preference) {
+  /* 待機中（見えるまで）: ノード・線・枠を隠す */
+  .wfig.is-armed:not(.is-playing) :is(.wfig-node, .wfig-boundary-label, .wfig-note, .wfig-link-label),
+  .wfig.is-armed:not(.is-playing) .wfig-boundary::before {
+    opacity: 0;
+  }
+  .wfig.is-armed:not(.is-playing) .wfig-link,
+  .wfig.is-armed:not(.is-playing) .wfig-aside-link {
+    transform: scale(0);
+  }
+
+  /* 再生: ノードは --i の順に、線はノードの 0.2s 後に伸びる */
+  .wfig.is-playing .wfig-node {
+    animation: wfig-node-in var(--step) var(--motion-ease) both;
+    animation-delay: calc(var(--i, 0) * var(--gap));
+  }
+  .wfig.is-playing .wfig-link {
+    animation: wfig-scale-y var(--step) var(--motion-ease) both;
+    animation-delay: calc(var(--i, 0) * var(--gap) + 0.2s);
+  }
+  .wfig.is-playing .wfig-link-label {
+    animation: wfig-fade var(--step) var(--motion-ease) both;
+    animation-delay: calc(var(--i, 0) * var(--gap) + 0.3s);
+  }
+  .wfig.is-playing .wfig-aside-link {
+    animation: wfig-scale-x var(--step) var(--motion-ease) both;
+    animation-delay: calc(var(--i, 0) * var(--gap) + 0.25s);
+  }
+  .wfig.is-playing .wfig-aside .wfig-node {
+    animation-delay: calc(var(--i, 0) * var(--gap) + 0.4s);
+  }
+  /* 境界の枠は中身のあとで出す（枠の中のノードは自分の --i で動く） */
+  .wfig.is-playing .wfig-boundary::before {
+    animation: wfig-fade var(--step) var(--motion-ease) both;
+    animation-delay: calc(var(--i, 0) * var(--gap));
+  }
+  .wfig.is-playing .wfig-boundary-label {
+    animation: wfig-fade var(--step) var(--motion-ease) both;
+    animation-delay: calc(var(--i, 0) * var(--gap) + 0.15s);
+  }
+  .wfig.is-playing .wfig-note {
+    animation: wfig-fade var(--step) var(--motion-ease) both;
+    animation-delay: calc((var(--n, 1) - 1) * var(--gap) + 0.3s);
+  }
+
+  @media (max-width: 639px) {
+    .wfig.is-playing .wfig-aside-link {
+      animation-name: wfig-scale-y;
+    }
+  }
+  @media (min-width: 768px) {
+    .wfig-flow.is-row.is-playing .wfig-link {
+      animation-name: wfig-scale-x;
+    }
+  }
+}
