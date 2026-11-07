@@ -12,21 +12,48 @@ import WorkArticle from "./WorkArticle";
  * 作品 id ごとの lazy コンポーネントをモジュール内に持っておく。
  * 2 回目以降（戻る / 進む・前後の作品から戻る）は読み込み済みとして同期で描画されるので、
  * ScrollRestoration がスクロール位置を戻す時点で本文の高さがそろっている。
- * 記事のチャンクが読めない（デプロイ直後の古いタブなど）ときは、エラー画面ではなく Markdown / 準備中に戻す。
+ * 記事のチャンクが読めない（デプロイ前から開いていたタブで、古いチャンクが消えているなど）ときは、
+ * 1 度だけページを読み込み直して新しい版を取りに行く。それでも読めなければその旨を出す
+ * （記事のある作品の Markdown は消してあるので、Markdown に戻すと「準備中」と誤って出てしまう）。
  */
 const lazyArticles = new Map<string, LazyExoticComponent<ComponentType>>();
-const getLazyArticle = (id: string, markdownFile?: string) => {
+const getLazyArticle = (id: string) => {
   const loader = getWorkArticleLoader(id);
   if (!loader) return null;
   let Article = lazyArticles.get(id);
   if (!Article) {
     Article = lazy(() =>
-      loader().catch(() => ({ default: () => <MarkdownBody id={id} markdownFile={markdownFile} /> }))
+      loader().catch(() =>
+        reloadOnce() ? new Promise<never>(() => {}) : { default: ArticleLoadError }
+      )
     );
     lazyArticles.set(id, Article);
   }
   return Article;
 };
+
+/** 直近 30 秒以内に読み込み直していなければ読み込み直す（失敗が続くときに繰り返さない）。 */
+const RELOAD_KEY = "works-article-reloaded-at";
+const reloadOnce = () => {
+  try {
+    const last = Number(sessionStorage.getItem(RELOAD_KEY) ?? 0);
+    if (Date.now() - last < 30_000) return false;
+    sessionStorage.setItem(RELOAD_KEY, String(Date.now()));
+  } catch {
+    return false;
+  }
+  window.location.reload();
+  return true;
+};
+
+const ArticleLoadError: React.FC = () => (
+  <p className="text-[15px]" style={{ color: "var(--text-muted)" }}>
+    本文を読み込めませんでした。
+    <button type="button" className="link-quiet ml-2 underline underline-offset-4" onClick={() => window.location.reload()}>
+      再読み込み
+    </button>
+  </p>
+);
 
 /**
  * 作品詳細の本文。表示の優先順位は
@@ -41,7 +68,7 @@ const WorkBody: React.FC<{ id: string; project: PortfolioItem | null; preload?: 
   project,
   preload = [],
 }) => {
-  const Article = getLazyArticle(id, project?.markdownFile);
+  const Article = getLazyArticle(id);
 
   // 前後の作品の記事を先読みしておく（同じルートで id だけ変わる遷移で、旧記事が居残らないように）
   const preloadKey = preload.join(",");

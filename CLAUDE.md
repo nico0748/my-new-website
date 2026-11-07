@@ -127,7 +127,7 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 作品詳細（`/projects/:id`）の本文は、独自コンポーネントの記事テンプレートで書く（2026-11 に Markdown から移行。理由は読みやすさと、アプリの説明に動く図を入れるため）。
 
 - **本文**: `src/content/works/<作品 id>.tsx` に default export の記事コンポーネントを 1 つ置くだけ（ファイル名 = Projects シートの id）。`src/lib/worksRegistry.ts` が lazy の `import.meta.glob` で自動索引する（eager の glob と併用しない。本文がメインチャンクに入る）。タイトル・期間・タグはシートが正なので、TSX に meta は置かない
-- **表示の優先順位**: TSX → シートの `markdownFile` / `public/projects/<id>.md`（従来の `.prose-custom`）→ 「詳しい紹介は準備中です。」。切り替えは `src/components/works/WorkBody.tsx`。Suspense は本文だけに巻く（ヘッダーの View Transition のモーフを壊さないため）。前後の作品の本文は先読み
+- **表示の優先順位**: TSX → シートの `markdownFile` / `public/projects/<id>.md`（従来の `.prose-custom`）→ 「詳しい紹介は準備中です。」。切り替えは `src/components/works/WorkBody.tsx`。記事のチャンクが読めない（デプロイ前から開いていたタブなど）ときは 1 度だけ読み込み直し、それでも駄目なら「本文を読み込めませんでした。」（Markdown には戻さない。消してあるので「準備中」と誤って出る）。Suspense は本文だけに巻く（ヘッダーの View Transition のモーフを壊さないため）。前後の作品の本文は先読み
 - **外枠** `WorkArticle`: 本文 680px（1 行 38〜42 字）、lg 以上で右に sticky の目次（`Section` の h2 だけ。現在地はサンドの 1px の線）。lg 未満は本文の先頭に折りたたみの目次
 - **部品** `src/components/works/kit.tsx`: `Lead`（冒頭 19px）/ `Section`（h2。`id` 必須、`no` で淡色の章番号、`toc` で目次の短い名前。見出しの前にサンドの短い線）/ `Sub`（h3、`no="2-1"`）/ `H4` / `Figure`（スクリーンショット＋13px のキャプション、押すと拡大）/ `Table`（横スクロール。4 列以上は `stack` で md 未満を縦積み）/ `Stats`（数字は動かさない）/ `Code`（highlight.js）/ `Callout` / `Quote` / `Fn`＋`Footnotes`。素の `p` `ul` `ol` `strong` `code` `a` もそのまま整形される
 - **動く図** `src/components/works/motion.tsx`: `Flow`（処理の流れ。PC はステップ 4 つまで横並び、それより多いかスマホは縦。各ノードに `value` の札）/ `Layers`（構成図。層を積み、`aside` で別経路、`boundary` で「端末の中」などの枠）
@@ -239,6 +239,8 @@ Web・インフラ・セキュリティを分野ごとに体系立ててまと�
 
 - `vite-plugin-pwa` で Service Worker と webmanifest を自動生成
 - キャッシュ戦略は `vite.config.ts` の `workbox.runtimeCaching` で管理
+- SW の登録は `src/main.tsx` の `registerSW({ immediate: true })`（`virtual:pwa-register`）。`registerType: 'autoUpdate'` なので、デプロイ後に新しい SW が有効になると**一度だけ自動で読み込み直す**（初めての訪問では読み込み直さない）。⚠️ `index.html` に `registerSW.js` を差し込むだけの方式に戻さない。前に訪れた人がデプロイ後の 1 回目に SW のキャッシュの古い版を見て、古い版が消したファイルを取りに行く（2026-11 に作品詳細が「準備中」になった原因）
+- ファイルを消すデプロイは、古い版が 1 回動いても困らないかを考える（古いタブや SW の無いブラウザでは消えたチャンク・ファイルを取りに行く）
 - アイコンは `public/favicon_io/android-chrome-{192,512}x192.png` を使用
 
 ---
