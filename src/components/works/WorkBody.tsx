@@ -12,21 +12,61 @@ import WorkArticle from "./WorkArticle";
  * 作品 id ごとの lazy コンポーネントをモジュール内に持っておく。
  * 2 回目以降（戻る / 進む・前後の作品から戻る）は読み込み済みとして同期で描画されるので、
  * ScrollRestoration がスクロール位置を戻す時点で本文の高さがそろっている。
- * 記事のチャンクが読めない（デプロイ直後の古いタブなど）ときは、エラー画面ではなく Markdown / 準備中に戻す。
+ * 記事のチャンクが読めない（デプロイ前から開いていたタブで、古いチャンクが消えているなど）ときは、
+ * 1 度だけページを読み込み直して新しい版を取りに行く。それでも読めなければその旨を出す
+ * （記事のある作品の Markdown は消してあるので、Markdown に戻すと「準備中」と誤って出てしまう）。
  */
 const lazyArticles = new Map<string, LazyExoticComponent<ComponentType>>();
-const getLazyArticle = (id: string, markdownFile?: string) => {
+const getLazyArticle = (id: string) => {
   const loader = getWorkArticleLoader(id);
   if (!loader) return null;
   let Article = lazyArticles.get(id);
   if (!Article) {
     Article = lazy(() =>
-      loader().catch(() => ({ default: () => <MarkdownBody id={id} markdownFile={markdownFile} /> }))
+      loader().then(
+        (mod) => {
+          clearReloadMark();
+          return mod;
+        },
+        () => (reloadOnce() ? new Promise<never>(() => {}) : { default: ArticleLoadError })
+      )
     );
     lazyArticles.set(id, Article);
   }
   return Article;
 };
+
+/**
+ * まだ読み込み直していなければ読み込み直す。印は記事が読めたときにだけ消す（時間では消さない）ので、
+ * 読み込み直したあとも読めなければ、失敗にどれだけ時間がかかってもエラー表示になり、読み込み直しを繰り返さない。
+ */
+const RELOAD_KEY = "works-article-reloaded";
+const reloadOnce = () => {
+  try {
+    if (sessionStorage.getItem(RELOAD_KEY)) return false;
+    sessionStorage.setItem(RELOAD_KEY, "1");
+  } catch {
+    return false;
+  }
+  window.location.reload();
+  return true;
+};
+const clearReloadMark = () => {
+  try {
+    sessionStorage.removeItem(RELOAD_KEY);
+  } catch {
+    // sessionStorage が使えないときは印も付いていない
+  }
+};
+
+const ArticleLoadError: React.FC = () => (
+  <p className="text-[15px]" style={{ color: "var(--text-muted)" }}>
+    本文を読み込めませんでした。
+    <button type="button" className="link-quiet ml-2 underline underline-offset-4" onClick={() => window.location.reload()}>
+      再読み込み
+    </button>
+  </p>
+);
 
 /**
  * 作品詳細の本文。表示の優先順位は
@@ -41,7 +81,7 @@ const WorkBody: React.FC<{ id: string; project: PortfolioItem | null; preload?: 
   project,
   preload = [],
 }) => {
-  const Article = getLazyArticle(id, project?.markdownFile);
+  const Article = getLazyArticle(id);
 
   // 前後の作品の記事を先読みしておく（同じルートで id だけ変わる遷移で、旧記事が居残らないように）
   const preloadKey = preload.join(",");
