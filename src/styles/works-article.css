@@ -995,3 +995,426 @@
     }
   }
 }
+
+/* ─── 画面ツアー（tour.tsx） ─────────────────────────
+   上に画面を固定し（sticky）、下の手順をスクロールすると画面が寄る。
+   動くのは .wtour-stage の中の transform（寄る）と opacity（切り替え・印）、進み具合の 1px の線だけ。
+   時間は --wtour-pan（寄る、650〜1150ms）と --wtour-mark-delay（印を出すまで）を tour.tsx が手順ごとに決める。
+   .is-instant（開いたとき・位置の復元・View Transition の最中）と reduced-motion では時間をかけずに切り替える。 */
+
+.wtour {
+  --wtour-pad: 16px;
+  --wtour-reserve: 280px;
+  margin: 48px 0 40px;
+}
+
+@media (min-width: 768px) {
+  .wtour {
+    --wtour-pad: 28px;
+    --wtour-reserve: 300px;
+  }
+}
+
+/* 固定する画面。上の隙間まで地の色で覆い、下の手順が後ろへ抜けていくようにする */
+.wtour-stage {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding-top: var(--wtour-pad);
+  background: var(--bg);
+}
+
+.wtour-stage::after {
+  content: "";
+  position: absolute;
+  inset: 100% 0 auto;
+  height: 32px;
+  background: linear-gradient(var(--bg), transparent);
+  pointer-events: none;
+}
+
+/* 画面の下に、手順を読める高さ（--wtour-reserve）を残す幅にする */
+.wtour-frame {
+  width: min(100%, calc((100vh - var(--wtour-reserve)) * var(--wtour-aspect)));
+  width: min(100%, calc((100svh - var(--wtour-reserve)) * var(--wtour-aspect)));
+}
+
+.wtour-view {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: var(--wtour-aspect);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--surface);
+  isolation: isolate;
+}
+
+.wtour-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transform-origin: 0 0;
+  opacity: 0;
+  z-index: 1;
+  backface-visibility: hidden;
+}
+
+.wtour-layer[data-on] {
+  opacity: 1;
+  z-index: 2;
+}
+
+.wtour-layer img {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+}
+
+/* 出ていく層: 入ってくる層のフェードが終わるまで不透明のまま下に残し、それから消して次の置き場所へ移す */
+.wtour-stage .wtour-layer {
+  transition:
+    opacity 0s linear 0.35s,
+    transform 0s linear 0.35s;
+}
+
+.wtour-stage .wtour-layer[data-on] {
+  transition:
+    opacity 0.35s var(--motion-ease),
+    transform var(--wtour-pan, 0ms) var(--motion-ease);
+}
+
+/* 印（拡大しない面に、見えている範囲に対する % で置く） */
+.wtour-marks {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.wtour-marks[data-on] {
+  opacity: 1;
+}
+
+.wtour-stage .wtour-marks {
+  transition: opacity 0.15s var(--motion-ease);
+}
+
+.wtour-stage .wtour-marks[data-on] {
+  transition: opacity 0.35s var(--motion-ease) var(--wtour-mark-delay, 0ms);
+}
+
+.wtour-mark {
+  position: absolute;
+  display: block;
+}
+
+/* 明るい画面でも暗い画面でも見えるよう、サンドの線の外側に地の色の細い縁を付ける（光らせない） */
+.wtour-mark-box {
+  border: 2px solid var(--accent);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--bg) 72%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--bg) 45%, transparent);
+}
+
+.wtour-mark-dot {
+  width: 28px;
+  height: 28px;
+  margin: -14px 0 0 -14px;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--bg) 72%, transparent),
+    inset 0 0 0 2px color-mix(in srgb, var(--bg) 45%, transparent);
+}
+
+.wtour-mark-line {
+  height: 2px;
+  margin-top: 3px;
+  border-radius: 1px;
+  background: var(--accent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--bg) 60%, transparent);
+  transform-origin: left center;
+}
+
+/* 下線は、印が出るのに合わせて左から伸ばす */
+.wtour-stage .wtour-marks .wtour-mark-line {
+  transform: scaleX(0);
+  transition: transform 0.15s var(--motion-ease);
+}
+
+.wtour-stage .wtour-marks[data-on] .wtour-mark-line {
+  transform: none;
+  transition: transform 0.6s var(--motion-ease) calc(var(--wtour-mark-delay, 0ms) + var(--i, 0) * 120ms);
+}
+
+/* 画面の下の段: 手順の区切り（1px の線）・何番目か・拡大 */
+.wtour-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 44px;
+}
+
+.wtour-segs {
+  display: flex;
+  flex: 1;
+  gap: 6px;
+}
+
+.wtour-seg {
+  position: relative;
+  flex: 1;
+  height: 28px;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.wtour-seg::before,
+.wtour-seg-fill {
+  content: "";
+  position: absolute;
+  inset: 50% 0 auto;
+  height: 1px;
+}
+
+.wtour-seg::before {
+  background: var(--border-strong);
+}
+
+.wtour-seg-fill {
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.6s var(--motion-ease);
+}
+
+.wtour-seg[data-on] .wtour-seg-fill {
+  transform: none;
+}
+
+.wtour-seg:hover::before {
+  background: var(--text-muted);
+}
+
+.wtour-seg:focus-visible {
+  outline: 1px solid var(--border-strong);
+  outline-offset: -4px;
+  border-radius: 2px;
+}
+
+.wtour-count {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.wtour-enlarge {
+  padding: 2px 0;
+  font-size: 13px;
+  color: var(--text-muted);
+  background: none;
+  border: 0;
+  cursor: zoom-in;
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+
+.wtour-enlarge:hover {
+  color: var(--text-primary);
+}
+
+.wtour-enlarge:focus-visible {
+  outline: 1px solid var(--border-strong);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* 手順。1 つの手順が、固定した画面の下に残る高さの 8 割ほどを占める（同時に読むのはほぼ 1 つ） */
+.wtour-steps {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wtour-step {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  column-gap: 16px;
+  align-content: start;
+  min-height: max(240px, calc((100vh - var(--wtour-stage-h, 480px)) * 0.8));
+  min-height: max(240px, calc((100svh - var(--wtour-stage-h, 480px)) * 0.8));
+  padding-top: 32px;
+}
+
+/* 最後の手順は中身の高さだけにする。読み終えたら、画面と最後の手順がいっしょに上へ抜けていく
+   （余白を残すと、文が画面の後ろへ隠れたあとも画面だけが居残る） */
+.wtour-step:last-child {
+  min-height: 0;
+  padding-bottom: 8px;
+}
+
+.wtour-no {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin-top: -1px;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--bg);
+  background: var(--accent);
+}
+
+.work-article .wtour-title {
+  margin: 0 0 8px;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.8;
+  color: var(--text-primary);
+}
+
+.wtour-body {
+  font-size: 16px;
+  line-height: 1.95;
+  color: var(--text-body);
+}
+
+.work-article .wtour-body p {
+  margin: 0;
+}
+
+.work-article .wtour-body p + p {
+  margin-top: 0.8em;
+}
+
+.work-article .wtour-keys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.work-article .wtour-keys li {
+  margin: 0;
+  padding: 0;
+}
+
+.wtour-keys kbd {
+  display: inline-block;
+  padding: 1px 9px;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+/* JS が位置を見ている間だけ、いまの手順以外を一段落とす */
+.wtour.is-live .wtour-step:not([data-current]) .wtour-no {
+  color: var(--text-muted);
+  background: transparent;
+  border-color: var(--border-strong);
+}
+
+.wtour.is-live .wtour-step:not([data-current]) .wtour-title {
+  color: var(--text-secondary);
+}
+
+.wtour.is-live .wtour-step:not([data-current]) .wtour-body {
+  color: var(--text-secondary);
+}
+
+.wtour-no,
+.wtour-title,
+.wtour-body {
+  transition:
+    color 0.4s var(--motion-ease),
+    background-color 0.4s var(--motion-ease),
+    border-color 0.4s var(--motion-ease);
+}
+
+/* 静止画（高さの足りない画面と印刷だけ） */
+.wtour-still {
+  display: none;
+  margin-top: 18px;
+}
+
+.wtour.is-instant :is(.wtour-layer, .wtour-marks, .wtour-mark-line, .wtour-seg-fill, .wtour-no, .wtour-title, .wtour-body) {
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wtour :is(.wtour-layer, .wtour-marks, .wtour-mark-line, .wtour-seg-fill, .wtour-no, .wtour-title, .wtour-body) {
+    transition: none !important;
+  }
+}
+
+@media (max-width: 639px) {
+  .wtour-step {
+    grid-template-columns: 28px minmax(0, 1fr);
+    column-gap: 14px;
+    padding-top: 28px;
+  }
+  .wtour-no {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+  .wtour-mark-dot {
+    width: 22px;
+    height: 22px;
+    margin: -11px 0 0 -11px;
+  }
+  .wtour-bar {
+    gap: 12px;
+  }
+}
+
+/* 高さの足りない画面（横向きのスマホなど）と印刷: 固定をやめ、手順ごとに静止画を添える */
+@media (max-height: 520px), print {
+  .wtour-stage {
+    display: none;
+  }
+  .wtour-step,
+  .wtour-step:last-child {
+    min-height: 0;
+    padding-top: 28px;
+  }
+  .wtour-still {
+    display: block;
+  }
+  .wtour.is-live .wtour-step:not([data-current]) .wtour-no {
+    color: var(--bg);
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .wtour.is-live .wtour-step:not([data-current]) .wtour-title {
+    color: var(--text-primary);
+  }
+  .wtour.is-live .wtour-step:not([data-current]) .wtour-body {
+    color: var(--text-body);
+  }
+}
+
+@media print {
+  .wtour-step {
+    break-inside: avoid;
+  }
+}
