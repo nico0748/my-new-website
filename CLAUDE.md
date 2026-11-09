@@ -48,7 +48,7 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
   - 罫線: `var(--border-color)` `rgba(160,180,210,0.1)`（青みを帯びた薄い線）
 - **リンク**: 通常は `.link-quiet`（副テキスト色 → ホバーで主テキスト色）。外部リンクは `↗`
 - **アニメーション**:
-  - **動きの型は 2 つだけ**: 内容は `Reveal` のフェードアップ、構造は **1px の線が起点から伸びる**形（線を使うのは見出しの印・時間軸・現在地など構造を表すものだけ）。イージングは `index.css` の `--motion-ease`（`cubic-bezier(.22, 1, .36, 1)`）1 本で、`--view-transition-easing` もこれを参照する。文字が先・飾りは後、遅延は `min()` で 0.8s まで。ほかに利用者の操作に応じるものとして、カードのホバーがある（次項）
+  - **動きの型は 2 つだけ**: 内容は `Reveal` のフェードアップ、構造は **1px の線が起点から伸びる**形（線を使うのは見出しの印・時間軸・現在地など構造を表すものだけ）。イージングは `index.css` の `--motion-ease`（`cubic-bezier(.22, 1, .36, 1)`）1 本で、`--view-transition-easing` もこれを参照する。文字が先・飾りは後、遅延は `min()` で 0.8s まで。ほかに利用者の操作に応じるものとして、カードのホバー（次項）と、Works 記事の画面ツアー（スクロールに合わせて画面が寄る。「Works 記事」節）がある
   - **カードのホバー**: カード（Works / Articles / トップの Skills のチャート / Activity のリポジトリ / Off-hours / アニメ / ソーシャルリンク / 作品詳細の前後ナビ）には `card-hover` クラスを付ける。マウスを載せると、カーソルの位置に合わせて最大 4° 傾き 4px 浮き、離れると `--motion-ease` で戻る（`src/lib/cardHover.ts`。リスナーは `RootLayout` で document に 1 つだけ、位置は rAF で 1 フレーム 1 回）。押した瞬間に平らに戻す（`.is-pressed`。View Transition が旧ページを撮る前に傾きを消し、共有要素のモーフを傾いた状態から始めない）。transform は `.is-tilting` の間だけ付け、休んでいるカードには残さない。タッチ・キーボード・`prefers-reduced-motion: reduce` では動かさない。新しいカードにも `card-hover` を付け、`transition-colors` は付けない（`index.css` の「カードのホバー」節で上書きする）。光沢や影は足さない（グロー禁止）。`/skills` のカテゴリの枠は中に操作できるチップが並ぶ大きなパネルなので対象外
   - **一度きり**: ポートフォリオでは無限ループ（点滅・パルス・走り続ける動き）を使わない。繰り返すのは利用者が操作したときだけ。本文段落・数値・ヘッダー・背景・アバターは動かさない
   - **スクロールで下からフェードイン**は `src/components/ui/Reveal.tsx` の `Reveal` で包む（一度だけ・同じフレームで入った要素は DOM 順に 0.1 秒ずつずらす）。トップでは Profile → WORKS → ARTICLES → SKILLS → ACTIVITY → TIMELINE → OFF-HOURS の各見出し・カード・Activity のヒートマップ（小見出しごと 1 つ。セルを順に点ける演出はしない）・年ごとの Timeline・Off-hours の箱を個別に包んでいる。`WorkList` / `ArticleList` のカードは常に Reveal 付き
@@ -135,7 +135,14 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
   - **遅延の上限の例外**: 図は 1 ステップ 0.45s、間隔 `min(0.3s, 2.0s / (n - 1))`、図全体 2.5s 前後（サイト全体の「遅延 0.8s まで」は図には当てはめない）
   - 図は `Reveal` で包まない（再生管理は図ごとに 1 つ）。View Transition の最中（戻る / 進む）に見えた図は描かずに終状態。`prefers-reduced-motion: reduce`・JS 無し・印刷は最初から終状態（初期状態の CSS は no-preference の `.is-armed` の中だけ）
   - 図の内容は本文かキャプションでも文章で書く（`label` は読み上げ用の 1 文）
-- **スタイル**は `src/styles/works-article.css`（`.work-layout` / `.work-article` / `.wfig` スコープ）。`index.css` の変数を参照するだけで、Learn（`.learn-docs`）のスタイルは持ち込まない
+- **画面ツアー** `src/components/works/tour.tsx` の `ScreenTour`（2026-11。PaperLens の 3-1・3-6、SecOwl の 3-1・3-2）: アプリのスクリーンショットを上に固定し（sticky、本文の 680px の中で上下に積む）、下の手順をスクロールで読み進めると、手順ごとに画面の該当箇所へ寄って印を付ける。使い方の流れを見せるところで、Figure を何枚も並べる代わりに使う
+  - 書き方: `images`（キー → `src` / `width` / `height` / `alt`）と `steps`（`title` / `body` / `keys` の札 / `image` / `rect` 寄る範囲 / `rectSm` スマホで寄る範囲 / `marks` 印）。位置はすべて**画像に対する 0〜100 の割合**。印は `box`（囲み）/ `dot`（輪、x, y が中心）/ `underline`。寄る倍率は 1600px の画像で 2.2 倍くらいまで（それ以上はぼやける）。印の位置は試しに描いて目で確かめる
+  - 進めるのは利用者のスクロールだけ（自動再生・ループ・波紋はしない）。いまの手順は「固定した画面の下端から、残りの高さの 30% の線を最後に越えた手順」。下の 1px の区切りを押すとその手順へスクロールし、「画面を拡大」でいまの画像の全体を開く
+  - 動くのは transform（寄る、650〜1150ms）と opacity（画像の切り替えは入ってくる層を上で 0.35s フェード、印は寄り終わる頃に出す）と、区切りの線が左から伸びる動きだけ。イージングは `--motion-ease`。印はサンドの線＋地の色の細い縁で、光らせない
+  - 開いたとき・戻る / 進むでスクロール位置が戻ったとき（開いて 0.6s 以内）・View Transition の最中は、動かさずにその手順の画面を出す（`.is-instant`）。`prefers-reduced-motion: reduce` でもその場で切り替える
+  - 高さの足りない画面（`max-height: 520px`、横向きのスマホなど）と印刷では固定をやめ、手順ごとに静止画を添える。最後の手順は中身の高さだけにして、読み終えたら画面と一緒に上へ抜けていくようにする
+  - 印は読み上げない（aria-hidden）ので、画面で見せていることは手順の本文に文章で書く
+- **スタイル**は `src/styles/works-article.css`（`.work-layout` / `.work-article` / `.wfig` / `.wtour` スコープ）。`index.css` の変数を参照するだけで、Learn（`.learn-docs`）のスタイルは持ち込まない
 - 書き方は doujin-pp・paperlens の記事が見本（H1 は書かない。ページ側に作品名の h1 がある。太字は 1 段落に 1 つまで、400 字を超える段落は分ける）
 - 画像は `public/projects/images/<id>-*.webp`
 - `portfolio` はまだ Markdown（`public/projects/portfolio.md`）。TSX を足せば自動で切り替わる
