@@ -1,45 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import type { To } from "react-router-dom";
 import type { TimelineItem } from "../../lib/dataMapper";
+import { TIMELINE_TYPE_LABEL, formatPeriod, hasTimelineDetail } from "../../lib/timeline";
 import Reveal from "./Reveal";
 
-const TYPE_LABEL: Record<TimelineItem["type"], string> = {
-  education: "学歴",
-  work: "仕事",
-  project: "制作",
-  certification: "受賞・資格",
-  other: "その他",
-};
-
-/** "2025-04" → "2025.04"、"2025" → "2025" */
-const ym = (v: string) => v.replace("-", ".");
-
-/** 期間の表示: "2025.04 – 2025.07" / "2025.10 – 現在" / "2024.10" */
-const formatPeriod = (start: string, end?: string): string => {
-  if (!end) return ym(start);
-  return `${ym(start)} – ${end === "present" ? "現在" : ym(end)}`;
-};
-
-const Title: React.FC<{ item: TimelineItem }> = ({ item }) => {
-  const text = (
-    <span className="row-title text-[17px] leading-relaxed" style={{ color: "var(--text-primary)" }}>
-      {item.title}
-    </span>
-  );
-  if (!item.href) return <p>{text}</p>;
-  return item.href.startsWith("/") ? (
-    <Link to={item.href} className="row-link">
-      {text}
-    </Link>
-  ) : (
-    <a href={item.href} target="_blank" rel="noopener noreferrer" className="row-link">
-      {text} <span aria-hidden className="text-[13px]" style={{ color: "var(--text-muted)" }}>↗</span>
-    </a>
-  );
-};
-
-/** 年ごとにまとめた縦線つきの年表。各項目は「期間 · 種別」→ タイトル → 説明の順。 */
-const Timeline: React.FC<{ items: TimelineItem[] }> = ({ items }) => {
+/**
+ * 年ごとにまとめた縦線つきの年表。各項目は「期間 · 種別」→ タイトル → 説明の順。
+ * 項目を押すと詳細のポップアップを開く（?timeline=<id>。開き方はトップの PortfolioPage が持つ）。
+ * タイトルのリンクの当たり判定を項目全体に広げ（.timeline-open）、読み上げの名前はタイトルだけにする。
+ */
+const Timeline: React.FC<{
+  items: TimelineItem[];
+  /** ポップアップを開くリンク先 */
+  linkTo: (it: TimelineItem) => To;
+  /** 押した瞬間に呼ぶ（その項目のタイトルにモーフ用の名前を付ける） */
+  onOpen: (it: TimelineItem) => void;
+  /** タイトルの view-transition-name（最後に開いた項目だけ。ほかは undefined） */
+  vtNameOf: (it: TimelineItem) => string | undefined;
+}> = ({ items, linkTo, onOpen, vtNameOf }) => {
   const groups: { year: string; items: TimelineItem[] }[] = [];
   items.forEach((it) => {
     const year = it.start.slice(0, 4);
@@ -63,8 +42,16 @@ const Timeline: React.FC<{ items: TimelineItem[] }> = ({ items }) => {
             <span aria-hidden className="draw-y absolute left-[3px] top-2 bottom-2 w-px" style={{ background: "var(--border-color)" }} />
             {g.items.map((it, i) => {
               const ongoing = it.end === "present";
+              const title = (
+                <span
+                  className="row-title vt-timeline-title text-[17px] leading-relaxed"
+                  style={{ color: "var(--text-primary)", viewTransitionName: vtNameOf(it) }}
+                >
+                  {it.title}
+                </span>
+              );
               return (
-                <li key={`${it.start}-${i}`} className="relative">
+                <li key={it.id} className="relative">
                   {/* 過去の項目の点は線に続いて上から順に点く（.draw-dot）。継続中の差し色の点は状態なので最初から出す */}
                   <span
                     aria-hidden
@@ -80,11 +67,25 @@ const Timeline: React.FC<{ items: TimelineItem[] }> = ({ items }) => {
                   <p className="text-[13px] tabular-nums tracking-wide" style={{ color: "var(--text-muted)" }}>
                     {formatPeriod(it.start, it.end)}
                     <span className="mx-2" aria-hidden>·</span>
-                    {TYPE_LABEL[it.type] ?? TYPE_LABEL.other}
+                    {TIMELINE_TYPE_LABEL[it.type] ?? TIMELINE_TYPE_LABEL.other}
                     {it.status === "upcoming" && <span className="ml-2">（予定）</span>}
                   </p>
                   <div className="mt-1.5">
-                    <Title item={it} />
+                    {hasTimelineDetail(it) ? (
+                      <Link
+                        to={linkTo(it)}
+                        state={{ from: "timeline" }}
+                        viewTransition
+                        preventScrollReset
+                        onClick={() => onOpen(it)}
+                        aria-haspopup="dialog"
+                        className="timeline-open row-link"
+                      >
+                        {title}
+                      </Link>
+                    ) : (
+                      <p>{title}</p>
+                    )}
                   </div>
                   {it.description && (
                     <p className="mt-1.5 max-w-[680px] text-[14px] leading-[1.9]" style={{ color: "var(--text-secondary)" }}>

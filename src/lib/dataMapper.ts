@@ -29,7 +29,15 @@ export interface SkillCategory {
     skills: Skill[];
 }
 
+/** Timeline の詳細ポップアップに並べるリンク。url は https:// かサイト内パス（/ で始まる）だけ。 */
+export interface TimelineLink {
+    label: string;
+    url: string;
+}
+
 export interface TimelineItem {
+    /** ポップアップの URL（?timeline=）に使う。シートの id 列。空なら start とタイトルから作る */
+    id: string;
     start: string;           // "YYYY-MM" または "YYYY"
     end?: string;            // "YYYY-MM" / "YYYY" / "present"（継続中）。単発なら空
     title: string;
@@ -37,6 +45,14 @@ export interface TimelineItem {
     type: "education" | "work" | "project" | "other" | "certification";
     href?: string;           // 外部 URL、または "/projects/xxx" のようなサイト内パス
     status?: "done" | "upcoming";
+    /** 所属先・主催（ポップアップのタイトルの下に出す）。例 "TempestAI株式会社" */
+    org?: string;
+    /** ポップアップだけに出す詳しい説明。改行で段落を分ける */
+    detail?: string;
+    /** ポップアップのリンク（href の後ろに並ぶ）。シートでは 1 行に 1 つ「ラベル | URL」 */
+    links: TimelineLink[];
+    /** 使った技術・分野など。シートではカンマ区切り */
+    tags: string[];
 }
 
 export interface ProfileData {
@@ -138,7 +154,36 @@ const parseLegacyYear = (v: string): { start: string; end?: string } => {
     return { start, end: m[3] ? "present" : undefined };
 };
 
-/** Timeline シート: start, end, title, description, type, href（旧 year 列にも対応）。新しい順に並べる。 */
+/** リンクに使ってよい URL か（https:// かサイト内パスだけ。javascript: などは捨てる）。 */
+const isSafeLink = (url: string) => /^https:\/\/[^\s]+$/i.test(url) || /^\/(?!\/)[^\s]*$/.test(url);
+
+/**
+ * links 列: 1 行に 1 つ「ラベル | URL」。ラベルを省いて URL だけでもよい（表示はホスト名）。
+ * 区切りは「|」のほか全角の「｜」も可。使えない URL の行は捨てる。
+ */
+const parseTimelineLinks = (v: string): TimelineLink[] =>
+    v
+        .split(/\r?\n/)
+        .map((line) => {
+            const parts = line.split(/[|｜]/).map((t) => t.trim()).filter(Boolean);
+            if (parts.length === 0) return null;
+            const url = parts[parts.length - 1];
+            const label = parts.length > 1 ? parts.slice(0, -1).join(" | ") : "";
+            return isSafeLink(url) ? { label, url } : null;
+        })
+        .filter((l): l is TimelineLink => l !== null);
+
+/** id 列が空のときの id（start とタイトルから。行の並びが変わっても変わらない）。 */
+const fallbackTimelineId = (start: string, title: string) => {
+    let h = 5381;
+    for (const ch of title) h = ((h << 5) + h + ch.codePointAt(0)!) >>> 0;
+    return `${start || "item"}-${h.toString(36)}`;
+};
+
+/**
+ * Timeline シート: start, end, title, description, type, href（旧 year 列にも対応）と、
+ * ポップアップ用の id, org, detail, links, tags。新しい順に並べる。
+ */
 export const mapTimelineData = (rows: SheetRow[]): TimelineItem[] => {
     return rows
         .filter(row => row.title && (row.start || row.year))
@@ -146,13 +191,20 @@ export const mapTimelineData = (rows: SheetRow[]): TimelineItem[] => {
             const period = row.start
                 ? { start: normalizeYm(row.start), end: normalizeEnd(row.end || "") }
                 : parseLegacyYear(row.year);
+            const title = row.title.trim();
+            const href = (row.href || "").trim();
             return {
                 ...period,
-                title: row.title.trim(),
+                id: (row.id || "").trim() || fallbackTimelineId(period.start, title),
+                title,
                 description: (row.description || "").trim(),
                 type: (row.type as TimelineItem["type"]) || "other",
-                href: row.href || undefined,
+                href: href && isSafeLink(href) ? href : undefined,
                 status: (row.status as TimelineItem["status"]) || "done",
+                org: (row.org || "").trim() || undefined,
+                detail: (row.detail || "").trim() || undefined,
+                links: parseTimelineLinks(row.links || ""),
+                tags: row.tags ? row.tags.split(/[,、]/).map((t) => t.trim()).filter(Boolean) : [],
             };
         })
         .sort((a, b) => (a.start < b.start ? 1 : a.start > b.start ? -1 : 0));
