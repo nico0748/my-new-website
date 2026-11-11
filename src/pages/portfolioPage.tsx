@@ -120,9 +120,9 @@ const PortfolioPage = () => {
   const [anime, setAnime] = useState<TopAnime>(() => getCachedTopAnime() ?? { works: [], favorites: false });
   const [github, setGitHub] = useState<GitHubActivityData>(() => getCachedGitHubActivity() ?? EMPTY_GITHUB_ACTIVITY);
   // Projects シートを読み終えたか（WORKS に載っているリポジトリを除いてから ACTIVITY のリポジトリを出すため）
-  const [worksReady, setWorksReady] = useState(!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY || getCachedProjects() !== null);
+  const [worksReady, setWorksReady] = useState(getCachedProjects() !== null);
   // Profile シートを読み終えたか（ソーシャルリンクを全件そろってからフェードインさせるため）
-  const [profileReady, setProfileReady] = useState(!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY || !!getCachedProfile());
+  const [profileReady, setProfileReady] = useState(!!getCachedProfile());
   useScrollToHash();
   useModalTransitionFlag();
   const timelineModal = useTimelineModal(timeline);
@@ -137,7 +137,6 @@ const PortfolioPage = () => {
     fetchGitHubActivity().then(setGitHub);
     fetchTopAnime().then(setAnime);
 
-    if (!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY) return;
     (async () => {
       try {
         const [profileData, worksItems, skillsRows, timelineItems] = await Promise.all([

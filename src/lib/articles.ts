@@ -37,7 +37,6 @@ const fetchQiitaArticles = async (): Promise<ArticleItem[]> => {
 
 /** 任意の「Articles」シート（Zenn / note など Qiita 以外の記事を手動で載せる用）。 */
 const fetchSheetArticles = async (): Promise<ArticleItem[]> => {
-  if (!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY) return [];
   const rows = await fetchSheetData<SheetRow>("Articles");
   return mapArticleData(rows);
 };

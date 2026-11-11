@@ -36,10 +36,6 @@ const SkillsPage = () => {
 
   useEffect(() => {
     const load = async () => {
-      if (!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY) {
-        setLoading(false);
-        return;
-      }
       try {
         const [skillRows, projectRows] = await Promise.all([
           fetchSheetData<SheetRow>("Skills"),
