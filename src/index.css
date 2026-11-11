@@ -415,22 +415,28 @@ pre, code {
   animation: 420ms cubic-bezier(0, 0, 0.2, 1) 80ms both vt-fade-in-up;
 }
 
-/* アニメのカード ↔ ポップアップ: 画像・タイトルは Works と同じモーフ（.project-img / .project-title の
-   時間・カーブ・新旧の消し方をそのまま使う）。ポップアップの背景・パネルより手前で動くよう anime-morph を足す */
-.vt-anime-img { view-transition-class: project-img anime-morph; }
-.vt-anime-title { view-transition-class: project-title anime-morph; }
-::view-transition-group(.anime-morph) { z-index: 2; }
+/* 一覧 ↔ ポップアップ（アニメのカード・Timeline の項目）: 画像・タイトルは Works と同じモーフ
+   （.project-img / .project-title の時間・カーブ・新旧の消し方をそのまま使う）。
+   ポップアップの背景・パネルより手前で動くよう modal-morph を足す */
+.vt-anime-img { view-transition-class: project-img modal-morph; }
+.vt-anime-title,
+.vt-timeline-title { view-transition-class: project-title modal-morph; }
+::view-transition-group(.modal-morph) { z-index: 2; }
 
-/* ポップアップの開閉（同じページの中の遷移。AnimePage が html[data-vt="modal"] を付ける）:
+/* ポップアップの開閉（同じページの中の遷移。lib/modalTransition.ts が html[data-vt="modal"] を付ける）:
    ページ全体は動かさず、背景を暗くし、パネルを下から浮かべる。閉じるときはその逆を短く */
 html[data-vt="modal"]::view-transition-old(root) { animation: none; opacity: 0; }
 html[data-vt="modal"]::view-transition-new(root) { animation: none; }
-::view-transition-group(anime-backdrop),
-::view-transition-group(anime-panel) { z-index: 1; }
-::view-transition-new(anime-backdrop) { animation: 320ms ease-out both vt-fade-in; }
-::view-transition-old(anime-backdrop) { animation: 260ms ease-in both vt-fade-out; }
-::view-transition-new(anime-panel) { animation: 420ms cubic-bezier(0, 0, 0.2, 1) 60ms both vt-fade-in-up; }
-::view-transition-old(anime-panel) { animation: 200ms cubic-bezier(0.4, 0, 1, 1) both vt-fade-out; }
+::view-transition-group(modal-backdrop),
+::view-transition-group(modal-panel) { z-index: 1; }
+::view-transition-new(modal-backdrop) { animation: 320ms ease-out both vt-fade-in; }
+::view-transition-old(modal-backdrop) { animation: 260ms ease-in both vt-fade-out; }
+::view-transition-new(modal-panel) { animation: 420ms cubic-bezier(0, 0, 0.2, 1) 60ms both vt-fade-in-up; }
+::view-transition-old(modal-panel) { animation: 200ms cubic-bezier(0.4, 0, 1, 1) both vt-fade-out; }
+/* 別のページとのモーフのために名前を付けたままの要素（トップの OFF-HOURS のアニメなど）は、
+   同じページのポップアップの開閉では名前を外す（modal-morph の z-index で背景より手前に浮かないように） */
+html[data-vt="modal"] .vt-pause-in-modal,
+html[data-vt="modal"] .vt-pause-in-modal * { view-transition-name: none !important; }
 
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(*),
@@ -563,6 +569,25 @@ html[data-vt="modal"]::view-transition-new(root) { animation: none; }
 
 .row-link:hover .row-title {
   background-size: 100% 1px;
+}
+
+/* Timeline の項目: タイトルのリンクの当たり判定を項目全体（li）に広げる。読み上げの名前はタイトルだけのまま。
+   ホバーでは項目の地をごく僅かに明るくし、キーボードのフォーカスは項目全体を囲む */
+.timeline-open::after {
+  content: "";
+  position: absolute;
+  inset: -10px -14px -10px -36px;
+  border-radius: 8px;
+  transition: background-color 0.3s var(--motion-ease);
+}
+.timeline-open:hover::after {
+  background: color-mix(in srgb, var(--text-primary) 3%, transparent);
+}
+.timeline-open:focus-visible {
+  outline: none;
+}
+.timeline-open:focus-visible::after {
+  outline: 1px solid var(--text-secondary);
 }
 
 /* ─── カードのホバー（.card-hover。動きは src/lib/cardHover.ts） ─────────────
