@@ -23,7 +23,7 @@
 | ルーティング | React Router 7 |
 | グラフ | Recharts 3 (スキルレーダーチャート) |
 | Markdown | react-markdown 10 + remark-gfm |
-| データソース | **Google Sheets API**（バックエンド・DB なし） |
+| データソース | **Google Sheets API**（DB なし。API キーは Vercel Function に置く） |
 | PWA | `vite-plugin-pwa` (Workbox) |
 | ホスティング | Vercel |
 
@@ -115,11 +115,13 @@ runtimeCaching: [
 
 ### 3-4. データ層 (Google Sheets API + Markdown)
 
-このサイトの **一番割り切ったところ** がこの層です。バックエンドはありません。データはすべて Google Sheets の各シート (Profile, Projects, Skills, Timeline) に置いていて、`fetchSheetData()` で REST API 経由で取得しています。
+このサイトの **一番割り切ったところ** がこの層です。自前で運用するサーバーや DB はありません。データはすべて Google Sheets の各シート (Profile, Projects, Skills, Timeline) に置いていて、`fetchSheetData()` で取得しています。
 
 ```ts
-const url = `${BASE_URL}/${SPREADSHEET_ID}/values/${sheetName}?key=${API_KEY}`;
+const response = await fetch(`/api/sheets?sheet=${encodeURIComponent(sheetName)}`);
 ```
+
+`/api/sheets` は Vercel Function で、API キーを付けて Google Sheets の REST API を呼び、行のデータだけを返します。当初はブラウザから Sheets API を直接呼んでいましたが、その形だと **API キーが配信する JS にそのまま入ってしまう** (Vite は `VITE_` 付きの環境変数をビルド時に埋め込む) ため、キーをサーバー側に移しました。読めるシートも関数の中で決め打ちにしています。
 
 返ってくるのは2次元配列なので、1行目をヘッダー扱いしてオブジェクト化し、**`dataMapper.ts` の `mapXxxData()` 関数で型付きオブジェクトに変換** しています。データが増えるたびに Google Sheets の行を追加するだけで反映されるので、**個人運用としてはこれが一番楽** です。
 
