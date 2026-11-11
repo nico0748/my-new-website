@@ -1,6 +1,7 @@
 import { useEffect, useId, useState } from "react";
+import { flushSync } from "react-dom";
 import type { CSSProperties, ReactNode } from "react";
-import { useLocation, useNavigationType, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useNavigationType, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence, useIsPresent } from "framer-motion";
 
 import SiteLayout, { SectionHeading, MoreLink, READABLE_WIDTH } from "../components/layouts/SiteLayout";
@@ -9,6 +10,7 @@ import WorkList from "../components/ui/WorkList";
 import SkillRadarChart from "../components/ui/SkillRadarChart";
 import { skillColor } from "../lib/skillColors";
 import Timeline from "../components/ui/Timeline";
+import TimelineModal from "../components/ui/TimelineModal";
 import OffHoursBoard from "../components/ui/OffHoursBoard";
 import GitHubActivity from "../components/ui/GitHubActivity";
 import Reveal from "../components/ui/Reveal";
@@ -16,7 +18,7 @@ import SocialLinks from "../components/ui/SocialLinks";
 
 import { fetchSheetData } from "../lib/googleSheets";
 import type { SheetRow } from "../lib/googleSheets";
-import { mapSkillsData, mapTimelineData } from "../lib/dataMapper";
+import { mapSkillsData } from "../lib/dataMapper";
 import { fetchProjects, getCachedProjects } from "../lib/projects";
 import type { ProfileData, SkillCategory, TimelineItem, PortfolioItem, ArticleItem } from "../lib/dataMapper";
 import { fetchArticles } from "../lib/articles";
@@ -30,6 +32,8 @@ import { EMPTY_GITHUB_ACTIVITY, fetchGitHubActivity, getCachedGitHubActivity, gi
 import type { GitHubActivity as GitHubActivityData } from "../lib/github";
 import type { OffHoursItem } from "../lib/dataMapper";
 import { scrollToSection } from "../lib/sections";
+import { TIMELINE_PARAM, fetchTimeline, getCachedTimeline, timelineVtName } from "../lib/timeline";
+import { useModalTransitionFlag } from "../lib/modalTransition";
 
 const REAL_NAME = "細澤 悠真";
 
@@ -66,13 +70,49 @@ const useScrollToHash = () => {
   }, [hash, key, navigationType]);
 };
 
+/**
+ * TIMELINE の詳細ポップアップ（?timeline=<id>）。アニメの一覧と同じ開き方:
+ * - 項目を押すと URL に ?timeline= を付けて開く（共有でき、「戻る」で閉じる。?id=real などほかの値は保つ）
+ * - 見出しは項目のタイトルからモーフする。名前を付けるのは最後に開いた項目だけ（押した瞬間に flushSync で付ける）
+ * - 項目から開いたなら閉じると履歴を 1 つ戻す。直リンクで来たときは ?timeline= を外した URL に置き換える
+ */
+const useTimelineModal = (items: TimelineItem[]) => {
+  const [params] = useSearchParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const openId = params.get(TIMELINE_PARAM);
+  const open = openId ? items.find((it) => it.id === openId) : undefined;
+
+  const [focusId, setFocusId] = useState<string | null>(openId);
+  if (openId && openId !== focusId) setFocusId(openId);
+
+  const searchWith = (id: string | null) => {
+    const next = new URLSearchParams(params);
+    if (id) next.set(TIMELINE_PARAM, id);
+    else next.delete(TIMELINE_PARAM);
+    const q = next.toString();
+    return q ? `?${q}` : "";
+  };
+
+  return {
+    open,
+    linkTo: (it: TimelineItem) => ({ search: searchWith(it.id) }),
+    onOpen: (it: TimelineItem) => flushSync(() => setFocusId(it.id)),
+    vtNameOf: (it: TimelineItem) => (it.id === focusId && it.id !== open?.id ? timelineVtName(it.id) : undefined),
+    close: () => {
+      if ((location.state as { from?: string } | null)?.from === "timeline") navigate(-1);
+      else navigate({ search: searchWith(null) }, { replace: true, preventScrollReset: true, viewTransition: true });
+    },
+  };
+};
+
 const PortfolioPage = () => {
   const [profile, setProfile] = useState<ProfileData>(
     () => getCachedProfile() ?? { name: "", title: "", description: "", image: "" }
   );
   const [works, setWorks] = useState<PortfolioItem[]>(() => getCachedProjects() ?? []);
   const [skills, setSkills] = useState<SkillCategory[]>([]);
-  const [timeline, setTimeline] = useState<TimelineItem[]>([]);
+  const [timeline, setTimeline] = useState<TimelineItem[]>(() => getCachedTimeline() ?? []);
   const [articles, setArticles] = useState<ArticleItem[]>([]);
   const [articlesLoaded, setArticlesLoaded] = useState(false);
   const [offHours, setOffHours] = useState<OffHoursItem[]>(() => getCachedOffHours() ?? []);
@@ -84,6 +124,8 @@ const PortfolioPage = () => {
   // Profile シートを読み終えたか（ソーシャルリンクを全件そろってからフェードインさせるため）
   const [profileReady, setProfileReady] = useState(!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY || !!getCachedProfile());
   useScrollToHash();
+  useModalTransitionFlag();
+  const timelineModal = useTimelineModal(timeline);
 
   useEffect(() => {
     fetchArticles()
@@ -98,17 +140,18 @@ const PortfolioPage = () => {
     if (!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY) return;
     (async () => {
       try {
-        const [profileData, worksItems, skillsRows, timelineRows] = await Promise.all([
+        const [profileData, worksItems, skillsRows, timelineItems] = await Promise.all([
           // フッターの SNS リンクと同じ取得を共有する（lib/profile.ts）
           fetchProfile(),
           fetchProjects(),
           fetchSheetData<SheetRow>("Skills"),
-          fetchSheetData<SheetRow>("Timeline"),
+          // 戻る / 進むで TIMELINE とそのポップアップを最初の描画から出すため、取得はキャッシュを共有する（lib/timeline.ts）
+          fetchTimeline(),
         ]);
         if (profileData) setProfile(profileData);
         if (worksItems.length > 0) setWorks(worksItems);
         if (skillsRows.length > 0) setSkills(mapSkillsData(skillsRows));
-        if (timelineRows.length > 0) setTimeline(mapTimelineData(timelineRows));
+        if (timelineItems.length > 0) setTimeline(timelineItems);
       } catch (error) {
         console.error("Failed to fetch data from Google Sheets", error);
       } finally {
@@ -121,6 +164,10 @@ const PortfolioPage = () => {
   // ACTIVITY: WORKS 以外のリポジトリ（Projects を読み終えるまでは出さない）と、活動のあるカレンダー
   const repos = worksReady ? pickRepos(github.repos, works.map((w) => w.repoUrl)) : [];
   const calendar = github.calendar && github.calendar.total > 0 ? github.calendar : null;
+  // Timeline のポップアップが作品ページにつながっているときは、その作品のサムネイルをポップアップに出す
+  const openWork = timelineModal.open?.href?.match(/^\/projects\/([^/?#]+)/)
+    ? works.find((w) => `/projects/${w.id}` === timelineModal.open?.href)
+    : undefined;
 
   return (
     <SiteLayout>
@@ -130,7 +177,11 @@ const PortfolioPage = () => {
         <Reveal>
           <SectionHeading id="works">Works</SectionHeading>
         </Reveal>
-        {works.length > 0 ? <WorkList items={works.slice(0, 6)} /> : <Empty text="作品を読み込んでいます" />}
+        {works.length > 0 ? (
+          <WorkList items={works.slice(0, 6)} vtExclude={openWork?.id} />
+        ) : (
+          <Empty text="作品を読み込んでいます" />
+        )}
         <Reveal>
           <MoreLink to="/projects">すべての作品を見る</MoreLink>
         </Reveal>
@@ -187,7 +238,12 @@ const PortfolioPage = () => {
           <Reveal>
             <SectionHeading id="timeline">Timeline</SectionHeading>
           </Reveal>
-          <Timeline items={timeline} />
+          <Timeline
+            items={timeline}
+            linkTo={timelineModal.linkTo}
+            onOpen={timelineModal.onOpen}
+            vtNameOf={timelineModal.vtNameOf}
+          />
         </section>
       )}
 
@@ -208,6 +264,15 @@ const PortfolioPage = () => {
           </Reveal>
           <OffHoursBoard items={offHours} topTracks={topTracks} anime={anime.works} animeFavorites={anime.favorites} />
         </section>
+      )}
+
+      {timelineModal.open && (
+        <TimelineModal
+          key={timelineModal.open.id}
+          item={timelineModal.open}
+          work={openWork}
+          onClose={timelineModal.close}
+        />
       )}
     </SiteLayout>
   );

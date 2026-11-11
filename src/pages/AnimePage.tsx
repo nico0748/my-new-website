@@ -1,6 +1,6 @@
-import { useContext, useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { flushSync } from "react-dom";
-import { UNSAFE_ViewTransitionContext, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import SiteLayout, { PageTitle, Loading } from "../components/layouts/SiteLayout";
 import AnimeCard from "../components/ui/AnimeCard";
 import AnimeModal from "../components/ui/AnimeModal";
@@ -21,6 +21,7 @@ import {
   toSeasonParam,
 } from "../lib/anime";
 import type { AnimeTab, SeasonFilter } from "../lib/anime";
+import { useModalTransitionFlag } from "../lib/modalTransition";
 
 const PAGE_SIZE = 48;
 
@@ -34,21 +35,6 @@ const searchOf = ({ tab, season, id }: { tab?: AnimeTab | null; season?: string 
   if (id) p.set("id", id);
   const s = p.toString();
   return s ? `?${s}` : "";
-};
-
-/**
- * 同じページの中の View Transition（ポップアップの開閉）の間だけ html[data-vt="modal"] を付ける。
- * index.css がこれを見て、ページ全体のフェードを止める（別ページへの遷移はいつもどおり）。
- * ブラウザの「戻る」で閉じたときにも効くよう、ルーターの遷移の状態から判定する。
- */
-const useModalTransitionFlag = () => {
-  const vt = useContext(UNSAFE_ViewTransitionContext);
-  useLayoutEffect(() => {
-    const html = document.documentElement;
-    if (vt.isTransitioning && vt.currentLocation.pathname === vt.nextLocation.pathname) html.dataset.vt = "modal";
-    else delete html.dataset.vt;
-  }, [vt]);
-  useLayoutEffect(() => () => void delete document.documentElement.dataset.vt, []);
 };
 
 /**

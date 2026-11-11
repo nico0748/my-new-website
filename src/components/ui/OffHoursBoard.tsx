@@ -272,8 +272,10 @@ const OffHoursBoard: React.FC<{
                   animeFavorites={animeFavorites}
                 />
               </div>
+              {/* アニメのカードは /anime のポップアップとのモーフ用に名前を持つので、トップの中のポップアップ（Timeline）の
+                  開閉では名前を外す（vt-pause-in-modal。index.css） */}
               <ul
-                className={`grid gap-3 lg:grid-cols-4 lg:gap-4 ${g.category === "anime" ? "grid-cols-2" : "grid-cols-1 sm:grid-cols-2"}`}
+                className={`grid gap-3 lg:grid-cols-4 lg:gap-4 ${g.category === "anime" ? "vt-pause-in-modal grid-cols-2" : "grid-cols-1 sm:grid-cols-2"}`}
               >
                 {g.cards.map((c, i) => (
                   <li key={c.key} className={i >= LIMIT[g.category].mobile ? "max-sm:hidden" : undefined}>
