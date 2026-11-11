@@ -8,7 +8,7 @@
 
 React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された個人ポートフォリオサイト。
 
-- **データソース**: Google Sheets API（`VITE_GOOGLE_SHEETS_API_KEY`, `VITE_SPREADSHEET_ID`）
+- **データソース**: Google Sheets API。ブラウザからは直接呼ばず、`api/sheets.js`（Vercel Function）を通す。環境変数は `GOOGLE_SHEETS_API_KEY` / `SPREADSHEET_ID`（**`VITE_` を付けない**。付けると API キーが JS に埋め込まれて公開される。2026-11 に指摘を受けて移行）。手順は `SetupGuide.md`
 - **デプロイ**: Vercel（`vercel.json` で SPA リライト設定済み）。**本番は `main` ブランチのみ**、`develop` などその他のブランチは Preview デプロイ
 - **開発サーバー**: `npm run dev` → `http://localhost:5177`
 - **アクセス計測**: GA4（`VITE_GA_MEASUREMENT_ID`）。`src/lib/analytics.ts` の `useAnalytics()` を `App.tsx` で呼び、SPA のルート遷移ごとに `page_view` を送信。**本番ビルド かつ 本番ドメイン（`nico-labo748.dev`）の時だけ有効**（dev と Vercel の Preview では無効）。手順は `docs/ga4-setup.md`
@@ -105,11 +105,17 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 
 ### データフロー
 
-1. `src/lib/googleSheets.ts` で Google Sheets から行データを取得
-2. `src/lib/dataMapper.ts` で型付きオブジェクトに変換
-3. ページコンポーネントで `useState` + `useEffect` により非同期取得
+1. `src/lib/googleSheets.ts` の `fetchSheetData()` が `/api/sheets?sheet=<シート名>` を呼ぶ
+2. `api/sheets.js`（Vercel Function）がキーを付けて Google Sheets API を呼び、`{ values: string[][] }`（1 行目が見出し）だけを返す
+3. `src/lib/dataMapper.ts` で型付きオブジェクトに変換
+4. ページコンポーネントで `useState` + `useEffect` により非同期取得
 
 新しいデータ型を追加する際は `dataMapper.ts` に `interface` と `mapXxx()` 関数を追加する。
+
+- **新しいシートを読むときは `api/sheets.js` の `SHEETS` にシート名を足す**（載っていないシートは 400。サイトで使わないシートを外から読ませないため）
+- `api/sheets.js`: 成功は `public, s-maxage=60, stale-if-error=86400`（シートを直してから 1 分ほどで反映）。失敗は **502 + `no-store`**、GET 以外は 405、`sheet` 以外のクエリ付き・許可していないシートは 400。キーは `X-Goog-Api-Key` ヘッダーで渡し、応答にもログにも出さない。環境変数が無ければ 200 の `{ values: [] }`
+- ローカルの `npm run dev` / `npm run preview` では `scripts/dev/local-sheets-api.mjs`（Vite プラグイン）が同じ関数を動かす（`.env.local` の `GOOGLE_SHEETS_API_KEY` / `SPREADSHEET_ID`）。ほかの `/api/*` はローカルでは動かない
+- ⚠️ **API キー・トークンを `import.meta.env.VITE_*` で読まない**（`VITE_` 付きで置いてよいのは GA の測定 ID のような公開してよい値だけ）
 
 ### コンポーネント配置
 
@@ -164,7 +170,7 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 
 - 列: `date, category, title, subtitle, url, image`。`date` は日付セル（表示 `yyyy-mm-dd`）、`category` はドロップダウン（アニメ / 音楽 / イベント / 同人作品。英字キー `anime` / `music` / `event` / `indie` も可）
 - 取得は `src/lib/offHours.ts` の `fetchOffHours()`（モジュール内キャッシュ）。変換は `dataMapper.ts` の `mapOffHoursData()`。Profile 等の `Promise.all` には入れない（ソーシャルリンクの表示が遅れるため）
-- ⚠️ シートは公開物（API キーがバンドルに入る）。見られて困るものは書かない。表示側でも次を守る:
+- ⚠️ シートは公開物（共有設定が「リンクを知っている全員が閲覧可」で、スプレッドシート ID は 2026-11 まで JS に含まれていた）。見られて困るものは書かない。表示側でも次を守る:
   - 未来の日付は出さない。イベントは当日も出さない（翌日から表示）
   - 同人作品は全年齢のみ。DLsite の URL は全年齢フロア（`home` / `comic` / `soft`）以外なら行ごと捨てる。同人作品の画像は使わない
   - `url` は `https://` のみ、`image` は `https://` か `/off-hours/...`（写真は `public/off-hours/`、EXIF を消す。PWA の precache からは除外済み）

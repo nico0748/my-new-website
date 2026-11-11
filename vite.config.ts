@@ -1,11 +1,14 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import { VitePWA } from 'vite-plugin-pwa'
+import { localSheetsApi } from './scripts/dev/local-sheets-api.mjs'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
+    // npm run dev / preview でも /api/sheets（シートのデータ）を動かす
+    localSheetsApi(mode),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon_io/favicon.ico', 'favicon_io/apple-touch-icon.png', 'sns_icon_round.png'],
@@ -69,9 +72,9 @@ export default defineConfig({
               cacheableResponse: { statuses: [0, 200] },
             },
           },
-          // Google Sheets API
+          // シートのデータ（/api/sheets。オフラインのときだけキャッシュを使う）
           {
-            urlPattern: /^https:\/\/sheets\.googleapis\.com\/.*/i,
+            urlPattern: /\/api\/sheets\?/i,
             handler: 'NetworkFirst',
             options: {
               cacheName: 'google-sheets-cache',
@@ -106,4 +109,4 @@ export default defineConfig({
   server: {
     port: 5177,
   },
-})
+}))

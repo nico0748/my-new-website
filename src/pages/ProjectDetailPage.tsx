@@ -129,10 +129,6 @@ const ProjectDetailPage = () => {
 
   useEffect(() => {
     if (projects) return;
-    if (!import.meta.env.VITE_GOOGLE_SHEETS_API_KEY) {
-      setProjects([]);
-      return;
-    }
     fetchProjects().then(setProjects);
   }, [projects]);
 
