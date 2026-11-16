@@ -1,12 +1,15 @@
 // Vercel Function: SNS のクローラー（Discord / X / Slack など）にだけ、ページごとのプレビュー用 HTML を返す。
 //   vercel.json の rewrites で、User-Agent がクローラーのときだけ /projects/:id などをここへ回す（人には今まで通り SPA）。
-//   GET /api/embed?page=project&id=secowl / ?page=projects / articles / skills / anime
+//   GET /api/embed?page=top / ?page=project&id=secowl / ?page=projects / articles / skills / anime
+//   トップ（/）は静的な index.html が rewrites より優先されるので、middleware.js がクローラーのときだけここへ回す。
 //
 // クローラーは JS を実行しないため、SPA のままだとどのページもトップの OGP になる。ここで index.html の
 // title / description / og:* を差し替え、Discord 向けの Component Embed（api/_lib/embed.js）を入れて返す。
 // 作品の情報は Projects シートから読む（api/sheets.js と同じ環境変数。読めなければ作品一覧の内容で返す）。
 
-import { SITE, SITE_NAME, applyMeta, setComponentEmbed, projectEmbed, pageEmbed, absUrl, clip } from "./_lib/embed.js";
+import {
+  SITE, SITE_NAME, DEFAULT_DESCRIPTION, applyMeta, setComponentEmbed, projectEmbed, pageEmbed, richTopEmbed, absUrl, clip,
+} from "./_lib/embed.js";
 
 const PAGES = {
   projects: { kicker: "Works", title: "Works", description: "これまでに作ったアプリケーションやサイトの一覧です。", path: "/projects" },
@@ -44,37 +47,122 @@ async function loadBaseHtml(req) {
 </html>`;
 }
 
-/** Projects シートから 1 作品を読む。見つからない・読めないときは null */
-async function loadProject(id) {
+/** シートを読んで、1 行目を見出しにしたオブジェクトの配列にする。読めなければ空配列 */
+async function readSheet(name) {
   const key = process.env.GOOGLE_SHEETS_API_KEY || process.env.VITE_GOOGLE_SHEETS_API_KEY;
   const sheetId = process.env.SPREADSHEET_ID || process.env.VITE_SPREADSHEET_ID;
-  if (!key || !sheetId) return null;
+  if (!key || !sheetId) return [];
   try {
     const r = await fetch(
-      `https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(sheetId)}/values/Projects`,
+      `https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(sheetId)}/values/${encodeURIComponent(name)}`,
       { headers: { "X-Goog-Api-Key": key }, signal: AbortSignal.timeout(5000) }
     );
     if (!r.ok) throw new Error(`values ${r.status}`);
     const [head = [], ...rows] = (await r.json())?.values ?? [];
-    const row = rows.find((cells) => cells[head.indexOf("id")] === id);
-    if (!row) return null;
-    const get = (k) => (head.indexOf(k) >= 0 ? String(row[head.indexOf(k)] ?? "").trim() : "");
-    const list = (k) => get(k).split(",").map((t) => t.trim()).filter(Boolean);
-    return {
-      id,
-      title: get("title") || id,
-      description: get("description"),
-      thumbnail: get("thumbnail"),
-      images: list("images"),
-      tags: list("tags"),
-      liveUrl: get("liveUrl"),
-      repoUrl: get("repoUrl"),
-      period: get("period"),
-    };
+    return rows.map((cells) => Object.fromEntries(head.map((h, i) => [String(h).trim(), String(cells[i] ?? "").trim()])));
   } catch (e) {
-    console.error("[embed]", e instanceof Error ? `${e.name}: ${e.message}` : e);
+    console.error("[embed]", name, e instanceof Error ? `${e.name}: ${e.message}` : e);
+    return [];
+  }
+}
+
+const list = (v) => (v || "").split(",").map((t) => t.trim()).filter(Boolean);
+
+const toProject = (row) => ({
+  id: row.id,
+  title: row.title || row.id,
+  description: row.description,
+  thumbnail: row.thumbnail,
+  images: list(row.images),
+  tags: list(row.tags),
+  liveUrl: row.liveUrl,
+  repoUrl: row.repoUrl,
+  period: row.period,
+});
+
+/** Projects シートから 1 作品を読む。見つからない・読めないときは null */
+async function loadProject(id) {
+  const row = (await readSheet("Projects")).find((r) => r.id === id);
+  return row ? toProject(row) : null;
+}
+
+const originOf = (req) => {
+  const host = req.headers?.["x-forwarded-host"] || req.headers?.host;
+  return host ? `${req.headers?.["x-forwarded-proto"] || "https"}://${host}` : SITE;
+};
+
+const getJson = async (url) => {
+  try {
+    const r = await fetch(url, { headers: { accept: "application/json" }, signal: AbortSignal.timeout(4000) });
+    return r.ok ? await r.json() : null;
+  } catch {
     return null;
   }
+};
+
+/** 掲載先の名前（src/lib/dataMapper.ts の detectPlatform と同じ） */
+const platformOf = (url) => {
+  const host = new URL(url).hostname.replace(/^www\./, "");
+  const known = [["qiita.com", "Qiita"], ["zenn.dev", "Zenn"], ["note.com", "note"], ["speakerdeck.com", "Speaker Deck"], ["medium.com", "Medium"]];
+  return known.find(([h]) => host.endsWith(h))?.[1] ?? (host.includes("hatena") ? "はてなブログ" : host);
+};
+
+/** "2026年夏" → 20263（並べ替え用。src/lib/dataMapper.ts の seasonRank と同じ） */
+const seasonRank = (t) => {
+  const m = /(\d{4})\s*年?\s*(冬|春|夏|秋)?/.exec(t || "");
+  return m ? Number(m[1]) * 10 + (m[2] ? "冬春夏秋".indexOf(m[2]) + 1 : 0) : -1;
+};
+
+/** トップの埋め込みに載せる、サイトのいまの中身。どれかが読めなくても残りで作る */
+async function loadTop(req) {
+  const [profileRows, projects, sheetArticles, watching, watched, qiita, spotify] = await Promise.all([
+    readSheet("Profile"),
+    readSheet("Projects"),
+    readSheet("Articles"),
+    readSheet("all-watching-anime"),
+    readSheet("all-watched-anime"),
+    getJson("https://qiita.com/api/v2/users/nico0748/items?per_page=10"),
+    getJson(`${originOf(req)}/api/spotify`),
+  ]);
+  const profile = Object.fromEntries(profileRows.filter((r) => r.key).map((r) => [r.key, r.value]));
+
+  const works = projects
+    .filter((r) => r.id && r.title)
+    .slice(0, 4)
+    .map((r) => ({ title: r.title, url: `${SITE}/projects/${encodeURIComponent(r.id)}`, description: r.description, image: r.thumbnail }));
+
+  const articles = [
+    ...(Array.isArray(qiita) ? qiita : [])
+      .filter((i) => !i.private && i.url && i.title)
+      .map((i) => ({ title: i.title, url: i.url, platform: "Qiita", date: String(i.created_at ?? "").slice(0, 10) })),
+    ...sheetArticles
+      .filter((r) => r.title && /^https:\/\//.test(r.url))
+      .map((r) => ({ title: r.title, url: r.url, platform: r.platform || platformOf(r.url), date: r.date.slice(0, 10) })),
+  ]
+    .filter((a, i, all) => all.findIndex((b) => b.url === a.url) === i)
+    .sort((a, b) => (a.date < b.date ? 1 : -1))
+    .slice(0, 3);
+
+  const tracks = (Array.isArray(spotify?.tracks) ? spotify.tracks : [])
+    .filter((t) => t?.title)
+    .slice(0, 3)
+    .map((t) => ({ title: t.title, artists: t.artists, url: /^https:\/\/open\.spotify\.com\//.test(t.url ?? "") ? t.url : "" }));
+
+  const watchingIds = new Set(watching.map((w) => w.id));
+  const anime = [...watching, ...watched.filter((w) => !watchingIds.has(w.id))]
+    .filter((w) => w.id && w.title && /^(true|1)$/i.test(w.isFavorite || ""))
+    .sort((a, b) => seasonRank(b.release_season) - seasonRank(a.release_season) || Number(b.id) - Number(a.id))
+    .slice(0, 3)
+    .map((w) => ({ title: w.title, season: w.release_season, url: `${SITE}/anime?tab=favorite&id=${encodeURIComponent(w.id)}` }));
+
+  return {
+    bio: profile.description || DEFAULT_DESCRIPTION,
+    works,
+    articles,
+    tracks,
+    anime,
+    links: { xUrl: absUrl(profile.xUrl), githubUrl: absUrl(profile.githubUrl), qiitaUrl: absUrl(profile.qiitaUrl) },
+  };
 }
 
 export default async function handler(req, res) {
@@ -83,6 +171,13 @@ export default async function handler(req, res) {
 
   let meta;
   let embed;
+  if (page === "top") {
+    const top = await loadTop(req);
+    const html = setComponentEmbed(await loadBaseHtml(req), richTopEmbed(top));
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+    res.setHeader("Cache-Control", "public, s-maxage=3600, stale-while-revalidate=86400");
+    return res.status(200).send(html);
+  }
   const project = page === "project" && ID_RE.test(id) ? await loadProject(id) : null;
   if (project) {
     const url = `${SITE}/projects/${encodeURIComponent(project.id)}`;
