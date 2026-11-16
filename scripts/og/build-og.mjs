@@ -17,6 +17,7 @@ import { readFileSync, readdirSync, writeFileSync, mkdirSync, existsSync } from 
 import { join, dirname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { createRequire } from "node:module";
+import { applyMeta, setComponentEmbed, pageEmbed } from "../../api/_lib/embed.js";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = process.env.OG_ROOT ?? join(HERE, "..", "..");
@@ -284,9 +285,6 @@ const ogImage = async ({ accent, kicker, title, sub, iconDomain }) => {
 
 /* ---------- 6. HTML メタ差し替え ---------- */
 
-const esc = (s) =>
-  s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
 const indexHtmlPath = join(DIST, "index.html");
 if (!existsSync(indexHtmlPath)) {
   console.error(`dist/index.html がありません。先に vite build を実行してください: ${indexHtmlPath}`);
@@ -294,22 +292,12 @@ if (!existsSync(indexHtmlPath)) {
 }
 const baseHtml = readFileSync(indexHtmlPath, "utf8");
 
-const replaceMeta = (html, re, replacement) => {
-  if (!re.test(html)) console.warn(`⚠ index.html にメタタグが見つかりません: ${re}`);
-  return html.replace(re, replacement);
-};
-
-const buildHtml = ({ title, desc, url, image, type }) => {
-  let out = baseHtml;
-  out = replaceMeta(out, /<title>[\s\S]*?<\/title>/, `<title>${esc(title)}</title>`);
-  out = replaceMeta(out, /(<meta name="description" content=")[^"]*(")/, `$1${esc(desc)}$2`);
-  out = replaceMeta(out, /(<meta property="og:type" content=")[^"]*(")/, `$1${type}$2`);
-  out = replaceMeta(out, /(<meta property="og:title" content=")[^"]*(")/, `$1${esc(title)}$2`);
-  out = replaceMeta(out, /(<meta property="og:description" content=")[^"]*(")/, `$1${esc(desc)}$2`);
-  out = replaceMeta(out, /(<meta property="og:url" content=")[^"]*(")/, `$1${url}$2`);
-  out = replaceMeta(out, /(<meta property="og:image" content=")[^"]*(")/, `$1${image}$2`);
-  return out;
-};
+// メタタグの差し替えと Discord の Component Embed は、作品ページ（api/embed.js）と同じ部品で作る
+const buildHtml = ({ title, desc, url, image, type, kicker, accent }) =>
+  setComponentEmbed(
+    applyMeta(baseHtml, { title, description: desc, url, type, image: { url: image, width: 1200, height: 630, alt: title } }),
+    pageEmbed({ kicker, title, description: desc, url, image, accent })
+  );
 
 const emit = (relDir, png, html) => {
   if (png) {
@@ -328,7 +316,7 @@ let count = 0;
 // /nicotech ランディング
 {
   const png = await ogImage({ accent: "#26313f", kicker: "Learn", title: "IT 教材ライブラリ", sub: LANDING_DESC, iconDomain: null });
-  const html = buildHtml({ title: LANDING_TITLE, desc: LANDING_DESC, url: `${SITE}/${BASE}`, image: `${SITE}/${BASE}/og/${BASE}.png`, type: "website" });
+  const html = buildHtml({ title: LANDING_TITLE, desc: LANDING_DESC, url: `${SITE}/${BASE}`, image: `${SITE}/${BASE}/og/${BASE}.png`, type: "website", kicker: BRAND, accent: "#22b0a0" });
   mkdirSync(join(DIST, BASE, "og"), { recursive: true });
   writeFileSync(join(DIST, BASE, "og", `${BASE}.png`), png);
   mkdirSync(join(DIST, BASE), { recursive: true });
@@ -347,6 +335,8 @@ for (const domain of domains) {
     url: `${SITE}/${BASE}/${domain}`,
     image: `${SITE}/${BASE}/og/${domain}.png`,
     type: "website",
+    kicker: `${BRAND} ／ コース`,
+    accent: style.accent,
   }));
   count++;
 
@@ -365,6 +355,8 @@ for (const domain of domains) {
       url: `${SITE}/${BASE}/${domain}/${a.id}`,
       image: `${SITE}/${BASE}/og/${domain}/${a.id}.png`,
       type: "article",
+      kicker: `${BRAND} ／ ${style.label}${sec ? ` — ${sec}` : ""}`,
+      accent: style.accent,
     }));
     count++;
   }

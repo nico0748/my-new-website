@@ -10,15 +10,24 @@
     <meta name="author" content="nico" />
     <!-- 設定 -->
     <meta name="format-detection" content="telephone=no,email=no,address=no">
-    <!-- SNS向け -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="NICOLABO -にこラボ-">
-    <meta property="og:description" content="NICOLABO -にこラボ- ホビーサイトです。 プロフィールや作品を紹介しています。">
-    <meta property="og:url" content="https://nico-labo748.dev">
-    <meta property="og:image" content="https://github.com/nico0748/my-new-website/blob/main/public/site_ogp3.webp?raw=true">
-    <meta name="twitter:card" content="summary_large_image">
-    <!--<meta name="twitter:site" content="@{{ twitter id }}"> -->
-    <!--<meta name="twitter:creator" content="@{{ twitter id }}"> -->
+    <!-- SNS向け（リンクのプレビュー）。ページごとの内容は api/embed.js がクローラーにだけ返す -->
+    <meta property="og:site_name" content="NICOLABO -にこラボ-" />
+    <meta property="og:locale" content="ja_JP" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="NICOLABO -にこラボ-" />
+    <meta property="og:description" content="NICOLABO -にこラボ- ホビーサイトです。 プロフィールや作品を紹介しています。" />
+    <meta property="og:url" content="https://nico-labo748.dev/" />
+    <meta property="og:image" content="https://nico-labo748.dev/site_ogp3.webp" />
+    <meta property="og:image:width" content="3008" />
+    <meta property="og:image:height" content="1575" />
+    <meta property="og:image:alt" content="NICOLABO -にこラボ-" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@nicolabo0748" />
+    <meta name="twitter:creator" content="@nicolabo0748" />
+    <meta name="twitter:image" content="https://nico-labo748.dev/site_ogp3.webp" />
+    <!-- Discord の埋め込みの「作者」と「サイト名」の行（oEmbed） -->
+    <link rel="alternate" type="application/json+oembed" href="https://nico-labo748.dev/oembed.json" title="NICOLABO -にこラボ-" />
+    <!-- Discord の Component Embed（トップ用）はビルド時に vite.config.ts が差し込む -->
     <title>NICOLABO -にこラボ-</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

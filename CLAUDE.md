@@ -193,6 +193,17 @@ React 19 + TypeScript + Vite + Tailwind CSS + Framer Motion で構築された�
 - 型（`GitHubRepo` / `ContributionDay` / `ContributionCalendar` / `GitHubActivity`）は `src/lib/github.ts` に置く（API 由来の型は lib 側。`dataMapper.ts` はシートの行用）
 - PWA の Service Worker は `/api/*` を index.html に差し替えない（`vite.config.ts` の `navigateFallbackDenylist`。/api/spotify・/api/ogp も同じ）
 
+## リンクのプレビュー（OGP / Discord）
+
+SNS や Discord に URL を貼ったときのプレビュー。クローラーは JS を実行しないので、タグはサーバーが返す HTML に入れる。仕様は Discord の公式ドキュメント（Link Previews / Component Embeds）。
+
+- **共通部品** `api/_lib/embed.js`（`_` で始まるフォルダは Vercel Function にならない）: メタタグの差し替え `applyMeta()` と、Discord の **Component Embed**（`<script id="discord:component-embed" type="application/json">`。Container 1 つ・3,000 バイトまで・ボタンはリンクだけ。不正だと丸ごと捨てられ OGP のプレビューに戻る）を作る `topEmbed()` / `projectEmbed()` / `pageEmbed()`。左の帯はサンド（`ACCENT`）。シートの文字列は Discord の markdown をエスケープして入れる
+- **トップ**: `index.html` の OGP（`og:site_name`・画像の寸法と alt・`twitter:*`）に、ビルド時 `vite.config.ts` の `discordEmbed()` が Component Embed を差し込む（アバター・紹介・OGP 画像・Works / Articles / GitHub / X / Qiita のボタン）
+- **oEmbed** `public/oembed.json`: Discord の「作者」（nico → X）と「サイト名」の行。全ページ共通
+- **作品詳細・一覧**: `vercel.json` の rewrites で、User-Agent がクローラー（Discordbot / Twitterbot / Slackbot / facebookexternalhit など）のときだけ `/projects/:id`・`/projects`・`/articles`・`/skills`・`/anime` を `api/embed.js` へ回す（人には今まで通り SPA）。関数は本物の `index.html` を読んでメタタグと Component Embed を差し替えて返す。作品は Projects シートから読み（タイトル・説明・期間・タグ・サムネイルと画像 4 枚まで・作品ページ / デモ / GitHub のボタン）、見つからなければ作品一覧の内容。CDN 1 時間キャッシュ。一覧ページを足したら `api/embed.js` の `PAGES` と `vercel.json` に足す
+- **nicoTech**: `scripts/og/build-og.mjs` が静的 HTML を出すときに同じ部品で OGP と Component Embed（色はコースの accent）を入れる
+- 確認は Discord の Embed Debugger（https://discord.com/developers/embeds）。Discord はプレビューを 30 分ほどキャッシュするので、直したあとは `?v=2` などを付けて貼り直す
+
 ## Timeline シート
 
 - 列: `start, end, title, description, type, href, id, org, detail, links, tags`（後ろの 5 列は詳細ポップアップ用。2026-11 追加）
