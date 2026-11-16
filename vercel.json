@@ -1,6 +1,16 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "rewrites": [
+    {
+      "source": "/projects/:id",
+      "has": [{ "type": "header", "key": "user-agent", "value": ".*(Discordbot|Twitterbot|Slackbot|facebookexternalhit|LinkedInBot|TelegramBot|Bluesky|Misskey|Mastodon).*" }],
+      "destination": "/api/embed?page=project&id=:id"
+    },
+    {
+      "source": "/:page(projects|articles|skills|anime)",
+      "has": [{ "type": "header", "key": "user-agent", "value": ".*(Discordbot|Twitterbot|Slackbot|facebookexternalhit|LinkedInBot|TelegramBot|Bluesky|Misskey|Mastodon).*" }],
+      "destination": "/api/embed?page=:page"
+    },
     { "source": "/((?!api/|_next/|assets/|.*\\..*).*)", "destination": "/" }
   ]
 }

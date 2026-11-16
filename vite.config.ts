@@ -1,7 +1,25 @@
-import { defineConfig } from 'vite'
+import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import { VitePWA } from 'vite-plugin-pwa'
 import { localSheetsApi } from './scripts/dev/local-sheets-api.mjs'
+import { topEmbed, componentEmbedScript } from './api/_lib/embed.js'
+
+/**
+ * トップ（index.html）に Discord の Component Embed を差し込む。リンクを Discord に貼ると、
+ * アバター・紹介文・OGP 画像・Works / GitHub などのボタンが付いた埋め込みになる。
+ * 下層ページの分は api/embed.js がクローラーにだけ返す（作り方は api/_lib/embed.js で共通）。
+ */
+const discordEmbed = (): Plugin => ({
+  name: 'discord-component-embed',
+  transformIndexHtml(html) {
+    const payload = topEmbed({
+      xUrl: 'https://x.com/nicolabo0748',
+      githubUrl: 'https://github.com/nico0748',
+      qiitaUrl: 'https://qiita.com/nico0748',
+    })
+    return payload ? html.replace('</head>', `    ${componentEmbedScript(payload)}\n  </head>`) : html
+  },
+})
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -9,6 +27,7 @@ export default defineConfig(({ mode }) => ({
     react(),
     // npm run dev / preview でも /api/sheets（シートのデータ）を動かす
     localSheetsApi(mode),
+    discordEmbed(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon_io/favicon.ico', 'favicon_io/apple-touch-icon.png', 'sns_icon_round.png'],
