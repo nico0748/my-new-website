@@ -111,6 +111,97 @@ export const topEmbed = ({ xUrl, githubUrl, qiitaUrl } = {}) =>
     DEFAULT_DESCRIPTION
   );
 
+/**
+ * トップページ（クローラー向けに api/embed.js が返す、サイトのいまの中身入り）。
+ * 自己紹介・作品（文と画像）・最近の記事・よく聴いている曲・お気に入りのアニメ・ボタン。
+ * 3,000 バイトに収まるまで、説明を短くする → リンクを外す → 件数を減らす → 節を外す、の順に削る。
+ * 読めなかった節（空配列）は出さない。
+ *
+ * @param {{ bio?: string, works?: {title:string,url:string,description?:string,image?:string}[],
+ *   articles?: {title:string,url:string,platform?:string,date?:string}[],
+ *   tracks?: {title:string,artists?:string,url?:string}[], anime?: {title:string,url?:string,season?:string}[],
+ *   links?: { xUrl?: string, githubUrl?: string, qiitaUrl?: string } }} data
+ */
+export const richTopEmbed = ({ bio = "", works = [], articles = [], tracks = [], anime = [], links: social = {} }) => {
+  const dot = (d) => (/^\d{4}-\d{2}-\d{2}/.test(d ?? "") ? d.slice(0, 10).replace(/-/g, ".") : "");
+  const link = (label, url, on = true) => (on && url ? `[${md(label)}](${url})` : md(label));
+
+  const build = (o) => {
+    const parts = [];
+    parts.push({
+      type: 9,
+      components: [text(`## [${md(SITE_NAME)}](${SITE}/)${o.bio && bio ? `\n${md(clip(bio, o.bio))}` : ""}`)],
+      accessory: { type: 11, media: { url: AVATAR }, description: AUTHOR },
+    });
+    const ws = works.slice(0, o.works);
+    if (ws.length) {
+      const lines = ws.map((w) => {
+        // 説明は最初の 1 文（シートでは「脆弱性調査支援アプリケーション。…」のように先頭が作品の種類）
+        const first = (w.description ?? "").split(/(?<=[。.!?！？])/)[0];
+        const d = o.workDesc && first ? `: ${md(clip(first, o.workDesc))}` : "";
+        return `- ${link(w.title, w.url)}${d}`;
+      });
+      parts.push(text(`### 作品\n${lines.join("\n")}`));
+      const imgs = ws.map((w) => absUrl(w.image)).filter(Boolean);
+      if (imgs.length && o.gallery) parts.push(gallery(imgs));
+    }
+    const as = articles.slice(0, o.articles);
+    if (as.length) {
+      const lines = as.map((a) => {
+        const meta = [a.platform, dot(a.date)].filter(Boolean).join(" · ");
+        return `${link(clip(a.title, o.titleLen), a.url)}${meta ? `\n-# ${md(meta)}` : ""}`;
+      });
+      parts.push(text(`### 最近の記事\n${lines.join("\n")}`));
+    }
+    const ts = o.music ? tracks.slice(0, 3) : [];
+    if (ts.length) {
+      const lines = ts.map(
+        (t, i) => `${i + 1}. ${link(clip(t.title, o.titleLen), t.url, o.musicLinks)}${t.artists ? ` — ${md(clip(t.artists, 24))}` : ""}`
+      );
+      parts.push(text(`### よく聴いている曲\n${lines.join("\n")}\n-# Spotify · 直近 4 週間`));
+    }
+    const an = o.anime ? anime.slice(0, 3) : [];
+    if (an.length) {
+      const lines = an.map(
+        (w, i) => `${i + 1}. ${link(clip(w.title, o.titleLen), w.url, o.animeLinks)}${w.season ? `（${md(w.season)}）` : ""}`
+      );
+      parts.push(text(`### お気に入りのアニメ\n${lines.join("\n")}`));
+    }
+    parts.push(
+      buttons(
+        links([
+          { label: "Works", url: `${SITE}/projects` },
+          { label: "Articles", url: `${SITE}/articles` },
+          { label: "Anime", url: anime.length ? `${SITE}/anime` : "" },
+          { label: "GitHub", url: social.githubUrl },
+          { label: "X", url: social.xUrl },
+        ])
+      )
+    );
+    return container(parts);
+  };
+
+  const full = { bio: 90, works: 4, workDesc: 30, gallery: true, articles: 3, titleLen: 40, music: true, musicLinks: true, anime: true, animeLinks: true };
+  const steps = [
+    {},
+    { workDesc: 20, titleLen: 34 },
+    { musicLinks: false },
+    { animeLinks: false },
+    { workDesc: 0, bio: 60, titleLen: 28 },
+    { articles: 2, works: 3 },
+    { bio: 0, gallery: false },
+    { anime: false },
+    { music: false },
+  ];
+  let o = { ...full };
+  for (const step of steps) {
+    o = { ...o, ...step };
+    const payload = build(o);
+    if (bytes(payload) <= MAX_BYTES) return payload;
+  }
+  return topEmbed(social);
+};
+
 /** 作品の詳細ページ（/projects/:id） */
 export const projectEmbed = (p) => {
   const pageUrl = `${SITE}/projects/${encodeURIComponent(p.id)}`;
