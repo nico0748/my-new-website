@@ -53,6 +53,16 @@ export interface TimelineItem {
     links: TimelineLink[];
     /** 使った技術・分野など。シートではカンマ区切り */
     tags: string[];
+    /** ポップアップの写真。シートの images 列で 1 行に 1 枚「キャプション | 画像 URL」（キャプションは省略可） */
+    photos: TimelinePhoto[];
+    /** 写真の出典（imageCredit 列「出典の名前 | 出典ページの URL」。URL は省略可） */
+    photoCredit?: { label: string; url?: string };
+}
+
+/** Timeline のポップアップの写真。src は https:// かサイト内パス（public/timeline/ など）だけ。 */
+export interface TimelinePhoto {
+    src: string;
+    caption: string;
 }
 
 export interface ProfileData {
@@ -173,6 +183,16 @@ const parseTimelineLinks = (v: string): TimelineLink[] =>
         })
         .filter((l): l is TimelineLink => l !== null);
 
+/** imageCredit 列: 「出典の名前 | URL」か、名前だけ。URL が使えないものなら名前だけにする。 */
+const parseCredit = (v: string): TimelineItem["photoCredit"] => {
+    const parts = v.split(/[|｜]/).map((t) => t.trim()).filter(Boolean);
+    if (parts.length === 0) return undefined;
+    const last = parts[parts.length - 1];
+    if (parts.length > 1 && isSafeLink(last)) return { label: parts.slice(0, -1).join(" | "), url: last };
+    if (isSafeLink(last)) return { label: "", url: last };
+    return { label: parts.join(" | ") };
+};
+
 /** id 列が空のときの id（start とタイトルから。行の並びが変わっても変わらない）。 */
 const fallbackTimelineId = (start: string, title: string) => {
     let h = 5381;
@@ -182,7 +202,7 @@ const fallbackTimelineId = (start: string, title: string) => {
 
 /**
  * Timeline シート: start, end, title, description, type, href（旧 year 列にも対応）と、
- * ポップアップ用の id, org, detail, links, tags。新しい順に並べる。
+ * ポップアップ用の id, org, detail, links, tags, images, imageCredit。新しい順に並べる。
  */
 export const mapTimelineData = (rows: SheetRow[]): TimelineItem[] => {
     return rows
@@ -205,6 +225,9 @@ export const mapTimelineData = (rows: SheetRow[]): TimelineItem[] => {
                 detail: (row.detail || "").trim() || undefined,
                 links: parseTimelineLinks(row.links || ""),
                 tags: row.tags ? row.tags.split(/[,、]/).map((t) => t.trim()).filter(Boolean) : [],
+                // 書式はリンクと同じ（1 行に 1 つ、URL が最後）。使えない URL の行は捨てる
+                photos: parseTimelineLinks(row.images || "").map((l) => ({ src: l.url, caption: l.label })),
+                photoCredit: parseCredit(row.imageCredit || ""),
             };
         })
         .sort((a, b) => (a.start < b.start ? 1 : a.start > b.start ? -1 : 0));

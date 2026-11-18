@@ -3,6 +3,7 @@ import type { AnimeWork } from "../../lib/dataMapper";
 import { ANIME_STATUS_LABEL, animeVtName, annictWorkUrl } from "../../lib/anime";
 import { AnimeThumb } from "./AnimeCard";
 import Modal from "./Modal";
+import ExternalIcon from "./ExternalIcon";
 
 /** 詳細の 1 行（値が無ければ出さない）。 */
 const Row: React.FC<{ label: string; children?: React.ReactNode }> = ({ label, children }) =>
@@ -19,7 +20,7 @@ const Row: React.FC<{ label: string; children?: React.ReactNode }> = ({ label, c
 
 const ExternalLink: React.FC<{ href: string; children: React.ReactNode }> = ({ href, children }) => (
   <a href={href} target="_blank" rel="noopener noreferrer" className="link-quiet text-[15px]">
-    {children} <span aria-hidden>↗</span>
+    {children} <ExternalIcon />
   </a>
 );
 

@@ -86,7 +86,7 @@ export const timelineVtName = (id: string) => {
 
 /** ポップアップに出すものがあるか（タイトルだけの項目は押せないままにする）。 */
 export const hasTimelineDetail = (it: TimelineItem) =>
-  !!(it.description || it.detail || it.org || it.href || it.links.length > 0 || it.tags.length > 0);
+  !!(it.description || it.detail || it.org || it.href || it.links.length > 0 || it.tags.length > 0 || it.photos.length > 0);
 
 /** ポップアップの URL パラメータ名（トップの ?id=real と並べて使うので id は避ける）。 */
 export const TIMELINE_PARAM = "timeline";
