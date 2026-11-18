@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import type { To } from "react-router-dom";
 import { Tv } from "lucide-react";
+import ExternalIcon from "./ExternalIcon";
 
 /**
  * 横長（40:21 ≒ OGP 画像の比率）の枠に収めるサムネイル。
@@ -111,7 +112,7 @@ const AnimeCard: React.FC<{
           {title}
           {link && "href" in link && (
             <span aria-hidden className="ml-1.5 text-[13px]" style={{ color: "var(--text-muted)" }}>
-              ↗
+              <ExternalIcon />
             </span>
           )}
         </span>

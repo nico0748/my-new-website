@@ -6,6 +6,7 @@ import SiteLayout, { Loading } from "../components/layouts/SiteLayout";
 import { fetchProjects, getCachedProjects, projectVtName } from "../lib/projects";
 import type { PortfolioItem } from "../lib/dataMapper";
 import WorkBody from "../components/works/WorkBody";
+import ExternalIcon from "../components/ui/ExternalIcon";
 
 const isUrl = (u?: string): u is string => !!u && /^https?:\/\//.test(u);
 const isImage = (u?: string): u is string => !!u && /\.(png|jpe?g|webp|gif|svg|avif)$/i.test(u);
@@ -195,14 +196,14 @@ const ProjectDetailPage = () => {
                       {isUrl(project.liveUrl) && (
                         <li>
                           <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="link-quiet">
-                            Website ↗
+                            Website <ExternalIcon />
                           </a>
                         </li>
                       )}
                       {isUrl(project.repoUrl) && (
                         <li>
                           <a href={project.repoUrl} target="_blank" rel="noopener noreferrer" className="link-quiet break-all">
-                            {project.repoUrl.replace(/^https:\/\/github\.com\//, "GitHub: ")} ↗
+                            {project.repoUrl.replace(/^https:\/\/github\.com\//, "GitHub: ")} <ExternalIcon />
                           </a>
                         </li>
                       )}
