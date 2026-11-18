@@ -6,6 +6,7 @@ import type { ProfileData } from "../../lib/dataMapper";
 import { fetchProfile, getCachedProfile, socialLinksOf, SOCIAL_NAMES } from "../../lib/profile";
 import { PAGES, SECTIONS, currentSectionOf, prefersReducedMotion, scrollToSection } from "../../lib/sections";
 import type { SectionId } from "../../lib/sections";
+import ExternalIcon from "../ui/ExternalIcon";
 
 /** ページ全体のコンテナ幅と左右の余白。カードの一覧はこの幅いっぱいに並べる。 */
 export const CONTENT_WIDTH = "max-w-[1080px] px-5 sm:px-8 lg:px-10";
@@ -215,7 +216,7 @@ const SiteFooter: React.FC = () => {
               <a href={l.url} target="_blank" rel="noopener noreferrer" className="link-quiet">
                 {SOCIAL_NAMES[l.kind]}{" "}
                 <span aria-hidden className="text-[13px]">
-                  ↗
+                  <ExternalIcon />
                 </span>
               </a>
             </li>
@@ -268,7 +269,7 @@ export const MoreLink: React.FC<{ to: string; children: React.ReactNode; externa
   const cls = "inline-flex items-center gap-1.5 mt-8 text-[15px] link-accent";
   return external ? (
     <a href={to} target="_blank" rel="noopener noreferrer" className={cls}>
-      {children} <span aria-hidden>↗</span>
+      {children} <ExternalIcon />
     </a>
   ) : (
     <Link to={to} viewTransition className={cls}>

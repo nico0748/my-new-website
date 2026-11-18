@@ -34,6 +34,7 @@ import type { OffHoursItem } from "../lib/dataMapper";
 import { scrollToSection } from "../lib/sections";
 import { TIMELINE_PARAM, fetchTimeline, getCachedTimeline, timelineVtName } from "../lib/timeline";
 import { useModalTransitionFlag } from "../lib/modalTransition";
+import ExternalIcon from "../components/ui/ExternalIcon";
 
 const REAL_NAME = "細澤 悠真";
 
@@ -385,7 +386,7 @@ const Intro = ({ profile, ready }: { profile: ProfileData; ready: boolean }) => 
           )}
           {profile.blogUrl && (
             <a href={profile.blogUrl} target="_blank" rel="noopener noreferrer" className="link-quiet mt-8 inline-block text-[15px]">
-              Blog ↗
+              Blog <ExternalIcon />
             </a>
           )}
         </div>

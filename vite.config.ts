@@ -62,8 +62,9 @@ export default defineConfig(({ mode }) => ({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2}'],
-        // 趣味の記録（OFF-HOURS）の写真は増え続けるので precache せず、表示されたものだけ runtime でキャッシュする
-        globIgnores: ['off-hours/**'],
+        // 趣味の記録（OFF-HOURS）の写真は増え続けるので precache せず、表示されたものだけ runtime でキャッシュする。
+        // Timeline のポップアップの写真（public/timeline/）も開いたときにしか使わないので precache しない
+        globIgnores: ['off-hours/**', 'timeline/**'],
         // /api/*（Vercel Function）は SPA の index.html に差し替えない。SW の入ったブラウザで /api/github などを直接開くと
         // 関数の応答ではなく index.html が返ってしまうため
         navigateFallbackDenylist: [/^\/api\//],

@@ -3,6 +3,7 @@ import { CalendarDays, FolderGit2 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { ContributionCalendar, ContributionDay, GitHubRepo } from "../../lib/github";
 import Reveal from "./Reveal";
+import ExternalIcon from "./ExternalIcon";
 
 /** スマホ（md 未満）で出す週の数（直近半年）。 */
 const MOBILE_WEEKS = 26;
@@ -158,7 +159,7 @@ const RepoCard: React.FC<{ repo: GitHubRepo }> = ({ repo }) => (
         </span>
       )}
       <span aria-hidden className="ml-auto opacity-0 transition-opacity group-hover:opacity-100">
-        ↗
+        <ExternalIcon />
       </span>
     </span>
   </a>

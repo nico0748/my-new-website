@@ -3,6 +3,7 @@ import type { ArticleItem } from "../../lib/dataMapper";
 import { formatJaDate } from "../../lib/articles";
 import { fetchOgpImage } from "../../lib/ogp";
 import Reveal from "./Reveal";
+import ExternalIcon from "./ExternalIcon";
 
 /** OGP 画像。取得中・取得できない場合はタイトルを置いた静かなプレースホルダー。 */
 const OgpImage: React.FC<{ item: ArticleItem }> = ({ item }) => {
@@ -61,7 +62,7 @@ const ArticleList: React.FC<{ items: ArticleItem[] }> = ({ items }) => (
               <span aria-hidden>·</span>
               <time dateTime={a.date}>{formatJaDate(a.date)}</time>
               <span aria-hidden className="ml-auto opacity-0 transition-opacity group-hover:opacity-100">
-                ↗
+                <ExternalIcon />
               </span>
             </span>
           </div>
