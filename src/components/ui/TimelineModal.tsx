@@ -23,8 +23,12 @@ const LinkItem: React.FC<{ link: TimelineLink; onNavigate?: () => void; classNam
     </a>
   );
 
+/** 読み込んだ写真が縦長か（src ごとに覚え、2 回目に開いたときは最初の描画から縦長の枠にする） */
+const portraitCache = new Map<string, boolean>();
+
 /**
- * 写真の枠（16:10）。集合写真の頭が切れないよう、どの比率の写真も全体を収め、余りは同じ写真のぼかしで埋める。
+ * 写真の枠。横長の写真は 16:10、縦長の写真（賞状など）は 3:4（高さは画面の 68% か 640px まで）にして小さくなりすぎないようにする。
+ * 集合写真の頭が切れないよう、どの比率の写真も全体を収め、余りは同じ写真のぼかしで埋める。
  * 外部サイトの写真はリファラーを送らずに読む。読めなければ onError（枠ごと外す）。
  */
 const PhotoFrame: React.FC<{ photo: TimelinePhoto; alt: string; eager?: boolean; onError: () => void; className?: string }> = ({
@@ -33,26 +37,42 @@ const PhotoFrame: React.FC<{ photo: TimelinePhoto; alt: string; eager?: boolean;
   eager,
   onError,
   className = "",
-}) => (
-  <div className={`relative aspect-[16/10] overflow-hidden ${className}`} style={{ background: "var(--bg)" }}>
-    <img
-      src={photo.src}
-      alt=""
-      aria-hidden
-      referrerPolicy="no-referrer"
-      className="absolute inset-0 h-full w-full scale-125 object-cover opacity-40 blur-2xl"
-    />
-    <img
-      src={photo.src}
-      alt={alt}
-      loading={eager ? "eager" : "lazy"}
-      decoding="async"
-      referrerPolicy="no-referrer"
-      onError={onError}
-      className="relative h-full w-full object-contain"
-    />
-  </div>
-);
+}) => {
+  const [portrait, setPortrait] = useState(() => portraitCache.get(photo.src) ?? false);
+  return (
+    // 縦長の枠の高さは幅（cqw）の 4/3 に上限を掛けたもの。aspect-ratio と max-height を併せると幅まで縮むので使わない
+    <div className="[container-type:inline-size]">
+      <div
+        className={`relative overflow-hidden ${portrait ? "h-[min(133.33cqw,68vh,640px)]" : "aspect-[16/10]"} ${className}`}
+        style={{ background: "var(--bg)" }}
+      >
+        <img
+          src={photo.src}
+          alt=""
+          aria-hidden
+          referrerPolicy="no-referrer"
+          className="absolute inset-0 h-full w-full scale-125 object-cover opacity-40 blur-2xl"
+        />
+        <img
+          src={photo.src}
+          alt={alt}
+          loading={eager ? "eager" : "lazy"}
+          decoding="async"
+          referrerPolicy="no-referrer"
+          onLoad={(e) => {
+            const { naturalWidth: w, naturalHeight: h } = e.currentTarget;
+            if (!w || !h) return;
+            const p = h > w * 1.05;
+            portraitCache.set(photo.src, p);
+            setPortrait(p);
+          }}
+          onError={onError}
+          className="relative h-full w-full object-contain"
+        />
+      </div>
+    </div>
+  );
+};
 
 /** 「写真: 出典」。出典の URL があればリンクにする */
 const Credit: React.FC<{ credit: NonNullable<TimelineItem["photoCredit"]> }> = ({ credit }) => (
